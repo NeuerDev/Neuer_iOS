@@ -12,6 +12,8 @@
 #import "SearchViewController.h"
 #import "MeViewController.h"
 
+#import <objc/runtime.h>
+
 @interface SkelentonNavigationViewController : UINavigationController
 
 @end
@@ -37,6 +39,7 @@
         
     }
 #endif
+    
 }
 
 #pragma mark - Override Methods
@@ -97,7 +100,6 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    NSInteger supportedInterfaceOrientations = [self.selectedViewController supportedInterfaceOrientations];
     return [self.selectedViewController supportedInterfaceOrientations];
 }
 

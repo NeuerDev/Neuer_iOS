@@ -369,18 +369,18 @@
 			children = (
 				5CDBA67C1F794D45005377A2 /* Search */,
 				5C902CBE1F769CF100E988AB /* Detail */,
-				5C902CBD1F769CD600E988AB /* Channel */,
+				5C902CBD1F769CD600E988AB /* Wall */,
 			);
 			path = Television;
 			sourceTree = "<group>";
 		};
-		5C902CBD1F769CD600E988AB /* Channel */ = {
+		5C902CBD1F769CD600E988AB /* Wall */ = {
 			isa = PBXGroup;
 			children = (
 				5C902CBF1F769D2700E988AB /* TelevisionWallViewController.h */,
 				5C902CC01F769D2700E988AB /* TelevisionWallViewController.m */,
 			);
-			path = Channel;
+			path = Wall;
 			sourceTree = "<group>";
 		};
 		5C902CBE1F769CF100E988AB /* Detail */ = {
@@ -1278,6 +1278,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1294,6 +1295,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
