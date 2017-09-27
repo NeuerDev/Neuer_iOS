@@ -1,0 +1,74 @@
+/* 
+  Localizable.strings
+  NEUer
+
+  Created by Jiahong Xu on 2017/9/20.
+  Copyright © 2017年 Jiahong Xu. All rights reserved.
+*/
+
+/*
+ Today Extension
+*/
+
+"TodayExtensionGatewayTitle" = "校园网";
+"TodayExtensionDataLeftTitle" = "查流量";
+"TodayExtensionFindBookTitle" = "找图书";
+"TodayExtensionMoneyLeftTitle" = "查余额";
+"TodayExtensionQueryScoreTitle" = "查成绩";
+
+"TodayExtensionGatewayTitleLoading" = "正在连接";
+"TodayExtensionDataLeftTitleLoading" = "正在查询";
+"TodayExtensionMoneyLeftTitleLoading" = "正在查询";
+"TodayExtensionQueryScoreTitleLoading" = "正在查询";
+
+
+/*
+ Today
+ */
+
+"HomeTabBarItemTitle" = "今天";
+"HomeNavigationBarTitle" = "今天";
+
+
+/*
+ Search
+ */
+
+"SearchTabBarItemTitle" = "搜索";
+"SearchNavigationBarTitle" = "搜索";
+
+
+/*
+ Search Library
+ */
+
+"SearchLibraryNavigationBarTitle" = "找图书";
+"SearchLibrarySearchBarPlaceholder" = "查找馆藏书刊";
+
+"SearchLibrarySearchListRecentSearchTitle" = "最近搜索";
+"SearchLibrarySearchListMostSearchTitle" = "热门搜索";
+"SearchLibrarySearchListClear" = "清空";
+
+"SearchLibrarySearchFilterTypeAll" = "全部";
+"SearchLibrarySearchFilterTypeTitles" = "书名";
+"SearchLibrarySearchFilterTypeAuthors" = "作者";
+"SearchLibrarySearchFilterTypePresses" = "出版社";
+
+
+/*
+ Search Library Result
+ */
+
+"SearchLibraryResultNavigationBarTitle" = "搜索结果";
+"SearchLibraryResultSearching" = "正在检索图书馆";
+"SearchLibraryResultReachedEnd" = "已经到底了";
+"SearchLibraryResultFoundNumberSubfix" = "共找到{0}条记录";
+"SearchLibraryResultNotFound" = "找不到相关书刊";
+
+
+/*
+ Me
+ */
+
+"MeTabBarItemTitle" = "我的";
+"MeNavigationBarTitle" = "我的";

@@ -6,7 +6,9 @@
 build/
 DerivedData/
 
-## Various settings
+# Xcode
+.DS_Store
+*/build/*
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -15,12 +17,15 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-xcuserdata/
-
-## Other
+xcuserdata
+profile
 *.moved-aside
+DerivedData
+.idea/
+*.hmap
 *.xccheckout
-*.xcscmblueprint
+*.xcworkspace
+!default.xcworkspace
 
 ## Obj-C/Swift specific
 *.hmap
@@ -34,12 +39,12 @@ xcuserdata/
 # you should judge for yourself, the pros and cons are mentioned at:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 #
-# Pods/
+Pods/
 
 # Carthage
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
+Carthage/Checkouts
 
 Carthage/Build
 

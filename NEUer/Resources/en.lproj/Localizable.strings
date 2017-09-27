@@ -1,0 +1,74 @@
+/* 
+  Localizable.strings
+  NEUer
+
+  Created by Jiahong Xu on 2017/9/20.
+  Copyright © 2017年 Jiahong Xu. All rights reserved.
+*/
+
+/*
+ Today Extension
+ */
+
+"TodayExtensionGatewayTitle" = "Gateway";
+"TodayExtensionDataLeftTitle" = "Usage";
+"TodayExtensionFindBookTitle" = "Library";
+"TodayExtensionMoneyLeftTitle" = "Money";
+"TodayExtensionQueryScoreTitle" = "Score";
+
+"TodayExtensionGatewayTitleLoading" = "Connecting";
+"TodayExtensionDataLeftTitleLoading" = "Analysing";
+"TodayExtensionMoneyLeftTitleLoading" = "Querying";
+"TodayExtensionQueryScoreTitleLoading" = "Querying";
+
+
+/*
+ Today
+ */
+
+"HomeTabBarItemTitle" = "Today";
+"HomeNavigationBarTitle" = "Today";
+
+
+/*
+ Search
+ */
+
+"SearchTabBarItemTitle" = "Search";
+"SearchNavigationBarTitle" = "Search";
+
+
+/*
+ Search Library
+ */
+
+"SearchLibraryNavigationBarTitle" = "Library";
+"SearchLibrarySearchBarPlaceholder" = "Find books in library";
+
+"SearchLibrarySearchListRecentSearchTitle" = "RECENT SEARCHES";
+"SearchLibrarySearchListMostSearchTitle" = "MOST SEARCHES";
+"SearchLibrarySearchListClear" = "Clear";
+
+"SearchLibrarySearchFilterTypeAll" = "All";
+"SearchLibrarySearchFilterTypeTitles" = "Titles";
+"SearchLibrarySearchFilterTypeAuthors" = "Authors";
+"SearchLibrarySearchFilterTypePresses" = "Presses";
+
+
+/*
+ Search Library Result
+ */
+
+"SearchLibraryResultNavigationBarTitle" = "Search Result";
+"SearchLibraryResultSearching" = "Searching Library";
+"SearchLibraryResultReachedEnd" = "Reached End";
+"SearchLibraryResultFoundNumberSubfix" = "{0} books founded";
+"SearchLibraryResultNotFound" = "Not Found";
+
+
+/*
+ Me
+ */
+
+"MeTabBarItemTitle" = "Me";
+"MeNavigationBarTitle" = "Me";
