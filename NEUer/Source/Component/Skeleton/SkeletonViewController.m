@@ -9,6 +9,7 @@
 #import "SkeletonViewController.h"
 
 #import "HomeViewController.h"
+#import "CampusViewController.h"
 #import "SearchViewController.h"
 #import "MeViewController.h"
 
@@ -73,6 +74,7 @@
 
 @interface SkeletonViewController ()
 @property (nonatomic, strong) SkelentonNavigationViewController *homeNavigationVC;
+@property (nonatomic, strong) SkelentonNavigationViewController *campusNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *searchNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *meNavigationVC;
 @end
@@ -85,7 +87,12 @@
     [super viewDidLoad];
     
     self.hidesBottomBarWhenPushed = YES;
-    self.viewControllers = @[self.homeNavigationVC, self.searchNavigationVC, self.meNavigationVC];
+    self.viewControllers = @[
+                             self.homeNavigationVC,
+                             self.campusNavigationVC,
+                             self.searchNavigationVC,
+                             self.meNavigationVC
+                             ];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -116,6 +123,15 @@
     }
     
     return _homeNavigationVC;
+}
+
+- (SkelentonNavigationViewController *)campusNavigationVC {
+    if (!_campusNavigationVC) {
+        _campusNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[CampusViewController alloc] init]];
+        _campusNavigationVC.tabBarItem.title = NSLocalizedString(@"CampusTabBarItemTitle", nil);
+    }
+    
+    return _campusNavigationVC;
 }
 
 - (SkelentonNavigationViewController *)searchNavigationVC {

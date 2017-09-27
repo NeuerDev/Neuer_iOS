@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
 		5C449A681F6E12F00002A755 /* JHServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A671F6E12F00002A755 /* JHServer.m */; };
@@ -88,6 +89,8 @@
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
 		565994165BDBB6721C7545F6 /* Pods_NEUer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C0844C21F7B94BB00C69261 /* CampusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusViewController.h; sourceTree = "<group>"; };
+		5C0844C31F7B94BB00C69261 /* CampusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusViewController.m; sourceTree = "<group>"; };
 		5C21B9921F6D1A9100BC2961 /* NEUer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEUer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C21B9981F6D1A9200BC2961 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5C21B9991F6D1A9200BC2961 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -201,6 +204,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C0844BE1F7B947500C69261 /* Campus */ = {
+			isa = PBXGroup;
+			children = (
+				5C0844C01F7B94BB00C69261 /* Controller */,
+				5C0844BF1F7B94BB00C69261 /* Model */,
+				5C0844C41F7B94BB00C69261 /* View */,
+			);
+			path = Campus;
+			sourceTree = "<group>";
+		};
+		5C0844BF1F7B94BB00C69261 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5C0844C01F7B94BB00C69261 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5C0844C11F7B94BB00C69261 /* Home */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		5C0844C11F7B94BB00C69261 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5C0844C21F7B94BB00C69261 /* CampusViewController.h */,
+				5C0844C31F7B94BB00C69261 /* CampusViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5C0844C41F7B94BB00C69261 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		5C21B9891F6D1A9100BC2961 = {
 			isa = PBXGroup;
 			children = (
@@ -437,8 +481,9 @@
 			isa = PBXGroup;
 			children = (
 				5C91076A1F6D3B2F00FA4270 /* Home */,
-				5CAB9E471F7287C8009C8D04 /* Me */,
 				5C91076B1F6D3B2F00FA4270 /* Search */,
+				5C0844BE1F7B947500C69261 /* Campus */,
+				5CAB9E471F7287C8009C8D04 /* Me */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1085,6 +1130,7 @@
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* NEUReachability.m in Sources */,
+				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */,

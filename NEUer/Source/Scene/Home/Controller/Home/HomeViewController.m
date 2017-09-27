@@ -37,9 +37,19 @@
 }
 
 - (void)initConstraints {
+    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(@(SCREEN_WIDTH_ACTUAL));
+        make.height.mas_equalTo(@(44));
+    }];
+    
     [self.calendarLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleView).with.offset(8);
         make.bottom.equalTo(self.titleView);
+    }];
+    
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_topLayoutGuide);
+        make.left.and.right.and.bottom.equalTo(self.view);
     }];
 }
 
@@ -56,7 +66,7 @@
 
 - (UIView *)titleView {
     if (!_titleView) {
-        _titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 44)];
+        _titleView = [[UIView alloc] init];
     }
     
     return _titleView;
@@ -67,11 +77,21 @@
         _calendarLabel = [[UILabel alloc] init];
         _calendarLabel.text = @"Jun 14, Wed";
         _calendarLabel.text = @"12月02日 星期三";
+//        _calendarLabel.text = @"在东大的第132天";
         _calendarLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
         [self.titleView addSubview:_calendarLabel];
     }
     
     return _calendarLabel;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        [self.view addSubview:_scrollView];
+    }
+    
+    return _scrollView;
 }
 
 @end
