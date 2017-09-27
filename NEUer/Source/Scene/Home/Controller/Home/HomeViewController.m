@@ -11,7 +11,9 @@
 #import "TelevisionWallViewController.h"
 
 @interface HomeViewController ()
-
+@property (nonatomic, strong) UIView *titleView;
+@property (nonatomic, strong) UILabel *calendarLabel;
+@property (nonatomic, strong) UIScrollView *scrollView;
 @end
 
 @implementation HomeViewController
@@ -21,6 +23,7 @@
     
     self.title = NSLocalizedString(@"HomeNavigationBarTitle", nil);
     
+    
     UIButton *button = [[UIButton alloc] init];
     [button setTitle:@"校内电视" forState:UIControlStateNormal];
     button.titleLabel.textColor = [UIColor blueColor];
@@ -29,13 +32,15 @@
     [self.view addSubview:button];
     button.frame = CGRectMake(100, 300, 200, 100);
     
-//    NSString *searchText = @"<a href=\"http://202.118.8.7:8991/F/LEY3T5AGIRF63BPS1PLKUX1EPLYF8UDEQAH88FA3J15YAL86YR-83545?func=item-global&amp;doc_library=NEU01&amp;doc_number=000576232\" onmouseover=\"clearTimeout(tm);hint('<tr><td class=libnname><A HREF=http://202.118.8.7:8991/F/LEY3T5AGIRF63BPS1PLKUX1EPLYF8UDEQAH88FA3J15YAL86YR-83546?func=item-global&amp;doc_library=NEU01&amp;doc_number=000576232&amp;year=&amp;volume=&amp;sub_library=NHPTW >南湖普通外借</A></td><td class=bookid>TN929.53/665<td class=holding>     4/     0</td>',this)\" onmouseout=\"tm=setTimeout(function(){g('bubble2').style.display='none';},400)\">馆藏复本:     4，已出借复本:     0</a>";
-//    NSError *error = NULL;
-//    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(?:[^,])*\\." options:NSRegularExpressionCaseInsensitive error:&error];
-//    NSTextCheckingResult *result = [regex firstMatchInString:searchText options:0 range:NSMakeRange(0, [searchText length])];
-//    if (result) {
-//        NSLog(@"%@\n", [searchText substringWithRange:result.range]);
-//    }
+    self.navigationItem.titleView = self.titleView;
+    [self initConstraints];
+}
+
+- (void)initConstraints {
+    [self.calendarLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.titleView).with.offset(8);
+        make.bottom.equalTo(self.titleView);
+    }];
 }
 
 - (void)push {
@@ -45,6 +50,28 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
+}
+
+#pragma mark - Getter
+
+- (UIView *)titleView {
+    if (!_titleView) {
+        _titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 44)];
+    }
+    
+    return _titleView;
+}
+
+- (UILabel *)calendarLabel {
+    if (!_calendarLabel) {
+        _calendarLabel = [[UILabel alloc] init];
+        _calendarLabel.text = @"Jun 14, Wed";
+        _calendarLabel.text = @"12月02日 星期三";
+        _calendarLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
+        [self.titleView addSubview:_calendarLabel];
+    }
+    
+    return _calendarLabel;
 }
 
 @end

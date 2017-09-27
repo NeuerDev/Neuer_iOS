@@ -436,8 +436,8 @@
 		5C9107691F6D3B2F00FA4270 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				5CAB9E471F7287C8009C8D04 /* Me */,
 				5C91076A1F6D3B2F00FA4270 /* Home */,
+				5CAB9E471F7287C8009C8D04 /* Me */,
 				5C91076B1F6D3B2F00FA4270 /* Search */,
 			);
 			path = Scene;

@@ -10,4 +10,13 @@
 
 @interface CalendarLogic : NSObject
 
+// 农历
++ (NSString*)getChineseCalendarWithDate:(NSDate *)date;
+
++ (NSString *)getWeekWithDate:(NSDate *)date;
+
++ (NSString *)getHolidays:(NSDate *)date;
+
++ (NSString *)getLunarSpecialDate:(int)iYear Month:(int)iMonth Day:(int)iDay;
+
 @end
