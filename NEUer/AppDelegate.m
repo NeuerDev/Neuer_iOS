@@ -29,12 +29,18 @@
 #pragma mark - Life Circle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    [self initAppearence];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = self.skelentonVC;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)initAppearence {
+    UINavigationBar *navigationBar = [UINavigationBar appearance];
+    [navigationBar setBackgroundImage:[[UIImage alloc] init] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[[UIImage alloc] init]];
 }
 
 
