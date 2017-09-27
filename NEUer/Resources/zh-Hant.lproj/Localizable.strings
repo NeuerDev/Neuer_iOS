@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  NEUer
+
+  Created by Jiahong Xu on 2017/9/20.
+  Copyright © 2017年 Jiahong Xu. All rights reserved.
+*/
+
+/*
+ Today Extension
+*/
+
+"TodayExtensionGatewayTitle" = "校園網";
+"TodayExtensionDataLeftTitle" = "查流量";
+"TodayExtensionFindBookTitle" = "找圖書";
+"TodayExtensionMoneyLeftTitle" = "查餘額";
+"TodayExtensionQueryScoreTitle" = "查成績";
+
+"TodayExtensionGatewayTitleLoading" = "正在連接";
+"TodayExtensionDataLeftTitleLoading" = "正在查詢";
+"TodayExtensionMoneyLeftTitleLoading" = "正在查詢";
+"TodayExtensionQueryScoreTitleLoading" = "正在查詢";
