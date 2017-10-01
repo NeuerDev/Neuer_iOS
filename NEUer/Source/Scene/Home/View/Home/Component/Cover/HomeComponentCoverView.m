@@ -46,7 +46,7 @@
         _contentView = [[UIView alloc] init];
         
         _contentView.layer.shadowOffset = CGSizeMake(0, 4);
-        _contentView.layer.shadowOpacity = 0.7;
+        _contentView.layer.shadowOpacity = 0.8;
         _contentView.layer.shadowRadius = 4;
         
         [self addSubview:_contentView];

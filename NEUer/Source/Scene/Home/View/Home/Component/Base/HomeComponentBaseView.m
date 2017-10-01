@@ -53,7 +53,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
         [self addSubview:_titleLabel];
     }
     
