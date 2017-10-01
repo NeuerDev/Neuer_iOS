@@ -128,7 +128,7 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
         [_actionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
-        _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
     }
     
     return _actionButton;

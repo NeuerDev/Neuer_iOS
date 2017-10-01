@@ -13,9 +13,9 @@
 #import "HomeComponentCoverView.h"
 #import "HomeComponentAccessView.h"
 #import "HomeComponentScheduleView.h"
+#import "HomeComponentNewsView.h"
 
 @interface HomeViewController ()
-@property (nonatomic, strong) UIView *titleView;
 @property (nonatomic, strong) UILabel *calendarLabel;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -23,8 +23,7 @@
 @property (nonatomic, strong) HomeComponentCoverView *coverView;        // 封面
 @property (nonatomic, strong) HomeComponentAccessView *accessView;      // 便捷访问
 @property (nonatomic, strong) HomeComponentScheduleView *scheduleView;  // 课表
-//@property (nonatomic, strong) HomeComponentBaseView *galleryView;
-//@property (nonatomic, strong) HomeComponentBaseView *newsView;
+@property (nonatomic, strong) HomeComponentNewsView *newsView;          // 新闻
 @end
 
 @implementation HomeViewController
@@ -34,30 +33,11 @@
     
     self.title = NSLocalizedString(@"HomeNavigationBarTitle", nil);
     
-    UIButton *button = [[UIButton alloc] init];
-    [button setTitle:@"校内电视" forState:UIControlStateNormal];
-    button.titleLabel.textColor = [UIColor blueColor];
-    button.backgroundColor = [UIColor redColor];
-    [button addTarget:self action:@selector(push) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    button.frame = CGRectMake(100, 300, 200, 100);
-    
-    self.navigationItem.titleView = self.titleView;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.calendarLabel];
     [self initConstraints];
 }
 
 - (void)initConstraints {
-    
-    // 导航栏约束
-    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(@(SCREEN_WIDTH_ACTUAL));
-        make.height.mas_equalTo(@(44));
-    }];
-    
-    [self.calendarLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.titleView).with.offset(8);
-        make.bottom.equalTo(self.titleView);
-    }];
 
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide);
@@ -82,6 +62,11 @@
     [self.scheduleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.accessView.mas_bottom);
         make.left.and.right.equalTo(self.contentView);
+    }];
+    
+    [self.newsView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scheduleView.mas_bottom);
+        make.left.and.right.equalTo(self.contentView);
         make.bottom.equalTo(self.contentView);
     }];
 }
@@ -97,14 +82,6 @@
 
 #pragma mark - Getter
 
-- (UIView *)titleView {
-    if (!_titleView) {
-        _titleView = [[UIView alloc] init];
-    }
-    
-    return _titleView;
-}
-
 - (UILabel *)calendarLabel {
     if (!_calendarLabel) {
         _calendarLabel = [[UILabel alloc] init];
@@ -112,8 +89,7 @@
         _calendarLabel.text = @"12月02日 星期三";
 //        _calendarLabel.text = @"在东大的第132天";
         _calendarLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _calendarLabel.textColor = [UIColor grayColor];
-        [self.titleView addSubview:_calendarLabel];
+        _calendarLabel.textColor = [UIColor darkGrayColor];
     }
     
     return _calendarLabel;
@@ -173,12 +149,13 @@
     return _scheduleView;
 }
 
-//- (UIView *)galleryView {
-//
-//}
-//
-//- (UIView *)newsView {
-//
-//}
+- (HomeComponentNewsView *)newsView {
+    if (!_newsView) {
+        _newsView = [[HomeComponentNewsView alloc] init];
+        [self.contentView addSubview:_newsView];
+    }
+    
+    return _newsView;
+}
 
 @end

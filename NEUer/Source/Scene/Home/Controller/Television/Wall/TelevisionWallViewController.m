@@ -44,7 +44,6 @@ static NSString * const kChannelCellId = @"kChannelCellId";
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
         self.contentView.layer.shadowOpacity = 0.5;
         self.contentView.layer.shadowRadius = 4;
-        self.contentView.backgroundColor = [UIColor blackColor];
         
         [self.contentView addSubview:self.imageView];
         [self.contentView addSubview:self.titleLabel];

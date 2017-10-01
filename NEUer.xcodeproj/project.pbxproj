@@ -49,6 +49,7 @@
 		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
 		5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */; };
+		5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */; };
 		5CE4E1831F6FDD39008780AC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE4E1601F6ED476008780AC /* NotificationCenter.framework */; };
 		5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E1861F6FDD39008780AC /* NEUerTodayViewController.m */; };
 		5CE4E18E1F6FDD39008780AC /* NEUerTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5CE4E1821F6FDD39008780AC /* NEUerTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -172,6 +173,8 @@
 		5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentCoverView.m; sourceTree = "<group>"; };
 		5CD098B91F8092D900252E4D /* HomeComponentScheduleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentScheduleView.h; sourceTree = "<group>"; };
 		5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentScheduleView.m; sourceTree = "<group>"; };
+		5CD098BC1F809B9800252E4D /* HomeComponentNewsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentNewsView.h; sourceTree = "<group>"; };
+		5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentNewsView.m; sourceTree = "<group>"; };
 		5CE4E1601F6ED476008780AC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		5CE4E1711F6F619C008780AC /* NEUer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEUer.entitlements; sourceTree = "<group>"; };
 		5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -829,6 +832,8 @@
 		5CD098B21F8089CA00252E4D /* News */ = {
 			isa = PBXGroup;
 			children = (
+				5CD098BC1F809B9800252E4D /* HomeComponentNewsView.h */,
+				5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -1210,6 +1215,7 @@
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
+				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
 				5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,

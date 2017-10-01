@@ -45,6 +45,10 @@
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
         
+        _contentView.layer.shadowOffset = CGSizeMake(0, 4);
+        _contentView.layer.shadowOpacity = 0.7;
+        _contentView.layer.shadowRadius = 4;
+        
         [self addSubview:_contentView];
     }
     
@@ -56,6 +60,7 @@
         _coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home"]];
         _coverImageView.layer.cornerRadius = 16.0f;
         _coverImageView.layer.masksToBounds = YES;
+        self.contentView.layer.shadowColor = _coverImageView.image.mainColor.CGColor;
         [self.contentView addSubview:_coverImageView];
     }
     

@@ -42,7 +42,7 @@
     
     NSAssert(self.bodyView, @"body view is nil");
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(16);
+        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
         make.left.and.right.equalTo(self.subTitleLabel);
         make.bottom.equalTo(self.mas_bottom).with.offset(-24);
     }];
@@ -72,6 +72,7 @@
 - (UIButton *)actionButton {
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
+        _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
         [_actionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
         [self addSubview:_actionButton];
     }
