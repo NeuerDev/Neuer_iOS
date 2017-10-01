@@ -19,7 +19,7 @@
 - (instancetype)init {
     if (self = [super initWithSearchResultsController:nil]) {
         self.dimsBackgroundDuringPresentation = NO;
-        self.searchBar.placeholder = NSLocalizedString(@"SearchLibrarySearchBarPlaceholder", nil);
+        self.searchBar.placeholder = NSLocalizedString(@"TelevisionChannelSearchBarPlaceholder", nil);
     }
     
     return self;
