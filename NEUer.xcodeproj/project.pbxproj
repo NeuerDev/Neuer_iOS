@@ -45,6 +45,10 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* NEUReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* NEUReachability.m */; };
+		5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */; };
+		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
+		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
+		5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */; };
 		5CE4E1831F6FDD39008780AC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE4E1601F6ED476008780AC /* NotificationCenter.framework */; };
 		5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E1861F6FDD39008780AC /* NEUerTodayViewController.m */; };
 		5CE4E18E1F6FDD39008780AC /* NEUerTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5CE4E1821F6FDD39008780AC /* NEUerTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -160,6 +164,14 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* NEUReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEUReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* NEUReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEUReachability.m; sourceTree = "<group>"; };
+		5CD098AC1F80890900252E4D /* HomeComponentBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentBaseView.h; sourceTree = "<group>"; };
+		5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentBaseView.m; sourceTree = "<group>"; };
+		5CD098B31F8089E100252E4D /* HomeComponentAccessView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentAccessView.h; sourceTree = "<group>"; };
+		5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentAccessView.m; sourceTree = "<group>"; };
+		5CD098B61F808A2500252E4D /* HomeComponentCoverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentCoverView.h; sourceTree = "<group>"; };
+		5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentCoverView.m; sourceTree = "<group>"; };
+		5CD098B91F8092D900252E4D /* HomeComponentScheduleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentScheduleView.h; sourceTree = "<group>"; };
+		5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentScheduleView.m; sourceTree = "<group>"; };
 		5CE4E1601F6ED476008780AC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		5CE4E1711F6F619C008780AC /* NEUer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEUer.entitlements; sourceTree = "<group>"; };
 		5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -243,6 +255,35 @@
 			children = (
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		5C14F9801F80889900E5D0B9 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5C14F9811F8088A300E5D0B9 /* Component */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5C14F9811F8088A300E5D0B9 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098B21F8089CA00252E4D /* News */,
+				5CD098B11F8089B700252E4D /* Schedule */,
+				5CD098B01F8089AF00252E4D /* Cover */,
+				5CD098AF1F8089A700252E4D /* Access */,
+				5C14F9821F8088B800E5D0B9 /* Base */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		5C14F9821F8088B800E5D0B9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098AC1F80890900252E4D /* HomeComponentBaseView.h */,
+				5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		5C21B9891F6D1A9100BC2961 = {
@@ -758,6 +799,40 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		5CD098AF1F8089A700252E4D /* Access */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098B31F8089E100252E4D /* HomeComponentAccessView.h */,
+				5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */,
+			);
+			path = Access;
+			sourceTree = "<group>";
+		};
+		5CD098B01F8089AF00252E4D /* Cover */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098B61F808A2500252E4D /* HomeComponentCoverView.h */,
+				5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */,
+			);
+			path = Cover;
+			sourceTree = "<group>";
+		};
+		5CD098B11F8089B700252E4D /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098B91F8092D900252E4D /* HomeComponentScheduleView.h */,
+				5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
+		5CD098B21F8089CA00252E4D /* News */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
 		5CDBA67C1F794D45005377A2 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -816,6 +891,7 @@
 		5CE4E15A1F6ECB99008780AC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5C14F9801F80889900E5D0B9 /* Home */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1123,6 +1199,7 @@
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
+				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
@@ -1136,7 +1213,10 @@
 				5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
+				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
+				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
+				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
