@@ -274,7 +274,20 @@
                 [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
                 [self presentViewController:alertController animated:YES completion:nil];
                 self.loginBtn.enabled = NO;
+                self.loginBtn.alpha = 0.4;
                 return;
+            }
+//            当用户不按顺序填写时
+            if (self.loginState == LoginStateHadLogin || self.loginState == LoginStateNeverLogin) {
+                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""]) {
+                    self.loginBtn.enabled = YES;
+                    self.loginBtn.alpha = 1;
+                }
+            } else {
+                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""] && ![self.verificationTF.text isEqualToString:@""]) {
+                    self.loginBtn.enabled = YES;
+                    self.loginBtn.alpha = 1;
+                }
             }
         }
             break;
