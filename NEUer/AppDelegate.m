@@ -10,7 +10,7 @@
 
 #import "SkeletonViewController.h"
 #import "URLRouter.h"
-
+#import "UserCenter.h"
 @interface AppDelegate ()
 @property (nonatomic, strong) SkeletonViewController *skelentonVC;
 @end
@@ -33,7 +33,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = self.skelentonVC;
-    [self.window makeKeyAndVisible];
+    [self.window makeKeyAndVisible]; [[UserCenter defaultCenter] authorWithAccount:@"20144786" password:@"19960614" complete:^(BOOL success, NSString *message) {
+        NSLog(@"");
+    }];
     return YES;
 }
 

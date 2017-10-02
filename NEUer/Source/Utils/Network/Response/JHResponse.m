@@ -46,7 +46,11 @@
 }
 
 - (NSString *)stringWithEncoding:(NSStringEncoding)encoding {
-    return [[NSString alloc] initWithData:_data encoding:encoding];
+    if (_data) {
+        return @"";
+    } else {
+        return [[NSString alloc] initWithData:_data encoding:encoding];
+    }
 }
 
 - (BOOL)success {

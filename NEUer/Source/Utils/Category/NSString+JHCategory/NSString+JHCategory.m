@@ -7,24 +7,38 @@
 //
 
 #import "NSString+JHCategory.h"
+#import<CommonCrypto/CommonDigest.h>
 
 @implementation NSString (JHCategory)
 
++ (NSString *)stringFromGBKData:(NSData *)data {
+    return [[NSString alloc] initWithData:data encoding:CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)];
+}
+
 - (NSString *)URLDecode {
-    return [self stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [self stringByRemovingPercentEncoding];
 }
 
 - (NSString *)URLEncode {
-    return [self urlEncodeUsingEncoding:NSUTF8StringEncoding];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
-- (NSString *)urlEncodeUsingEncoding:(NSStringEncoding)encoding {
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                 NULL,
-                                                                                 (__bridge CFStringRef)self,
-                                                                                 NULL,
-                                                                                 (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
-                                                                                 CFStringConvertNSStringEncodingToEncoding(encoding)));
+- (NSString *)md5 {
+    const char *cStr = [self UTF8String];
+    unsigned char digest[CC_MD5_DIGEST_LENGTH];
+    
+    CC_MD5(cStr, (CC_LONG)strlen(cStr), digest);
+    
+    NSMutableString *result = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
+        [result appendFormat:@"%02X", digest[i]];
+    }
+    
+    return result;
+}
+
++ (NSString *)md5EncryptWithString:(NSString *)encryptionKey {
+    return [NSString stringWithFormat:@"%@%@", encryptionKey, self].md5;
 }
 
 @end

@@ -27,6 +27,8 @@
 		5C9107651F6D1C3100FA4270 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C91075F1F6D1C3100FA4270 /* main.m */; };
 		5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */; };
+		5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */; };
+		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -49,6 +51,7 @@
 		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
 		5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */; };
+		5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098C21F80DB8A00252E4D /* UserCenter.m */; };
 		5CE4E1831F6FDD39008780AC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE4E1601F6ED476008780AC /* NotificationCenter.framework */; };
 		5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E1861F6FDD39008780AC /* NEUerTodayViewController.m */; };
 		5CE4E18E1F6FDD39008780AC /* NEUerTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5CE4E1821F6FDD39008780AC /* NEUerTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -129,6 +132,10 @@
 		5C9107611F6D1C3100FA4270 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C945B631F7A951C001D9DC1 /* TelevisionChannelModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionChannelModel.h; sourceTree = "<group>"; };
 		5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionChannelModel.m; sourceTree = "<group>"; };
+		5C9895DD1F81E6AF00C2F93E /* UserKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserKeychain.h; sourceTree = "<group>"; };
+		5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserKeychain.m; sourceTree = "<group>"; };
+		5C9895E11F822A5B00C2F93E /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		5C9895E21F822A5B00C2F93E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -172,6 +179,8 @@
 		5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentCoverView.m; sourceTree = "<group>"; };
 		5CD098B91F8092D900252E4D /* HomeComponentScheduleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentScheduleView.h; sourceTree = "<group>"; };
 		5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentScheduleView.m; sourceTree = "<group>"; };
+		5CD098C11F80DB8A00252E4D /* UserCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCenter.h; sourceTree = "<group>"; };
+		5CD098C21F80DB8A00252E4D /* UserCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCenter.m; sourceTree = "<group>"; };
 		5CE4E1601F6ED476008780AC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		5CE4E1711F6F619C008780AC /* NEUer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEUer.entitlements; sourceTree = "<group>"; };
 		5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -552,6 +561,7 @@
 		5C91076C1F6D3B2F00FA4270 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5CD098BF1F80DB6100252E4D /* User */,
 				5CE99C4E1F7292EC0062DBF9 /* Url */,
 				5C91076D1F6D3B2F00FA4270 /* Category */,
 				5C91076E1F6D3B2F00FA4270 /* Const */,
@@ -630,6 +640,24 @@
 				5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */,
 			);
 			path = Channel;
+			sourceTree = "<group>";
+		};
+		5C9895DC1F81E68000C2F93E /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				5C9895DD1F81E6AF00C2F93E /* UserKeychain.h */,
+				5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		5C9895E01F822A5000C2F93E /* User */ = {
+			isa = PBXGroup;
+			children = (
+				5C9895E11F822A5B00C2F93E /* User.h */,
+				5C9895E21F822A5B00C2F93E /* User.m */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		5CA976E41F73AAD500B1089A /* SearchResult */ = {
@@ -831,6 +859,25 @@
 			children = (
 			);
 			path = News;
+			sourceTree = "<group>";
+		};
+		5CD098BF1F80DB6100252E4D /* User */ = {
+			isa = PBXGroup;
+			children = (
+				5C9895E01F822A5000C2F93E /* User */,
+				5C9895DC1F81E68000C2F93E /* Keychain */,
+				5CD098C01F80DB6E00252E4D /* Center */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		5CD098C01F80DB6E00252E4D /* Center */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098C11F80DB8A00252E4D /* UserCenter.h */,
+				5CD098C21F80DB8A00252E4D /* UserCenter.m */,
+			);
+			path = Center;
 			sourceTree = "<group>";
 		};
 		5CDBA67C1F794D45005377A2 /* Search */ = {
@@ -1194,6 +1241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C9895E31F822A5B00C2F93E /* User.m in Sources */,
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
@@ -1203,6 +1251,7 @@
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
+				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
@@ -1215,6 +1264,7 @@
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
+				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
