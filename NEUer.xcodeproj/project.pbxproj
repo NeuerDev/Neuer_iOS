@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		33F88B831F8295AD0054B123 /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B821F8295AD0054B123 /* LYTextField.m */; };
+		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		33FBD68D1F7BE2FC001B1F09 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FBD68C1F7BE2FC001B1F09 /* LoginViewController.m */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
@@ -87,6 +89,10 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
+		33F88B811F8295AD0054B123 /* LYTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTextField.h; sourceTree = "<group>"; };
+		33F88B821F8295AD0054B123 /* LYTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYTextField.m; sourceTree = "<group>"; };
+		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
+		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		33FBD68B1F7BE2FC001B1F09 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		33FBD68C1F7BE2FC001B1F09 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -204,9 +210,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		33F88B801F8295620054B123 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				33F88B811F8295AD0054B123 /* LYTextField.h */,
+				33F88B821F8295AD0054B123 /* LYTextField.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		33F88B841F8296430054B123 /* JHTool */ = {
+			isa = PBXGroup;
+			children = (
+				33F88B851F8296510054B123 /* JHTool.h */,
+				33F88B861F8296510054B123 /* JHTool.m */,
+			);
+			path = JHTool;
+			sourceTree = "<group>";
+		};
 		33FBD6891F7BE0E4001B1F09 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				33F88B801F8295620054B123 /* View */,
 				33FBD68A1F7BE2E0001B1F09 /* Controller */,
 			);
 			path = Login;
@@ -546,6 +571,7 @@
 		5C9107721F6D3B2F00FA4270 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				33F88B841F8296430054B123 /* JHTool */,
 				5C6D59311F734AF700E7654B /* CalendarLogic */,
 			);
 			path = Tool;
@@ -1118,7 +1144,9 @@
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
+				33F88B831F8295AD0054B123 /* LYTextField.m in Sources */,
 				5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */,
+				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* URLRouter.m in Sources */,
