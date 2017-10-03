@@ -6,11 +6,11 @@
 //  Copyright © 2017年 Jiahong Xu. All rights reserved.
 //
 
-#import "URLHandler.h"
+#import "JHURLBaseHandler.h"
 
-@implementation URLHandler
+@implementation JHURLBaseHandler
 
-- (URLHandlerResponse *)responseForUrl:(NSURL *)url {
+- (JHURLHandlerResponse *)responseForUrl:(NSURL *)url {
     return nil;
 }
 

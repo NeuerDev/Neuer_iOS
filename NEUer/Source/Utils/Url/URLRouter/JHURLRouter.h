@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface URLRouter : NSObject
+@interface JHURLRouter : NSObject
 
-+ (instancetype)sharedInstance;
++ (instancetype)sharedRouter;
+
+- (void)configRootViewController:(UIViewController *)rootViewController;
+
+- (void)loadRouterFromPlist:(NSString *)plist;
 
 - (BOOL)handleUrl:(NSURL *)url;
 

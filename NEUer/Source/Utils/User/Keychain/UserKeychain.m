@@ -10,4 +10,20 @@
 
 @implementation UserKeychain
 
++ (instancetype)keychainForUser:(User *)user {
+    return [[UserKeychain alloc] init];
+}
+
+- (NSArray<UserKey *> *)allKeys {
+    return @[];
+}
+
+- (NSString *)passwordForType:(UserKeyType)type {
+    return @"";
+}
+
+- (void)setPassword:(NSString *)password forType:(UserKeyType)type {
+    
+}
+
 @end

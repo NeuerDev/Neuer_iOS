@@ -8,18 +8,9 @@
 	<array>
 		<dict>
 			<key>class</key>
-			<string>URLRouter</string>
-			<key>name</key>
-			<string>url_router</string>
-		</dict>
-	</array>
-	<key>url_handler_list</key>
-	<array>
-		<dict>
-			<key>exact_url</key>
-			<string>go/library</string>
-			<key>object</key>
-			<string>url_router</string>
+			<string>SearchLibraryViewController</string>
+			<key>regex</key>
+			<string>/lib</string>
 		</dict>
 	</array>
 </dict>

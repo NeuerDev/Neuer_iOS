@@ -14,6 +14,22 @@
 
 @implementation JHBaseViewController
 
+#pragma mark - Init Methods
+
+- (instancetype)initWithUrl:(NSURL *)url params:(NSDictionary *)params {
+    if (self = [super init]) {
+        
+    }
+    
+    return self;
+}
+
+- (void)handleUrl:(NSURL *)url params:(NSDictionary *)params {
+    
+}
+
+#pragma mark - Life Circle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -37,5 +53,7 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
     return UIInterfaceOrientationPortrait;
 }
+
+
 
 @end

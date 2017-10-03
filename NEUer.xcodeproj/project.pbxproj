@@ -60,8 +60,8 @@
 		5CE8AF991F702716008594F6 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayModel.m */; };
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
-		5CE99C531F7294820062DBF9 /* URLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* URLRouter.m */; };
-		5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C551F7295580062DBF9 /* URLHandler.m */; };
+		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
+		5CE99C561F7295580062DBF9 /* JHURLBaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C551F7295580062DBF9 /* JHURLBaseHandler.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -195,10 +195,10 @@
 		5CE8AF971F70270B008594F6 /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
 		5CE99C4B1F728CEC0062DBF9 /* MeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeViewController.h; sourceTree = "<group>"; };
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
-		5CE99C511F7294820062DBF9 /* URLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLRouter.h; sourceTree = "<group>"; };
-		5CE99C521F7294820062DBF9 /* URLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLRouter.m; sourceTree = "<group>"; };
-		5CE99C541F7295580062DBF9 /* URLHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLHandler.h; sourceTree = "<group>"; };
-		5CE99C551F7295580062DBF9 /* URLHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLHandler.m; sourceTree = "<group>"; };
+		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
+		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
+		5CE99C541F7295580062DBF9 /* JHURLBaseHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLBaseHandler.h; sourceTree = "<group>"; };
+		5CE99C551F7295580062DBF9 /* JHURLBaseHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLBaseHandler.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -394,6 +394,15 @@
 			children = (
 			);
 			path = MemoryDay;
+			sourceTree = "<group>";
+		};
+		5C5FE35F1F833DAC00A79100 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5CE99C541F7295580062DBF9 /* JHURLBaseHandler.h */,
+				5CE99C551F7295580062DBF9 /* JHURLBaseHandler.m */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		5C6D59311F734AF700E7654B /* CalendarLogic */ = {
@@ -993,8 +1002,8 @@
 		5CE99C4F1F7293000062DBF9 /* URLRouter */ = {
 			isa = PBXGroup;
 			children = (
-				5CE99C511F7294820062DBF9 /* URLRouter.h */,
-				5CE99C521F7294820062DBF9 /* URLRouter.m */,
+				5CE99C511F7294820062DBF9 /* JHURLRouter.h */,
+				5CE99C521F7294820062DBF9 /* JHURLRouter.m */,
 			);
 			path = URLRouter;
 			sourceTree = "<group>";
@@ -1002,8 +1011,7 @@
 		5CE99C501F72931B0062DBF9 /* URLHandler */ = {
 			isa = PBXGroup;
 			children = (
-				5CE99C541F7295580062DBF9 /* URLHandler.h */,
-				5CE99C551F7295580062DBF9 /* URLHandler.m */,
+				5C5FE35F1F833DAC00A79100 /* Base */,
 			);
 			path = URLHandler;
 			sourceTree = "<group>";
@@ -1259,7 +1267,7 @@
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
-				5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */,
+				5CE99C561F7295580062DBF9 /* JHURLBaseHandler.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
@@ -1275,7 +1283,7 @@
 				5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
-				5CE99C531F7294820062DBF9 /* URLRouter.m in Sources */,
+				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,

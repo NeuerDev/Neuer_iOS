@@ -323,11 +323,13 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
         }];
     }
     
-    NSArray *buttonArray = @[self.gatewayButton,
+    NSArray *buttonArray = @[
+                             self.gatewayButton,
                              self.dataButton,
-                             self.libraryButton,
+//                             self.libraryButton,
                              self.walletButton,
-                             self.scoreButton];
+//                             self.scoreButton,
+                             ];
     
     for (int index = 0; index < buttonArray.count; index++) {
         UIView *view = buttonArray[index];
@@ -457,7 +459,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 
 
 - (void)queryLibraryBook {
-    
+    [self.extensionContext openURL:[NSURL URLWithString:@"neu://go/lib"] completionHandler:nil];
 }
 
 
@@ -534,6 +536,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 - (NEUTodayExtensionButton *)libraryButton {
     if (!_libraryButton) {
         _libraryButton = [[NEUTodayExtensionButton alloc] initWithImage:[UIImage imageNamed:@"search_large"] title:NSLocalizedString(@"TodayExtensionFindBookTitle", nil)];
+        [_libraryButton addTarget:self action:@selector(queryLibraryBook)];
         [self.buttonView addSubview:_libraryButton];
     }
     
