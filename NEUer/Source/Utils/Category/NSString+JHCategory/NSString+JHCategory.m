@@ -12,7 +12,11 @@
 @implementation NSString (JHCategory)
 
 + (NSString *)stringFromGBKData:(NSData *)data {
-    return [[NSString alloc] initWithData:data encoding:CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)];
+    NSString *string = [[NSString alloc] initWithData:data encoding:CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)];
+    if (!string) {
+        string = @"";
+    }
+    return string;
 }
 
 - (NSString *)URLDecode {

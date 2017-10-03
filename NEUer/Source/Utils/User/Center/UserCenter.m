@@ -64,9 +64,10 @@ static UserCenter *_singletonCenter = nil;
 }
 
 - (void)switchToUser:(User *)user complete:(void (^)(BOOL success, NSString *message))complete {
+    WS(ws);
     [user authorComplete:^(BOOL success, NSString *message) {
         if (success) {
-            _currentUser = user;
+            ws.currentUser = user;
         } else {
             
         }

@@ -15,10 +15,11 @@
 @property (nonatomic, strong) NSString *number;
 @property (nonatomic, strong) NSString *realName;
 @property (nonatomic, strong) NSString *nickName;
-@property (nonatomic, assign) NSInteger sex;
+@property (nonatomic, assign) NSInteger sex;        // 0 for male, 1 for female
 @property (nonatomic, strong) NSString *avatarUrl;
 @property (nonatomic, strong) NSString *wechatId;
 @property (nonatomic, strong) NSDate *enrollDate;
+@property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) UserKeychain *keychain;
 
 - (void)authorWithAccount:(NSString *)account password:(NSString *)password complete:(void (^)(BOOL, NSString *))complete;
