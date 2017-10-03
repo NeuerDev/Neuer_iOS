@@ -104,6 +104,7 @@ static JHServer *_instance;
 
 - (void)cancelRequest:(JHRequest *)request {
     request.delegate = nil;
+    request.completeBlock = nil;
     [_requestPool removeRequest:request];
 }
 
@@ -117,6 +118,11 @@ static JHServer *_instance;
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             request.response = [[JHResponse alloc] initWithUrl:response.URL statusCode:((NSHTTPURLResponse *)response).statusCode headerFields:((NSHTTPURLResponse *)response).allHeaderFields data:data];
+            
+            if (request.completeBlock) {
+                request.completeBlock(request);
+            }
+            
             if (request.response.success) {
                 [self.requestPool removeRequest:request];
                 [request.delegate requestDidSuccess:request];
@@ -124,6 +130,8 @@ static JHServer *_instance;
                 [self.requestPool removeRequest:request];
                 [request.delegate requestDidFail:request];
             }
+        } else {
+            
         }
     }];
     

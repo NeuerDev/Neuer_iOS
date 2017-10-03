@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (JHCategory)
+
++ (NSString *)stringFromGBKData:(NSData *)data;
+
 - (NSString *)URLEncode;
 - (NSString *)URLDecode;
+
+- (NSString *)md5;
 @end

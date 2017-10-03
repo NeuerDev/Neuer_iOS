@@ -27,6 +27,8 @@
 		5C9107651F6D1C3100FA4270 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C91075F1F6D1C3100FA4270 /* main.m */; };
 		5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */; };
+		5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */; };
+		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -50,6 +52,7 @@
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
 		5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */; };
 		5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */; };
+		5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098C21F80DB8A00252E4D /* UserCenter.m */; };
 		5CE4E1831F6FDD39008780AC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE4E1601F6ED476008780AC /* NotificationCenter.framework */; };
 		5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E1861F6FDD39008780AC /* NEUerTodayViewController.m */; };
 		5CE4E18E1F6FDD39008780AC /* NEUerTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5CE4E1821F6FDD39008780AC /* NEUerTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -58,8 +61,8 @@
 		5CE8AF991F702716008594F6 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayModel.m */; };
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
-		5CE99C531F7294820062DBF9 /* URLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* URLRouter.m */; };
-		5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C551F7295580062DBF9 /* URLHandler.m */; };
+		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
+		5CE99C561F7295580062DBF9 /* JHURLBaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C551F7295580062DBF9 /* JHURLBaseHandler.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -130,6 +133,10 @@
 		5C9107611F6D1C3100FA4270 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C945B631F7A951C001D9DC1 /* TelevisionChannelModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionChannelModel.h; sourceTree = "<group>"; };
 		5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionChannelModel.m; sourceTree = "<group>"; };
+		5C9895DD1F81E6AF00C2F93E /* UserKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserKeychain.h; sourceTree = "<group>"; };
+		5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserKeychain.m; sourceTree = "<group>"; };
+		5C9895E11F822A5B00C2F93E /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		5C9895E21F822A5B00C2F93E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -173,8 +180,11 @@
 		5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentCoverView.m; sourceTree = "<group>"; };
 		5CD098B91F8092D900252E4D /* HomeComponentScheduleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentScheduleView.h; sourceTree = "<group>"; };
 		5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentScheduleView.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		5CD098BC1F809B9800252E4D /* HomeComponentNewsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentNewsView.h; sourceTree = "<group>"; };
 		5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentNewsView.m; sourceTree = "<group>"; };
+		5CD098C11F80DB8A00252E4D /* UserCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCenter.h; sourceTree = "<group>"; };
+		5CD098C21F80DB8A00252E4D /* UserCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCenter.m; sourceTree = "<group>"; };
 		5CE4E1601F6ED476008780AC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		5CE4E1711F6F619C008780AC /* NEUer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEUer.entitlements; sourceTree = "<group>"; };
 		5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -189,10 +199,10 @@
 		5CE8AF971F70270B008594F6 /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
 		5CE99C4B1F728CEC0062DBF9 /* MeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeViewController.h; sourceTree = "<group>"; };
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
-		5CE99C511F7294820062DBF9 /* URLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLRouter.h; sourceTree = "<group>"; };
-		5CE99C521F7294820062DBF9 /* URLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLRouter.m; sourceTree = "<group>"; };
-		5CE99C541F7295580062DBF9 /* URLHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLHandler.h; sourceTree = "<group>"; };
-		5CE99C551F7295580062DBF9 /* URLHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLHandler.m; sourceTree = "<group>"; };
+		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
+		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
+		5CE99C541F7295580062DBF9 /* JHURLBaseHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLBaseHandler.h; sourceTree = "<group>"; };
+		5CE99C551F7295580062DBF9 /* JHURLBaseHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLBaseHandler.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -390,6 +400,15 @@
 			path = MemoryDay;
 			sourceTree = "<group>";
 		};
+		5C5FE35F1F833DAC00A79100 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5CE99C541F7295580062DBF9 /* JHURLBaseHandler.h */,
+				5CE99C551F7295580062DBF9 /* JHURLBaseHandler.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		5C6D59311F734AF700E7654B /* CalendarLogic */ = {
 			isa = PBXGroup;
 			children = (
@@ -555,6 +574,7 @@
 		5C91076C1F6D3B2F00FA4270 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5CD098BF1F80DB6100252E4D /* User */,
 				5CE99C4E1F7292EC0062DBF9 /* Url */,
 				5C91076D1F6D3B2F00FA4270 /* Category */,
 				5C91076E1F6D3B2F00FA4270 /* Const */,
@@ -633,6 +653,24 @@
 				5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */,
 			);
 			path = Channel;
+			sourceTree = "<group>";
+		};
+		5C9895DC1F81E68000C2F93E /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				5C9895DD1F81E6AF00C2F93E /* UserKeychain.h */,
+				5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		5C9895E01F822A5000C2F93E /* User */ = {
+			isa = PBXGroup;
+			children = (
+				5C9895E11F822A5B00C2F93E /* User.h */,
+				5C9895E21F822A5B00C2F93E /* User.m */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		5CA976E41F73AAD500B1089A /* SearchResult */ = {
@@ -838,6 +876,25 @@
 			path = News;
 			sourceTree = "<group>";
 		};
+		5CD098BF1F80DB6100252E4D /* User */ = {
+			isa = PBXGroup;
+			children = (
+				5C9895E01F822A5000C2F93E /* User */,
+				5C9895DC1F81E68000C2F93E /* Keychain */,
+				5CD098C01F80DB6E00252E4D /* Center */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		5CD098C01F80DB6E00252E4D /* Center */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098C11F80DB8A00252E4D /* UserCenter.h */,
+				5CD098C21F80DB8A00252E4D /* UserCenter.m */,
+			);
+			path = Center;
+			sourceTree = "<group>";
+		};
 		5CDBA67C1F794D45005377A2 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -951,8 +1008,8 @@
 		5CE99C4F1F7293000062DBF9 /* URLRouter */ = {
 			isa = PBXGroup;
 			children = (
-				5CE99C511F7294820062DBF9 /* URLRouter.h */,
-				5CE99C521F7294820062DBF9 /* URLRouter.m */,
+				5CE99C511F7294820062DBF9 /* JHURLRouter.h */,
+				5CE99C521F7294820062DBF9 /* JHURLRouter.m */,
 			);
 			path = URLRouter;
 			sourceTree = "<group>";
@@ -960,8 +1017,7 @@
 		5CE99C501F72931B0062DBF9 /* URLHandler */ = {
 			isa = PBXGroup;
 			children = (
-				5CE99C541F7295580062DBF9 /* URLHandler.h */,
-				5CE99C551F7295580062DBF9 /* URLHandler.m */,
+				5C5FE35F1F833DAC00A79100 /* Base */,
 			);
 			path = URLHandler;
 			sourceTree = "<group>";
@@ -1199,6 +1255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C9895E31F822A5B00C2F93E /* User.m in Sources */,
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
@@ -1208,6 +1265,7 @@
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
+				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
@@ -1217,10 +1275,12 @@
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
 				5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */,
+				5CE99C561F7295580062DBF9 /* JHURLBaseHandler.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
+				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
@@ -1231,7 +1291,7 @@
 				5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
-				5CE99C531F7294820062DBF9 /* URLRouter.m in Sources */,
+				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
