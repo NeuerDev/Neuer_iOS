@@ -36,5 +36,6 @@
 #import <Masonry/Masonry.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <hpple/TFHpple.h>
+#import <DKNightVersion/DKNightVersion.h>
 
 #endif /* PrefixHeader_pch */

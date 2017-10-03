@@ -33,7 +33,7 @@
     
     self.title = NSLocalizedString(@"HomeNavigationBarTitle", nil);
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.calendarLabel];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.calendarLabel];
     [self initConstraints];
 }
 
