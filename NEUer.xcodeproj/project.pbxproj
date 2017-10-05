@@ -180,7 +180,6 @@
 		5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentCoverView.m; sourceTree = "<group>"; };
 		5CD098B91F8092D900252E4D /* HomeComponentScheduleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentScheduleView.h; sourceTree = "<group>"; };
 		5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentScheduleView.m; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		5CD098BC1F809B9800252E4D /* HomeComponentNewsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentNewsView.h; sourceTree = "<group>"; };
 		5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentNewsView.m; sourceTree = "<group>"; };
 		5CD098C11F80DB8A00252E4D /* UserCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCenter.h; sourceTree = "<group>"; };
@@ -1179,9 +1178,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-NEUer/Pods-NEUer-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/DKNightVersion/DKNightVersion.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/hpple/hpple.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKNightVersion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hpple.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1194,13 +1208,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NEUer-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		73B63F65AB209B1E13CD0A83 /* [CP] Copy Pods Resources */ = {
@@ -1239,13 +1256,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NEUerTodayExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1274,7 +1294,7 @@
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
-				5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */,
+				5CE99C561F7295580062DBF9 /* JHURLBaseHandler.m in Sources */,
 				5CE99C561F7295580062DBF9 /* JHURLBaseHandler.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
