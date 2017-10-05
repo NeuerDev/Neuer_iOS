@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol JHURLRouterViewControllerProtocol
+
+@required
+- (instancetype)initWithUrl:(NSURL *)url params:(NSDictionary *)params;
+- (void)handleUrl:(NSURL *)url params:(NSDictionary *)params;
+
+@end
+
 @interface JHURLRouter : NSObject
 
 + (instancetype)sharedRouter;

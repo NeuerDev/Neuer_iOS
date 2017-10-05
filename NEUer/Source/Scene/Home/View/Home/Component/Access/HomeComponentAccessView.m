@@ -90,7 +90,8 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    NSURL *url = [NSURL URLWithString:self.cellDataArray[indexPath.item][@"url"]];
+    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -162,12 +163,12 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
                                },
                            @{
                                @"title":@"电视直播",
-                               @"url":@"",
+                               @"url":@"neu://go/tv",
                                @"color":@"#A2C9B4",
                                },
                            @{
                                @"title":@"书刊查询",
-                               @"url":@"",
+                               @"url":@"neu://go/lib",
                                @"color":@"#A2C9B4",
                                },
                            @{

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "JHURLRouter.h"
 
 @class JHURLHandlerResponse;
 
@@ -17,21 +18,13 @@ typedef NS_ENUM(NSInteger, JHURLHandlerActionType) {
     JHURLHandlerActionTypeHandle,
 };
 
-@protocol JHURLHandlerViewControllerProtocol
-
-@required
-- (instancetype)initWithUrl:(NSURL *)url params:(NSDictionary *)params;
-- (void)handleUrl:(NSURL *)url params:(NSDictionary *)params;
-
-@end
-
 @protocol JHURLHandlerProtocol
 @required
 - (JHURLHandlerResponse *)responseForUrl:(NSURL *)url;
 @end;
 
 @interface JHURLHandlerResponse : NSObject
-@property (nonatomic, strong) UIViewController<JHURLHandlerViewControllerProtocol> *viewController;
+@property (nonatomic, strong) UIViewController<JHURLRouterViewControllerProtocol> *viewController;
 @property (nonatomic, assign) JHURLHandlerActionType modelType;
 @end
 

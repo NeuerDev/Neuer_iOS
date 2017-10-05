@@ -66,8 +66,7 @@
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"url = %@", url.absoluteString);
-    [self.router handleUrl:url];
-    return YES;
+    return [self.router handleUrl:url];
 }
 
 

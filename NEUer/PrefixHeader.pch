@@ -25,13 +25,13 @@
 
 #import "JHBaseViewController.h"
 #import "JHURLRouter.h"
-#import "JHURLBaseHandler.h"
 
 #pragma mark - Category
 
 #import "UIColor+JHCategory.h"
 #import "UIImage+JHCategory.h"
 #import "NSString+JHCategory.h"
+#import "NSURL+JHCategory.h"
 
 #pragma mark - Pod
 

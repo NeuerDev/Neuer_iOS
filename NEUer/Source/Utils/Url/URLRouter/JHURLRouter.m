@@ -7,7 +7,6 @@
 //
 
 #import "JHURLRouter.h"
-#import "JHURLBaseHandler.h"
 
 static JHURLRouter *_instance;
 
@@ -43,13 +42,8 @@ static JHURLRouter *_instance;
 #pragma mark - Public Methods
 
 - (void)openUrl:(NSURL *)url handleClass:(Class)HandleClass {
-    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    NSMutableDictionary *params = @{}.mutableCopy;
-    for (NSURLQueryItem *item in urlComponents.queryItems) {
-        [params setObject:item.value forKey:item.name];
-    }
     
-    id viewController = [((JHBaseViewController *)[HandleClass alloc]) initWithUrl:url params:params.copy];
+    id viewController = [((JHBaseViewController *)[HandleClass alloc]) initWithUrl:url params:url.params];
     
     if ([_rootViewController isKindOfClass:[UINavigationController class]]) {
         [((UINavigationController *)_rootViewController).topViewController.navigationController pushViewController:viewController animated:YES];
@@ -80,20 +74,21 @@ static JHURLRouter *_instance;
 - (BOOL)handleUrl:(NSURL *)url {
     NSString *host = url.host;
     NSString *path = url.path;
-    if ([host isEqualToString:@"go"]) {
-        for (NSDictionary *dictionary in _handlersMap) {
-            Class HandleClass = dictionary[@"class"];
+    for (NSDictionary *dictionary in _handlersMap) {
+        if ([host isEqualToString:@"go"]) {
             NSString *regex = dictionary[@"regex"];
-            
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+            
             if ([predicate evaluateWithObject:path]) {
-                [self openUrl:url handleClass:HandleClass];
+                [self openUrl:url handleClass:dictionary[@"class"]];
                 return YES;
             } else {
                 continue;
             }
+            
+        } else if ([host isEqualToString:@"handle"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NSStringFromClass(dictionary[@"class"]) object:url];
         }
-        
     }
     //    JHURLHandlerResponse *response = nil;
     //    for (NSObject *handler in self.handlers) {
