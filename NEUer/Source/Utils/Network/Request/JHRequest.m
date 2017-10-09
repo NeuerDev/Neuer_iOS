@@ -30,6 +30,7 @@
         _method = method;
         _params = params;
         _headerFields = headers;
+        _timeoutInterval = 30;
     }
     
     return self;

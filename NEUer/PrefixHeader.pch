@@ -25,6 +25,7 @@
 
 #import "JHBaseViewController.h"
 #import "JHURLRouter.h"
+#import "GatewayCenter.h"
 
 #pragma mark - Category
 

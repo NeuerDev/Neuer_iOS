@@ -11,6 +11,7 @@
 #import "SkeletonViewController.h"
 #import "JHURLRouter.h"
 #import "UserCenter.h"
+
 @interface AppDelegate ()
 @property (nonatomic, strong) JHURLRouter *router;
 @property (nonatomic, strong) SkeletonViewController *skelentonVC;
@@ -22,6 +23,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self initAppearence];
+    
+    // 开始监听网络
+    [[GatewayCenter defaultCenter] startMonitoring];
     
     [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
     

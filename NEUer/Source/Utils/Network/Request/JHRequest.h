@@ -37,6 +37,8 @@ typedef NS_ENUM(NSInteger, JHRequestType) {
 @property (nonatomic, strong) JHRequestCompleteBlock completeBlock;
 @property (nonatomic, strong) JHResponse *response;
 @property (nonatomic, assign) JHRequestType requestType; // default is JHRequestTypeNone
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic, assign) NSTimeInterval timeoutInterval;
 
 
 /**

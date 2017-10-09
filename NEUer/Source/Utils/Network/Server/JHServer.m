@@ -115,7 +115,9 @@ static JHServer *_instance;
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:request.url];
     urlRequest.HTTPMethod = request.method;
     urlRequest.allHTTPHeaderFields = request.headerFields;
+    urlRequest.timeoutInterval = request.timeoutInterval;
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        request.error = error;
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             request.response = [[JHResponse alloc] initWithUrl:response.URL statusCode:((NSHTTPURLResponse *)response).statusCode headerFields:((NSHTTPURLResponse *)response).allHeaderFields data:data];
             
@@ -131,7 +133,9 @@ static JHServer *_instance;
                 [request.delegate requestDidFail:request];
             }
         } else {
-            
+            if (request.completeBlock) {
+                request.completeBlock(request);
+            }
         }
     }];
     

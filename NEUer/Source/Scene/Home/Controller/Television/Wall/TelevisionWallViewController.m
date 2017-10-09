@@ -38,7 +38,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.backgroundColor = [UIColor colorWithHexStr:@"#DDDDDD"];
+        self.contentView.backgroundColor = [UIColor blackColor];
         self.contentView.layer.cornerRadius = 16;
         self.contentView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
@@ -80,9 +80,9 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     
     NSInteger timestamp = [[[NSDate alloc] init] timeIntervalSince1970]/60;
     NSString *previewUrl = [NSString stringWithFormat:@"%@?time=%ld", _channelBean.previewImageUrl, timestamp];
-    //    NSString *previewUrl = _channelBean.previewImageUrl;
+//    NSString *previewUrl = _channelBean.previewImageUrl;
     
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:previewUrl] placeholderImage:[UIImage imageNamed:@"neu_placeholder_16_9_gray"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:previewUrl] placeholderImage:[UIImage imageNamed:@"neu_placeholder_16_9_gray"] options:SDWebImageCacheMemoryOnly completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         if (!image||error) {
             return;
         }

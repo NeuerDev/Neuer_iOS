@@ -21,6 +21,8 @@
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
+		5C7B8ED51F8B40190088FC60 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
+		5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B8ED81F8B41290088FC60 /* GatewayModel.m */; };
 		5C8B62961F7890F900310055 /* Json.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C8B62951F7890F900310055 /* Json.bundle */; };
 		5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8B629C1F78FC4C00310055 /* JHBaseViewController.m */; };
 		5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8D75161F79535400FC9056 /* TelevisionChannelSearchViewController.m */; };
@@ -48,7 +50,7 @@
 		5CC233121F723C40005F0A6E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */; };
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
-		5CC744BC1F6D3D94003D2EE2 /* NEUReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* NEUReachability.m */; };
+		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
 		5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */; };
 		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
@@ -59,8 +61,7 @@
 		5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E1861F6FDD39008780AC /* NEUerTodayViewController.m */; };
 		5CE4E18E1F6FDD39008780AC /* NEUerTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5CE4E1821F6FDD39008780AC /* NEUerTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
-		5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayModel.m */; };
-		5CE8AF991F702716008594F6 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayModel.m */; };
+		5CE8AF981F70270B008594F6 /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
@@ -123,6 +124,8 @@
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
 		5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+JHCategory.m"; sourceTree = "<group>"; };
+		5C7B8ED71F8B41290088FC60 /* GatewayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
+		5C7B8ED81F8B41290088FC60 /* GatewayModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
 		5C8B62951F7890F900310055 /* Json.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Json.bundle; sourceTree = "<group>"; };
 		5C8B62971F78F27A00310055 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		5C8B62981F78F29A00310055 /* JHMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHMacro.h; sourceTree = "<group>"; };
@@ -175,8 +178,8 @@
 		5CC233181F723E6A005F0A6E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC2331A1F723E6C005F0A6E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		5CC744BA1F6D3D94003D2EE2 /* NEUReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEUReachability.h; sourceTree = "<group>"; };
-		5CC744BB1F6D3D94003D2EE2 /* NEUReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEUReachability.m; sourceTree = "<group>"; };
+		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
+		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
 		5CD098AC1F80890900252E4D /* HomeComponentBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentBaseView.h; sourceTree = "<group>"; };
 		5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentBaseView.m; sourceTree = "<group>"; };
 		5CD098B31F8089E100252E4D /* HomeComponentAccessView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentAccessView.h; sourceTree = "<group>"; };
@@ -199,8 +202,8 @@
 		5CE4E19B1F6FDDB1008780AC /* NEUerTodayExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEUerTodayExtension.entitlements; sourceTree = "<group>"; };
 		5CE4E19D1F6FE6D0008780AC /* UIColor+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+JHCategory.h"; sourceTree = "<group>"; };
 		5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+JHCategory.m"; sourceTree = "<group>"; };
-		5CE8AF961F70270B008594F6 /* GatewayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
-		5CE8AF971F70270B008594F6 /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
+		5CE8AF961F70270B008594F6 /* GatewayCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayCenter.h; sourceTree = "<group>"; };
+		5CE8AF971F70270B008594F6 /* GatewayCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayCenter.m; sourceTree = "<group>"; };
 		5CE99C4B1F728CEC0062DBF9 /* MeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeViewController.h; sourceTree = "<group>"; };
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
 		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
@@ -231,6 +234,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C01A2F61F8B22FB001D7FD6 /* NEUKit */ = {
+			isa = PBXGroup;
+			children = (
+				5CD098BF1F80DB6100252E4D /* User */,
+				5CE8AF951F7026D9008594F6 /* Gateway */,
+			);
+			path = NEUKit;
+			sourceTree = "<group>";
+		};
 		5C0844BE1F7B947500C69261 /* Campus */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,6 +485,15 @@
 			path = Wall;
 			sourceTree = "<group>";
 		};
+		5C7B8ED61F8B41160088FC60 /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				5C7B8ED71F8B41290088FC60 /* GatewayModel.h */,
+				5C7B8ED81F8B41290088FC60 /* GatewayModel.m */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
 		5C8B62991F78FC2700310055 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,6 +563,7 @@
 		5C9107641F6D1C3100FA4270 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5C01A2F61F8B22FB001D7FD6 /* NEUKit */,
 				5C9107681F6D3B2F00FA4270 /* Component */,
 				5C9107691F6D3B2F00FA4270 /* Scene */,
 				5C91076C1F6D3B2F00FA4270 /* Utils */,
@@ -593,7 +615,6 @@
 		5C91076C1F6D3B2F00FA4270 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				5CD098BF1F80DB6100252E4D /* User */,
 				5CE99C4E1F7292EC0062DBF9 /* Url */,
 				5C91076D1F6D3B2F00FA4270 /* Category */,
 				5C91076E1F6D3B2F00FA4270 /* Const */,
@@ -854,8 +875,8 @@
 		5CC744B91F6D3D6C003D2EE2 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				5CC744BA1F6D3D94003D2EE2 /* NEUReachability.h */,
-				5CC744BB1F6D3D94003D2EE2 /* NEUReachability.m */,
+				5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */,
+				5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */,
 			);
 			path = Reachability;
 			sourceTree = "<group>";
@@ -962,10 +983,10 @@
 		5CE4E1591F6ECB99008780AC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5C7B8ED61F8B41160088FC60 /* Gateway */,
 				5C7548B11F7738890065E64E /* Television */,
 				5C4B0B6D1F71F026000B1EF0 /* ChickenSoup */,
 				5C4B0B6E1F71F026000B1EF0 /* MemoryDay */,
-				5CE8AF951F7026D9008594F6 /* Gateway */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1001,8 +1022,8 @@
 		5CE8AF951F7026D9008594F6 /* Gateway */ = {
 			isa = PBXGroup;
 			children = (
-				5CE8AF961F70270B008594F6 /* GatewayModel.h */,
-				5CE8AF971F70270B008594F6 /* GatewayModel.m */,
+				5CE8AF961F70270B008594F6 /* GatewayCenter.h */,
+				5CE8AF971F70270B008594F6 /* GatewayCenter.m */,
 			);
 			path = Gateway;
 			sourceTree = "<group>";
@@ -1301,9 +1322,10 @@
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
+				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
-				5CC744BC1F6D3D94003D2EE2 /* NEUReachability.m in Sources */,
+				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
@@ -1321,7 +1343,7 @@
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
-				5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */,
+				5CE8AF981F70270B008594F6 /* GatewayCenter.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
@@ -1337,7 +1359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CE8AF991F702716008594F6 /* GatewayModel.m in Sources */,
+				5C7B8ED51F8B40190088FC60 /* JHReachability.m in Sources */,
 				5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */,
 				5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */,
 			);
