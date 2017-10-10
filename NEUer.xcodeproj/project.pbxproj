@@ -285,7 +285,6 @@
 			children = (
 				33FBD68B1F7BE2FC001B1F09 /* LoginViewController.h */,
 				33FBD68C1F7BE2FC001B1F09 /* LoginViewController.m */,
-=======
 		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
 			isa = PBXGroup;
 			children = (
