@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Jiahong Xu. All rights reserved.
 //
 
-#import "NEUReachability.h"
+#import "JHReachability.h"
 
 #import <arpa/inet.h>
 #import <ifaddrs.h>
@@ -16,7 +16,7 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 
-#import "NEUReachability.h"
+#import "JHReachability.h"
 
 #pragma mark IPv6 协议支持
 // Reachability完全支持IPv6协议.
@@ -52,22 +52,25 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char*
 static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void* info) {
 #pragma 没有用的(target, flags)
     NSCAssert(info != NULL, @"info was NULL in ReachabilityCallback");
-    NSCAssert([(__bridge NSObject*) info isKindOfClass: [NEUReachability class]], @"info was wrong class in ReachabilityCallback");
+    NSCAssert([(__bridge NSObject*) info isKindOfClass: [JHReachability class]], @"info was wrong class in ReachabilityCallback");
     
-    NEUReachability *noteObject = (__bridge NEUReachability *)info;
+    JHReachability *noteObject = (__bridge JHReachability *)info;
     // Post a notification to notify the client that the network reachability changed.
-    [[NSNotificationCenter defaultCenter] postNotificationName: kReachabilityChangedNotification object: noteObject];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kReachabilityChangedNotification object: noteObject];
+    if (noteObject.changeBlock) {
+        noteObject.changeBlock([noteObject networkStatusForFlags:flags]);
+    }
 }
 
 
 #pragma mark - Reachability的实现
 
-@implementation NEUReachability {
+@implementation JHReachability {
     SCNetworkReachabilityRef _reachabilityRef;
 }
 
 + (instancetype)reachabilityWithHostName:(NSString *)hostName {
-    NEUReachability *returnValue = NULL;
+    JHReachability *returnValue = NULL;
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, [hostName UTF8String]);
     if (reachability != NULL) {
         returnValue= [[self alloc] init];
@@ -85,7 +88,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 + (instancetype)reachabilityWithAddress:(const struct sockaddr *)hostAddress {
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, hostAddress);
     
-    NEUReachability* returnValue = NULL;
+    JHReachability* returnValue = NULL;
     
     if (reachability != NULL) {
         returnValue = [[self alloc] init];
@@ -143,22 +146,29 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 }
 
 
+#pragma mark - Set Callback
+
+- (void)setReachabilityStatusChangeBlock:(JHReachabilityStatusChangeBlock)block {
+    _changeBlock = block;
+}
+
+
 #pragma mark - Network Flag Handling
 
-- (NetworkStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags {
+- (JHReachabilityStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags {
     PrintReachabilityFlags(flags, "networkStatusForFlags");
     if ((flags & kSCNetworkReachabilityFlagsReachable) == 0) {
         // The target host is not reachable.
-        return NotReachable;
+        return JHReachabilityStatusNotReachable;
     }
     
-    NetworkStatus returnValue = NotReachable;
+    JHReachabilityStatus returnValue = JHReachabilityStatusUnknown;
     
     if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0) {
         /*
          If the target host is reachable and no connection is required then we'll assume (for now) that you're on Wi-Fi...
          */
-        returnValue = ReachableViaWiFi;
+        returnValue = JHReachabilityStatusReachableViaWiFi;
     }
     
     if ((((flags & kSCNetworkReachabilityFlagsConnectionOnDemand ) != 0) ||
@@ -171,7 +181,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
             /*
              ... and no [user] intervention is needed...
              */
-            returnValue = ReachableViaWiFi;
+            returnValue = JHReachabilityStatusReachableViaWiFi;
         }
     }
     
@@ -179,7 +189,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         /*
          ... but WWAN connections are OK if the calling application is using the CFNetwork APIs.
          */
-        returnValue = ReachableViaWWAN;
+        returnValue = JHReachabilityStatusReachableViaWWAN;
     }
     
     return returnValue;
@@ -198,9 +208,9 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 }
 
 
-- (NetworkStatus)currentReachabilityStatus {
+- (JHReachabilityStatus)currentReachabilityStatus {
     NSAssert(_reachabilityRef != NULL, @"currentNetworkStatus called with NULL SCNetworkReachabilityRef");
-    NetworkStatus returnValue = NotReachable;
+    JHReachabilityStatus returnValue = JHReachabilityStatusUnknown;
     SCNetworkReachabilityFlags flags;
     
     if (SCNetworkReachabilityGetFlags(_reachabilityRef, &flags)) {

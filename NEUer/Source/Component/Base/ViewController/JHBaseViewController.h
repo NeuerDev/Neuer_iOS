@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JHURLRouter.h"
 
-@interface JHBaseViewController : UIViewController
+@interface JHBaseViewController : UIViewController <JHURLRouterViewControllerProtocol>
 
 @end

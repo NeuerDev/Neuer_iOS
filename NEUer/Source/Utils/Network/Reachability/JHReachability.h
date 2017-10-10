@@ -11,12 +11,14 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <netinet/in.h>
 
-
 typedef enum : NSInteger {
-    NotReachable = 0,
-    ReachableViaWiFi,
-    ReachableViaWWAN
-} NetworkStatus;
+    JHReachabilityStatusUnknown         = -1,
+    JHReachabilityStatusNotReachable    = 0,
+    JHReachabilityStatusReachableViaWiFi= 1,
+    JHReachabilityStatusReachableViaWWAN= 2,
+} JHReachabilityStatus;
+
+typedef void(^JHReachabilityStatusChangeBlock)(JHReachabilityStatus status);
 
 #pragma mark IPv6 协议支持
 // Reachability完全支持IPv6协议.
@@ -25,7 +27,9 @@ typedef enum : NSInteger {
 extern NSString *kReachabilityChangedNotification;
 
 
-@interface NEUReachability : NSObject
+@interface JHReachability : NSObject
+
+@property (nonatomic, strong) JHReachabilityStatusChangeBlock changeBlock;
 
 /*!
  * 用来检测hostName的连接状态.
@@ -43,12 +47,19 @@ extern NSString *kReachabilityChangedNotification;
 + (instancetype)reachabilityForInternetConnection;
 
 /*!
+ * 设置回调 block
+ */
+- (void)setReachabilityStatusChangeBlock:(JHReachabilityStatusChangeBlock)block;
+
+- (JHReachabilityStatus)networkStatusForFlags:(SCNetworkReachabilityFlags)flags;
+
+/*!
  *开始在当前时间循环中监听Reachability通知.
  */
 - (BOOL)startNotifier;
 - (void)stopNotifier;
 
-- (NetworkStatus)currentReachabilityStatus;
+- (JHReachabilityStatus)currentReachabilityStatus;
 
 /*!
  * 除非连接已经建立,WWAN可用,但是却没有激活. WiFi 连结也许需要一个VPN来进行连接.

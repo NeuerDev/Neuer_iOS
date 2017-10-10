@@ -17,7 +17,7 @@
 
 
 #pragma mark - 获取某天农历
-+ (NSString*)getChineseCalendarWithDate:(NSDate *)date{
++ (NSString*)getChineseCalendarWithDate:(NSDate *)date {
     
     NSCalendar *localeCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     
@@ -34,7 +34,7 @@
 }
 
 #pragma mark - 获取某天星期几
-+ (NSString *)getWeekWithDate:(NSDate *)date{
++ (NSString *)getWeekWithDate:(NSDate *)date {
     NSCalendar *localeCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     NSInteger weekDayFlag = [localeCalendar ordinalityOfUnit:NSCalendarUnitWeekday inUnit:NSCalendarUnitWeekOfMonth forDate:date];
     NSString *weekDay_str = [WeekDays objectAtIndex:weekDayFlag];

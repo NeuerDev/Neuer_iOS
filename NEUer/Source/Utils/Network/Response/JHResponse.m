@@ -19,7 +19,6 @@
         _statusCode = statusCode;
         _headerFields = headerFields;
         _data = data;
-        _jsonObj = [NSJSONSerialization JSONObjectWithData:[self.string dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     }
     
     return self;
@@ -41,12 +40,24 @@
     }
 }
 
+- (id)jsonObj {
+    if (!_jsonObj) {
+        _jsonObj = [NSJSONSerialization JSONObjectWithData:[self.string dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+    }
+    
+    return _jsonObj;
+}
+
 - (NSString *)string {
     return [self stringWithEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringWithEncoding:(NSStringEncoding)encoding {
-    return [[NSString alloc] initWithData:_data encoding:encoding];
+    if (!_data) {
+        return @"";
+    } else {
+        return [[NSString alloc] initWithData:_data encoding:encoding];
+    }
 }
 
 - (BOOL)success {

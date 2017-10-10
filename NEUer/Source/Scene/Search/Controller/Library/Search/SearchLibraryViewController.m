@@ -74,13 +74,8 @@
 }
 
 - (void)reloadData {
-    self.mostSearchComponent.strings = @[
-                                         @"The Great Gatsby", @"Oliver Twist", @"The Phantom Of the Opera",
-                                         @"Oliver Twist", @"The Phantom Of the Opera",
-                                         @"Oliver Twist", @"The Phantom Of the Opera"];
-    self.recentSearchComponent.strings = @[@"The Great Gatsby", @"Oliver Twist", @"The Phantom Of the Opera",
-                                           @"Oliver Twist", @"The Phantom Of the Opera",
-                                           @"Oliver Twist", @"The Phantom Of the Opera"];
+    self.mostSearchComponent.strings = @[@"马克思原理", @"软件工程", @"公共事业管理基础", @"人工智能与神经网络", @"机械与自动化", @"工程原理"];
+    self.recentSearchComponent.strings = @[@"iOS", @"The Great Gatsby", @"Oliver Twist", @"The Phantom Of the Opera", @"Khaled Hosseini", @"莫言"];
 }
 
 - (void)didReceiveMemoryWarning {

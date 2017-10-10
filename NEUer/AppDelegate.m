@@ -9,32 +9,37 @@
 #import "AppDelegate.h"
 
 #import "SkeletonViewController.h"
-#import "URLRouter.h"
+#import "JHURLRouter.h"
+#import "UserCenter.h"
 
 @interface AppDelegate ()
+@property (nonatomic, strong) JHURLRouter *router;
 @property (nonatomic, strong) SkeletonViewController *skelentonVC;
 @end
 
 @implementation AppDelegate
 
-#pragma mark - Public Methods
-
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    if ([_skelentonVC.selectedViewController isKindOfClass:[UINavigationController class]]) {
-        [((UINavigationController *)_skelentonVC.selectedViewController) pushViewController:viewController animated:YES];
-    }
-}
-
-
 #pragma mark - Life Circle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self initAppearence];
+    
+    // 开始监听网络
+    [[GatewayCenter defaultCenter] startMonitoring];
+    
+    [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = self.skelentonVC;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)initAppearence {
+    UINavigationBar *navigationBar = [UINavigationBar appearance];
+    [navigationBar setBackgroundImage:[[UIImage alloc] init] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [navigationBar setShadowImage:[[UIImage alloc] init]];
 }
 
 
@@ -65,7 +70,7 @@
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"url = %@", url.absoluteString);
-    return YES;
+    return [self.router handleUrl:url];
 }
 
 
@@ -77,6 +82,15 @@
     }
     
     return _skelentonVC;
+}
+
+- (JHURLRouter *)router {
+    if (!_router) {
+        _router = [JHURLRouter sharedRouter];
+        [_router configRootViewController:self.skelentonVC];
+    }
+    
+    return _router;
 }
 
 @end

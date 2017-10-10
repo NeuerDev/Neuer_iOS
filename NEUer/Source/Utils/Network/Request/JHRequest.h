@@ -10,6 +10,8 @@
 @class JHRequest;
 @class JHResponse;
 
+typedef void(^JHRequestCompleteBlock)(JHRequest *request);
+
 typedef NS_ENUM(NSInteger, JHRequestType) {
     JHRequestTypeNone,              // 都执行
     JHRequestTypeCancelPrevious,    // 取消旧请求
@@ -32,8 +34,11 @@ typedef NS_ENUM(NSInteger, JHRequestType) {
 @property (nonatomic, strong) NSString *method;
 @property (nonatomic, strong) NSDictionary<NSString *, NSString *> *params;
 @property (nonatomic, strong) NSDictionary<NSString *, NSString *> *headerFields;
+@property (nonatomic, strong) JHRequestCompleteBlock completeBlock;
 @property (nonatomic, strong) JHResponse *response;
 @property (nonatomic, assign) JHRequestType requestType; // default is JHRequestTypeNone
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic, assign) NSTimeInterval timeoutInterval;
 
 
 /**

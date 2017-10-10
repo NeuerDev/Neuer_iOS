@@ -7,7 +7,7 @@
 //
 
 #import "NEUerTodayViewController.h"
-#import "GatewayModel.h"
+//#import "GatewayCenter.h"
 
 #import "UIColor+JHCategory.h"
 
@@ -262,7 +262,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 @property (nonatomic, strong) NEUTodayExtensionButton *libraryButton;
 @property (nonatomic, strong) NEUTodayExtensionButton *scoreButton;
 
-@property (nonatomic, strong) GatewayModel *gatewayModel;
+//@property (nonatomic, strong) GatewayCenter *gatewayModel;
 
 @property (nonatomic, assign) BOOL isCompact;
 
@@ -323,11 +323,13 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
         }];
     }
     
-    NSArray *buttonArray = @[self.gatewayButton,
+    NSArray *buttonArray = @[
+                             self.gatewayButton,
                              self.dataButton,
-                             self.libraryButton,
+//                             self.libraryButton,
                              self.walletButton,
-                             self.scoreButton];
+//                             self.scoreButton,
+                             ];
     
     for (int index = 0; index < buttonArray.count; index++) {
         UIView *view = buttonArray[index];
@@ -373,7 +375,8 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 - (void)startUpdate {
     NSMutableAttributedString *string0 = [[NSMutableAttributedString alloc] init];
     NSMutableAttributedString *string1 = [[NSMutableAttributedString alloc] init];
-    if (!self.gatewayModel.hasUser) {
+    if (NO) {
+//        if (!self.gatewayModel.hasUser) {
         // 无用户信息
         [string0 appendAttributedString:
          [[NSAttributedString alloc] initWithString:@"我还不认识你 _(:з」∠)_ 先进入应用完善信息吧～"
@@ -457,7 +460,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 
 
 - (void)queryLibraryBook {
-    
+    [self.extensionContext openURL:[NSURL URLWithString:@"neu://go/lib"] completionHandler:nil];
 }
 
 
@@ -468,14 +471,14 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 
 #pragma mark - Getter
 
-- (GatewayModel *)gatewayModel {
-    if (!_gatewayModel) {
-        _gatewayModel = [[GatewayModel alloc] init];
-        [_gatewayModel startMonitoring];
-    }
-    
-    return _gatewayModel;
-}
+//- (GatewayCenter *)gatewayModel {
+//    if (!_gatewayModel) {
+//        _gatewayModel = [[GatewayCenter alloc] init];
+//        [_gatewayModel startMonitoring];
+//    }
+//    
+//    return _gatewayModel;
+//}
 
 
 - (NEUTodayExtensionMarqueeView *)headerView {
@@ -534,6 +537,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 - (NEUTodayExtensionButton *)libraryButton {
     if (!_libraryButton) {
         _libraryButton = [[NEUTodayExtensionButton alloc] initWithImage:[UIImage imageNamed:@"search_large"] title:NSLocalizedString(@"TodayExtensionFindBookTitle", nil)];
+        [_libraryButton addTarget:self action:@selector(queryLibraryBook)];
         [self.buttonView addSubview:_libraryButton];
     }
     

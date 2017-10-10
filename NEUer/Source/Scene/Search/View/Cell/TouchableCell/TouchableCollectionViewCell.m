@@ -44,7 +44,8 @@
 #pragma mark- Private
 
 - (void)goDeep {
-    [UIView animateWithDuration:1.0f/4.0f
+    [self.layer removeAllAnimations];
+    [UIView animateWithDuration:1.0f/6.0f
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent
                      animations:^{
@@ -56,7 +57,8 @@
 }
 
 - (void)goBack {
-    [UIView animateWithDuration:1.0f/4.0f
+    [self.layer removeAllAnimations];
+    [UIView animateWithDuration:1.0f/6.0f
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent
                      animations:^{

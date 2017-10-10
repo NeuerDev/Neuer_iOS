@@ -16,7 +16,6 @@ static NSString * const kCellId = @"kCellId";
 static NSString * const kHeaderId = @"kHeaderId";
 static NSString * const kFooterId = @"kFooterId";
 
-#define SCREEN_WIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 const CGFloat kCellHeight = 128.0f;
 const CGFloat kHeaderHeight = 44.0f;
 const CGFloat kFooterHeight = 44.0f;
@@ -500,7 +499,7 @@ const NSInteger kPreloadThreshold = 3;
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH-32, kCellHeight);
+        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH_ACTUAL-32, kCellHeight);
         flowLayout.sectionInset = UIEdgeInsetsMake(8, 16, 8, 16);
         flowLayout.headerReferenceSize = CGSizeMake(CGRectGetWidth(self.view.bounds), kHeaderHeight);
         flowLayout.footerReferenceSize = CGSizeMake(CGRectGetWidth(self.view.bounds), kFooterHeight);
