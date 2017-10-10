@@ -15,10 +15,8 @@
 #import "HomeComponentScheduleView.h"
 #import "HomeComponentNewsView.h"
 
-<<<<<<< HEAD
-@property (strong, nonatomic) LoginViewController *loginVC;
 
-=======
+
 @interface HomeViewController ()
 @property (nonatomic, strong) UILabel *calendarLabel;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -28,7 +26,8 @@
 @property (nonatomic, strong) HomeComponentAccessView *accessView;      // 便捷访问
 @property (nonatomic, strong) HomeComponentScheduleView *scheduleView;  // 课表
 @property (nonatomic, strong) HomeComponentNewsView *newsView;          // 新闻
->>>>>>> f415140016cbb47d9b0d537443e3b388bbe298a1
+@property (strong, nonatomic) LoginViewController *loginVC;
+
 @end
 
 @implementation HomeViewController
@@ -69,14 +68,13 @@
         make.left.and.right.equalTo(self.contentView);
     }];
     
-<<<<<<< HEAD
-    UIButton *button1 = [[UIButton alloc] init];
-    [button1 setTitle:@"有验证码未登录" forState:UIControlStateNormal];
-    button1.titleLabel.textColor = [UIColor blueColor];
-    button1.backgroundColor = [UIColor redColor];
-    [button1 addTarget:self action:@selector(pushLoginVC) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button1];
-    button1.frame = CGRectMake(100, 500, 200, 100);
+//    UIButton *button1 = [[UIButton alloc] init];
+//    [button1 setTitle:@"有验证码未登录" forState:UIControlStateNormal];
+//    button1.titleLabel.textColor = [UIColor blueColor];
+//    button1.backgroundColor = [UIColor redColor];
+//    [button1 addTarget:self action:@selector(pushLoginVC) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:button1];
+//    button1.frame = CGRectMake(100, 500, 200, 100);
     
 //    NSString *searchText = @"<a href=\"http://202.118.8.7:8991/F/LEY3T5AGIRF63BPS1PLKUX1EPLYF8UDEQAH88FA3J15YAL86YR-83545?func=item-global&amp;doc_library=NEU01&amp;doc_number=000576232\" onmouseover=\"clearTimeout(tm);hint('<tr><td class=libnname><A HREF=http://202.118.8.7:8991/F/LEY3T5AGIRF63BPS1PLKUX1EPLYF8UDEQAH88FA3J15YAL86YR-83546?func=item-global&amp;doc_library=NEU01&amp;doc_number=000576232&amp;year=&amp;volume=&amp;sub_library=NHPTW >南湖普通外借</A></td><td class=bookid>TN929.53/665<td class=holding>     4/     0</td>',this)\" onmouseout=\"tm=setTimeout(function(){g('bubble2').style.display='none';},400)\">馆藏复本:     4，已出借复本:     0</a>";
 //    NSError *error = NULL;
@@ -85,13 +83,11 @@
 //    if (result) {
 //        NSLog(@"%@\n", [searchText substringWithRange:result.range]);
 //    }
-=======
     [self.newsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.scheduleView.mas_bottom);
         make.left.and.right.equalTo(self.contentView);
         make.bottom.equalTo(self.contentView);
     }];
->>>>>>> f415140016cbb47d9b0d537443e3b388bbe298a1
 }
 
 - (void)push {
@@ -107,7 +103,6 @@
     
 }
 
-<<<<<<< HEAD
 
 - (LoginViewController *)loginVC {
     if (!_loginVC) {
@@ -121,7 +116,6 @@
     }
     return _loginVC;
 }
-=======
 #pragma mark - Getter
 
 - (UILabel *)calendarLabel {
@@ -200,5 +194,4 @@
     return _newsView;
 }
 
->>>>>>> f415140016cbb47d9b0d537443e3b388bbe298a1
 @end
