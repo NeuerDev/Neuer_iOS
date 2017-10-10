@@ -252,6 +252,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+<<<<<<< HEAD
 		33F88B801F8295620054B123 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,6 +284,8 @@
 			isa = PBXGroup;
 			children = (
 				33FBD68B1F7BE2FC001B1F09 /* LoginViewController.h */,
+				33FBD68C1F7BE2FC001B1F09 /* LoginViewController.m */,
+=======
 		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,10 +325,13 @@
 			isa = PBXGroup;
 			children = (
 				5C0844C11F7B94BB00C69261 /* Home */,
+>>>>>>> f415140016cbb47d9b0d537443e3b388bbe298a1
 			);
 			path = Controller;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
+=======
 		5C0844C11F7B94BB00C69261 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +377,7 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+>>>>>>> f415140016cbb47d9b0d537443e3b388bbe298a1
 		5C21B9891F6D1A9100BC2961 = {
 			isa = PBXGroup;
 			children = (
@@ -1425,13 +1432,14 @@
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
+<<<<<<< HEAD
 				33F88B831F8295AD0054B123 /* LYTextField.m in Sources */,
 				5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
-
+=======
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5CE8AF981F70270B008594F6 /* GatewayCenter.m in Sources */,
-
+>>>>>>> f415140016cbb47d9b0d537443e3b388bbe298a1
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
