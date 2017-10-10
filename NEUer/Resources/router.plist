@@ -22,6 +22,14 @@
 			<key>regex</key>
 			<string>/lib</string>
 		</dict>
+		<dict>
+			<key>host</key>
+			<string>handle</string>
+			<key>class</key>
+			<string>GatewayViewController</string>
+			<key>regex</key>
+			<string>/ipgw</string>
+		</dict>
 	</array>
 </dict>
 </plist>

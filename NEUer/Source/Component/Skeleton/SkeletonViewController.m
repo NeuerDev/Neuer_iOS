@@ -107,6 +107,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedURLRouterNotification:) name:kJHURLRouterHandleNotification object:nil];
     [self didReceivedNetworkStatusChangeNotification:nil];
 }
 
@@ -116,6 +117,15 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 }
 
 #pragma mark - Notification
+
+- (void)didReceivedURLRouterNotification:(NSNotification *)notification {
+    Class ViewController = notification.userInfo[@"class"];
+    NSURL *url = notification.userInfo[@"url"];
+    UIViewController *viewController = [((JHBaseViewController *)[ViewController alloc]) initWithUrl:url params:url.params];
+    [viewController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [viewController setModalPresentationStyle:UIModalPresentationCustom];
+    [self presentViewController:viewController animated:YES completion:nil];
+}
 
 - (void)didReceivedNetworkStatusChangeNotification:(NSNotification *)notification {
     GatewayCenter *center = [GatewayCenter defaultCenter];
@@ -216,8 +226,8 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 #pragma mark - Gesture
 
 - (void)didNetworkViewTap:(UITapGestureRecognizer *)tap {
-    NSLog(@"连接");
     [self didClickNetworkViewDismiss];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"neu://handle/ipgw"] options:@{} completionHandler:nil];
 }
 
 - (void)didClickNetworkViewDismiss {

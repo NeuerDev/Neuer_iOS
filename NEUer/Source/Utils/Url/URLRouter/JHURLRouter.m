@@ -87,7 +87,15 @@ static JHURLRouter *_instance;
             }
             
         } else if ([host isEqualToString:@"handle"]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NSStringFromClass(dictionary[@"class"]) object:url];
+            NSString *regex = dictionary[@"regex"];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+            
+            if ([predicate evaluateWithObject:path]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kJHURLRouterHandleNotification object:nil userInfo:@{@"url":url,@"class":dictionary[@"class"]}];
+                return YES;
+            } else {
+                continue;
+            }
         }
     }
     //    JHURLHandlerResponse *response = nil;

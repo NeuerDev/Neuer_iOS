@@ -16,6 +16,8 @@
 
 @end
 
+static NSString * const kJHURLRouterHandleNotification = @"JHURLRouterHandleNotification";
+
 @interface JHURLRouter : NSObject
 
 + (instancetype)sharedRouter;

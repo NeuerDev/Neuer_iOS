@@ -158,7 +158,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
                                },
                            @{
                                @"title":@"一键联网",
-                               @"url":@"",
+                               @"url":@"neu://handle/ipgw",
                                @"color":@"#E7D1B4",
                                },
                            @{
