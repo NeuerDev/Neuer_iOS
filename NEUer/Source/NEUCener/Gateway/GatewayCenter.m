@@ -92,6 +92,63 @@ static GatewayCenter * center;
     [_reachability startNotifier];
 }
 
+- (void)testCampusEnvironment:(void (^)(BOOL))callback {
+    if (_wifiStatus == GatewayStatusNO) {
+        // 使用3/4g时不用测试是否在校园网环境内了
+        return;
+    }
+    
+    if (_campusStatus != GatewayStatusUnknown) {
+        if (callback) {
+            callback(_campusStatus == GatewayStatusYES);
+        }
+    }
+    
+    JHRequest *innetRequest = [[JHRequest alloc] initWithUrl:[NSURL URLWithString:@"http://ipgw.neu.edu.cn"]];
+    innetRequest.requestType = JHRequestTypeCancelPrevious;
+    innetRequest.timeoutInterval = 10;
+    
+    __weak __typeof(self) weakSelf = self;
+    [innetRequest setCompleteBlock:^(JHRequest *request) {
+        if (request.error) {
+            weakSelf.campusStatus = GatewayStatusNO;
+            if (callback) {
+                callback(NO);
+            }
+        } else {
+            weakSelf.campusStatus = GatewayStatusYES;
+            if (callback) {
+                callback(YES);
+            }
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kGatewayNetworkStatusChangeNotification object:weakSelf];
+    }];
+    [innetRequest start];
+}
+
+- (void)testReachableStatus:(void (^)(BOOL))callback {
+    JHRequest *outnetRequest = [[JHRequest alloc] initWithUrl:[NSURL URLWithString:@"http://www.baidu.com"]];
+    outnetRequest.requestType = JHRequestTypeCancelPrevious;
+    outnetRequest.timeoutInterval = 10;
+    
+    __weak __typeof(self) weakSelf = self;
+    [outnetRequest setCompleteBlock:^(JHRequest *request) {
+        if ([request.response.string containsString:@"<!--STATUS OK-->"]) {
+            weakSelf.reachableStatus = GatewayStatusYES;
+            if (callback) {
+                callback(YES);
+            }
+        } else {
+            weakSelf.reachableStatus = GatewayStatusNO;
+            if (callback) {
+                callback(NO);
+            }
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kGatewayNetworkStatusChangeNotification object:weakSelf];
+    }];
+    [outnetRequest start];
+}
+
 - (GatewayStatus)wifiStatus {
     return _wifiStatus;
 }
@@ -111,37 +168,11 @@ static GatewayCenter * center;
 #pragma mark - Private Methods
 
 - (void)startNetworkTest {
-    
     _campusStatus = GatewayStatusUnknown;
     _reachableStatus = GatewayStatusUnknown;
     
-    JHRequest *innetRequest = [[JHRequest alloc] initWithUrl:[NSURL URLWithString:@"http://ipgw.neu.edu.cn"]];
-    innetRequest.requestType = JHRequestTypeCancelPrevious;
-    innetRequest.timeoutInterval = 10;
-    JHRequest *outnetRequest = [[JHRequest alloc] initWithUrl:[NSURL URLWithString:@"http://www.baidu.com"]];
-    outnetRequest.requestType = JHRequestTypeCancelPrevious;
-    outnetRequest.timeoutInterval = 10;
-    
-    __weak __typeof(self) weakSelf = self;
-    [innetRequest setCompleteBlock:^(JHRequest *request) {
-        if (request.error) {
-            weakSelf.campusStatus = GatewayStatusNO;
-        } else {
-            weakSelf.campusStatus = GatewayStatusYES;
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kGatewayNetworkStatusChangeNotification object:weakSelf];
-    }];
-    [innetRequest start];
-    
-    [outnetRequest setCompleteBlock:^(JHRequest *request) {
-        if ([request.response.string containsString:@"<!--STATUS OK-->"]) {
-            weakSelf.reachableStatus = GatewayStatusYES;
-        } else {
-            weakSelf.reachableStatus = GatewayStatusNO;
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kGatewayNetworkStatusChangeNotification object:weakSelf];
-    }];
-    [outnetRequest start];
+    [self testCampusEnvironment:nil];
+    [self testReachableStatus:nil];
 }
 
 @end
