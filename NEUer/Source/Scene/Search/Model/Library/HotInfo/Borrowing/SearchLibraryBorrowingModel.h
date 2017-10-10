@@ -1,0 +1,29 @@
+//
+//  SearchLibraryBorrowingModel.h
+//  NEUer
+//
+//  Created by kl h on 2017/10/10.
+//  Copyright © 2017年 Jiahong Xu. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+@class SearchLibraryBorrowingBean;
+
+@interface SearchLibraryBorrowingModel : NSObject
+
+@property (nonatomic, strong) NSString *languageType;
+@property (nonatomic, strong) NSString *sortType;
+@property (nonatomic, strong) NSString *date;
+@property (nonatomic, strong) NSMutableArray<SearchLibraryBorrowingBean *> *resultArray;
+
+- (void)search;
+
+@end
+
+@interface SearchLibraryBorrowingBean : NSObject
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *author;
+@property (nonatomic, strong) NSString *count;
+
+@end
