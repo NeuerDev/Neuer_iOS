@@ -13,65 +13,11 @@
 #import "SearchViewController.h"
 #import "MeViewController.h"
 
+#import "NetworkStatusView.h"
+
 #import <objc/runtime.h>
 
 const CGFloat kSkeletonNetworkViewHeight = 72.0f;
-
-@interface SkeletonNetworkView : UIButton
-@property (nonatomic, strong) UIVisualEffectView *effectView;
-@property (nonatomic, strong) UILabel *label;
-@end
-
-@implementation SkeletonNetworkView {
-    
-}
-
-- (instancetype)init {
-    if (self = [super init]) {
-        [self.effectView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
-        }];
-        
-        [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
-        }];
-    
-        self.backgroundColor = [UIColor clearColor];
-        self.layer.cornerRadius = 16.0f;
-        self.layer.shadowColor = [UIColor grayColor].CGColor;
-        self.layer.shadowOffset = CGSizeMake(0, 4);
-        self.layer.shadowOpacity = 0.7;
-    }
-    
-    return self;
-}
-
-#pragma mark - Getter
-
-- (UILabel *)label {
-    if (!_label) {
-        _label = [[UILabel alloc] init];
-        _label.textAlignment = NSTextAlignmentCenter;
-        _label.numberOfLines = 0;
-        _label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        [self addSubview:_label];
-    }
-    
-    return _label;
-}
-
-- (UIVisualEffectView *)effectView {
-    if (!_effectView) {
-        _effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
-        _effectView.layer.cornerRadius = 16.0f;
-        _effectView.layer.masksToBounds = YES;
-        [self addSubview:_effectView];
-    }
-    
-    return _effectView;
-}
-
-@end
 
 @interface SkelentonNavigationViewController : UINavigationController
 
@@ -128,14 +74,13 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 @end
 
-
 @interface SkeletonViewController ()
 @property (nonatomic, strong) SkelentonNavigationViewController *homeNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *campusNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *searchNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *meNavigationVC;
 
-@property (nonatomic, strong) SkeletonNetworkView *networkView;
+@property (nonatomic, strong) NetworkStatusView *networkView;
 @property (nonatomic, assign) BOOL showingNetworkView;
 @end
 
@@ -176,20 +121,22 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     GatewayCenter *center = [GatewayCenter defaultCenter];
     
     NSString *alertMessage = nil;
+    UIImage *icon = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
-        _networkView.enabled = NO;
+        [_networkView.gestureRecognizers.firstObject setEnabled:NO];
     });
     if (center.networkEnable) {
-        
         if (center.campusStatus == GatewayStatusYES) {
             // 处于校园网环境
             if (center.reachableStatus == GatewayStatusYES) {
                 alertMessage = @"正在使用校园网 Wi-Fi\n可访问外网";
+                icon = [UIImage imageNamed:@"wifi_network"];
             } else if (center.reachableStatus == GatewayStatusNO) {
                 alertMessage = @"已连接校园网 Wi-Fi\n点击登录网关";
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    _networkView.enabled = YES;
+                    [_networkView.gestureRecognizers.firstObject setEnabled:YES];
                 });
+                icon = [UIImage imageNamed:@"key_network"];
             }
         } else if (center.campusStatus == GatewayStatusNO) {
             // 不在校园网环境
@@ -197,30 +144,37 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
                 if (center.wifiStatus == GatewayStatusYES) {
                     // Wi-Fi
                     alertMessage = @"正在使用非校内 Wi-Fi\n校园卡等服务无法使用";
+                    icon = [UIImage imageNamed:@"wifi_network"];
                 } else if (center.wifiStatus == GatewayStatusNO) {
                     // 蜂窝数据
                     alertMessage = @"正在使用 蜂窝数据\n校园卡等服务无法使用";
+                    icon = [UIImage imageNamed:@"data_network"];
                 }
             } else if (center.reachableStatus == GatewayStatusNO) {
                 alertMessage = @"连接以太网超时(10s)";
+                icon = [UIImage imageNamed:@"broken_network"];
             }
         } else {
             if (center.wifiStatus == GatewayStatusYES) {
                 // Wi-Fi
                 alertMessage = @"正在使用 Wi-Fi";
+                icon = [UIImage imageNamed:@"wifi_network"];
             } else if (center.wifiStatus == GatewayStatusNO) {
                 // 蜂窝数据
                 alertMessage = @"正在使用 蜂窝数据\n校园卡等服务无法使用";
+                icon = [UIImage imageNamed:@"data_network"];
             }
         }
     } else {
         alertMessage = @"网络已断开";
+        icon = [UIImage imageNamed:@"broken_network"];
     }
     
     if (alertMessage) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (![self.networkView.label.text isEqualToString:alertMessage]) {
-                self.networkView.label.text = alertMessage;
+            if (![self.networkView.textLabel.text isEqualToString:alertMessage]) {
+                self.networkView.textLabel.text = alertMessage;
+                self.networkView.imageView.image = icon;
                 [self showNetworkView];
             }
         });
@@ -241,7 +195,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
             make.top.equalTo(self.view.mas_bottom).with.offset(-kSkeletonNetworkViewHeight-64);
         }];
         
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
             [self performSelector:@selector(hideNetworkView) withObject:nil afterDelay:3.0f];
@@ -261,8 +215,15 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 #pragma mark - Gesture
 
-- (void)didTap:(UITapGestureRecognizer *)tap {
+- (void)didNetworkViewTap:(UITapGestureRecognizer *)tap {
     NSLog(@"连接");
+    [self didClickNetworkViewDismiss];
+}
+
+- (void)didClickNetworkViewDismiss {
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideNetworkView) object:nil];
+    [self.networkView.layer removeAllAnimations];
+    [self performSelector:@selector(hideNetworkView) withObject:nil afterDelay:0.0f];
 }
 
 #pragma mark - Override Methods
@@ -317,14 +278,12 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     return _meNavigationVC;
 }
 
-#pragma mark - Getter
-
-- (SkeletonNetworkView *)networkView {
+- (NetworkStatusView *)networkView {
     if (!_networkView) {
-        _networkView = [[SkeletonNetworkView alloc] init];
-        
-        [_networkView addTarget:self action:@selector(didTap:) forControlEvents:UIControlEventTouchUpInside];
-        _networkView.enabled = NO;
+        _networkView = [[NetworkStatusView alloc] init];
+        [_networkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didNetworkViewTap:)]];
+        [_networkView.dismissButton addTarget:self action:@selector(didClickNetworkViewDismiss) forControlEvents:UIControlEventTouchUpInside];
+        [_networkView.dismissButton setTitle:@"关闭" forState:UIControlStateNormal];
         [self.view insertSubview:_networkView atIndex:0];
     }
     

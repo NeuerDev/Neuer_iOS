@@ -23,6 +23,7 @@
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
 		5C7B8ED51F8B40190088FC60 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
 		5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B8ED81F8B41290088FC60 /* GatewayModel.m */; };
+		5C7B8EDF1F8C646A0088FC60 /* NetworkStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B8EDE1F8C646A0088FC60 /* NetworkStatusView.m */; };
 		5C8B62961F7890F900310055 /* Json.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C8B62951F7890F900310055 /* Json.bundle */; };
 		5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8B629C1F78FC4C00310055 /* JHBaseViewController.m */; };
 		5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8D75161F79535400FC9056 /* TelevisionChannelSearchViewController.m */; };
@@ -126,6 +127,8 @@
 		5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+JHCategory.m"; sourceTree = "<group>"; };
 		5C7B8ED71F8B41290088FC60 /* GatewayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
 		5C7B8ED81F8B41290088FC60 /* GatewayModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
+		5C7B8EDD1F8C646A0088FC60 /* NetworkStatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkStatusView.h; sourceTree = "<group>"; };
+		5C7B8EDE1F8C646A0088FC60 /* NetworkStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkStatusView.m; sourceTree = "<group>"; };
 		5C8B62951F7890F900310055 /* Json.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Json.bundle; sourceTree = "<group>"; };
 		5C8B62971F78F27A00310055 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		5C8B62981F78F29A00310055 /* JHMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHMacro.h; sourceTree = "<group>"; };
@@ -234,13 +237,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5C01A2F61F8B22FB001D7FD6 /* NEUKit */ = {
+		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
 			isa = PBXGroup;
 			children = (
 				5CD098BF1F80DB6100252E4D /* User */,
 				5CE8AF951F7026D9008594F6 /* Gateway */,
 			);
-			path = NEUKit;
+			path = NEUCener;
 			sourceTree = "<group>";
 		};
 		5C0844BE1F7B947500C69261 /* Campus */ = {
@@ -494,6 +497,23 @@
 			path = Gateway;
 			sourceTree = "<group>";
 		};
+		5C7B8EDB1F8C64370088FC60 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				5C7B8EDC1F8C644A0088FC60 /* NetworkStatusView */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		5C7B8EDC1F8C644A0088FC60 /* NetworkStatusView */ = {
+			isa = PBXGroup;
+			children = (
+				5C7B8EDD1F8C646A0088FC60 /* NetworkStatusView.h */,
+				5C7B8EDE1F8C646A0088FC60 /* NetworkStatusView.m */,
+			);
+			path = NetworkStatusView;
+			sourceTree = "<group>";
+		};
 		5C8B62991F78FC2700310055 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -563,7 +583,8 @@
 		5C9107641F6D1C3100FA4270 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				5C01A2F61F8B22FB001D7FD6 /* NEUKit */,
+				5C7B8EDB1F8C64370088FC60 /* UIKit */,
+				5C01A2F61F8B22FB001D7FD6 /* NEUCener */,
 				5C9107681F6D3B2F00FA4270 /* Component */,
 				5C9107691F6D3B2F00FA4270 /* Scene */,
 				5C91076C1F6D3B2F00FA4270 /* Utils */,
@@ -1309,6 +1330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C7B8EDF1F8C646A0088FC60 /* NetworkStatusView.m in Sources */,
 				5C9895E31F822A5B00C2F93E /* User.m in Sources */,
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
