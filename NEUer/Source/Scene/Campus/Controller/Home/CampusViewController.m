@@ -19,9 +19,6 @@
     
     self.title = NSLocalizedString(@"CampusNavigationBarTitle", nil);
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"test_cctv"]];
-    [self.view addSubview:imageView];
-    imageView.center = self.view.center;
 }
 
 - (void)didReceiveMemoryWarning {
