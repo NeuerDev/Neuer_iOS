@@ -23,7 +23,7 @@
 
 @property (strong, nonatomic) UIButton *loginBtn;
 @property (strong, nonatomic) UIButton *quitBtn;
-@property (strong, nonatomic) UIButton *moreBtn;
+//@property (strong, nonatomic) UIButton *moreBtn;
 
 @property (strong, nonatomic) CBWAlertSheet *alertSheet;
 
@@ -43,7 +43,6 @@
     [self initData];
     [self initConstaints];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -73,11 +72,11 @@
         make.top.equalTo(self.cardView).with.offset(40);
         make.width.and.height.equalTo(@25);
     }];
-    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.cardView).with.offset(-20);
-        make.top.equalTo(self.quitBtn);
-        make.width.and.height.equalTo(@25);
-    }];
+//    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.cardView).with.offset(-20);
+//        make.top.equalTo(self.quitBtn);
+//        make.width.and.height.equalTo(@25);
+//    }];
     
     [self.iconImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.cardView);
@@ -260,7 +259,6 @@
         default:
             break;
     }
-    self.loginBtn.enabled = YES;
     return YES;
 }
 
@@ -342,15 +340,6 @@
 }
 
 - (void)didClickedLoginBtn {
-    if ([self.accountTF isFirstResponder]) {
-        [self.accountTF resignFirstResponder];
-    }
-    if ([self.passwordTF isFirstResponder]) {
-        [self.passwordTF resignFirstResponder];
-    }
-    if ([self.verificationTF isFirstResponder]) {
-        [self.verificationTF resignFirstResponder];
-    }
     
     [[NSUserDefaults standardUserDefaults] setObject:self.accountTF.text forKey:@"account"];
     
@@ -540,31 +529,35 @@
     return _quitBtn;
 }
 
-- (UIButton *)moreBtn {
-    if (!_moreBtn) {
-        _moreBtn = [[UIButton alloc] init];
-        [_moreBtn setBackgroundImage:[UIImage imageNamed:@"ellipsis"] forState:UIControlStateNormal];
-        [_moreBtn addTarget:self action:@selector(didClickedMoreBtn) forControlEvents:UIControlEventTouchUpInside];
-        [self.cardView addSubview:_moreBtn];
-    }
-    return _moreBtn;
-}
+//- (UIButton *)moreBtn {
+//    if (!_moreBtn) {
+//        _moreBtn = [[UIButton alloc] init];
+//        [_moreBtn setBackgroundImage:[UIImage imageNamed:@"ellipsis"] forState:UIControlStateNormal];
+//        [_moreBtn addTarget:self action:@selector(didClickedMoreBtn) forControlEvents:UIControlEventTouchUpInside];
+//        [self.cardView addSubview:_moreBtn];
+//    }
+//    return _moreBtn;
+//}
 
-- (CBWAlertSheet *)alertSheet {
-    if (!_alertSheet) {
-        _alertSheet = [[CBWAlertSheet alloc] init];
-        _alertSheet.type = CBWAlertSheetTypeCancelButton;
-        _alertSheet.cancleButtonColor = [UIColor whiteColor];
-        _alertSheet.cancleButtonTextColor = [UIColor blackColor];
-        //        _alertSheet.messageTextColor = [UIColor blackColor];
+//- (CBWAlertSheet *)alertSheet {
+//    if (!_alertSheet) {
+//        _alertSheet = [[CBWAlertSheet alloc] init];
+//        _alertSheet.type = CBWAlertSheetTypeCancelButton;
+//        _alertSheet.cancleButtonColor = [UIColor whiteColor];
+//        _alertSheet.cancleButtonTextColor = [UIColor blackColor];
+//        //        _alertSheet.messageTextColor = [UIColor blackColor];
 //        __weak typeof(self) ws = self;
-        [_alertSheet addSheetWithTitle:@"切换账号" color:[UIColor blackColor] handler:^(CBWAlertSheet *alertView) {
-            
-        }];
-        [_alertSheet addSheetWithTitle:@"修改密码" color:[UIColor blackColor] handler:nil];
-    }
-    return _alertSheet;
-}
+//        [_alertSheet addSheetWithTitle:@"切换账号" color:[UIColor blackColor] handler:^(CBWAlertSheet *alertView) {
+//            LoginViewController *loginVC =  [[LoginViewController alloc] initWithLoginState:ws.loginState];
+//            if (self.loginState == LoginStateHadLoginWithVerificationCode) {
+//                [loginVC setUpWithLoginVerificationcodeImg:[UIImage imageNamed:@"verificationcode"]];
+//            }
+//            [ws.navigationController pushViewController:loginVC animated:YES];
+//        }];
+//        [_alertSheet addSheetWithTitle:@"修改密码" color:[UIColor blackColor] handler:nil];
+//    }
+//    return _alertSheet;
+//}
 
 - (UILabel *)studentNumLb {
     if (!_studentNumLb) {
