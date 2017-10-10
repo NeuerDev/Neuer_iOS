@@ -298,7 +298,12 @@
                 [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
                 [self presentViewController:alertController animated:YES completion:nil];
                 self.loginBtn.enabled = NO;
+                self.loginBtn.alpha = 0.4;
                 return;
+            }
+            if (self.loginState == LoginStateNeverLogin || self.loginState == LoginStateHadLogin) {
+                self.loginBtn.enabled = YES;
+                self.loginBtn.alpha = 1;
             }
         }
             break;
@@ -309,14 +314,18 @@
                 [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
                 [self presentViewController:alertController animated:YES completion:nil];
                 self.loginBtn.enabled = NO;
+                self.loginBtn.alpha = 0.4;
                 return;
+            }
+            if (self.loginState == LoginStateHadLoginWithVerificationCode || self.loginState == LoginStateNeverLoginWithVerificationCode) {
+                self.loginBtn.enabled = YES;
+                self.loginBtn.alpha = 1;
             }
         }
             break;
         default:
             break;
     }
-    self.loginBtn.enabled = YES;
 }
 
 #pragma mark - register keyboard Notification
@@ -514,6 +523,8 @@
         [_loginBtn setBackgroundColor:[JHTool colorWithHexStr:@"#3a99d9"]];
         [_loginBtn.layer setCornerRadius:2];
         [_loginBtn addTarget:self action:@selector(didClickedLoginBtn) forControlEvents:UIControlEventTouchUpInside];
+        _loginBtn.enabled = NO;
+        _loginBtn.alpha = 0.4;
         [self.cardView addSubview:_loginBtn];
     }
     return _loginBtn;
