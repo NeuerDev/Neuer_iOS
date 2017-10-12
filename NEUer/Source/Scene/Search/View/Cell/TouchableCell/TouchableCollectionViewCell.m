@@ -45,7 +45,7 @@
 
 - (void)goDeep {
     [self.layer removeAllAnimations];
-    [UIView animateWithDuration:1.0f/4.0f
+    [UIView animateWithDuration:1.0f/3.0f
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent
                      animations:^{
@@ -58,7 +58,7 @@
 
 - (void)goBack {
     [self.layer removeAllAnimations];
-    [UIView animateWithDuration:1.0f/4.0f
+    [UIView animateWithDuration:1.0f/3.0f
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent
                      animations:^{
