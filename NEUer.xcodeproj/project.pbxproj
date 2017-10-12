@@ -53,6 +53,9 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
+		5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66741F8D225A00F8F96C /* EcardViewController.m */; };
+		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
+		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
 		5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */; };
 		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
@@ -186,6 +189,12 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
+		5CCC66731F8D225A00F8F96C /* EcardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardViewController.h; sourceTree = "<group>"; };
+		5CCC66741F8D225A00F8F96C /* EcardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardViewController.m; sourceTree = "<group>"; };
+		5CCC667C1F8DA7D100F8F96C /* EcardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardModel.h; sourceTree = "<group>"; };
+		5CCC667D1F8DA7D100F8F96C /* EcardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardModel.m; sourceTree = "<group>"; };
+		5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JHCategory.h"; sourceTree = "<group>"; };
+		5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+JHCategory.m"; sourceTree = "<group>"; };
 		5CD098AC1F80890900252E4D /* HomeComponentBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentBaseView.h; sourceTree = "<group>"; };
 		5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentBaseView.m; sourceTree = "<group>"; };
 		5CD098B31F8089E100252E4D /* HomeComponentAccessView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentAccessView.h; sourceTree = "<group>"; };
@@ -271,6 +280,7 @@
 		5C0844BF1F7B94BB00C69261 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5CCC667B1F8DA7BF00F8F96C /* Ecard */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -278,6 +288,7 @@
 		5C0844C01F7B94BB00C69261 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5CCC66721F8D221100F8F96C /* Ecard */,
 				5C0844C11F7B94BB00C69261 /* Home */,
 			);
 			path = Controller;
@@ -662,6 +673,7 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */,
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
 				5CBA6E971F77504000DFF055 /* UIImage+JHCategory */,
 				5CA976EC1F73B1F500B1089A /* NSString+JHCategory */,
@@ -912,6 +924,33 @@
 				5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		5CCC66721F8D221100F8F96C /* Ecard */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC66731F8D225A00F8F96C /* EcardViewController.h */,
+				5CCC66741F8D225A00F8F96C /* EcardViewController.m */,
+			);
+			path = Ecard;
+			sourceTree = "<group>";
+		};
+		5CCC667B1F8DA7BF00F8F96C /* Ecard */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC667C1F8DA7D100F8F96C /* EcardModel.h */,
+				5CCC667D1F8DA7D100F8F96C /* EcardModel.m */,
+			);
+			path = Ecard;
+			sourceTree = "<group>";
+		};
+		5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */,
+				5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */,
+			);
+			path = "UIView+JHCategory";
 			sourceTree = "<group>";
 		};
 		5CD098AF1F8089A700252E4D /* Access */ = {
@@ -1359,10 +1398,12 @@
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
+				5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
+				5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
@@ -1375,6 +1416,7 @@
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
+				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,

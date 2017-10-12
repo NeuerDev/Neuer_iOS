@@ -116,6 +116,15 @@ static JHServer *_instance;
     urlRequest.HTTPMethod = request.method;
     urlRequest.allHTTPHeaderFields = request.headerFields;
     urlRequest.timeoutInterval = request.timeoutInterval;
+    NSMutableString *bodyStr = [[NSMutableString alloc] init];
+    for (NSString *key in request.params) {
+        if (bodyStr.length==0) {
+            [bodyStr appendFormat:@"%@=%@", key, request.params[key]?:@""];
+        } else {
+            [bodyStr appendFormat:@"&%@=%@", key, request.params[key]?:@""];
+        }
+    }
+    urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         request.error = error;
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
