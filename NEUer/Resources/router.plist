@@ -38,6 +38,14 @@
 			<key>regex</key>
 			<string>/ecard</string>
 		</dict>
+		<dict>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
+			<string>AaoViewController</string>
+			<key>regex</key>
+			<string>/aao</string>
+		</dict>
 	</array>
 </dict>
 </plist>

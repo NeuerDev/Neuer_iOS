@@ -202,7 +202,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     if (!_cellDataArray) {
         _cellDataArray = @[
                            @{
-                               @"title":@"教务处",
+                               @"title":@"教务系统",
                                @"detail":@"关心你 更关心你的成绩",
                                @"url":@"",
                                @"image":@"aao_campus_background",

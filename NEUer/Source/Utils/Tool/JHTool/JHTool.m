@@ -48,7 +48,10 @@
             blue  = [self colorComponentFrom: colorString start: 6 length: 2];
             break;
         default:
-            alpha = 0, red = 0, blue = 0, green = 0;
+            alpha = 0;
+            red = 0;
+            blue = 0;
+            green = 0;
             break;
     }
     

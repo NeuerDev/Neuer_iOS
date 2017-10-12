@@ -178,7 +178,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
                                },
                            @{
                                @"title":@"教务系统",
-                               @"url":@"",
+                               @"url":@"neu://go/aao",
                                @"color":@"#E7D1B4",
                                },
                            ];
