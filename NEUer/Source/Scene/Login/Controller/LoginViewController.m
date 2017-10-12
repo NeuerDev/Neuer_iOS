@@ -10,7 +10,6 @@
 #import "LYTextField.h"
 #import "Masonry.h"
 #import "JHTool.h"
-#import "CBWAlertSheet.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
 
@@ -23,9 +22,6 @@
 
 @property (strong, nonatomic) UIButton *loginBtn;
 @property (strong, nonatomic) UIButton *quitBtn;
-//@property (strong, nonatomic) UIButton *moreBtn;
-
-@property (strong, nonatomic) CBWAlertSheet *alertSheet;
 
 @property (strong, nonatomic) UIImage *verificationCode;
 @property (strong, nonatomic) UILabel *studentNumLb;
@@ -72,11 +68,6 @@
         make.top.equalTo(self.cardView).with.offset(40);
         make.width.and.height.equalTo(@25);
     }];
-//    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.cardView).with.offset(-20);
-//        make.top.equalTo(self.quitBtn);
-//        make.width.and.height.equalTo(@25);
-//    }];
     
     [self.iconImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.cardView);
@@ -402,22 +393,6 @@
     }
 }
 
-- (void)didClickedMoreBtn {
-    switch (self.loginState) {
-        case LoginStateHadLogin:
-        case LoginStateHadLoginWithVerificationCode:
-        {
-            [self.alertSheet show];
-        }
-            break;
-        case LoginStateNeverLogin:
-        case LoginStateNeverLoginWithVerificationCode:
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)didClickedQuitBtn {
     [self dismissViewControllerAnimated:YES completion:^{
         self.failureMsg(@"退出登录");
@@ -528,36 +503,6 @@
     }
     return _quitBtn;
 }
-
-//- (UIButton *)moreBtn {
-//    if (!_moreBtn) {
-//        _moreBtn = [[UIButton alloc] init];
-//        [_moreBtn setBackgroundImage:[UIImage imageNamed:@"ellipsis"] forState:UIControlStateNormal];
-//        [_moreBtn addTarget:self action:@selector(didClickedMoreBtn) forControlEvents:UIControlEventTouchUpInside];
-//        [self.cardView addSubview:_moreBtn];
-//    }
-//    return _moreBtn;
-//}
-
-//- (CBWAlertSheet *)alertSheet {
-//    if (!_alertSheet) {
-//        _alertSheet = [[CBWAlertSheet alloc] init];
-//        _alertSheet.type = CBWAlertSheetTypeCancelButton;
-//        _alertSheet.cancleButtonColor = [UIColor whiteColor];
-//        _alertSheet.cancleButtonTextColor = [UIColor blackColor];
-//        //        _alertSheet.messageTextColor = [UIColor blackColor];
-//        __weak typeof(self) ws = self;
-//        [_alertSheet addSheetWithTitle:@"切换账号" color:[UIColor blackColor] handler:^(CBWAlertSheet *alertView) {
-//            LoginViewController *loginVC =  [[LoginViewController alloc] initWithLoginState:ws.loginState];
-//            if (self.loginState == LoginStateHadLoginWithVerificationCode) {
-//                [loginVC setUpWithLoginVerificationcodeImg:[UIImage imageNamed:@"verificationcode"]];
-//            }
-//            [ws.navigationController pushViewController:loginVC animated:YES];
-//        }];
-//        [_alertSheet addSheetWithTitle:@"修改密码" color:[UIColor blackColor] handler:nil];
-//    }
-//    return _alertSheet;
-//}
 
 - (UILabel *)studentNumLb {
     if (!_studentNumLb) {

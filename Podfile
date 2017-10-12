@@ -11,7 +11,6 @@ target 'NEUer' do
   pod 'Masonry'
   pod 'DKNightVersion'
   pod 'hpple'
-  pod ‘CBWAlertSheet’
 
 end
 

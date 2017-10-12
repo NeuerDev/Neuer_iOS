@@ -172,8 +172,8 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
                                @"color":@"#A2C9B4",
                                },
                            @{
-                               @"title":@"校卡余额",
-                               @"url":@"",
+                               @"title":@"校卡中心",
+                               @"url":@"neu://go/ecard",
                                @"color":@"#92AFC0",
                                },
                            @{
