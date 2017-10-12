@@ -14,6 +14,7 @@
 + (instancetype)sharedServer;
 
 - (void)startRequest:(JHRequest *)request;
+
 - (void)cancelRequest:(JHRequest *)request;
 
 @end

@@ -105,6 +105,9 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     
     self.titleLabel.attributedText = titleString;
     self.viewerCountLabel.attributedText = viewerCountString;
+    
+    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Getter
@@ -114,8 +117,6 @@ static NSString * const kChannelCellId = @"kChannelCellId";
         _imageView = [[UIImageView alloc] init];
         _imageView.hidden = NO;
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
-        _imageView.layer.cornerRadius = 16;
-        _imageView.layer.masksToBounds = YES;
         
         [self.contentView addSubview:_imageView];
     }
@@ -272,7 +273,6 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     
     return _wallModel;
 }
-
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {

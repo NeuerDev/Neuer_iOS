@@ -194,37 +194,37 @@ const NSInteger kPreloadThreshold = 3;
     NSTimeInterval interval = animated ? 1.0f/3.0f : 0;
     
     //  高斯模糊动画
-    if (self.resultBean.showDetail) {
-        self.visualEffectView.hidden = NO;
-        self.visualEffectView.alpha = 1;
-        self.visualEffectView.effect = nil;
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+    if (_resultBean.showDetail) {
+        _visualEffectView.hidden = NO;
+        _visualEffectView.alpha = 1;
+        _visualEffectView.effect = nil;
+        [_titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).with.offset(24);
             make.right.equalTo(self.contentView.mas_right).with.offset(-24);
             make.top.equalTo(self.contentView.mas_top).with.offset(14);
         }];
-        self.detailView.hidden = NO;
+        _detailView.hidden = NO;
         [UIView animateWithDuration:interval animations:^{
-            self.visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            self.detailView.alpha = 1;
+            _visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+            _detailView.alpha = 1;
             [self.contentView layoutIfNeeded];
         } completion:^(BOOL finished) {
             
         }];
     } else {
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        [_titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).with.offset(kCellHeight);
             make.right.equalTo(self.contentView.mas_right).with.offset(-8);
             make.top.equalTo(self.contentView.mas_top).with.offset(24);
         }];
         [UIView animateWithDuration:interval animations:^{
-            self.visualEffectView.alpha = 0;
-            self.detailView.alpha = 0;
+            _visualEffectView.alpha = 0;
+            _detailView.alpha = 0;
             [self.contentView layoutIfNeeded];
         } completion:^(BOOL finished) {
-            self.visualEffectView.hidden = YES;
-            self.detailView.hidden = YES;
-            self.visualEffectView.effect = nil;
+            _visualEffectView.hidden = YES;
+            _detailView.hidden = YES;
+            _visualEffectView.effect = nil;
         }];
     }
 }
@@ -234,29 +234,30 @@ const NSInteger kPreloadThreshold = 3;
 - (void)setResultBean:(SearchLibraryResultBean *)result {
     _resultBean = result;
     
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:_resultBean.imageUrl] placeholderImage:[UIImage imageNamed:@"neu_placeholder_1_1_white"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:_resultBean.imageUrl] placeholderImage:[UIImage imageNamed:@"neu_placeholder_1_1_white"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
     }];
-    self.titleLabel.text = _resultBean.title;
+    _titleLabel.text = _resultBean.title;
     NSMutableString *info = _resultBean.author ? [NSMutableString stringWithFormat:@"%@\n", _resultBean.author] : @"".mutableCopy;
     if (_resultBean.press.length>0 && _resultBean.year.length>0) {
         [info appendString:[NSString stringWithFormat:@"%@/%@", _resultBean.press, _resultBean.year]];
     } else {
         [info appendString:[NSString stringWithFormat:@"%@%@", _resultBean.press, _resultBean.year]];
     }
-    self.infoLabel.text = info.copy;
+    _infoLabel.text = info.copy;
     
-    self.callNumberLabel.text = [NSString stringWithFormat:@"索书号: %@", _resultBean.callNumber];
+    _callNumberLabel.text = [NSString stringWithFormat:@"索书号: %@", _resultBean.callNumber];
     if (_resultBean.collected) {
-        [self.collectionButton setTitle:@"已收藏" forState:UIControlStateNormal];
-        [self.collectionButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [_collectionButton setTitle:@"已收藏" forState:UIControlStateNormal];
+        [_collectionButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     } else {
-        [self.collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
-        [self.collectionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        [_collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [_collectionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
     }
     
-    self.locationLabel.text = _resultBean.stockLocation;
-    
+    _locationLabel.text = _resultBean.stockLocation;
+    [self layoutIfNeeded];
+    [self.visualEffectView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
     [self applyDisplayModeAnimated:NO];
 }
 
@@ -319,8 +320,6 @@ const NSInteger kPreloadThreshold = 3;
         _visualEffectView = [[UIVisualEffectView alloc] init];
         _visualEffectView.alpha = 0;
         _visualEffectView.hidden = YES;
-        _visualEffectView.layer.cornerRadius = 16.0f;
-        _visualEffectView.layer.masksToBounds = YES;
     }
     
     return _visualEffectView;

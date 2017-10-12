@@ -39,6 +39,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 #ifdef __IPHONE_11_0
     if (@available(iOS 11.0, *)) {
         self.navigationBar.prefersLargeTitles = YES;
+        self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAutomatic;
     } else {
         
     }
@@ -95,7 +96,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     self.viewControllers = @[
                              self.homeNavigationVC,
                              self.campusNavigationVC,
-                             self.searchNavigationVC,
+//                             self.searchNavigationVC,
                              self.meNavigationVC
                              ];
     
