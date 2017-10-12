@@ -9,6 +9,13 @@
 #import "MeViewController.h"
 
 @interface MeViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIView *contentView;
+
+@property (nonatomic, strong) UIView *cardView;
+@property (nonatomic, strong) UIImageView *cardImageView;
+@property (nonatomic, strong) UIImageView *cardAvatarImageView;
+
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray<NSDictionary *> *sectionDataArray;
 @end
@@ -25,10 +32,42 @@
 }
 
 - (void)initConstraints {
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.mas_topLayoutGuide);
+//        make.left.and.right.and.bottom.equalTo(self.view);
+//    }];
+    
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide);
         make.left.and.right.and.bottom.equalTo(self.view);
     }];
+    
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.scrollView);
+        make.width.equalTo(self.scrollView);
+    }];
+    
+    [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView.mas_top).with.offset(16);
+        make.left.equalTo(self.contentView.mas_left).with.offset(16);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-16);
+        make.height.equalTo(self.cardView.mas_width).multipliedBy(431.0f/686.0f);
+        
+        make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-16);
+    }];
+    
+    [self.cardImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.cardView);
+    }];
+    
+    [self.cardAvatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(self.cardImageView).multipliedBy(0.565);
+        make.width.equalTo(self.cardAvatarImageView.mas_height).multipliedBy(0.75);
+        make.left.equalTo(self.cardImageView.mas_right).multipliedBy(0.06);
+        make.top.equalTo(self.cardImageView.mas_bottom).multipliedBy(0.2);
+    }];
+    
+    MASAttachKeys(_cardAvatarImageView, _cardImageView, _cardView, _scrollView, _contentView, self.view);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,6 +129,56 @@
     }
     
     return _tableView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        [self.view addSubview:_scrollView];
+    }
+    
+    return _scrollView;
+}
+
+- (UIView *)contentView {
+    if (!_contentView) {
+        _contentView = [[UIView alloc] init];
+        
+        [self.scrollView addSubview:_contentView];
+    }
+    
+    return _contentView;
+}
+
+- (UIView *)cardView {
+    if (!_cardView) {
+        _cardView = [[UIView alloc] init];
+        
+        [self.contentView addSubview:_cardView];
+    }
+    
+    return _cardView;
+}
+
+- (UIImageView *)cardImageView {
+    if (!_cardImageView) {
+        _cardImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"card_me_background"]];
+        _cardImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self.cardView addSubview:_cardImageView];
+    }
+    
+    return _cardImageView;
+}
+
+- (UIImageView *)cardAvatarImageView {
+    if (!_cardAvatarImageView) {
+        _cardAvatarImageView = [[UIImageView alloc] init];
+        _cardAvatarImageView.backgroundColor = [UIColor redColor];
+        _cardAvatarImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self.cardImageView addSubview:_cardAvatarImageView];
+    }
+    
+    return _cardAvatarImageView;
 }
 
 - (NSArray<NSDictionary *> *)sectionDataArray {
