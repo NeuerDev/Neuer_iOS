@@ -81,7 +81,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 @property (nonatomic, strong) SkelentonNavigationViewController *meNavigationVC;
 
 @property (nonatomic, strong) NetworkStatusView *networkView;
-@property (nonatomic, assign) BOOL showingNetworkView;
+
 @end
 
 @implementation SkeletonViewController
@@ -99,16 +99,15 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
                              self.meNavigationVC
                              ];
     
-    [self.networkView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_bottom).with.offset(kSkeletonNetworkViewHeight);
-        make.left.equalTo(self.view).with.offset(20);
-        make.right.equalTo(self.view).with.offset(-20);
-        make.height.mas_equalTo(@(kSkeletonNetworkViewHeight));
-    }];
+    self.networkView.frame = CGRectMake(
+                                        CGRectGetMinX(self.view.frame) + 16,
+                                        CGRectGetMaxY(self.view.frame),
+                                        CGRectGetWidth(self.view.frame) - 32,
+                                        kSkeletonNetworkViewHeight
+                                        );
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedURLRouterNotification:) name:kJHURLRouterHandleNotification object:nil];
-    [self didReceivedNetworkStatusChangeNotification:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -192,35 +191,11 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 }
 
 - (void)showNetworkView {
-    [self.view bringSubviewToFront:self.networkView];
-    
-    if (_showingNetworkView) {
-        _showingNetworkView = YES;
-        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideNetworkView) object:nil];
-        [self.networkView.layer removeAllAnimations];
-        [self performSelector:@selector(hideNetworkView) withObject:nil afterDelay:3.0f];
-    } else {
-        _showingNetworkView = YES;
-        [self.networkView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_bottom).with.offset(-kSkeletonNetworkViewHeight-64);
-        }];
-        
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            [self.view layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            [self performSelector:@selector(hideNetworkView) withObject:nil afterDelay:3.0f];
-        }];
-    }
+    [self.networkView show];
 }
 
 - (void)hideNetworkView {
-    [self.networkView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_bottom).with.offset(kSkeletonNetworkViewHeight);
-    }];
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        _showingNetworkView = NO;
-        [self.view layoutIfNeeded];
-    } completion:nil];
+//    [self.networkView dismiss];
 }
 
 #pragma mark - Gesture
@@ -290,11 +265,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 - (NetworkStatusView *)networkView {
     if (!_networkView) {
-        _networkView = [[NetworkStatusView alloc] init];
-        [_networkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didNetworkViewTap:)]];
-        [_networkView.dismissButton addTarget:self action:@selector(didClickNetworkViewDismiss) forControlEvents:UIControlEventTouchUpInside];
-        [_networkView.dismissButton setTitle:@"关闭" forState:UIControlStateNormal];
-        [self.view insertSubview:_networkView atIndex:0];
+        _networkView = [NetworkStatusView sharedNetworkStatusView];
     }
     
     return _networkView;

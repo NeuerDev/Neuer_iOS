@@ -124,6 +124,16 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     if (SCNetworkReachabilitySetCallback(_reachabilityRef, ReachabilityCallback, &context)) {
         if (SCNetworkReachabilityScheduleWithRunLoop(_reachabilityRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode)) {
             returnValue = YES;
+            
+            SCNetworkReachabilityFlags flags;
+            BOOL didRetrieveFlags = SCNetworkReachabilityGetFlags(_reachabilityRef, &flags);
+            if (!didRetrieveFlags) {
+                flags = 0;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kReachabilityChangedNotification object:self];
+            if (_changeBlock) {
+                _changeBlock([self networkStatusForFlags:flags]);
+            }
         }
     }
     
