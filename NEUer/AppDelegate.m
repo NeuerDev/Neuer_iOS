@@ -24,15 +24,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self initAppearence];
     
-    // 开始监听网络
-    [[GatewayCenter defaultCenter] startMonitoring];
-    
-    [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = self.skelentonVC;
     [self.window makeKeyAndVisible];
+    self.window.rootViewController = self.skelentonVC;
+    
+    // 开始监听网络
+    [[GatewayCenter defaultCenter] startMonitoring];
+    
+    // 配置路由表
+    [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
     return YES;
 }
 

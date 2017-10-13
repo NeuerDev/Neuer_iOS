@@ -9,8 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface NetworkStatusView : UIView
+
++ (instancetype)sharedNetworkStatusView;
+
+- (void)show;
+
+- (void)dismiss;
+
 @property (nonatomic, strong) UIVisualEffectView *effectView;
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UIButton *dismissButton;
 @end

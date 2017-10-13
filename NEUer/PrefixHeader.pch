@@ -31,6 +31,7 @@
 
 #import "UIColor+JHCategory.h"
 #import "UIImage+JHCategory.h"
+#import "UIView+JHCategory.h"
 #import "NSString+JHCategory.h"
 #import "NSURL+JHCategory.h"
 

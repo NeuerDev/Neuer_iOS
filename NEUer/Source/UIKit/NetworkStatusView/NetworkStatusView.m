@@ -8,7 +8,40 @@
 
 #import "NetworkStatusView.h"
 
-@implementation NetworkStatusView
+static NetworkStatusView *_networkStateView;
+const CGFloat kNetworkViewHeight = 80.0f;
+
+@interface NetworkStatusView ()
+
+@property (nonatomic, weak) UIView *parentView;
+
+@end
+
+@implementation NetworkStatusView {
+    CGFloat _originY;
+    CGFloat _viewBeginY;
+    CGFloat _touchBeginY;
+}
+
++ (instancetype)sharedNetworkStatusView {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        _networkStateView = [[NetworkStatusView alloc] init];
+        [window addSubview:_networkStateView];
+        _networkStateView.parentView = window;
+        _networkStateView.frame = CGRectMake(
+                                       CGRectGetMinX(window.bounds) + 16,
+                                       CGRectGetMaxY(window.bounds),
+                                       CGRectGetWidth(window.bounds) - 32,
+                                       kNetworkViewHeight
+                                       );
+    });
+    
+    return _networkStateView;
+}
+
+#pragma mark - Init Methods
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -22,16 +55,11 @@
             make.height.and.width.mas_equalTo(@32);
         }];
         
-        [self.dismissButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self);
-            make.right.equalTo(self.mas_right).with.offset(-16);
-        }];
-        
         [self.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self);
             make.top.and.bottom.equalTo(self);
-            make.left.equalTo(self.imageView.mas_right).with.offset(8);
-            make.right.equalTo(self.dismissButton.mas_left).with.offset(-8);
+            make.left.equalTo(self.imageView.mas_right).with.offset(16);
+            make.right.equalTo(self.mas_right).with.offset(-16);
         }];
         
         self.backgroundColor = [UIColor clearColor];
@@ -42,6 +70,86 @@
     }
     
     return self;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
+    _touchBeginY = [[touches anyObject] locationInView:self.superview].y;
+    _viewBeginY = CGRectGetMinY(self.frame);
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    CGFloat currentY = [[touches anyObject] locationInView:self.superview].y;
+    CGFloat offset = _touchBeginY - currentY;
+    self.frame = ({
+        CGRect frame = self.frame;
+        CGPoint origin = self.frame.origin;
+        if (origin.y > _originY) {
+            origin.y = _viewBeginY - offset;
+        } else {
+            origin.y = _viewBeginY - offset*pow(0.85, (offset+CGRectGetHeight(self.frame))/CGRectGetHeight(self.frame));
+        }
+        frame.origin = origin;
+        frame;
+    });
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
+    [self performSelector:@selector(dismiss) withObject:nil afterDelay:4.0f];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
+    CGFloat currentY = CGRectGetMinY(self.frame);
+    if (currentY > _originY+CGRectGetHeight(self.frame)/2) {
+        [_parentView bringSubviewToFront:self];
+        [self.layer removeAllAnimations];
+        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.frame = CGRectMake(
+                                    CGRectGetMinX(_parentView.frame) + 16,
+                                    CGRectGetMaxY(_parentView.frame),
+                                    CGRectGetWidth(_parentView.frame) - 32,
+                                    kNetworkViewHeight
+                                    );
+        } completion:nil];
+    } else {
+        [self show];
+    }
+}
+
+#pragma mark - Public Methods
+
+- (void)show {
+    _originY = CGRectGetMaxY(_parentView.frame) - kNetworkViewHeight - 64;
+    [_parentView bringSubviewToFront:self];
+    [self.layer removeAllAnimations];
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
+    [self performSelector:@selector(dismiss) withObject:nil afterDelay:4.0f];
+    
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.frame = CGRectMake(
+                                        CGRectGetMinX(_parentView.frame) + 16,
+                                        _originY,
+                                        CGRectGetWidth(_parentView.frame) - 32,
+                                        kNetworkViewHeight
+                                        );
+    } completion:^(BOOL finished) {
+        [self performSelector:@selector(dismiss) withObject:nil afterDelay:4.0f];
+    }];
+}
+
+- (void)dismiss {
+    [_parentView bringSubviewToFront:self];
+    [self.layer removeAllAnimations];
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.frame = CGRectMake(
+                                        CGRectGetMinX(_parentView.frame) + 16,
+                                        CGRectGetMaxY(_parentView.frame),
+                                        CGRectGetWidth(_parentView.frame) - 32,
+                                        kNetworkViewHeight
+                                        );
+    } completion:nil];
 }
 
 #pragma mark - Getter
@@ -78,17 +186,6 @@
     }
     
     return _effectView;
-}
-
-- (UIButton *)dismissButton {
-    if (!_dismissButton) {
-        _dismissButton = [[UIButton alloc] init];
-        _dismissButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [_dismissButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [self addSubview:_dismissButton];
-    }
-    
-    return _dismissButton;
 }
 
 @end

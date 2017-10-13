@@ -58,8 +58,13 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
+		5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66741F8D225A00F8F96C /* EcardViewController.m */; };
 		5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66781F8D28D700F8F96C /* LoginViewController.m */; };
 		5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
+		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
+		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
+		5CCC66861F8F524900F8F96C /* AaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66851F8F524900F8F96C /* AaoViewController.m */; };
+		5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66881F8F52CF00F8F96C /* AaoModel.m */; };
 		5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */; };
 		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
@@ -202,8 +207,18 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
+		5CCC66731F8D225A00F8F96C /* EcardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardViewController.h; sourceTree = "<group>"; };
+		5CCC66741F8D225A00F8F96C /* EcardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardViewController.m; sourceTree = "<group>"; };
 		5CCC66771F8D28D700F8F96C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		5CCC66781F8D28D700F8F96C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		5CCC667C1F8DA7D100F8F96C /* EcardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardModel.h; sourceTree = "<group>"; };
+		5CCC667D1F8DA7D100F8F96C /* EcardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardModel.m; sourceTree = "<group>"; };
+		5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JHCategory.h"; sourceTree = "<group>"; };
+		5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+JHCategory.m"; sourceTree = "<group>"; };
+		5CCC66841F8F524900F8F96C /* AaoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoViewController.h; sourceTree = "<group>"; };
+		5CCC66851F8F524900F8F96C /* AaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoViewController.m; sourceTree = "<group>"; };
+		5CCC66881F8F52CF00F8F96C /* AaoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoModel.m; sourceTree = "<group>"; };
+		5CCC66891F8F52D000F8F96C /* AaoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoModel.h; sourceTree = "<group>"; };
 		5CD098AC1F80890900252E4D /* HomeComponentBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentBaseView.h; sourceTree = "<group>"; };
 		5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentBaseView.m; sourceTree = "<group>"; };
 		5CD098B31F8089E100252E4D /* HomeComponentAccessView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentAccessView.h; sourceTree = "<group>"; };
@@ -337,6 +352,8 @@
 		5C0844BF1F7B94BB00C69261 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5CCC66871F8F529800F8F96C /* Aao */,
+				5CCC667B1F8DA7BF00F8F96C /* Ecard */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -344,6 +361,8 @@
 		5C0844C01F7B94BB00C69261 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5CCC66831F8F521900F8F96C /* Aao */,
+				5CCC66721F8D221100F8F96C /* Ecard */,
 				5C0844C11F7B94BB00C69261 /* Home */,
 			);
 			path = Controller;
@@ -729,7 +748,11 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+
 				3354DAB11F90761600ACBDF3 /* UIView+LYCategory */,
+
+				5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */,
+
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
 				5CBA6E971F77504000DFF055 /* UIImage+JHCategory */,
 				5CA976EC1F73B1F500B1089A /* NSString+JHCategory */,
@@ -983,6 +1006,15 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		5CCC66721F8D221100F8F96C /* Ecard */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC66731F8D225A00F8F96C /* EcardViewController.h */,
+				5CCC66741F8D225A00F8F96C /* EcardViewController.m */,
+			);
+			path = Ecard;
+			sourceTree = "<group>";
+		};
 		5CCC66761F8D28D700F8F96C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -990,6 +1022,42 @@
 				5CCC66781F8D28D700F8F96C /* LoginViewController.m */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		5CCC667B1F8DA7BF00F8F96C /* Ecard */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC667C1F8DA7D100F8F96C /* EcardModel.h */,
+				5CCC667D1F8DA7D100F8F96C /* EcardModel.m */,
+			);
+			path = Ecard;
+			sourceTree = "<group>";
+		};
+		5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */,
+				5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */,
+			);
+			path = "UIView+JHCategory";
+			sourceTree = "<group>";
+		};
+		5CCC66831F8F521900F8F96C /* Aao */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC66841F8F524900F8F96C /* AaoViewController.h */,
+				5CCC66851F8F524900F8F96C /* AaoViewController.m */,
+			);
+			path = Aao;
+			sourceTree = "<group>";
+		};
+		5CCC66871F8F529800F8F96C /* Aao */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC66891F8F52D000F8F96C /* AaoModel.h */,
+				5CCC66881F8F52CF00F8F96C /* AaoModel.m */,
+			);
+			path = Aao;
 			sourceTree = "<group>";
 		};
 		5CD098AF1F8089A700252E4D /* Access */ = {
@@ -1441,10 +1509,14 @@
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
+				5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
+				5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */,
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
+				5CCC66861F8F524900F8F96C /* AaoViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
+				5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
@@ -1457,6 +1529,7 @@
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
+				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
@@ -1641,6 +1714,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
@@ -1649,6 +1724,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1658,6 +1734,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
@@ -1666,6 +1744,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
