@@ -18,13 +18,20 @@ typedef NS_ENUM(NSInteger, LoginState) {
     LoginStateHadLoginWithVerificationCode,
 };
 
+@protocol LoginViewControllerDelegate <NSObject>
+
+@optional
+- (id<UIViewControllerInteractiveTransitioning>)interactiveTransitioningPresent;
+
+@end
+
 @interface LoginViewController : UIViewController
 
 @property (strong, nonatomic) SuccessWithMsg successMsg;
 @property (strong, nonatomic) FailureWithMsg failureMsg;
+@property (weak, nonatomic) id<LoginViewControllerDelegate> delegate;
 
 - (instancetype)initWithLoginState:(LoginState)loginState;
 - (void)setUpWithLoginVerificationcodeImg:(UIImage *)image;
-//- (void)setUpWithStudentNumber:(NSString *)studentNumStr;
 - (void)setDidLoginWithSuccessMsg:(SuccessWithMsg)successMsg FailureMsg:(FailureWithMsg)failureMsg;
 @end

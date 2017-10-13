@@ -10,21 +10,23 @@
 #import "LYTextField.h"
 #import "Masonry.h"
 #import "JHTool.h"
+#import "LYAnimatedTransitioning.h"
+#import "LYInteractiveTransition.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>
+@interface LoginViewController ()<UITextFieldDelegate, UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic) UIView *cardView;
 
 @property (strong, nonatomic) LYTextField *accountTF;
 @property (strong, nonatomic) LYTextField *passwordTF;
 @property (strong, nonatomic) LYTextField *verificationTF;
-@property (strong, nonatomic) UIImageView *iconImgView;
 
+@property (strong, nonatomic) UILabel *loginLb;
 @property (strong, nonatomic) UIButton *loginBtn;
 @property (strong, nonatomic) UIButton *quitBtn;
 
 @property (strong, nonatomic) UIImage *verificationCode;
-@property (strong, nonatomic) UILabel *studentNumLb;
+@property (strong, nonatomic) LYInteractiveTransition *interactiveDismiss;
 
 @property (assign, nonatomic) LoginState loginState;
 
@@ -56,6 +58,9 @@
 - (void)initData {
     self.view.backgroundColor = [UIColor whiteColor];
     [self registerForKeyboardNotification];
+    //    设置代理
+    self.transitioningDelegate = self;
+    self.modalTransitionStyle = UIModalPresentationCustom;
 }
 
 - (void)initConstaints {
@@ -64,95 +69,41 @@
         make.edges.equalTo(self.view);
     }];
     [self.quitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cardView).with.offset(20);
+        make.left.equalTo(self.cardView).with.offset(30);
         make.top.equalTo(self.cardView).with.offset(40);
-        make.width.and.height.equalTo(@25);
+        make.width.and.height.equalTo(@20);
     }];
     
-    [self.iconImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.cardView);
-        make.top.equalTo(self.quitBtn.mas_bottom).with.offset(50);
-        make.height.and.width.equalTo(@150);
+    [self.loginLb mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.quitBtn);
+        make.top.equalTo(self.quitBtn.mas_bottom).with.offset(10);
+        make.height.and.width.equalTo(@100);
     }];
+    
+    [self.accountTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.loginLb);
+        make.top.equalTo(self.loginLb.mas_bottom).with.offset(30);
+        make.height.equalTo(@45);
+        make.right.equalTo(self.cardView).with.offset(-30);
+    }];
+    [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.accountTF);
+        make.top.equalTo(self.accountTF.mas_bottom).with.offset(40);
+        make.height.equalTo(@45);
+    }];
+    
     
     switch (self.loginState) {
         case LoginStateHadLogin:
-        {
-            [self.studentNumLb mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.studentNumLb.mas_bottom).with.offset(5);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-        }
-            break;
         case LoginStateNeverLogin:
-        {
-            [self.accountTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom).with.offset(20);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.accountTF.mas_bottom).with.offset(10);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
-        }
             break;
         case LoginStateHadLoginWithVerificationCode:
-        {
-            [self.studentNumLb mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom);
-                make.height.equalTo(@45);
-            }];
-            
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.studentNumLb.mas_bottom).with.offset(5);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
-            [self.verificationTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(10);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-        }
-            break;
         case LoginStateNeverLoginWithVerificationCode:
         {
-            [self.accountTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom).with.offset(5);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.accountTF.mas_bottom).with.offset(10);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
             [self.verificationTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(10);
+                make.left.and.right.equalTo(self.accountTF);
+                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(20);
                 make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
             }];
         }
             break;
@@ -162,16 +113,14 @@
     
     if (self.loginState == LoginStateNeverLogin || self.loginState == LoginStateHadLogin) {
         [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.cardView);
-            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(20);
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(30);
             make.height.equalTo(@45);
-            make.width.equalTo(self.cardView).with.multipliedBy(0.8);
         }];
     } else {
         [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.cardView);
-            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(20);
-            make.width.equalTo(self.cardView).with.multipliedBy(0.8);
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(30);
             make.height.equalTo(@45);
         }];
     }
@@ -187,8 +136,28 @@
     self.failureMsg = failureMsg;
 }
 
-- (void)setUpWithStudentNumber:(NSString *)studentNumStr {
-    self.studentNumLb.text = studentNumStr;
+#pragma mark - UIViewControllerTransitioningDelegate
+//实现转场动画方法
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    return [LYAnimatedTransitioning transitionWithTransitioningType:LYAnimatedTransitioningTypePresent];
+}
+
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    return [LYAnimatedTransitioning transitionWithTransitioningType:LYAnimatedTransitioningTypeDismiss];
+}
+
+//实现添加手势方法
+//如果有需要，可以在present的时候添加上滑手势
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
+    if (self.delegate && [_delegate respondsToSelector:@selector(interactiveTransitioningPresent)]) {
+        LYInteractiveTransition *interactiveTransitionPresent = [self.delegate interactiveTransitioningPresent];
+        return interactiveTransitionPresent.isInteractive ? interactiveTransitionPresent : nil;
+    }
+    return nil;
+}
+
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
+    return self.interactiveDismiss.isInteractive ? self.interactiveDismiss : nil;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -394,11 +363,10 @@
 }
 
 - (void)didClickedQuitBtn {
-    [self dismissViewControllerAnimated:YES completion:^{
-        self.failureMsg(@"退出登录");
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UIKeyboardNotification
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGFloat keyboardHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     
@@ -469,15 +437,6 @@
     return _verificationTF;
 }
 
-- (UIImageView *)iconImgView {
-    if (!_iconImgView) {
-        _iconImgView = [[UIImageView alloc] init];
-        _iconImgView.image = [UIImage imageNamed:@"icon"];
-        [self.cardView addSubview:_iconImgView];
-    }
-    return _iconImgView;
-}
-
 - (UIButton *)loginBtn {
     if (!_loginBtn) {
         _loginBtn = [[UIButton alloc] init];
@@ -486,6 +445,9 @@
         _loginBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
         [_loginBtn setBackgroundColor:[JHTool colorWithHexStr:@"#3a99d9"]];
         [_loginBtn.layer setCornerRadius:2];
+        _loginBtn.layer.shadowOffset =  CGSizeMake(1, 1);
+        _loginBtn.layer.shadowOpacity = 0.5;
+        _loginBtn.layer.shadowColor =  [UIColor blackColor].CGColor;
         [_loginBtn addTarget:self action:@selector(didClickedLoginBtn) forControlEvents:UIControlEventTouchUpInside];
         _loginBtn.enabled = NO;
         _loginBtn.alpha = 0.4;
@@ -504,19 +466,26 @@
     return _quitBtn;
 }
 
-- (UILabel *)studentNumLb {
-    if (!_studentNumLb) {
-        _studentNumLb = [[UILabel alloc] init];
-        _studentNumLb.textColor = [UIColor blackColor];
-        _studentNumLb.backgroundColor = [UIColor whiteColor];
-        _studentNumLb.textAlignment = NSTextAlignmentCenter;
-        _studentNumLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"account"] != NULL) {
-            _studentNumLb.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"account"];
-        }
-        [self.cardView addSubview:_studentNumLb];
+- (UILabel *)loginLb {
+    if (!_loginLb) {
+        _loginLb = [[UILabel alloc] init];
+        [_loginLb setTextColor:[UIColor blackColor]];
+        [_loginLb setText:@"Log In"];
+        [_loginLb setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle]];
+        _loginLb.textAlignment = NSTextAlignmentLeft;
+        [self.cardView addSubview:_loginLb];
     }
-    return _studentNumLb;
+    return _loginLb;
+}
+
+//添加dismiss手势
+- (LYInteractiveTransition *)interactiveDismiss {
+    if (!_interactiveDismiss) {
+        _interactiveDismiss = [LYInteractiveTransition interactiveTrainsitionWithTransitionType:LYInteractiveTransitionTypeDismiss GestureDirection:LYInteractiveTransitionGestureDirectionDown];
+        [_interactiveDismiss addPanGestureToViewController:self];
+        _interactiveDismiss.interactive = YES;
+    }
+    return _interactiveDismiss;
 }
 
 @end

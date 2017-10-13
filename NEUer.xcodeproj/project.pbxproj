@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */; };
+		3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */; };
+		3354DAB41F90762500ACBDF3 /* UIView+LYCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAB31F90762500ACBDF3 /* UIView+LYCategory.m */; };
 		33F88B831F8295AD0054B123 /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B821F8295AD0054B123 /* LYTextField.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
@@ -102,6 +105,12 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
+		3354DAA81F90751C00ACBDF3 /* LYInteractiveTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYInteractiveTransition.h; sourceTree = "<group>"; };
+		3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYInteractiveTransition.m; sourceTree = "<group>"; };
+		3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYAnimatedTransitioning.h; sourceTree = "<group>"; };
+		3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYAnimatedTransitioning.m; sourceTree = "<group>"; };
+		3354DAB21F90762500ACBDF3 /* UIView+LYCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LYCategory.h"; sourceTree = "<group>"; };
+		3354DAB31F90762500ACBDF3 /* UIView+LYCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LYCategory.m"; sourceTree = "<group>"; };
 		33F88B811F8295AD0054B123 /* LYTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTextField.h; sourceTree = "<group>"; };
 		33F88B821F8295AD0054B123 /* LYTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYTextField.m; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
@@ -249,9 +258,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3354DAA71F9074E600ACBDF3 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				3354DAA81F90751C00ACBDF3 /* LYInteractiveTransition.h */,
+				3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */,
+				3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */,
+				3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		3354DAB11F90761600ACBDF3 /* UIView+LYCategory */ = {
+			isa = PBXGroup;
+			children = (
+				3354DAB21F90762500ACBDF3 /* UIView+LYCategory.h */,
+				3354DAB31F90762500ACBDF3 /* UIView+LYCategory.m */,
+			);
+			path = "UIView+LYCategory";
+			sourceTree = "<group>";
+		};
 		33F88B801F8295620054B123 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3354DAA71F9074E600ACBDF3 /* Transition */,
 				33F88B811F8295AD0054B123 /* LYTextField.h */,
 				33F88B821F8295AD0054B123 /* LYTextField.m */,
 			);
@@ -699,6 +729,7 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				3354DAB11F90761600ACBDF3 /* UIView+LYCategory */,
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
 				5CBA6E971F77504000DFF055 /* UIImage+JHCategory */,
 				5CA976EC1F73B1F500B1089A /* NSString+JHCategory */,
@@ -1399,12 +1430,14 @@
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
+				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
+				3354DAB41F90762500ACBDF3 /* UIView+LYCategory.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
@@ -1426,6 +1459,7 @@
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
+				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
 				33F88B831F8295AD0054B123 /* LYTextField.m in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
