@@ -7,7 +7,7 @@
 //
 
 #import "CampusViewController.h"
-#import "EcardViewController.h"
+#import "EcardMainViewController.h"
 #import "TouchableCollectionViewCell.h"
 
 static NSString * const kCampusCellId = @"kCampusCellId";
@@ -66,7 +66,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     _imageView.image = [UIImage imageNamed:dictionary[@"image"]];
     _titleLabel.text = dictionary[@"title"];
     _detailLabel.text = dictionary[@"detail"];
-    self.layer.shadowColor = _imageView.image.mainColor.CGColor;
+    self.contentView.layer.shadowColor = [UIImage imageNamed:dictionary[@"image"]].mainColor.CGColor;
     [self layoutIfNeeded];
     [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
 }
@@ -210,7 +210,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
                            @{
                                @"title":@"校卡中心",
                                @"detail":@"再也不怕打菜时余额不足了",
-                               @"url":@"",
+                               @"url":@"neu://go/ecard",
                                @"image":@"ecard_campus_background",
                                },
                            @{

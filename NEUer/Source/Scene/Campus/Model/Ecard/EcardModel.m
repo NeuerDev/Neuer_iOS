@@ -63,7 +63,7 @@
     [task resume];
 }
 
-- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode callBack:(EcardAuthorCallbackBlock)callback {
+- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode {
     WS(ws);
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     urlRequest.HTTPMethod = @"POST";
@@ -88,10 +88,96 @@
     }
     urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSLog(@"aaaaa");
+        
     }];
     
     [task resume];
+}
+
+- (void)fetchAvatar {
+    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/Photo.ashx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
+    
+    WS(ws);
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data && !error) {
+            UIImage *image = [[UIImage alloc] initWithData:data];
+            ws.info.avatarImage = image;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ws.infoDelegate fetchAvatarSuccess:(data && !error) error:error];
+        });
+    }];
+    
+    [task resume];
+}
+
+- (void)queryInfo {
+    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/Home.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
+    
+    WS(ws);
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data && !error) {
+            ws.info = [[EcardInfoBean alloc] init];
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
+            
+            NSArray<TFHppleElement *> *infoArray = [xpathParser searchWithXPathQuery:@"//div[@class='person_news']/ul/li/span"];
+            for (TFHppleElement *info in infoArray) {
+                NSString *string = info.text;
+                if ([string hasPrefix:@"学(工)号："]) {
+                    ws.info.number = [string substringFromIndex:@"学(工)号：".length];
+                } else if ([string hasPrefix:@"卡状态："]) {
+                    ws.info.state = [string substringFromIndex:@"卡状态：".length];
+                } else if ([string hasPrefix:@"姓名："]) {
+                    ws.info.name = [string substringFromIndex:@"姓名：".length];
+                } else if ([string hasPrefix:@"主钱包余额："]) {
+                    ws.info.balance = [string substringFromIndex:@"主钱包余额：".length];
+                } else if ([string hasPrefix:@"性别："]) {
+                    ws.info.sex = [string substringFromIndex:@"性别：".length];
+                } else if ([string hasPrefix:@"补助余额："]) {
+                    ws.info.allowance = [string substringFromIndex:@"补助余额：".length];
+                } else if ([string hasPrefix:@"身份："]) {
+                    ws.info.status = [string substringFromIndex:@"身份：".length];
+                }
+            }
+            
+            TFHppleElement *departmemtInfoElement = [[xpathParser searchWithXPathQuery:@"//div[@class='person_news']/ul/li"] lastObject];
+            if ([departmemtInfoElement.text hasPrefix:@"部门："]) {
+                NSArray *array = [[departmemtInfoElement.text substringFromIndex:@"部门：".length] componentsSeparatedByString:@"/"];
+                if (array.count >= 2) {
+                    ws.info.campus = array[0];
+                    ws.info.major = array[1];
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ws.infoDelegate queryInfoSuccess:(data && !error) error:error];
+        });
+    }];
+    
+    [task resume];
+}
+
+- (void)queryConsumeHistory {
+    
+}
+
+- (void)queryConsumeStatisics {
+    
+}
+
+- (void)reportLost {
+    
+}
+
+#pragma mark - NSURLSessionTaskDelegate
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
+    WS(ws);
+    NSURLSessionDataTask *newTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        [ws.loginDelegate loginSuccess:(data && !error) error:error];
+    }];
+    [newTask resume];
 }
 
 #pragma mark - Getter
@@ -108,15 +194,8 @@
     return _session;
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
-    NSURLSessionDataTask *newTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    }];
-    [newTask resume];
-}
-
-- (void)queryLeftMoney {
-    
-}
-
 @end
+
+@implementation EcardInfoBean
+
+@end;
