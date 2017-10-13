@@ -8,8 +8,14 @@
 
 #import "SearchViewController.h"
 #import "SearchLibraryViewController.h"
+#import "LibraryBookDetailModel.h"
+#import "LibraryLoginModel.h"
+
 
 @interface SearchViewController ()
+
+@property (nonatomic, strong) LibraryBookDetailModel *model;
+@property (nonatomic, strong) LibraryLoginModel *loginModel;
 
 @end
 
@@ -32,10 +38,30 @@
 
 - (void)push {
     [self.navigationController pushViewController:[[SearchLibraryViewController alloc] init] animated:YES];
+//    [self.model showDetail];
+//    [self.loginModel login];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//
+//    });
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (LibraryBookDetailModel *)model{
+    if (!_model) {
+        _model = [[LibraryBookDetailModel alloc] init];
+    }
+   return _model;
+}
+
+- (LibraryLoginModel *)loginModel {
+    if (!_loginModel) {
+        _loginModel = [[LibraryLoginModel alloc] init];
+    }
+   return _loginModel;
 }
 
 

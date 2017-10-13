@@ -54,6 +54,10 @@
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* URLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* URLRouter.m */; };
 		5CE99C561F7295580062DBF9 /* URLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C551F7295580062DBF9 /* URLHandler.m */; };
+		7707C4A41F8C5B0500230767 /* SearchLibraryBorrowingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7707C4A31F8C5B0500230767 /* SearchLibraryBorrowingModel.m */; };
+		770968C81F8FABF500219937 /* LibraryBookDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 770968C71F8FABF500219937 /* LibraryBookDetailModel.m */; };
+		77B809721F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B809711F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m */; };
+		77E932031F8CE0D100E034F2 /* LibraryLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E932021F8CE0D100E034F2 /* LibraryLoginModel.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -175,6 +179,14 @@
 		5CE99C521F7294820062DBF9 /* URLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLRouter.m; sourceTree = "<group>"; };
 		5CE99C541F7295580062DBF9 /* URLHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URLHandler.h; sourceTree = "<group>"; };
 		5CE99C551F7295580062DBF9 /* URLHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = URLHandler.m; sourceTree = "<group>"; };
+		7707C4A21F8C5B0500230767 /* SearchLibraryBorrowingModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryBorrowingModel.h; sourceTree = "<group>"; };
+		7707C4A31F8C5B0500230767 /* SearchLibraryBorrowingModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryBorrowingModel.m; sourceTree = "<group>"; };
+		770968C61F8FABF500219937 /* LibraryBookDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryBookDetailModel.h; sourceTree = "<group>"; };
+		770968C71F8FABF500219937 /* LibraryBookDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryBookDetailModel.m; sourceTree = "<group>"; };
+		77B809701F8B05D0007BB0B3 /* SearchLibraryNewBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryNewBookModel.h; sourceTree = "<group>"; };
+		77B809711F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryNewBookModel.m; sourceTree = "<group>"; };
+		77E932011F8CE0D100E034F2 /* LibraryLoginModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryLoginModel.h; sourceTree = "<group>"; };
+		77E932021F8CE0D100E034F2 /* LibraryLoginModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryLoginModel.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -323,6 +335,9 @@
 		5C7548B01F77382A0065E64E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				770968C51F8FABBD00219937 /* BookDetail */,
+				77E932001F8CD99B00E034F2 /* Login */,
+				77B8096D1F8B04D0007BB0B3 /* HotInfo */,
 				5CA976F01F73CED800B1089A /* Result */,
 				5C4602101F72BB15009AF91A /* Suggest */,
 			);
@@ -840,6 +855,51 @@
 			path = URLHandler;
 			sourceTree = "<group>";
 		};
+		770968C51F8FABBD00219937 /* BookDetail */ = {
+			isa = PBXGroup;
+			children = (
+				770968C61F8FABF500219937 /* LibraryBookDetailModel.h */,
+				770968C71F8FABF500219937 /* LibraryBookDetailModel.m */,
+			);
+			path = BookDetail;
+			sourceTree = "<group>";
+		};
+		77B8096D1F8B04D0007BB0B3 /* HotInfo */ = {
+			isa = PBXGroup;
+			children = (
+				77B8096F1F8B051C007BB0B3 /* Borrowing */,
+				77B8096E1F8B04E8007BB0B3 /* NewBook */,
+			);
+			path = HotInfo;
+			sourceTree = "<group>";
+		};
+		77B8096E1F8B04E8007BB0B3 /* NewBook */ = {
+			isa = PBXGroup;
+			children = (
+				77B809701F8B05D0007BB0B3 /* SearchLibraryNewBookModel.h */,
+				77B809711F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m */,
+			);
+			path = NewBook;
+			sourceTree = "<group>";
+		};
+		77B8096F1F8B051C007BB0B3 /* Borrowing */ = {
+			isa = PBXGroup;
+			children = (
+				7707C4A21F8C5B0500230767 /* SearchLibraryBorrowingModel.h */,
+				7707C4A31F8C5B0500230767 /* SearchLibraryBorrowingModel.m */,
+			);
+			path = Borrowing;
+			sourceTree = "<group>";
+		};
+		77E932001F8CD99B00E034F2 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				77E932011F8CE0D100E034F2 /* LibraryLoginModel.h */,
+				77E932021F8CE0D100E034F2 /* LibraryLoginModel.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		9C23063B159BDC7CF94A2327 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,7 +980,6 @@
 				TargetAttributes = {
 					5C21B9911F6D1A9100BC2961 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 6Y694Y7JV9;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1078,7 +1137,9 @@
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
+				77E932031F8CE0D100E034F2 /* LibraryLoginModel.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
+				770968C81F8FABF500219937 /* LibraryBookDetailModel.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
@@ -1096,6 +1157,8 @@
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
+				7707C4A41F8C5B0500230767 /* SearchLibraryBorrowingModel.m in Sources */,
+				77B809721F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m in Sources */,
 				5CE8AF981F70270B008594F6 /* GatewayModel.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
@@ -1274,7 +1337,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
-				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
@@ -1290,7 +1353,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
-				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
