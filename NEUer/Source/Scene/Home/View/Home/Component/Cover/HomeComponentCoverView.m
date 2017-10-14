@@ -30,7 +30,7 @@
 
 - (void)initConstraints {
     [self.coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
+        make.edges.equalTo(self.contentView).with.insets(UIEdgeInsetsMake(0, 16, 0, 16));
         make.height.equalTo(self.coverImageView.mas_width).multipliedBy(10.0f/16.0f);
     }];
 }
