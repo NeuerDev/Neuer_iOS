@@ -9,22 +9,42 @@
 #import "GatewayViewController.h"
 #import "LoginViewController.h"
 
-@interface GatewayViewController () <LoginViewControllerDelegate>
+@interface GatewayViewController () <GatewayModelDelegate>
 @property (nonatomic, strong) UIVisualEffectView *blurView;
 @property (nonatomic, strong) UIVisualEffectView *vibrancyEffectView;
 @property (nonatomic, strong) LoginViewController *loginVC;
+@property (nonatomic, strong) GatewayModel *model;
+@property (nonatomic, strong) GatewayBean *gatewayBean;
 @property (nonatomic, strong) UIButton *quitBtn;
-@property (strong, nonatomic) UIButton *btn;
+
 @end
 
 @implementation GatewayViewController
 
+#pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor yellowColor];
     
+    [self initData];
     [self initConstraints];
-    
+}
+
+#pragma mark - Init Method
+- (void)initData {
+
+    if ([self.model hasUser]) {
+        [self.model fetchGatewayData];
+    } else {
+        UIButton *btn2 = [[UIButton alloc] initWithFrame:CGRectMake(200, 200, 100, 100)];
+        [btn2 setBackgroundColor:[UIColor greenColor]];
+        [self.vibrancyEffectView.contentView addSubview:btn2];
+        [btn2 addTarget:self action:@selector(presentNoVerificationCodeVC) forControlEvents:UIControlEventTouchUpInside];
+    }
+    UIButton *btn2 = [[UIButton alloc] initWithFrame:CGRectMake(200, 200, 100, 100)];
+    [btn2 setBackgroundColor:[UIColor greenColor]];
+    [self.vibrancyEffectView.contentView addSubview:btn2];
+    [btn2 addTarget:self action:@selector(presentNoVerificationCodeVC) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)initConstraints {
@@ -41,24 +61,13 @@
         make.height.and.width.mas_equalTo(25);
     }];
     
-    [self.btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.and.centerY.equalTo(self.vibrancyEffectView);
-        make.height.and.width.equalTo(@100);
-    }];
-    
 }
 
 
-- (void)presentedVC {
-    _loginVC = [[LoginViewController alloc] initWithLoginState:LoginStateNeverLoginWithVerificationCode];
-    [_loginVC setUpWithLoginVerificationcodeImg:[UIImage imageNamed:@"verificationcode"]];
-    _loginVC.delegate = self;
-    [_loginVC setDidLoginWithSuccessMsg:^(NSArray *msgArr) {
-        NSLog(@"%@", msgArr);
-    } FailureMsg:^(NSString *msg) {
-        NSLog(@"%@", msg);
-    }];
-    [self presentViewController:self.loginVC animated:YES completion:nil];
+- (void)presentNoVerificationCodeVC {
+    LoginViewController *loginVC2 = [LoginViewController shareLoginViewController];
+    [loginVC2 setUpWithLoginState:LoginStateLogin withLoginVerificationCodeImg:nil];
+    [self presentViewController:loginVC2 animated:YES completion:nil];
 }
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
@@ -73,6 +82,19 @@
     [super didReceiveMemoryWarning];
     
 }
+
+#pragma mark - GatewayModel delegate
+- (void)fetchGatewayDataFailureWithMsg:(NSString *)msg {
+//    在这个方法中处理登录失败信息
+    NSLog(@"登录失败");
+}
+
+- (void)fetchGatewayDataSuccess {
+//    在这个方法中处理登录成功信息
+    _gatewayBean = [self.model gatewayInfo];
+    NSLog(@"gatewayBean = %@", _gatewayBean.balance);
+}
+
 
 #pragma mark - ResponseMethod
 - (void)quitGatewayViewController {
@@ -109,14 +131,19 @@
     return _quitBtn;
 }
 
-- (UIButton *)btn {
-    if (!_btn) {
-        _btn = [[UIButton alloc] init];
-        [_btn setBackgroundColor:[UIColor redColor]];
-        [_btn addTarget:self action:@selector(presentedVC) forControlEvents:UIControlEventTouchUpInside];
-        [self.vibrancyEffectView.contentView addSubview:_btn];
+- (GatewayModel *)model {
+    if (!_model) {
+        _model = [[GatewayModel alloc] init];
+        _model.delegate = self;
     }
-    return _btn;
+    return _model;
+}
+
+- (GatewayBean *)gatewayBean {
+    if (!_gatewayBean) {
+        _gatewayBean = [[GatewayBean alloc] init];
+    }
+    return _gatewayBean;
 }
 
 @end

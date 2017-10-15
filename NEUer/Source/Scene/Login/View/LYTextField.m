@@ -21,28 +21,13 @@
 @implementation LYTextField
 
 #pragma mark - Init
-- (instancetype)initWithLoginTextFieldType:(loginTextFieldType)type {
+- (instancetype)initWithLoginTextFieldType:(loginTextFieldType)type withVerificationCodeImg:(UIImage *)img{
     if (self = [super init]) {
         _type = type;
-        switch (type) {
-            case loginTextFieldTypePassword:
-                [self initData];
-                break;
-            case loginTextFieldTypeAccount:
-                [self initData];
-                break;
-            case loginTextFieldTypeVerificationcode:
-                break;
-            default:
-                break;
-        }
+        _verificationcodeImg = img;
+        [self initData];
     }
     return self;
-}
-
-- (void)setUpWithVerificationCodeImg:(UIImage *)img {
-    _verificationcodeImg = img;
-    [self initData];
 }
 
 - (void)initData {

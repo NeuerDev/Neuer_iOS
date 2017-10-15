@@ -7,31 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef void(^SuccessWithMsg)(NSArray *msgArr);
-typedef void(^FailureWithMsg)(NSString *msg);
+#import "GatewayModel.h"
 
 typedef NS_ENUM(NSInteger, LoginState) {
-    LoginStateNeverLogin,
-    LoginStateHadLogin,
-    LoginStateNeverLoginWithVerificationCode,
-    LoginStateHadLoginWithVerificationCode,
+    LoginStateLogin,
+    LoginStateLoginWithVerificationCode,
 };
 
 @protocol LoginViewControllerDelegate <NSObject>
 
 @optional
 - (id<UIViewControllerInteractiveTransitioning>)interactiveTransitioningPresent;
-
+- (void)personalInformationArray:(NSArray <NSString *>*)info withloginState:(LoginState)loginState;
+- (BOOL)didSuccessLogin;
 @end
 
 @interface LoginViewController : UIViewController
 
-@property (strong, nonatomic) SuccessWithMsg successMsg;
-@property (strong, nonatomic) FailureWithMsg failureMsg;
 @property (weak, nonatomic) id<LoginViewControllerDelegate> delegate;
 
-- (instancetype)initWithLoginState:(LoginState)loginState;
-- (void)setUpWithLoginVerificationcodeImg:(UIImage *)image;
-- (void)setDidLoginWithSuccessMsg:(SuccessWithMsg)successMsg FailureMsg:(FailureWithMsg)failureMsg;
++ (instancetype)shareLoginViewController;
+- (void)setUpWithLoginState:(LoginState)loginState withLoginVerificationCodeImg:(UIImage *)image;
+
 @end

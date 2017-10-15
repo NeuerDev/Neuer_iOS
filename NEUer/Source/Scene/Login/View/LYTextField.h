@@ -16,8 +16,9 @@ typedef NS_ENUM(NSInteger, loginTextFieldType) {
 
 @interface LYTextField : UITextField
 
-- (instancetype)initWithLoginTextFieldType:(loginTextFieldType)type;
-//传递验证码图片
-- (void)setUpWithVerificationCodeImg:(UIImage *)img;
+/**
+ 选择textField类型并传递验证码图片
+ */
+- (instancetype)initWithLoginTextFieldType:(loginTextFieldType)type withVerificationCodeImg:(UIImage *)img;
 
 @end
