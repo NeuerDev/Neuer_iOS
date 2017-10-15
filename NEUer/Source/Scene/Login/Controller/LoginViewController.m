@@ -135,6 +135,13 @@ static LoginViewController *_sigletonLoginViewController = nil;
     }
 }
 
+#pragma mark - Override
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
+    self.accountTF.text = @"";
+    self.passwordTF.text = @"";
+    [super dismissViewControllerAnimated:flag completion:completion];
+}
+
 #pragma mark - UIViewControllerTransitioningDelegate
 //实现转场动画方法
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
