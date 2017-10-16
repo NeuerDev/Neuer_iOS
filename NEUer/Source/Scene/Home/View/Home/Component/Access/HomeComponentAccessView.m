@@ -81,15 +81,16 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 }
 
 - (void)initConstraints {
-    CGFloat cellHeight = 64;
+    CGFloat cellHeight = 54;
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
-        make.height.mas_equalTo(@(((self.cellDataArray.count+1)/3*cellHeight+self.cellDataArray.count/3*8.0f)));
+        make.height.mas_equalTo(@(((self.cellDataArray.count+1)/3*cellHeight+(self.cellDataArray.count-3)/3*8.0f)));
     }];
 }
 
+#pragma mark - Override
+
 - (void)initBaseConstraints {
-    // Override
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self).with.insets(UIEdgeInsetsMake(0, 16, 24, 16));
     }];
@@ -136,7 +137,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 16)/3;
-        CGFloat cellHeight = 64;
+        CGFloat cellHeight = 54;
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.minimumLineSpacing = 8.0f;
         flowLayout.minimumInteritemSpacing = 8.0f;

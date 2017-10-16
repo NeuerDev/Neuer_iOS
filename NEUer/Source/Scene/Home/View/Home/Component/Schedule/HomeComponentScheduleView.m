@@ -15,7 +15,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
 @property (nonatomic, strong) UIView *leftView;
 @property (nonatomic, strong) UIView *rightView;
 @property (nonatomic, strong) UILabel *orderLabel;
-@property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *classLabel;
 @property (nonatomic, strong) UILabel *infoLabel;
 
@@ -85,17 +84,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
     return _orderLabel;
 }
 
-- (UILabel *)timeLabel {
-    if (!_timeLabel) {
-        _timeLabel = [[UILabel alloc] init];
-        _timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        _timeLabel.textAlignment = NSTextAlignmentCenter;
-        [self.leftView addSubview:_timeLabel];
-    }
-    
-    return _timeLabel;
-}
-
 - (UILabel *)classLabel {
     if (!_classLabel) {
         _classLabel = [[UILabel alloc] init];
@@ -152,7 +140,7 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
 - (instancetype)init {
     if (self = [super init]) {
         self.titleLabel.text = @"今日课程";
-        [self.actionButton setTitle:@"完整课表" forState:UIControlStateNormal];
+        [self.actionButton setTitle:@"更多" forState:UIControlStateNormal];
         
         [self initConstraints];
     }
@@ -179,7 +167,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     HomeComponentScheduleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeComponentScheduleCellId forIndexPath:indexPath];
     NSDictionary *item = self.cellDataArray[indexPath.item];
-    cell.timeLabel.text = item[@"time"];
     cell.classLabel.text = item[@"class"];
     cell.orderLabel.text = item[@"order"];
     cell.infoLabel.text = [NSString stringWithFormat:@"%@ %@", item[@"location"], item[@"teacher"]];
@@ -228,6 +215,7 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.scrollsToTop = NO;
         _collectionView.scrollEnabled = NO;
+        _collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
         [self.contentView addSubview:_collectionView];
     }
     
@@ -241,7 +229,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
                                @"class":@"计算机网络",
                                @"location":@"信息B123",
                                @"teacher":@"刘益先",
-                               @"time":@"08:30-10:20",
                                @"order":@"一二",
                                @"color":@"#66A149",
                                },
@@ -249,7 +236,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
                                @"class":@"马克思原理",
                                @"location":@"信息B321",
                                @"teacher":@"恩格斯",
-                               @"time":@"10:40-12:30",
                                @"order":@"三四",
                                @"color":@"#F5C046",
                                },
@@ -257,7 +243,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
                                @"class":@"计算机组成原理",
                                @"location":@"文馆A247",
                                @"teacher":@"刘国奇",
-                               @"time":@"14:00-15:50",
                                @"order":@"五六",
                                @"color":@"#F5C046",
                                },
@@ -265,7 +250,6 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
                                @"class":@"数据结构与算法导论",
                                @"location":@"信息B123",
                                @"teacher":@"赵继",
-                               @"time":@"16:10-18:00",
                                @"order":@"七八",
                                @"color":@"#F5C046",
                                },
