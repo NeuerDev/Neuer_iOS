@@ -36,7 +36,6 @@
     
     self.title = NSLocalizedString(@"HomeNavigationBarTitle", nil);
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.calendarLabel];
     [self initConstraints];
 }
 
@@ -67,13 +66,6 @@
         make.left.and.right.equalTo(self.contentView);
     }];
     
-//    NSString *searchText = @"<a href=\"http://202.118.8.7:8991/F/LEY3T5AGIRF63BPS1PLKUX1EPLYF8UDEQAH88FA3J15YAL86YR-83545?func=item-global&amp;doc_library=NEU01&amp;doc_number=000576232\" onmouseover=\"clearTimeout(tm);hint('<tr><td class=libnname><A HREF=http://202.118.8.7:8991/F/LEY3T5AGIRF63BPS1PLKUX1EPLYF8UDEQAH88FA3J15YAL86YR-83546?func=item-global&amp;doc_library=NEU01&amp;doc_number=000576232&amp;year=&amp;volume=&amp;sub_library=NHPTW >南湖普通外借</A></td><td class=bookid>TN929.53/665<td class=holding>     4/     0</td>',this)\" onmouseout=\"tm=setTimeout(function(){g('bubble2').style.display='none';},400)\">馆藏复本:     4，已出借复本:     0</a>";
-//    NSError *error = NULL;
-//    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(?:[^,])*\\." options:NSRegularExpressionCaseInsensitive error:&error];
-//    NSTextCheckingResult *result = [regex firstMatchInString:searchText options:0 range:NSMakeRange(0, [searchText length])];
-//    if (result) {
-//        NSLog(@"%@\n", [searchText substringWithRange:result.range]);
-//    }
     [self.newsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.scheduleView.mas_bottom);
         make.left.and.right.equalTo(self.contentView);
@@ -92,22 +84,10 @@
 
 #pragma mark - Getter
 
-- (UILabel *)calendarLabel {
-    if (!_calendarLabel) {
-        _calendarLabel = [[UILabel alloc] init];
-        _calendarLabel.text = @"Jun 14, Wed";
-        _calendarLabel.text = @"12月02日 星期三";
-//        _calendarLabel.text = @"在东大的第132天";
-        _calendarLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _calendarLabel.textColor = [UIColor darkGrayColor];
-    }
-    
-    return _calendarLabel;
-}
-
 - (UIScrollView *)scrollView {
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc] init];
+        _scrollView.showsVerticalScrollIndicator = NO;
         [self.view addSubview:_scrollView];
     }
     

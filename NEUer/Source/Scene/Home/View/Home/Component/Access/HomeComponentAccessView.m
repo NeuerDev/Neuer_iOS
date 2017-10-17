@@ -24,12 +24,11 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.backgroundColor = [UIColor whiteColor];
         self.contentView.layer.cornerRadius = 8;
-        self.contentView.layer.shadowColor = [UIColor grayColor].CGColor;
-        self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
-        self.contentView.layer.shadowOpacity = 0.2;
-        self.contentView.layer.shadowRadius = 4;
+//        self.layer.shadowColor = [UIColor grayColor].CGColor;
+//        self.layer.shadowOffset = CGSizeMake(0, 4);
+//        self.layer.shadowOpacity = 0.2;
+//        self.layer.shadowRadius = 4;
         
         [self initConstraints];
     }
@@ -41,6 +40,9 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
     }];
+    
+    [self layoutIfNeeded];
+    [self.contentView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
 }
 
 - (UILabel *)titleLabel {
@@ -49,7 +51,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.textColor = [UIColor whiteColor];
-        [self.contentView addSubview:self.titleLabel];
+        [self.contentView addSubview:_titleLabel];
     }
     
     return _titleLabel;
@@ -69,8 +71,8 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.titleLabel.text = @"快速链接";
-        [self.actionButton setTitle:@"更多" forState:UIControlStateNormal];
+//        self.titleLabel.text = @"快速链接";
+//        [self.actionButton setTitle:@"更多" forState:UIControlStateNormal];
         
         [self initConstraints];
     }
@@ -79,11 +81,18 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 }
 
 - (void)initConstraints {
-    CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 16)/3;
-    CGFloat cellHeight = cellWidth * 10 / 16;
+    CGFloat cellHeight = 54;
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
-        make.height.mas_equalTo(@(((self.cellDataArray.count+1)/3*cellHeight+self.cellDataArray.count/3*8.0f)));
+        make.height.mas_equalTo(@(((self.cellDataArray.count+1)/3*cellHeight+(self.cellDataArray.count-3)/3*8.0f)));
+    }];
+}
+
+#pragma mark - Override
+
+- (void)initBaseConstraints {
+    [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self).with.insets(UIEdgeInsetsMake(0, 16, 24, 16));
     }];
 }
 
@@ -99,7 +108,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     HomeComponentAccessCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeComponentAccessCellId forIndexPath:indexPath];
     cell.contentView.backgroundColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"color"]];
-    cell.contentView.layer.shadowColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"color"]].CGColor;
+//    cell.layer.shadowColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"color"]].CGColor;
     cell.titleLabel.text = self.cellDataArray[indexPath.item][@"title"];
     return cell;
 }
@@ -128,13 +137,14 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 16)/3;
-        CGFloat cellHeight = cellWidth * 10 / 16;
+        CGFloat cellHeight = 54;
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.minimumLineSpacing = 8.0f;
         flowLayout.minimumInteritemSpacing = 8.0f;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.layer.masksToBounds = NO;
         [_collectionView registerClass:[HomeComponentAccessCell class] forCellWithReuseIdentifier:kHomeComponentAccessCellId];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;

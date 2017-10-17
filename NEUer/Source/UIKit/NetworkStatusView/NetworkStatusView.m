@@ -36,6 +36,8 @@ const CGFloat kNetworkViewHeight = 80.0f;
                                        CGRectGetWidth(window.bounds) - 32,
                                        kNetworkViewHeight
                                        );
+        
+        _networkStateView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_networkStateView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
     });
     
     return _networkStateView;
