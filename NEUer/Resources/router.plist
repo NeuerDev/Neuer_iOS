@@ -34,7 +34,7 @@
 			<key>host</key>
 			<string>go</string>
 			<key>class</key>
-			<string>EcardViewController</string>
+			<string>EcardMainViewController</string>
 			<key>regex</key>
 			<string>/ecard</string>
 		</dict>

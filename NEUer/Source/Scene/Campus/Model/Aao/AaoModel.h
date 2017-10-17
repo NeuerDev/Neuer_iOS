@@ -12,8 +12,6 @@ typedef void(^AaoAuthorCallbackBlock)(BOOL success, NSString *message);
 
 typedef void(^AaoGetVerifyImageBlock)(UIImage *verifyImage, NSString *message);
 
-//typedef void(^EcardQueryLeftMoneyBlock)(NSString *money, NSString *message);
-
 @protocol AaoDelegate
 
 @required

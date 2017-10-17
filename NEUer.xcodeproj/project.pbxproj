@@ -62,13 +62,13 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
-		5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66741F8D225A00F8F96C /* EcardViewController.m */; };
 		5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66781F8D28D700F8F96C /* LoginViewController.m */; };
 		5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
 		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
 		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
 		5CCC66861F8F524900F8F96C /* AaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66851F8F524900F8F96C /* AaoViewController.m */; };
 		5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66881F8F52CF00F8F96C /* AaoModel.m */; };
+		5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC668E1F90616100F8F96C /* EcardMainViewController.m */; };
 		5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */; };
 		5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B41F8089E100252E4D /* HomeComponentAccessView.m */; };
 		5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098B71F808A2500252E4D /* HomeComponentCoverView.m */; };
@@ -219,8 +219,6 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
-		5CCC66731F8D225A00F8F96C /* EcardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardViewController.h; sourceTree = "<group>"; };
-		5CCC66741F8D225A00F8F96C /* EcardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardViewController.m; sourceTree = "<group>"; };
 		5CCC66771F8D28D700F8F96C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		5CCC66781F8D28D700F8F96C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		5CCC667C1F8DA7D100F8F96C /* EcardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardModel.h; sourceTree = "<group>"; };
@@ -231,6 +229,8 @@
 		5CCC66851F8F524900F8F96C /* AaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoViewController.m; sourceTree = "<group>"; };
 		5CCC66881F8F52CF00F8F96C /* AaoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoModel.m; sourceTree = "<group>"; };
 		5CCC66891F8F52D000F8F96C /* AaoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoModel.h; sourceTree = "<group>"; };
+		5CCC668D1F90616100F8F96C /* EcardMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EcardMainViewController.h; sourceTree = "<group>"; };
+		5CCC668E1F90616100F8F96C /* EcardMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EcardMainViewController.m; sourceTree = "<group>"; };
 		5CD098AC1F80890900252E4D /* HomeComponentBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentBaseView.h; sourceTree = "<group>"; };
 		5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentBaseView.m; sourceTree = "<group>"; };
 		5CD098B31F8089E100252E4D /* HomeComponentAccessView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentAccessView.h; sourceTree = "<group>"; };
@@ -1089,8 +1089,7 @@
 		5CCC66721F8D221100F8F96C /* Ecard */ = {
 			isa = PBXGroup;
 			children = (
-				5CCC66731F8D225A00F8F96C /* EcardViewController.h */,
-				5CCC66741F8D225A00F8F96C /* EcardViewController.m */,
+				5CCC668C1F9060C200F8F96C /* Main */,
 			);
 			path = Ecard;
 			sourceTree = "<group>";
@@ -1138,6 +1137,15 @@
 				5CCC66881F8F52CF00F8F96C /* AaoModel.m */,
 			);
 			path = Aao;
+			sourceTree = "<group>";
+		};
+		5CCC668C1F9060C200F8F96C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC668D1F90616100F8F96C /* EcardMainViewController.h */,
+				5CCC668E1F90616100F8F96C /* EcardMainViewController.m */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		5CD098AF1F8089A700252E4D /* Access */ = {
@@ -1590,7 +1598,6 @@
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
-				5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */,
@@ -1626,6 +1633,7 @@
 				3344EFD21F949B62001ED45E /* LYTool.m in Sources */,
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
+				5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,

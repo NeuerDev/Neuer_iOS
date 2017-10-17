@@ -8,6 +8,6 @@
 
 #import "JHBaseViewController.h"
 
-@interface EcardViewController : JHBaseViewController
+@interface EcardMainViewController : JHBaseViewController
 
 @end
