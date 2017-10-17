@@ -53,7 +53,7 @@
         case LYInteractiveTransitionGestureDirectionDown:
         {
             CGFloat transitionY = [panGestureRecognizer translationInView:panGestureRecognizer.view].y;
-            percent = transitionY / panGestureRecognizer.view.frame.size.width;
+            percent = transitionY / panGestureRecognizer.view.frame.size.height;
         }
             break;
         case LYInteractiveTransitionGestureDirectionLeft:

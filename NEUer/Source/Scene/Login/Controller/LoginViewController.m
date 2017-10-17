@@ -10,6 +10,7 @@
 #import "LYTextField.h"
 
 #import "Masonry.h"
+#import "MBProgressHUD.h"
 #import "JHTool.h"
 
 #import "LYAnimatedTransitioning.h"
@@ -19,6 +20,7 @@ static CGFloat DISABLEALPHA = 0.4;
 static CGFloat ENABLEALPHA = 1;
 static LoginViewController *_sigletonLoginViewController = nil;
 
+
 @interface LoginViewController ()<UITextFieldDelegate, UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic) UIView *cardView;
@@ -26,15 +28,17 @@ static LoginViewController *_sigletonLoginViewController = nil;
 @property (strong, nonatomic) LYTextField *accountTF;
 @property (strong, nonatomic) LYTextField *passwordTF;
 @property (strong, nonatomic) LYTextField *verificationTF;
+@property (strong, nonatomic) LYTextField *IDNumberTF;
 
 @property (strong, nonatomic) UILabel *loginLb;
 @property (strong, nonatomic) UIButton *loginBtn;
 @property (strong, nonatomic) UIButton *quitBtn;
 
+@property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) UIImage *verificationCode;
 @property (strong, nonatomic) LYInteractiveTransition *interactiveDismiss;
 
-@property (assign, nonatomic) LoginState loginState;
+@property (assign, nonatomic) LoginComponentInfoViewType infoViewType;
 
 @end
 
@@ -43,7 +47,6 @@ static LoginViewController *_sigletonLoginViewController = nil;
 #pragma mark - LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"%@", [LoginViewController shareLoginViewController]);
     [self initData];
     [self initConstaints];
 }
@@ -68,9 +71,9 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 
 #pragma mark - Init
-- (void)setUpWithLoginState:(LoginState)loginState withLoginVerificationCodeImg:(UIImage *)image {
-    _loginState = loginState;
-    if (image && LoginStateLoginWithVerificationCode == loginState) {
+- (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType withLoginVerificationCodeImg:(UIImage *)image {
+    _infoViewType  = infoViewType;
+    if (image && (_infoViewType & LoginComponentInfoViewTypeVerificationcode)) {
         self.verificationCode = image;
     }
 }
@@ -81,6 +84,37 @@ static LoginViewController *_sigletonLoginViewController = nil;
     //    设置代理
     self.transitioningDelegate = self;
     self.modalTransitionStyle = UIModalPresentationCustom;
+    
+    switch (self.infoViewType) {
+        case 1:
+        {
+//            暂时存到偏好设置
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"account"] != nil && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"account"] isEqualToString:@""]) {
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"password"] != nil && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"password"] isEqualToString:@""]) {
+                    self.loginBtn.enabled = YES;
+                    self.loginBtn.alpha = ENABLEALPHA;
+                }
+            }
+        }
+            break;
+        case 3:
+        {
+
+        }
+            break;
+        case 5:
+        {
+
+        }
+            break;
+        case 7:
+        {
+
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)initConstaints {
@@ -112,24 +146,52 @@ static LoginViewController *_sigletonLoginViewController = nil;
         make.height.equalTo(@45);
     }];
     
-    if (LoginStateLoginWithVerificationCode == _loginState) {
+    if (self.infoViewType == 5) {
         [self.verificationTF mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.and.right.equalTo(self.accountTF);
-            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(20);
+            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(40);
             make.height.equalTo(@45);
         }];
-    }
-    
-    if (self.loginState == LoginStateLogin) {
         [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.and.right.equalTo(self.accountTF);
-            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(30);
+            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(30);
+            make.height.equalTo(@45);
+        }];
+
+
+    } else if (self.infoViewType == 3) {
+        [self.IDNumberTF mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(40);
+            make.height.equalTo(@45);
+        }];
+
+        [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.IDNumberTF.mas_bottom).with.offset(30);
+            make.height.equalTo(@45);
+        }];
+
+    } else if (self.infoViewType == 7) {
+        [self.IDNumberTF mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(40);
+            make.height.equalTo(@45);
+        }];
+        [self.verificationTF mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.IDNumberTF.mas_bottom).with.offset(40);
+            make.height.equalTo(@45);
+        }];
+        [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(40);
             make.height.equalTo(@45);
         }];
     } else {
         [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.and.right.equalTo(self.accountTF);
-            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(30);
+            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(30);
             make.height.equalTo(@45);
         }];
     }
@@ -137,8 +199,6 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 #pragma mark - Override
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
-    self.accountTF.text = @"";
-    self.passwordTF.text = @"";
     [super dismissViewControllerAnimated:flag completion:completion];
 }
 
@@ -234,17 +294,17 @@ static LoginViewController *_sigletonLoginViewController = nil;
                 return;
             }
 //            当用户不按顺序填写时
-            if (self.loginState == LoginStateLogin) {
-                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""]) {
-                    self.loginBtn.enabled = YES;
-                    self.loginBtn.alpha = ENABLEALPHA;
-                }
-            } else {
-                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""] && ![self.verificationTF.text isEqualToString:@""]) {
-                    self.loginBtn.enabled = YES;
-                    self.loginBtn.alpha = ENABLEALPHA;
-                }
-            }
+//            if (self.loginState == LoginStateLogin) {
+//                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""]) {
+//                    self.loginBtn.enabled = YES;
+//                    self.loginBtn.alpha = ENABLEALPHA;
+//                }
+//            } else {
+//                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""] && ![self.verificationTF.text isEqualToString:@""]) {
+//                    self.loginBtn.enabled = YES;
+//                    self.loginBtn.alpha = ENABLEALPHA;
+//                }
+//            }
         }
             break;
         case 01:
@@ -255,7 +315,7 @@ static LoginViewController *_sigletonLoginViewController = nil;
                 self.loginBtn.alpha = DISABLEALPHA;
                 return;
             }
-            if (self.loginState == LoginStateLogin) {
+            if (self.infoViewType == LoginComponentInfoViewTypeDefault) {
                 self.loginBtn.enabled = YES;
                 self.loginBtn.alpha = ENABLEALPHA;
             }
@@ -269,12 +329,25 @@ static LoginViewController *_sigletonLoginViewController = nil;
                 self.loginBtn.alpha = DISABLEALPHA;
                 return;
             }
-            if (self.loginState == LoginStateLoginWithVerificationCode) {
+            if (self.infoViewType & LoginComponentInfoViewTypeVerificationcode && !(self.infoViewType & LoginComponentInfoViewTypeIDCard)) {
                 self.loginBtn.enabled = YES;
                 self.loginBtn.alpha = ENABLEALPHA;
             }
         }
             break;
+        case 03:
+        {
+            if (textField.text.length != 18) {
+                [self showAlertWithMessage:@"请注意身份证的位数"];
+                self.loginBtn.enabled = NO;
+                self.loginBtn.alpha = DISABLEALPHA;
+            } else {
+                if (self.infoViewType & LoginComponentInfoViewTypeIDCard && (self.infoViewType & LoginComponentInfoViewTypeVerificationcode)) {
+                    self.loginBtn.enabled = YES;
+                    self.loginBtn.alpha = ENABLEALPHA;
+                }
+            }
+        }
         default:
             break;
     }
@@ -282,8 +355,9 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 #pragma mark - Private Method
 - (void)didVerifiedLoginBtnEnaled {
-    switch (_loginState) {
-        case LoginStateLogin:
+    
+    switch (self.infoViewType) {
+        case 1:
         {
             if ([self.accountTF.text isEqualToString:@""] || [self.passwordTF.text isEqualToString:@""]) {
                 self.loginBtn.enabled = NO;
@@ -294,7 +368,18 @@ static LoginViewController *_sigletonLoginViewController = nil;
             }
         }
             break;
-        case LoginStateLoginWithVerificationCode:
+        case 3:
+        {
+            if ([self.accountTF.text isEqualToString:@""] || [self.passwordTF.text isEqualToString:@""] || [self.IDNumberTF.text isEqualToString:@""]) {
+                self.loginBtn.enabled = NO;
+                self.loginBtn.alpha = DISABLEALPHA;
+            } else {
+                self.loginBtn.enabled = YES;
+                self.loginBtn.alpha = ENABLEALPHA;
+            }
+        }
+            break;
+        case 5:
         {
             if ([self.accountTF.text isEqualToString:@""] || [self.passwordTF.text isEqualToString:@""] || [self.verificationTF.text isEqualToString:@""]) {
                 self.loginBtn.enabled = NO;
@@ -304,6 +389,18 @@ static LoginViewController *_sigletonLoginViewController = nil;
                 self.loginBtn.alpha = ENABLEALPHA;
             }
         }
+            break;
+        case 7:
+        {
+            if ([self.accountTF.text isEqualToString:@""] || [self.passwordTF.text isEqualToString:@""] || [self.IDNumberTF.text isEqualToString:@""] || [self.verificationTF.text isEqualToString:@""]) {
+                self.loginBtn.enabled = NO;
+                self.loginBtn.alpha = DISABLEALPHA;
+            } else {
+                self.loginBtn.enabled = YES;
+                self.loginBtn.alpha = ENABLEALPHA;
+            }
+        }
+            break;
         default:
             break;
     }
@@ -331,38 +428,74 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 - (void)didClickedLoginBtn {
 
+//    临时的数据
     [[NSUserDefaults standardUserDefaults] setObject:self.accountTF.text forKey:@"account"];
     [[NSUserDefaults standardUserDefaults] setObject:self.passwordTF.text forKey:@"password"];
     
-    if (self.loginState == LoginStateLogin) {
-        if ([self.delegate respondsToSelector:@selector(personalInformationArray:withloginState:)]) {
-            [self.delegate personalInformationArray:[NSArray arrayWithObjects:self.accountTF.text, self.passwordTF.text, nil] withloginState:self.loginState];
+    switch (self.infoViewType) {
+        case 1:
+        {
+            if ([self.delegate respondsToSelector:@selector(personalInformationArray:withloginInfoViewType:)]) {
+                [self.delegate personalInformationArray:[NSArray arrayWithObjects:self.accountTF.text, self.passwordTF.text, nil] withloginInfoViewType:self.infoViewType];
+            }
         }
-    } else {
-        if ([self.delegate respondsToSelector:@selector(personalInformationArray:withloginState:)]) {
-            [self.delegate personalInformationArray:[NSArray arrayWithObjects:self.accountTF.text, self.passwordTF.text, self.verificationTF.text, nil] withloginState:self.loginState];
+            break;
+        case 3:
+        {
+            if ([self.delegate respondsToSelector:@selector(personalInformationArray:withloginInfoViewType:)]) {
+                [self.delegate personalInformationArray:[NSArray arrayWithObjects:self.accountTF.text, self.passwordTF.text, self.IDNumberTF.text, nil] withloginInfoViewType:self.infoViewType];
+            }
         }
+            break;
+        case 5:
+        {
+            if ([self.delegate respondsToSelector:@selector(personalInformationArray:withloginInfoViewType:)]) {
+                [self.delegate personalInformationArray:[NSArray arrayWithObjects:self.accountTF.text, self.passwordTF.text, self.verificationTF.text, nil] withloginInfoViewType:self.infoViewType];
+            }
+        }
+            break;
+        case 7:
+        {
+            if ([self.delegate respondsToSelector:@selector(personalInformationArray:withloginInfoViewType:)]) {
+                [self.delegate personalInformationArray:[NSArray arrayWithObjects:self.accountTF.text, self.passwordTF.text, self.IDNumberTF.text, self.verificationTF.text, nil] withloginInfoViewType:self.infoViewType];
+            }
+        }
+            break;
+        default:
+            break;
     }
     
-    if ([self.delegate respondsToSelector:@selector(didSuccessLogin)]) {
+//    [self.hud showAnimated:YES];
+        [MBProgressHUD showHUDAddedTo:self.loginBtn animated:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        BOOL isLogin = [self.delegate didSuccessLogin];
-        if (isLogin) {
-            NSLog(@"登录成功");
-            [self dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            NSLog(@"登录失败");
-        }
-    } else {
-        NSLog(@"delegate = %@", self.delegate);
-        NSLog(@"没进这个方法");
-    }
-    NSLog(@"点击登录按钮");
+            if ([self.delegate respondsToSelector:@selector(didSuccessLogin)]) {
+                
+                BOOL isLogin = [self.delegate didSuccessLogin];
+                if (isLogin) {
+                    NSLog(@"登录成功");
+                    //                [self.hud hideAnimated:YES];
+                    [MBProgressHUD hideHUDForView:self.loginBtn animated:YES];
+                    
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    
+                } else {
+                    NSLog(@"登录失败");
+                    //                [self.hud hideAnimated:YES];
+                    
+                    [MBProgressHUD hideHUDForView:self.loginBtn animated:YES];
+                    [self showAlertWithMessage:@"登录失败！请检查您的账号密码输入是否正确"];
+                }
+            } else {
+                NSLog(@"delegate = %@", self.delegate);
+                NSLog(@"没进这个方法");
+            }
+        
+    });
     
 }
 
 - (void)didClickedQuitBtn {
-    NSLog(@"failure to change view");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -442,6 +575,16 @@ static LoginViewController *_sigletonLoginViewController = nil;
     return _verificationTF;
 }
 
+- (LYTextField *)IDNumberTF {
+    if (!_IDNumberTF) {
+        _IDNumberTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeIDcard withVerificationCodeImg:nil];
+        _IDNumberTF.delegate = self;
+        [self.cardView addSubview:_IDNumberTF];
+    }
+    return _IDNumberTF;
+}
+
+
 - (UIButton *)loginBtn {
     if (!_loginBtn) {
         _loginBtn = [[UIButton alloc] init];
@@ -491,6 +634,16 @@ static LoginViewController *_sigletonLoginViewController = nil;
         _interactiveDismiss.interactive = YES;
     }
     return _interactiveDismiss;
+}
+
+- (MBProgressHUD *)hud {
+    if (!_hud) {
+        _hud = [[MBProgressHUD alloc] initWithView:self.loginBtn];
+        _hud.mode = MBProgressHUDModeCustomView;
+//        _hud.backgroundColor = [UIColor clearColor];
+        [self.loginBtn addSubview:_hud];
+    }
+    return _hud;
 }
 
 @end

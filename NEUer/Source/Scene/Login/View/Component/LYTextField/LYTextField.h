@@ -11,7 +11,8 @@
 typedef NS_ENUM(NSInteger, loginTextFieldType) {
     loginTextFieldTypeAccount,
     loginTextFieldTypePassword,
-    loginTextFieldTypeVerificationcode
+    loginTextFieldTypeVerificationcode,
+    loginTextFieldTypeIDcard
 };
 
 @interface LYTextField : UITextField

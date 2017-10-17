@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) UILabel *accountLb;
 @property (strong, nonatomic) UILabel *passwordLb;
+@property (strong, nonatomic) UILabel *IDCardLb;
 @property (strong, nonatomic) UIButton *eyesBtn;
 @end
 
@@ -61,6 +62,15 @@
             self.placeholder = @"在此输入验证码";
         }
             break;
+        case loginTextFieldTypeIDcard:
+        {
+            self.leftView = self.IDCardLb;
+            self.leftViewMode = UITextFieldViewModeAlways;
+            self.placeholder = @"请输入身份证号";
+            self.tag = 03;
+            self.keyboardType = UIKeyboardTypeNumberPad;
+            
+        }
         default:
             break;
     }
@@ -82,7 +92,7 @@
         verificationcodeRect.size.height = bounds.size.height - 5;
         verificationcodeRect.size.width = 150;
         return verificationcodeRect;
-    } else {
+    } else if (_type == loginTextFieldTypePassword) {
         CGRect passwordeyesRect = [super rightViewRectForBounds:bounds];
         passwordeyesRect.size.height = bounds.size.height - 5;
         passwordeyesRect.size.width = 100;
@@ -90,6 +100,7 @@
         passwordeyesRect.origin.x += 25;
         return passwordeyesRect;
     }
+    return [super rightViewRectForBounds:bounds];
 }
 
 - (CGRect)placeholderRectForBounds:(CGRect)bounds {
@@ -102,6 +113,7 @@
     switch (self.tag) {
         case 00:
         case 01:
+        case 03:
         {
             CGRect editRect = [super editingRectForBounds:bounds];
             editRect.origin.x -= 100;
@@ -123,6 +135,7 @@
     switch (self.tag) {
         case 00:
         case 01:
+        case 03:
         {
             CGRect textRect = [super textRectForBounds:bounds];
             textRect.origin.x -= 100;
@@ -195,6 +208,17 @@
         [self addSubview:_passwordLb];
     }
     return _passwordLb;
+}
+
+- (UILabel *)IDCardLb {
+    if (!_IDCardLb) {
+        _IDCardLb = [[UILabel alloc] init];
+        [_IDCardLb setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+        [_IDCardLb setTextColor:[UIColor grayColor]];
+        [_IDCardLb setText:@"ID Number"];
+        [self addSubview:_IDCardLb];
+    }
+    return _IDCardLb;
 }
 
 @end

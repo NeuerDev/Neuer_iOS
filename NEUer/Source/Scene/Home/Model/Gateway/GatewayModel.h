@@ -20,7 +20,9 @@
 @protocol GatewayModelDelegate
 
 @required
+
 - (void)fetchGatewayDataSuccess;
+- (void)didGatewayLogoutSuccess:(BOOL)isLogout;
 - (void)fetchGatewayDataFailureWithMsg:(NSString *)msg;
 
 @end
@@ -29,6 +31,7 @@
 @property (nonatomic, weak) id<GatewayModelDelegate> delegate;
 - (BOOL)hasUser;
 - (void)fetchGatewayData;
+- (void)quitTheGateway;
 - (GatewayBean *)gatewayInfo;
 
 @end
