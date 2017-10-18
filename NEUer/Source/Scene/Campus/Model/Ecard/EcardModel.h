@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message);
+typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 
 @interface EcardInfoBean : NSObject
 
@@ -26,35 +27,7 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message)
 
 @end
 
-@protocol EcardLoginDelegate
-
-@required
-- (void)loginSuccess:(BOOL)success error:(NSError *)error;
-
-@end;
-
-@protocol EcardInfoDelegate
-
-@required
-- (void)fetchAvatarSuccess:(BOOL)success error:(NSError *)error;
-- (void)queryInfoSuccess:(BOOL)success error:(NSError *)error;
-- (void)queryConsumeHistorySuccess:(BOOL)success error:(NSError *)error;
-- (void)queryConsumeStatisicsSuccess:(BOOL)success error:(NSError *)error;
-
-@end
-
-@protocol EcardServiceDelegate
-
-@required
-- (void)reportLostSuccess:(BOOL)success error:(NSError *)error;
-
-@end
-
 @interface EcardModel : NSObject
-
-@property (nonatomic, weak) id<EcardLoginDelegate> loginDelegate;
-@property (nonatomic, weak) id<EcardInfoDelegate> infoDelegate;
-@property (nonatomic, weak) id<EcardServiceDelegate> serviceDelegate;
 
 @property (nonatomic, strong) EcardInfoBean *info;
 @property (nonatomic, strong) NSDictionary *consumeStatisicsDictionary;
@@ -62,16 +35,16 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message)
 
 - (void)getVerifyImage:(EcardGetVerifyImageBlock)block;
 
-- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode;
+- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block;
 
-- (void)fetchAvatar;
+- (void)fetchAvatarComplete:(EcardActionCompleteBlock)block;
 
-- (void)queryInfo;
+- (void)queryInfoComplete:(EcardActionCompleteBlock)block;
 
-- (void)queryConsumeHistory;
+- (void)queryConsumeHistoryComplete:(EcardActionCompleteBlock)block;
 
-- (void)queryConsumeStatisics;
+- (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block;
 
-- (void)reportLost;
+- (void)reportLostComplete:(EcardActionCompleteBlock)block;
 
 @end

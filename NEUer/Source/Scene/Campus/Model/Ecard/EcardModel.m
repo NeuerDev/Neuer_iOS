@@ -22,7 +22,9 @@
 
 @end
 
-@implementation EcardModel
+@implementation EcardModel {
+    EcardActionCompleteBlock _authorCompleteBlock;
+}
 
 - (void)getVerifyImage:(EcardGetVerifyImageBlock)block {
     WS(ws);
@@ -63,8 +65,9 @@
     [task resume];
 }
 
-- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode {
+- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block {
     WS(ws);
+    _authorCompleteBlock = block;
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     urlRequest.HTTPMethod = @"POST";
     NSDictionary *params = @{
@@ -94,7 +97,7 @@
     [task resume];
 }
 
-- (void)fetchAvatar {
+- (void)fetchAvatarComplete:(EcardActionCompleteBlock)block {
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/Photo.ashx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     
     WS(ws);
@@ -103,15 +106,17 @@
             UIImage *image = [[UIImage alloc] initWithData:data];
             ws.info.avatarImage = image;
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [ws.infoDelegate fetchAvatarSuccess:(data && !error) error:error];
-        });
+        if (block) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                    block(data && !error, error);
+            });
+        }
     }];
     
     [task resume];
 }
 
-- (void)queryInfo {
+- (void)queryInfoComplete:(EcardActionCompleteBlock)block {
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/Home.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     
     WS(ws);
@@ -150,32 +155,38 @@
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [ws.infoDelegate queryInfoSuccess:(data && !error) error:error];
-        });
+        if (block) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                block(data && !error, error);
+            });
+        }
     }];
     
     [task resume];
 }
 
-- (void)queryConsumeHistory {
+- (void)queryConsumeHistoryComplete:(EcardActionCompleteBlock)block {
     
 }
 
-- (void)queryConsumeStatisics {
+- (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block {
     
 }
 
-- (void)reportLost {
+- (void)reportLostComplete:(EcardActionCompleteBlock)block {
     
 }
 
 #pragma mark - NSURLSessionTaskDelegate
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
-    WS(ws);
+    __strong EcardActionCompleteBlock block = _authorCompleteBlock;
     NSURLSessionDataTask *newTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        [ws.loginDelegate loginSuccess:(data && !error) error:error];
+        if (block) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                block(data && !error, error);
+            });
+        }
     }];
     [newTask resume];
 }
