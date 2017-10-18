@@ -38,6 +38,7 @@
             self.leftView = self.accountLb;
             self.leftViewMode = UITextFieldViewModeAlways;
             self.placeholder = @"请输入学号";
+            self.textContentType = UITextContentTypeUsername;
             self.tag = 00;
             self.keyboardType = UIKeyboardTypeNumberPad;
         }
@@ -48,6 +49,7 @@
             self.leftViewMode = UITextFieldViewModeAlways;
             self.placeholder = @"请输入密码";
             self.secureTextEntry = YES;
+            self.textContentType = UITextContentTypePassword;
             self.rightView = self.eyesBtn;
             self.tag = 01;
             self.rightViewMode = UITextFieldViewModeAlways;

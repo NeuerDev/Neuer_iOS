@@ -15,4 +15,10 @@
  */
 - (void)roundAt:(UIRectCorner)rectCorner withRadius:(CGFloat)radius;
 
+
+/**
+ 设置文字动画
+ */
+- (void)setText:(NSString *)text;
+
 @end

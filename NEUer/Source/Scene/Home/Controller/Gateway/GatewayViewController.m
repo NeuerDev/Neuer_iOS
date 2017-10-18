@@ -11,6 +11,7 @@
 #import "UIColor+JHCategory.h"
 #import "GatewayComponentInfoView.h"
 #import "LYTool.h"
+#import "UIView+LYCategory.h"
 #import "MBProgressHUD.h"
 
 @interface GatewayViewController () <GatewayModelDelegate>
@@ -40,11 +41,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self initConstraints];
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    });
+    [self initConstraints];
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
 }
 
 
@@ -61,6 +60,8 @@
     [self initNetworkStatus];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGatewayNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
     
+    
+    self.view.contentScaleFactor = [[UIScreen mainScreen] scale];
 }
 
 - (void)initNetworkStatus {

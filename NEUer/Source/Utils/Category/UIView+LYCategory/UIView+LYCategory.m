@@ -7,7 +7,9 @@
 //
 
 #import "UIView+LYCategory.h"
+#import "LazyFadeInLayer.h"
 
+#define __layer ((LazyFadeInLayer *)self.layer)
 @implementation UIView (LYCategory)
 
 - (void)roundAt:(UIRectCorner)rectCorner withRadius:(CGFloat)radius {
@@ -15,6 +17,11 @@
     CAShapeLayer *mask = [[CAShapeLayer alloc] init];
     mask.path = bezierPath.CGPath;
     self.layer.mask = mask;
+}
+
+- (void)setText:(NSString *)text
+{
+    __layer.text = text;
 }
 
 @end
