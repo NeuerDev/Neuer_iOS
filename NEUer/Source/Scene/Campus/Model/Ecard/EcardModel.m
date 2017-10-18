@@ -7,6 +7,7 @@
 //
 
 #import "EcardModel.h"
+#import "User.h"
 
 @interface EcardModel () <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
@@ -24,6 +25,14 @@
 
 @implementation EcardModel {
     EcardActionCompleteBlock _authorCompleteBlock;
+}
+
+- (instancetype)initWithUser:(User *)user {
+    if (self = [super init]) {
+        _info = [EcardInfoBean infoWithUser:user];
+    }
+    
+    return self;
 }
 
 - (void)getVerifyImage:(EcardGetVerifyImageBlock)block {
@@ -104,7 +113,7 @@
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data && !error) {
             UIImage *image = [[UIImage alloc] initWithData:data];
-            ws.info.avatarImage = image;
+            ws.info.image = image;
         }
         if (block) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -208,5 +217,12 @@
 @end
 
 @implementation EcardInfoBean
+
++ (EcardInfoBean *)infoWithUser:(User *)user {
+    EcardInfoBean *info = [[EcardInfoBean alloc] init];
+    info.name = user.realName;
+    info.number = user.number;
+    return info;
+}
 
 @end;

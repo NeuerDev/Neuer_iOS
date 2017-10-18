@@ -141,7 +141,7 @@
     if (!_cardAvatarImageView) {
         _cardAvatarImageView = [[UIImageView alloc] init];
         _cardAvatarImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _cardAvatarImageView.image = _infoBean.avatarImage;
+        _cardAvatarImageView.image = _infoBean.image;
         [self.cardImageView addSubview:_cardAvatarImageView];
     }
     

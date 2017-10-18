@@ -25,7 +25,12 @@
 
 #import "JHBaseViewController.h"
 #import "JHURLRouter.h"
+
+#pragma mark - Centers
+
 #import "GatewayCenter.h"
+#import "EcardCenter.h"
+#import "UserCenter.h"
 
 #pragma mark - Category
 

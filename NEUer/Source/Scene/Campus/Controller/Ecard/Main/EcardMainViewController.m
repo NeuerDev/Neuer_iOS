@@ -331,7 +331,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 
 - (EcardModel *)ecardModel {
     if (!_ecardModel) {
-        _ecardModel = [[EcardModel alloc] init];
+        _ecardModel = [[EcardCenter defaultCenter] currentModel];
     }
     
     return _ecardModel;

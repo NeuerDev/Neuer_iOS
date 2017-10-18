@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class User;
+
 typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message);
 typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 
 @interface EcardInfoBean : NSObject
 
-@property (nonatomic, strong) UIImage *avatarImage;
+@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *number;
 @property (nonatomic, strong) NSString *state;
 @property (nonatomic, strong) NSString *name;
@@ -25,6 +27,8 @@ typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 @property (nonatomic, strong) NSString *campus;
 @property (nonatomic, strong) NSString *major;
 
++ (EcardInfoBean *)infoWithUser:(User *)user;
+
 @end
 
 @interface EcardModel : NSObject
@@ -32,6 +36,8 @@ typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 @property (nonatomic, strong) EcardInfoBean *info;
 @property (nonatomic, strong) NSDictionary *consumeStatisicsDictionary;
 @property (nonatomic, strong) NSArray *consumeHistoryArray;
+
+- (instancetype)initWithUser:(User *)user;
 
 - (void)getVerifyImage:(EcardGetVerifyImageBlock)block;
 
