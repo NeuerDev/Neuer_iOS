@@ -10,7 +10,9 @@
 #import "EcardMyViewController.h"
 #import "EcardModel.h"
 
-static NSString * const kEcardServiceCellId = @"kEcardServiceCellId";
+#import "CustomSectionHeaderFooterView.h"
+
+static NSString * const kEcardCustomHeaderViewId = @"kEcardCustomHeaderViewId";
 static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellId";
 
 @interface EcardTableViewCell : UITableViewCell
@@ -162,14 +164,13 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     self.navigationItem.rightBarButtonItem = self.changePasswordButtonItem;
     self.cardTableView.refreshControl = self.refreshControl;
     [self initConstraints];
-    [self setMainColor:[UIColor grayColor] animated:NO];
+    [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
 //    [self test];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:YES];
 }
 
 - (void)test {
@@ -268,8 +269,10 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
         _balanceView.layer.borderColor = color.CGColor;
         _balanceView.backgroundColor = [color colorWithAlphaComponent:0.1];
         _balanceValueLabel.textColor = color;
+        _balanceInfoLabel.textColor = color;
         for (UIButton *button in _balanceViewButtons) {
             [button setTitleColor:color forState:UIControlStateNormal];
+            [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
         }
     }];
 }
@@ -286,17 +289,14 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     header.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 64;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EcardTableViewCell *cell = nil;
-    if (indexPath.section == 0) {
-        cell = [tableView dequeueReusableCellWithIdentifier:kEcardServiceCellId];
-        if (!cell) {
-            cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardServiceCellId];
-        }
-        
-    }
     return cell;
 }
 
@@ -304,8 +304,27 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     return 0;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"今日消费";
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    CustomSectionHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kEcardCustomHeaderViewId];
+    if (!headerView) {
+        headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kEcardCustomHeaderViewId];
+    }
+    
+    headerView.section = section;
+    headerView.titleLabel.text = @"今日消费";
+//    [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
+    [headerView setPerformActionBlock:^(NSInteger section) {
+        switch (section) {
+            case 0:
+                NSLog(@"more");
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    
+    return headerView;
 }
 
 #pragma mark - Getter

@@ -8,8 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^CustomSectionHeaderFooterBlock)(NSInteger section);
+typedef void(^CustomSectionHeaderFooterPerformActionBlock)(NSInteger section);
 
 @interface CustomSectionHeaderFooterView : UITableViewHeaderFooterView
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIButton *actionButton;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, assign) NSInteger section;
+
+- (void)setPerformActionBlock:(CustomSectionHeaderFooterPerformActionBlock)performActionBlock;
 
 @end

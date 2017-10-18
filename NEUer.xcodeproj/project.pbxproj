@@ -23,6 +23,7 @@
 		5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7CD1F85DD2D00BBFC28 /* NSURL+JHCategory.m */; };
 		5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD42F1F96485C00B1EA2C /* EcardMyViewController.m */; };
 		5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */; };
+		5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
@@ -142,6 +143,8 @@
 		5C5FD42F1F96485C00B1EA2C /* EcardMyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardMyViewController.m; sourceTree = "<group>"; };
 		5C5FD4321F97468300B1EA2C /* CustomSectionHeaderFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomSectionHeaderFooterView.h; sourceTree = "<group>"; };
 		5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomSectionHeaderFooterView.m; sourceTree = "<group>"; };
+		5C5FD4361F974CAC00B1EA2C /* SpringCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpringCollectionViewLayout.h; sourceTree = "<group>"; };
+		5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpringCollectionViewLayout.m; sourceTree = "<group>"; };
 		5C6D59321F734B0600E7654B /* CalendarLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarLogic.h; sourceTree = "<group>"; };
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
@@ -534,6 +537,15 @@
 			path = CustomSectionHeader;
 			sourceTree = "<group>";
 		};
+		5C5FD4351F974C7500B1EA2C /* SpringCollectionViewLayout */ = {
+			isa = PBXGroup;
+			children = (
+				5C5FD4361F974CAC00B1EA2C /* SpringCollectionViewLayout.h */,
+				5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */,
+			);
+			path = SpringCollectionViewLayout;
+			sourceTree = "<group>";
+		};
 		5C6D59311F734AF700E7654B /* CalendarLogic */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,6 +603,7 @@
 		5C7B8EDB1F8C64370088FC60 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				5C5FD4351F974C7500B1EA2C /* SpringCollectionViewLayout */,
 				5C5FD4311F97454F00B1EA2C /* CustomSectionHeader */,
 				5C7B8EDC1F8C644A0088FC60 /* NetworkStatusView */,
 			);
@@ -1528,6 +1541,7 @@
 				5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
+				5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
