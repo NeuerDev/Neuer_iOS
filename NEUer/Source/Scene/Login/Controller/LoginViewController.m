@@ -427,10 +427,6 @@ static LoginViewController *_sigletonLoginViewController = nil;
 }
 
 - (void)didClickedLoginBtn {
-
-//    临时的数据
-    [[NSUserDefaults standardUserDefaults] setObject:self.accountTF.text forKey:@"account"];
-    [[NSUserDefaults standardUserDefaults] setObject:self.passwordTF.text forKey:@"password"];
     
     switch (self.infoViewType) {
         case 1:
@@ -466,7 +462,13 @@ static LoginViewController *_sigletonLoginViewController = nil;
     }
     
 //    [self.hud showAnimated:YES];
-        [MBProgressHUD showHUDAddedTo:self.loginBtn animated:YES];
+    self.hud = [MBProgressHUD showHUDAddedTo:self.loginBtn animated:YES];
+    _hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
+    _hud.bezelView.color = [UIColor colorWithWhite:0.f alpha:0];
+    _hud.contentColor = [UIColor whiteColor];
+    [self.loginBtn setTitle:@"" forState:UIControlStateNormal];
+    
+//    延迟三秒执行代理方法，不然无法返回正确的值
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
             if ([self.delegate respondsToSelector:@selector(didSuccessLogin)]) {
@@ -475,9 +477,16 @@ static LoginViewController *_sigletonLoginViewController = nil;
                 if (isLogin) {
                     NSLog(@"登录成功");
                     //                [self.hud hideAnimated:YES];
-                    [MBProgressHUD hideHUDForView:self.loginBtn animated:YES];
+                    [self.hud hideAnimated:YES];
                     
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    
+                    //    临时的数据,只有登录成功才存储数据
+                    [[NSUserDefaults standardUserDefaults] setObject:self.accountTF.text forKey:@"account"];
+                    [[NSUserDefaults standardUserDefaults] setObject:self.passwordTF.text forKey:@"password"];
+                    
+                    [self dismissViewControllerAnimated:YES completion:^{
+                        [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+                    }];
                     
                 } else {
                     NSLog(@"登录失败");
@@ -485,6 +494,7 @@ static LoginViewController *_sigletonLoginViewController = nil;
                     
                     [MBProgressHUD hideHUDForView:self.loginBtn animated:YES];
                     [self showAlertWithMessage:@"登录失败！请检查您的账号密码输入是否正确"];
+                    [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
                 }
             } else {
                 NSLog(@"delegate = %@", self.delegate);
@@ -634,16 +644,6 @@ static LoginViewController *_sigletonLoginViewController = nil;
         _interactiveDismiss.interactive = YES;
     }
     return _interactiveDismiss;
-}
-
-- (MBProgressHUD *)hud {
-    if (!_hud) {
-        _hud = [[MBProgressHUD alloc] initWithView:self.loginBtn];
-        _hud.mode = MBProgressHUDModeCustomView;
-//        _hud.backgroundColor = [UIColor clearColor];
-        [self.loginBtn addSubview:_hud];
-    }
-    return _hud;
 }
 
 @end
