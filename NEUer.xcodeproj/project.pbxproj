@@ -25,6 +25,7 @@
 		5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */; };
 		5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */; };
 		5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */; };
+		5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
@@ -148,6 +149,8 @@
 		5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpringCollectionViewLayout.m; sourceTree = "<group>"; };
 		5C5FD43A1F975CBF00B1EA2C /* EcardCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardCenter.h; sourceTree = "<group>"; };
 		5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardCenter.m; sourceTree = "<group>"; };
+		5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardTableViewCell.h; sourceTree = "<group>"; };
+		5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardTableViewCell.m; sourceTree = "<group>"; };
 		5C6D59321F734B0600E7654B /* CalendarLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarLogic.h; sourceTree = "<group>"; };
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
@@ -363,6 +366,7 @@
 		5C0844C41F7B94BB00C69261 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -557,6 +561,15 @@
 				5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */,
 			);
 			path = Ecard;
+			sourceTree = "<group>";
+		};
+		5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */,
+				5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */,
+			);
+			path = EcardTableViewCell;
 			sourceTree = "<group>";
 		};
 		5C6D59311F734AF700E7654B /* CalendarLogic */ = {
@@ -1534,6 +1547,7 @@
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
+				5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,

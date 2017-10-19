@@ -10,16 +10,22 @@
 #import "EcardModel.h"
 
 @interface EcardMyViewController ()
+@property (nonatomic, copy) EcardInfoBean *infoBean;
+@property (nonatomic, copy) EcardModel *ecardModel;
+
 @property (nonatomic, strong) UIVisualEffectView *blurView;
 @property (nonatomic, strong) UIImageView *cardImageView;
 @property (nonatomic, strong) UIImageView *cardAvatarImageView;
 @property (nonatomic, strong) UILabel *cardInfoLabel;
 
+@property (nonatomic, strong) UIActivityIndicatorView *cardAvatarIndicator;
 @property (nonatomic, strong) UILabel *tipsLabel;
 
 @end
 
 @implementation EcardMyViewController
+
+#pragma mark - Life Circle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,6 +47,22 @@
         [self.view layoutIfNeeded];
         _cardImageView.alpha = 1;
     } completion:nil];
+    
+    WS(ws);
+    [self.ecardModel fetchAvatarComplete:^(BOOL success, NSError *error) {
+        if (success) {
+            ws.cardAvatarImageView.image = ws.infoBean.image;
+        }
+    }];
+    
+    NSString *string = [NSString stringWithFormat:@"姓   名: %@\n学   号: %@\n性   别: %@\n学   院: %@\n专   业: %@",
+                        self.infoBean.name,
+                        self.infoBean.number,
+                        self.infoBean.sex,
+                        self.infoBean.campus,
+                        self.infoBean.major];
+    NSDictionary<NSAttributedStringKey, id> *attributes = @{NSTextEffectAttributeName:NSTextEffectLetterpressStyle,NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]};
+    _cardInfoLabel.attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
 }
 
 - (void)initConstraints {
@@ -53,6 +75,10 @@
         make.centerY.equalTo(self.view).with.offset(270);
         make.width.mas_equalTo(@(SCREEN_WIDTH_ACTUAL-32));
         make.height.equalTo(self.cardImageView.mas_width).multipliedBy(431.0f/686.0f);
+    }];
+    
+    [self.cardAvatarIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.cardAvatarImageView);
     }];
     
     [self.cardAvatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,7 +142,7 @@
 
 - (UIVisualEffectView *)blurView {
     if (!_blurView) {
-        _blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+        _blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent]];
         [_blurView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onBlurViewTapped:)]];
         [self.view addSubview:_blurView];
     }
@@ -141,7 +167,7 @@
     if (!_cardAvatarImageView) {
         _cardAvatarImageView = [[UIImageView alloc] init];
         _cardAvatarImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _cardAvatarImageView.image = _infoBean.image;
+        _cardAvatarImageView.image = self.infoBean.image;
         [self.cardImageView addSubview:_cardAvatarImageView];
     }
     
@@ -153,12 +179,7 @@
         _cardInfoLabel = [[UILabel alloc] init];
         _cardInfoLabel.numberOfLines = 0;
         
-        NSString *string = [NSString stringWithFormat:@"姓   名: %@\n学   号: %@\n性   别: %@\n学   院: %@\n专   业: %@",
-                            _infoBean.name,
-                            _infoBean.number,
-                            _infoBean.sex,
-                            _infoBean.campus,
-                            _infoBean.major];
+        NSString *string = @"姓   名: \n学   号: \n性   别: \n学   院: \n专   业: ";
         NSDictionary<NSAttributedStringKey, id> *attributes = @{NSTextEffectAttributeName:NSTextEffectLetterpressStyle,NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]};
         _cardInfoLabel.attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
         [self.cardImageView addSubview:_cardInfoLabel];
@@ -167,11 +188,21 @@
     return _cardInfoLabel;
 }
 
+- (UIActivityIndicatorView *)cardAvatarIndicator {
+    if (!_cardAvatarIndicator) {
+        _cardAvatarIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_cardAvatarIndicator startAnimating];
+        [self.cardImageView addSubview:_cardAvatarIndicator];
+    }
+    
+    return _cardAvatarIndicator;
+}
+
 - (UILabel *)tipsLabel {
     if (!_tipsLabel) {
         _tipsLabel = [[UILabel alloc] init];
         _tipsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _tipsLabel.textColor = [UIColor whiteColor];
+        _tipsLabel.textColor = [UIColor blackColor];
         _tipsLabel.textAlignment = NSTextAlignmentCenter;
         _tipsLabel.alpha = 0.7;
         _tipsLabel.text = @"长按校园卡保存到相册";
@@ -179,6 +210,21 @@
     }
     
     return _tipsLabel;
+}
+
+- (EcardInfoBean *)infoBean {
+    if (!_infoBean) {
+        _infoBean = self.ecardModel.info;
+    }
+    return _infoBean;
+}
+
+- (EcardModel *)ecardModel {
+    if (!_ecardModel) {
+        _ecardModel = [[EcardCenter defaultCenter] currentModel];
+    }
+    
+    return _ecardModel;
 }
 
 @end

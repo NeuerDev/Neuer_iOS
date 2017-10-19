@@ -144,7 +144,8 @@
                 } else if ([string hasPrefix:@"姓名："]) {
                     ws.info.name = [string substringFromIndex:@"姓名：".length];
                 } else if ([string hasPrefix:@"主钱包余额："]) {
-                    ws.info.balance = [string substringFromIndex:@"主钱包余额：".length];
+                    NSString *balance = [string substringFromIndex:@"主钱包余额：".length];
+                    ws.info.balance = [balance stringByReplacingOccurrencesOfString:@"元" withString:@""];
                 } else if ([string hasPrefix:@"性别："]) {
                     ws.info.sex = [string substringFromIndex:@"性别：".length];
                 } else if ([string hasPrefix:@"补助余额："]) {
@@ -223,6 +224,30 @@
     info.name = user.realName;
     info.number = user.number;
     return info;
+}
+
+- (BOOL)enable {
+    return [_state isEqualToString:@"正常卡"];
+}
+
+- (EcardInfoBalanceLevel)balanceLevel {
+    EcardInfoBalanceLevel balanceLevel = EcardInfoBalanceLevelUnknown;
+    if (_balance) {
+        float balance = [_balance floatValue];
+        if (balance>50) {
+            balanceLevel = EcardInfoBalanceLevelEnough;
+        } else if (balance>20) {
+            balanceLevel = EcardInfoBalanceLevelNotEnough;
+        } else {
+            balanceLevel = EcardInfoBalanceLevelNoMoney;
+        }
+    }
+    
+    return balanceLevel;
+}
+
+- (NSString *)lastUpdate {
+    return @"刚刚更新";
 }
 
 @end;

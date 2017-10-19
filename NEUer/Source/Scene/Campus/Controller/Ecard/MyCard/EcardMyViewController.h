@@ -11,5 +11,5 @@
 @class EcardInfoBean;
 
 @interface EcardMyViewController : JHBaseViewController
-@property (nonatomic, copy) EcardInfoBean *infoBean;
+
 @end

@@ -8,6 +8,7 @@
 
 #import "EcardMainViewController.h"
 #import "EcardMyViewController.h"
+#import "EcardTableViewCell.h"
 #import "EcardModel.h"
 
 #import "CustomSectionHeaderFooterView.h"
@@ -15,133 +16,11 @@
 static NSString * const kEcardCustomHeaderViewId = @"kEcardCustomHeaderViewId";
 static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellId";
 
-@interface EcardTableViewCell : UITableViewCell
-@property (nonatomic, strong) UIImageView *iconImageView;
-@property (nonatomic, strong) UIView *infoView;
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UILabel *moneyLabel;
-
-@property (nonatomic, strong) EcardConsumeBean *consumeBean;
-
-@end
-
-@implementation EcardTableViewCell
-
-#pragma mark - Init Methods
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self initConstraints];
-        
-        self.separatorInset = UIEdgeInsetsMake(0, 72, 0, 16);
-        self.backgroundColor = [UIColor whiteColor];
-    }
-    
-    return self;
-}
-
-- (void)initConstraints {
-    [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.and.width.mas_equalTo(@(48));
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView.mas_left).with.offset(16);
-    }];
-    
-    [self.infoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImageView.mas_right).with.offset(8);
-        make.centerY.equalTo(self.contentView);
-        make.right.equalTo(self.contentView.mas_right).with.offset(-16);
-        make.height.mas_greaterThanOrEqualTo(self.iconImageView.mas_height).multipliedBy(0.8).priorityHigh();
-    }];
-    
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.and.left.equalTo(self.infoView);
-    }];
-    
-    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_greaterThanOrEqualTo(self.titleLabel.mas_bottom).priorityLow();
-        make.left.and.bottom.equalTo(self.infoView);
-    }];
-    
-    [self.moneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.and.centerY.equalTo(self.infoView);
-    }];
-}
-
-#pragma mark - Setter
-
-- (void)setConsumeBean:(EcardConsumeBean *)consumeBean {
-    _consumeBean = consumeBean;
-    _titleLabel.text = consumeBean.title;
-    _timeLabel.text = consumeBean.time;
-    _moneyLabel.text = [NSString stringWithFormat:@"%.2f", consumeBean.cost.floatValue];
-    
-    _iconImageView.image = [UIImage imageNamed:@[@"", @"ecard_bath", @"ecard_food"][consumeBean.consumeType]];
-//    _titleLabel.textColor = [UIColor colorWithHexStr:@[@"#FFFFFF", @"#91BBF2", @"#DE8753"][consumeBean.consumeType]];
-//    _moneyLabel.textColor = [UIColor colorWithHexStr:@[@"#FFFFFF", @"#91BBF2", @"#DE8753"][consumeBean.consumeType]];
-}
-
-#pragma mark - Getter
-
-- (UIImageView *)iconImageView {
-    if (!_iconImageView) {
-        _iconImageView = [[UIImageView alloc] init];
-        _iconImageView.contentMode = UIViewContentModeCenter;
-        [self.contentView addSubview:_iconImageView];
-    }
-    
-    return _iconImageView;
-}
-
-- (UIView *)infoView {
-    if (!_infoView) {
-        _infoView = [[UIView alloc] init];
-        [self.contentView addSubview:_infoView];
-    }
-    
-    return _infoView;
-}
-
-- (UILabel *)titleLabel {
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.numberOfLines = 0;
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        [self.infoView addSubview:_titleLabel];
-    }
-    
-    return _titleLabel;
-}
-
-- (UILabel *)timeLabel {
-    if (!_timeLabel) {
-        _timeLabel = [[UILabel alloc] init];
-        _timeLabel.numberOfLines = 0;
-        _timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _timeLabel.textColor = [UIColor lightGrayColor];
-        [self.infoView addSubview:_timeLabel];
-    }
-    
-    return _timeLabel;
-}
-
-- (UILabel *)moneyLabel {
-    if (!_moneyLabel) {
-        _moneyLabel = [[UILabel alloc] init];
-        _moneyLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-        [self.infoView addSubview:_moneyLabel];
-    }
-    
-    return _moneyLabel;
-}
-
-@end
-
 @interface EcardMainViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITextField *textField;
 
 @property (nonatomic, strong) EcardModel *ecardModel;
+@property (nonatomic, strong) EcardInfoBean *infoBean;
 
 @property (nonatomic, strong) UIView *balanceView;
 @property (nonatomic, strong) UILabel *balanceValueLabel;
@@ -152,7 +31,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UITableView *cardTableView;
 
-@property (nonatomic, strong) UIBarButtonItem *changePasswordButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
 
 @property (nonatomic, strong) NSArray<NSDictionary *> *sectionDataArray;
 @end
@@ -176,11 +55,11 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     
     self.title = @"校卡中心";
     self.view.backgroundColor = [UIColor whiteColor];
-//    self.navigationItem.rightBarButtonItem = self.changePasswordButtonItem;
+    self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
 //    self.cardTableView.refreshControl = self.refreshControl;
     [self initConstraints];
     [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
-//    [self test];
+    [self test];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -200,11 +79,25 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 200, 50)];
     button.backgroundColor = [UIColor beautyGreen];
     [button setTitle:@"login" forState:UIControlStateNormal];
-//    [button addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
     [self.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
         imageView.image = verifyImage;
+    }];
+}
+
+- (void)login {
+    WS(ws);
+    [self.ecardModel authorUser:@"20144786" password:@"951202" verifyCode:_textField.text complete:^(BOOL success, NSError *error) {
+        if (success) {
+            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"success query info");
+                    ws.infoBean = ws.ecardModel.info;
+                }
+            }];
+        }
     }];
 }
 
@@ -263,6 +156,19 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 
 - (void)reportLost {
     
+}
+
+- (void)recharge {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"wx2654d9155d70a468://"] options:@{} completionHandler:^(BOOL success) {
+        if (!success) {
+            NSLog(@"assssddd");
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"打开中国建设银行App失败" message:@"请检查是否已正确安装\"中国建设银行App\"" preferredStyle:UIAlertControllerStyleAlert];
+            [alertVC addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:alertVC animated:YES completion:nil];
+            });
+        }
+    }];
 }
 
 - (void)beginRefreshing {
@@ -370,6 +276,28 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     return headerView;
 }
 
+#pragma mark - Setter
+
+- (void)setInfoBean:(EcardInfoBean *)infoBean {
+    _infoBean = infoBean;
+    UIColor *mainColor = [UIColor colorWithHexStr:@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"][infoBean.balanceLevel]];
+    
+    if (infoBean) {
+        [_balanceView.gestureRecognizers lastObject].enabled = YES;
+        _balanceValueLabel.text = infoBean.balance;
+        
+        if (infoBean.enable) {
+            _balanceInfoLabel.text = [NSString stringWithFormat:@"%@ %@", @[@"",@"余额充足",@"余额偏低",@"尽快充值"][infoBean.balanceLevel], infoBean.lastUpdate];
+        } else {
+            _balanceInfoLabel.text = @"校卡不可用";
+        }
+    } else {
+        
+    }
+    
+    [self setMainColor:mainColor animated:NO];
+}
+
 #pragma mark - Getter
 
 - (EcardModel *)ecardModel {
@@ -389,6 +317,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
         _balanceView.layer.borderColor = [UIColor grayColor].CGColor;
         _balanceView.userInteractionEnabled = YES;
         [_balanceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyCard)]];
+        [_balanceView.gestureRecognizers lastObject].enabled = NO;
     }
     
     return _balanceView;
@@ -398,8 +327,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     if (!_balanceValueLabel) {
         _balanceValueLabel = [[UILabel alloc] init];
         _balanceValueLabel.font = [UIFont systemFontOfSize:48.0 weight:UIFontWeightLight];
-        _balanceValueLabel.text = @"123.45";
-        _balanceValueLabel.textColor = [UIColor colorWithHexStr:@"#64B74E"];
+        _balanceValueLabel.text = @"0.00";
         [self.balanceView addSubview:_balanceValueLabel];
     }
     
@@ -410,8 +338,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     if (!_balanceInfoLabel) {
         _balanceInfoLabel = [[UILabel alloc] init];
         _balanceInfoLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _balanceInfoLabel.text = @"余额充足 今天09:35更新";
-        _balanceInfoLabel.textColor = [UIColor colorWithHexStr:@"#64B74E"];
+        _balanceInfoLabel.text = @"未获取";
         [self.balanceView addSubview:_balanceInfoLabel];
     }
     
@@ -461,12 +388,12 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     return _sectionDataArray;
 }
 
-- (UIBarButtonItem *)changePasswordButtonItem {
-    if (!_changePasswordButtonItem) {
-        _changePasswordButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"修改密码" style:UIBarButtonItemStylePlain target:self action:@selector(changePassword)];
+- (UIBarButtonItem *)rechargeButtonItem {
+    if (!_rechargeButtonItem) {
+        _rechargeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"充值" style:UIBarButtonItemStylePlain target:self action:@selector(recharge)];
     }
     
-    return _changePasswordButtonItem;
+    return _rechargeButtonItem;
 }
 
 - (NSArray<UIButton *> *)balanceViewButtons {

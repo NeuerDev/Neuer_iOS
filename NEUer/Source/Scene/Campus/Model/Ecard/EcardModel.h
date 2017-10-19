@@ -14,6 +14,13 @@
 typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message);
 typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 
+typedef NS_ENUM(NSUInteger, EcardInfoBalanceLevel) {
+    EcardInfoBalanceLevelUnknown,
+    EcardInfoBalanceLevelEnough,
+    EcardInfoBalanceLevelNotEnough,
+    EcardInfoBalanceLevelNoMoney,
+};
+
 @interface EcardInfoBean : NSObject
 
 @property (nonatomic, strong) UIImage *image;
@@ -26,6 +33,9 @@ typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *campus;
 @property (nonatomic, strong) NSString *major;
+@property (nonatomic, strong) NSString *lastUpdate;
+@property (nonatomic, assign) BOOL enable;                          // 是否正常卡 否为挂失
+@property (nonatomic, assign) EcardInfoBalanceLevel balanceLevel;   // 余额级别 充足、偏低、警报
 
 + (EcardInfoBean *)infoWithUser:(User *)user;
 
