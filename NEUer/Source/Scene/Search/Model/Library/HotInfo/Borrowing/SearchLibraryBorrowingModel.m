@@ -16,7 +16,6 @@
 #pragma mark - Public Methods
 - (void)search {
     _resultArray = [NSMutableArray array];
-    
     _languageType = @"ALL"; // ALL:全部 01:中文文献库 02:外文文献库
     _sortType = @"ALL";     // ALL:全部 A:马列主义、毛泽东思想、邓小平理论 B:宗教、哲学 C:社会科学总论 D:政治、法律 E:军事 F:经济 G:文化、科学、教育、体育
                             // H:语言、文字 I:文学 J:艺术 K:历史、地理 N:自然科学总论 O:数理科学与化学 O2:数学 O3:力学 O4:物理学1 O5:物理学2 O6:化学
@@ -37,13 +36,12 @@
 
 #pragma mark - JHRequestDelegate
 - (void)requestDidSuccess:(JHRequest *)request {
-    
     NSData *htmlData = request.response.data;
-    [_resultArray addObjectsFromArray:[self resultArrayFromHtmlData:htmlData]];
-    for (SearchLibraryBorrowingBean *bean in _resultArray) {
-        NSLog(@"%@ - %@ - %@",bean.title,bean.author,bean.count);
-    }
-
+    _resultArray = [self resultArrayFromHtmlData:htmlData];
+//    [_resultArray addObjectsFromArray:[self resultArrayFromHtmlData:htmlData]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_delegate searchDidSuccess];
+    });
 }
 
 - (void)requestDidFail:(JHRequest *)request {
@@ -52,7 +50,7 @@
 }
 
 #pragma mark - Private Methods
-- (NSArray<SearchLibraryBorrowingBean *> *)resultArrayFromHtmlData:(NSData *)htmlData {
+- (NSMutableArray<SearchLibraryBorrowingBean *> *)resultArrayFromHtmlData:(NSData *)htmlData {
     TFHpple *doc = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements = [doc searchWithXPathQuery:@"//a[@target='_blank']"];
     NSMutableArray *array = [NSMutableArray array];

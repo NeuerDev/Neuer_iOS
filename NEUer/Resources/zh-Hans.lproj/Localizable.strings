@@ -29,6 +29,19 @@
 "HomeTabBarItemTitle" = "今天";
 "HomeNavigationBarTitle" = "今天";
 
+/*
+ Today Television
+ */
+"TelevisionChannelSearchBarPlaceholder" = "搜索";
+
+
+/*
+ Campus
+ */
+
+"CampusTabBarItemTitle" = "校园";
+"CampusNavigationBarTitle" = "校园";
+
 
 /*
  Search

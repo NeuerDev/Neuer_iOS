@@ -20,6 +20,7 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
 @interface SearchListComponent() <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *actionButton;
+@property (nonatomic, strong) UIButton *selectBtn;
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UIView *view;
@@ -66,6 +67,24 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
     return _strings.count;
 }
 
+#pragma mark - Public Methods
+- (void)showSelectButton {
+    [_selectBtn setHidden:NO];
+}
+
+#pragma mark - Private Methods
+- (void)delegateMethodsClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(component:willPerformAction:)]) {
+        [self.delegate component:self willPerformAction:_actionButton.titleLabel.text];
+    }
+}
+
+- (void)selectClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(component:willPerformAction:)]) {
+        [self.delegate component:self willPerformAction:_selectBtn.titleLabel.text];
+    }
+}
+
 #pragma mark - Getter
 
 - (UIView *)view {
@@ -74,6 +93,7 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
         
         [_view addSubview:self.titleLabel];
         [_view addSubview:self.actionButton];
+        [_view addSubview:self.selectBtn];
         [_view addSubview:self.tableView];
         
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -86,6 +106,11 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
             make.top.equalTo(_view).with.offset(kSearchListContentOffset);
             make.right.equalTo(_view.mas_right).with.offset(-kSearchListContentOffset);
             make.height.mas_equalTo(kSearchListHeaderHeight);
+        }];
+        
+        [_selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.and.width.and.height.equalTo(_actionButton);
+            make.right.equalTo(_actionButton.mas_left).with.offset(-10);
         }];
         
         [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -128,10 +153,23 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
         [_actionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
-        _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
+        [_actionButton addTarget:self action:@selector(delegateMethodsClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _actionButton;
+}
+
+- (UIButton *)selectBtn {
+    if (!_selectBtn) {
+        _selectBtn = [[UIButton alloc] init];
+        [_selectBtn setHidden:YES];
+        [_selectBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        [_selectBtn setTitle:@"类型" forState:UIControlStateNormal];
+        _selectBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
+        [_selectBtn addTarget:self action:@selector(selectClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+   return _selectBtn;
 }
 
 #pragma mark - Setter

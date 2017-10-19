@@ -7,19 +7,44 @@
 	<key>object_list</key>
 	<array>
 		<dict>
+			<key>host</key>
+			<string>go</string>
 			<key>class</key>
-			<string>URLRouter</string>
-			<key>name</key>
-			<string>url_router</string>
+			<string>TelevisionWallViewController</string>
+			<key>regex</key>
+			<string>/tv</string>
 		</dict>
-	</array>
-	<key>url_handler_list</key>
-	<array>
 		<dict>
-			<key>exact_url</key>
-			<string>go/library</string>
-			<key>object</key>
-			<string>url_router</string>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
+			<string>SearchLibraryViewController</string>
+			<key>regex</key>
+			<string>/lib</string>
+		</dict>
+		<dict>
+			<key>host</key>
+			<string>handle</string>
+			<key>class</key>
+			<string>GatewayViewController</string>
+			<key>regex</key>
+			<string>/ipgw</string>
+		</dict>
+		<dict>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
+			<string>EcardViewController</string>
+			<key>regex</key>
+			<string>/ecard</string>
+		</dict>
+		<dict>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
+			<string>AaoViewController</string>
+			<key>regex</key>
+			<string>/aao</string>
 		</dict>
 	</array>
 </dict>

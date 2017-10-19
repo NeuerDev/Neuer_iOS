@@ -9,6 +9,7 @@
 #import "LibraryBookDetailModel.h"
 
 @interface LibraryBookDetailModel () <JHRequestDelegate>
+@property (nonatomic, strong) LibraryBookDetailBean *bean;
 
 @end
 
@@ -16,7 +17,6 @@
 
 #pragma mark - Public Methods
 - (void)showDetail {
-    
     _local_base = @"NEU01";
     _bookNumber = @"1413";
     _con_ing = @"chi";
@@ -32,11 +32,11 @@
 
 #pragma mark - JHRequestDelegate
 - (void)requestDidSuccess:(JHRequest *)request {
-    
     NSData *htmlData = request.response.data;
     TFHpple *hpple = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray<TFHppleElement *> *tdElements = [hpple searchWithXPathQuery:@"//td/a"];
     
+    _bean = [[LibraryBookDetailBean alloc] init];
     _bean.bookNumber = _bookNumber;
     _bean.ISBN = [tdElements[0] text];
     _bean.languageType = _con_ing;

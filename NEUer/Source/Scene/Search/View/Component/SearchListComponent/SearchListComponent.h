@@ -11,7 +11,7 @@
 
 @class SearchListComponent;
 
-@protocol SearchListComponentDelegate
+@protocol SearchListComponentDelegate <NSObject>
 
 @required
 - (void)component:(SearchListComponent *)component didSelectedString:(NSString *)string;
@@ -28,4 +28,5 @@
 
 - (instancetype)initWithTitle:(NSString *)title action:(NSString *)action;
 - (UIView *)view;
+- (void)showSelectButton;
 @end

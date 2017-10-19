@@ -104,6 +104,7 @@ static JHServer *_instance;
 
 - (void)cancelRequest:(JHRequest *)request {
     request.delegate = nil;
+    request.completeBlock = nil;
     [_requestPool removeRequest:request];
 }
 
@@ -114,15 +115,35 @@ static JHServer *_instance;
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:request.url];
     urlRequest.HTTPMethod = request.method;
     urlRequest.allHTTPHeaderFields = request.headerFields;
+    urlRequest.timeoutInterval = request.timeoutInterval;
+    NSMutableString *bodyStr = [[NSMutableString alloc] init];
+    for (NSString *key in request.params) {
+        if (bodyStr.length==0) {
+            [bodyStr appendFormat:@"%@=%@", key, request.params[key]?:@""];
+        } else {
+            [bodyStr appendFormat:@"&%@=%@", key, request.params[key]?:@""];
+        }
+    }
+    urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        request.error = error;
         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
             request.response = [[JHResponse alloc] initWithUrl:response.URL statusCode:((NSHTTPURLResponse *)response).statusCode headerFields:((NSHTTPURLResponse *)response).allHeaderFields data:data];
+            
+            if (request.completeBlock) {
+                request.completeBlock(request);
+            }
+            
             if (request.response.success) {
                 [self.requestPool removeRequest:request];
                 [request.delegate requestDidSuccess:request];
             } else {
                 [self.requestPool removeRequest:request];
                 [request.delegate requestDidFail:request];
+            }
+        } else {
+            if (request.completeBlock) {
+                request.completeBlock(request);
             }
         }
     }];

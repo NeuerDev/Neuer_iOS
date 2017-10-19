@@ -7,14 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-@class LibraryBookDetailBean;
 
 @interface LibraryBookDetailModel : NSObject
-
 @property (nonatomic, strong) NSString *local_base;
 @property (nonatomic, strong) NSString *bookNumber;
 @property (nonatomic, strong) NSString *con_ing;
-@property (nonatomic, strong) LibraryBookDetailBean *bean;
+
 
 - (void)showDetail;
 
@@ -22,7 +20,6 @@
 
 
 @interface LibraryBookDetailBean : NSObject
-
 @property (nonatomic, strong) NSString *bookNumber;
 @property (nonatomic, strong) NSString *ISBN;
 @property (nonatomic, strong) NSString *languageType;

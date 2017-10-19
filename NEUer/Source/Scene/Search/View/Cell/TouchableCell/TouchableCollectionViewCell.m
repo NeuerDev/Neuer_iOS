@@ -44,11 +44,12 @@
 #pragma mark- Private
 
 - (void)goDeep {
-    [UIView animateWithDuration:1.0f/4.0f
+    [self.layer removeAllAnimations];
+    [UIView animateWithDuration:1.0f/3.0f
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent
                      animations:^{
-                         self.transform = CGAffineTransformMakeScale(0.95, 0.95);
+                         self.transform = CGAffineTransformMakeScale(0.97, 0.97);
     }
                      completion:^(BOOL finished) {
         
@@ -56,7 +57,8 @@
 }
 
 - (void)goBack {
-    [UIView animateWithDuration:1.0f/4.0f
+    [self.layer removeAllAnimations];
+    [UIView animateWithDuration:1.0f/3.0f
                           delay:0
                         options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent
                      animations:^{
