@@ -7,29 +7,29 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GatewayModel.h"
-
-//typedef NS_ENUM(NSInteger, LoginState) {
-//    LoginStateLogin,
-//    LoginStateLoginWithVerificationCode,
-//};
 
 typedef NS_OPTIONS(NSUInteger, LoginComponentInfoViewType) {
     LoginComponentInfoViewTypeDefault              = 1 << 0,
     LoginComponentInfoViewTypeIDCard               = 1 << 1,
     LoginComponentInfoViewTypeVerificationcode     = 1 << 2,
 };
+typedef NSString * LoginKey NS_EXTENSIBLE_STRING_ENUM;
 
 @protocol LoginViewControllerDelegate <NSObject>
 
 @required
-- (void)personalInformationArray:(NSArray <NSString *>*)info withloginInfoViewType:(LoginComponentInfoViewType)infoViewType;
-- (BOOL)didSuccessLogin;
 
-@optional
-- (id<UIViewControllerInteractiveTransitioning>)interactiveTransitioningPresent;
-//自动填充验证码
-- (NSString *)setUpWithVerificationCode;
+/**
+ 将个人信息传递给model
+ @prama info : 信息
+ @prama infoViewType : 信息类型
+ */
+- (void)personalInformationWithDic:(NSDictionary <LoginKey, NSString *>*)info loginInfoViewType:(LoginComponentInfoViewType)infoViewType;
+
+/**
+ 登陆成功回调
+ */
+- (BOOL)didLoginSuccessed;
 
 @end
 
@@ -39,6 +39,6 @@ typedef NS_OPTIONS(NSUInteger, LoginComponentInfoViewType) {
 @property (weak, nonatomic) id<LoginViewControllerDelegate> delegate;
 
 + (instancetype)shareLoginViewController;
-- (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType withLoginVerificationCodeImg:(UIImage *)image;
+- (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType;
 
 @end

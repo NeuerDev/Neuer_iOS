@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
-		33124D1F1F971E5900F2DD6A /* LazyFadeInLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 33124D1E1F971E5900F2DD6A /* LazyFadeInLayer.m */; };
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
 		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
@@ -16,7 +15,6 @@
 		3344EFDB1F94B922001ED45E /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD91F94B922001ED45E /* LYTextField.m */; };
 		3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */; };
 		3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */; };
-		3354DAB41F90762500ACBDF3 /* UIView+LYCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAB31F90762500ACBDF3 /* UIView+LYCategory.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
@@ -115,9 +113,6 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
-		33124D1D1F971E5900F2DD6A /* LazyFadeInLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LazyFadeInLayer.h; sourceTree = "<group>"; };
-		33124D1E1F971E5900F2DD6A /* LazyFadeInLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LazyFadeInLayer.m; sourceTree = "<group>"; };
-		33124D211F971EE200F2DD6A /* LazyFadeIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LazyFadeIn.h; sourceTree = "<group>"; };
 		3344EFC01F93A241001ED45E /* LYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTool.h; sourceTree = "<group>"; };
 		3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoLb.h; sourceTree = "<group>"; };
 		3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoLb.m; sourceTree = "<group>"; };
@@ -132,8 +127,6 @@
 		3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYInteractiveTransition.m; sourceTree = "<group>"; };
 		3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYAnimatedTransitioning.h; sourceTree = "<group>"; };
 		3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYAnimatedTransitioning.m; sourceTree = "<group>"; };
-		3354DAB21F90762500ACBDF3 /* UIView+LYCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LYCategory.h"; sourceTree = "<group>"; };
-		3354DAB31F90762500ACBDF3 /* UIView+LYCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LYCategory.m"; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -289,16 +282,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		33124D1C1F971E5900F2DD6A /* GatewayCustomText */ = {
-			isa = PBXGroup;
-			children = (
-				33124D211F971EE200F2DD6A /* LazyFadeIn.h */,
-				33124D1D1F971E5900F2DD6A /* LazyFadeInLayer.h */,
-				33124D1E1F971E5900F2DD6A /* LazyFadeInLayer.m */,
-			);
-			path = GatewayCustomText;
-			sourceTree = "<group>";
-		};
 		3344EFBA1F939B22001ED45E /* Gateway */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,7 +302,6 @@
 		3344EFC81F94883D001ED45E /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				33124D1C1F971E5900F2DD6A /* GatewayCustomText */,
 				3344EFCD1F94895A001ED45E /* Info */,
 				3344EFC91F948864001ED45E /* GatewayInfoLb */,
 			);
@@ -380,15 +362,6 @@
 				3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */,
 			);
 			path = Transition;
-			sourceTree = "<group>";
-		};
-		3354DAB11F90761600ACBDF3 /* UIView+LYCategory */ = {
-			isa = PBXGroup;
-			children = (
-				3354DAB21F90762500ACBDF3 /* UIView+LYCategory.h */,
-				3354DAB31F90762500ACBDF3 /* UIView+LYCategory.m */,
-			);
-			path = "UIView+LYCategory";
 			sourceTree = "<group>";
 		};
 		33F88B801F8295620054B123 /* View */ = {
@@ -845,7 +818,6 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				3354DAB11F90761600ACBDF3 /* UIView+LYCategory */,
 				5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */,
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
 				5CBA6E971F77504000DFF055 /* UIImage+JHCategory */,
@@ -1609,7 +1581,6 @@
 				5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
-				3354DAB41F90762500ACBDF3 /* UIView+LYCategory.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
@@ -1636,7 +1607,6 @@
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
-				33124D1F1F971E5900F2DD6A /* LazyFadeInLayer.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
