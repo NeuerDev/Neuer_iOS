@@ -22,6 +22,9 @@
 @end
 
 @implementation GatewayModel
+{
+    NSUserDefaults *userDefault;
+}
 
 #pragma mark - Init Method
 - (instancetype)init {
@@ -34,26 +37,30 @@
 #pragma mark - Init data
 - (void)initData {
     _bean = [[GatewayBean alloc] init];
+    userDefault = [NSUserDefaults standardUserDefaults];
     [LoginViewController shareLoginViewController].delegate = self;
 }
 
 #pragma mark - LoginViewControllerDelegate
-- (void)personalInformationArray:(NSArray<NSString *> *)info withloginInfoViewType:(LoginComponentInfoViewType)infoViewType {
-    if (info.count >= 2) {
-        _account = [info objectAtIndex:0];
-        _password = [info objectAtIndex:1];
-    }
-    [self fetchGatewayData];
-}
 
-- (BOOL)didSuccessLogin {
-
+- (BOOL)didLoginSuccessed {
     return self.isLogin;
 }
 
+- (void)personalInformationWithDic:(NSDictionary<LoginKey,NSString *> *)info loginInfoViewType:(LoginComponentInfoViewType)infoViewType {
+    if (info.count >= 2) {
+        _account = [info valueForKey:@"account"];
+        _password = [info valueForKey:@"password"];
+       [self fetchGatewayData];
+    } else {
+        NSAssert(info.count < 2, @"数据传输错误！");
+    }
+}
+
+
 #pragma mark - load data
 - (BOOL)hasUser {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"account"] && [[NSUserDefaults standardUserDefaults] objectForKey:@"password"]) {
+    if ([userDefault objectForKey:@"account"] && [userDefault objectForKey:@"password"]) {
         return YES;
     } else {
         return NO;
@@ -63,8 +70,8 @@
 
 - (void)fetchGatewayData {
     
-    NSString *userName = _account != nil ? _account :[[NSUserDefaults standardUserDefaults] objectForKey:@"account"];
-    NSString *password = _password != nil ? _password : [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+    NSString *userName = _account != nil ? _account :[userDefault objectForKey:@"account"];
+    NSString *password = _password != nil ? _password : [userDefault objectForKey:@"password"];
     NSDictionary *param = @{
                             @"action":@"login",
                             @"ac_id":@"1",
@@ -112,8 +119,7 @@
                     [self setIsLogin:NO];
                 }
             } else {
-                NSArray *dataArr = [[NSArray alloc] init];
-                dataArr = [dataStr componentsSeparatedByString:@","];
+                NSArray *dataArr = [dataStr componentsSeparatedByString:@","];
                 if (dataArr.count >= 6) {
                     _bean.flow = dataArr[0];
                     _bean.time = dataArr[1];
@@ -145,7 +151,7 @@
                             @"action":@"auto_logout",
                             @"info":@"",
                             @"user_ip":self.bean.ip,
-                            @"username":[[NSUserDefaults standardUserDefaults] valueForKey:@"account"]
+                            @"username":[userDefault valueForKey:@"account"]
                             };
     WS(ws);
 

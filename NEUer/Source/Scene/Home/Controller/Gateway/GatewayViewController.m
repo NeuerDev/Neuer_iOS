@@ -8,11 +8,13 @@
 
 #import "GatewayViewController.h"
 #import "LoginViewController.h"
-#import "UIColor+JHCategory.h"
-#import "GatewayComponentInfoView.h"
-#import "LYTool.h"
-#import "UIView+LYCategory.h"
+
 #import "MBProgressHUD.h"
+
+#import "UIColor+JHCategory.h"
+#import "LYTool.h"
+
+#import "GatewayComponentInfoView.h"
 
 @interface GatewayViewController () <GatewayModelDelegate>
 @property (nonatomic, strong) UIVisualEffectView *blurView;
@@ -224,12 +226,21 @@
                     make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
                 }];
                 //  通知不会及时更新文字，手动更新loginBtn的文字
-                self.loginBtn.titleLabel.text = @"点击登录网关";
+                self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
                 self.loginBtn.enabled = YES;
                 [_logoutBtn setTitle:@"" forState:UIControlStateNormal];
                 _logoutBtn.enabled = NO;
+            } else if (_center.campusStatus == YES && _center.reachableStatus == YES){
+                [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.centerX.equalTo(self.gatewayStatusLb);
+                    make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
+                }];
+                //  通知不会及时更新文字，手动更新loginBtn的文字
+                self.loginBtn.enabled = YES;
+                self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
+                [_logoutBtn setTitle:@"" forState:UIControlStateNormal];
+                _logoutBtn.enabled = NO;
             } else {
-//                若未连接校园网WiFi，则登录和退出按钮都不显示
                 [self setLoginAndLogoutBtnHidden];
             }
         } completion:nil];
@@ -240,40 +251,36 @@
 
 - (void)fetchGatewayDataSuccess {
 //    在这个方法中处理登录成功信息
-    if ([self.model gatewayInfo]) {
-        _gatewayBean = [self.model gatewayInfo];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:4 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                [self.infoView setUpWithGatewayBean:self.gatewayBean];
-
-                [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.height.equalTo(self.view).multipliedBy(0.3);
-                    make.width.equalTo(self.view);
-                    make.centerX.equalTo(self.gatewayStatusLb);
-                    make.top.equalTo(self.cardView);
-                }];
-                [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.centerX.equalTo(self.gatewayStatusLb);
-                    make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
-                }];
-                
-//                通知不会及时更新文字，手动更新gatewayStatusLb和loginBtn的文字
-                self.gatewayStatusLb.text = @"正在使用校园网 Wi-Fi\n可访问外网";
-                self.loginBtn.titleLabel.text = @"切换校园网账号";
-                self.loginBtn.enabled = YES;
-                CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
-                self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
-                [_logoutBtn setTitle:@"点此退出校园网" forState:UIControlStateNormal];
-                _logoutBtn.enabled = YES;
-                [self.logoutBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.centerX.equalTo(self.gatewayStatusLb);
-                    make.top.equalTo(self.loginBtn.mas_bottom).with.offset(20);
-                }];
-            } completion:nil];
-        });
-    } else {
-        NSLog(@"赋值失败");
-    }
+    _gatewayBean = [self.model gatewayInfo];
+    dispatch_async(dispatch_get_main_queue(), ^{
+//        [UIView animateWithDuration:4 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [self.infoView setUpWithGatewayBean:self.gatewayBean];
+        
+        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.view).multipliedBy(0.3);
+            make.width.equalTo(self.view);
+            make.centerX.equalTo(self.gatewayStatusLb);
+            make.top.equalTo(self.cardView);
+        }];
+        [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.gatewayStatusLb);
+            make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
+        }];
+            
+        //                通知不会及时更新文字，手动更新gatewayStatusLb和loginBtn的文字
+        self.gatewayStatusLb.text = @"正在使用校园网 Wi-Fi\n可访问外网";
+        [self.loginBtn setTitle:@"切换校园网账号" forState: UIControlStateNormal];
+        self.loginBtn.enabled = YES;
+        CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
+        self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
+        [_logoutBtn setTitle:@"点此退出校园网" forState:UIControlStateNormal];
+        _logoutBtn.enabled = YES;
+        [self.logoutBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.gatewayStatusLb);
+            make.top.equalTo(self.loginBtn.mas_bottom).with.offset(20);
+        }];
+//        } completion:nil];
+    });
 }
 
 - (void)didGatewayLogoutSuccess:(BOOL)isLogout {
@@ -314,7 +321,7 @@
 
 - (void)presentNoVerificationCodeVC {
     LoginViewController *loginVC2 = [LoginViewController shareLoginViewController];
-    [loginVC2 setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault withLoginVerificationCodeImg:nil];
+    [loginVC2 setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault];
     [self presentViewController:loginVC2 animated:YES completion:nil];
 }
 

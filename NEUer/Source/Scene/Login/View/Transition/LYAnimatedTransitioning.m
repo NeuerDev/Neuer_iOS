@@ -7,7 +7,7 @@
 //
 
 #import "LYAnimatedTransitioning.h"
-#import "UIView+LYCategory.h"
+#import "UIView+JHCategory.h"
 #import "AppDelegate.h"
 
 @interface LYAnimatedTransitioning()
@@ -69,7 +69,7 @@
     NSTimeInterval duration = 0.5f;
 //    NSTimeInterval duration = [self transitionDuration:transitionContext];
     [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [toVC.view roundAt:UIRectCornerAllCorners withRadius:8.0];
+        [toVC.view roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8.0, 8.0)];
         //首先我们让vc2向上移动
         toVC.view.transform = CGAffineTransformMakeTranslation(0, -containerView.frame.size.height + 100);
         //然后让截图视图缩小一点即可
