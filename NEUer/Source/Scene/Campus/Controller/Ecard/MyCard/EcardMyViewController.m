@@ -173,7 +173,7 @@
         _tipsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         _tipsLabel.textColor = [UIColor whiteColor];
         _tipsLabel.textAlignment = NSTextAlignmentCenter;
-        _tipsLabel.alpha = 0.6;
+        _tipsLabel.alpha = 0.7;
         _tipsLabel.text = @"长按校园卡保存到相册";
         [self.view addSubview:_tipsLabel];
     }

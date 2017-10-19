@@ -31,6 +31,22 @@ typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 
 @end
 
+typedef NS_ENUM(NSUInteger, EcardConsumeType) {
+    EcardConsumeTypeUnknown,
+    EcardConsumeTypeBath,
+    EcardConsumeTypeFood,
+};
+
+@interface EcardConsumeBean : NSObject
+
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSNumber *cost;
+@property (nonatomic, strong) NSString *time;
+@property (nonatomic, strong) NSString *location;
+@property (nonatomic, assign) EcardConsumeType consumeType;
+
+@end
+
 @interface EcardModel : NSObject
 
 @property (nonatomic, strong) EcardInfoBean *info;

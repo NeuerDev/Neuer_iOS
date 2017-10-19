@@ -226,3 +226,7 @@
 }
 
 @end;
+
+@implementation EcardConsumeBean
+
+@end
