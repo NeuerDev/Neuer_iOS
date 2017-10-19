@@ -25,8 +25,18 @@
 @end
 
 @implementation GatewayComponentInfoView
+//{
+//    CGFloat topPosition;
+//}
 
 #pragma mark - Init
+//- (instancetype)initWithGatewayComponentInfo:(GatewayComponentInfoType)infoType withGatewayBean:(GatewayBean *)bean {
+//    if (self = [super init]) {
+//        _infoType = infoType;
+//        _bean = bean;
+//    }
+//    return self;
+//}
 
 - (instancetype)init {
     if (self = [super init]) {
