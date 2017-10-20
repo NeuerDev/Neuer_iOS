@@ -20,4 +20,14 @@
  */
 + (CGSize)sizeWithString:(NSString *)string font:(UIFont *)font;
 
+/**
+ 返回在wifi条件下的设备ip地址
+ */
++ (NSString *)getDeviceIPAddressesOnWifi;
+
+/**
+ 获取当前present出来的最顶层的视图,用来获取LoginViewController
+ */
++ (UIViewController *)getPresentedViewController;
+
 @end

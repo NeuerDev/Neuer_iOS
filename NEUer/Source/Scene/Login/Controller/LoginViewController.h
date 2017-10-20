@@ -13,6 +13,7 @@ typedef NS_OPTIONS(NSUInteger, LoginComponentInfoViewType) {
     LoginComponentInfoViewTypeIDCard               = 1 << 1,
     LoginComponentInfoViewTypeVerificationcode     = 1 << 2,
 };
+
 typedef NSString * LoginKey NS_EXTENSIBLE_STRING_ENUM;
 
 @protocol LoginViewControllerDelegate <NSObject>
@@ -22,14 +23,8 @@ typedef NSString * LoginKey NS_EXTENSIBLE_STRING_ENUM;
 /**
  将个人信息传递给model
  @prama info : 信息
- @prama infoViewType : 信息类型
  */
-- (void)personalInformationWithDic:(NSDictionary <LoginKey, NSString *>*)info loginInfoViewType:(LoginComponentInfoViewType)infoViewType;
-
-/**
- 登陆成功回调
- */
-- (BOOL)didLoginSuccessed;
+- (void)personalInformationWithDic:(NSDictionary <LoginKey, NSString *>*)info;
 
 @end
 
@@ -39,6 +34,18 @@ typedef NSString * LoginKey NS_EXTENSIBLE_STRING_ENUM;
 @property (weak, nonatomic) id<LoginViewControllerDelegate> delegate;
 
 + (instancetype)shareLoginViewController;
+
+//初始化类型
 - (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType;
+
+/**
+ 初始化验证码
+ */
+- (void)setUpWithVerificationcode:(UIImage *)verificationcode;
+
+/**
+ 结束登陆动画，若登录成功则dismissLoginViewController
+ */
+- (void)stopVerifyWithSuccess:(BOOL)success;
 
 @end

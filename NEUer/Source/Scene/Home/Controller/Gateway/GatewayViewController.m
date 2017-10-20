@@ -9,8 +9,6 @@
 #import "GatewayViewController.h"
 #import "LoginViewController.h"
 
-#import "MBProgressHUD.h"
-
 #import "UIColor+JHCategory.h"
 #import "LYTool.h"
 
@@ -21,9 +19,10 @@
 @property (nonatomic, strong) UIView *cardView;
 @property (nonatomic, strong) UIButton *loginBtn;
 @property (nonatomic, strong) UIButton *quitBtn;
-@property (nonatomic, strong) UIButton *logoutBtn;
 @property (nonatomic, strong) UILabel *gatewayStatusLb;
 @property (nonatomic, strong) GatewayComponentInfoView *infoView;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) LoginViewController *loginVC;
 
 @property (nonatomic, strong) GatewayCenter *center;
 
@@ -35,35 +34,51 @@
 @implementation GatewayViewController
 
 #pragma mark - Life Cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
     [self initData];
+    [self initConstraints];
+    [self.view layoutIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self initConstraints];
-    [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self updateConstraints];
+//    [UIView animateWithDuration:10 animations:^{
+//        [self.view layoutIfNeeded];
+//    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Init Method
 - (void)initData {
     
-    if ([self.model hasUser]) {
-        [self.model fetchGatewayData];
-    }
     _center = [GatewayCenter defaultCenter];
+    self.model.delegate = self;
+
+//    当进入界面时发现已经联网了，则先退出再请求才能正常显示数据
+    if ([self.model hasUser] && _center.networkEnable == YES && _center.campusStatus == YES) {
+        [self.model quitTheGateway];
+        [self.model fetchGatewayData];
+        [self.indicatorView startAnimating];
+    }
     [self initNetworkStatus];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGatewayNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
     
-    
-    self.view.contentScaleFactor = [[UIScreen mainScreen] scale];
 }
 
 - (void)initNetworkStatus {
@@ -82,7 +97,7 @@
                 } else if (_center.reachableStatus == GatewayStatusNO) {
                     alertMessage = @"已连接校园网 Wi-Fi\n点击登录网关";
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.loginBtn setTitle:@"点击登录网关" forState:UIControlStateNormal];
+                        [self.loginBtn setTitle:@"登录网关" forState:UIControlStateNormal];
                         self.loginBtn.enabled = YES;
                     });
                 }
@@ -95,35 +110,24 @@
                     if (_center.wifiStatus == GatewayStatusYES) {
                         // Wi-Fi
                         alertMessage = @"正在使用非校内 Wi-Fi\n校园卡等服务无法使用";
-                        [self setLoginAndLogoutBtnHidden];
+                        [self setLoginBtnHidden];
                     } else if (_center.wifiStatus == GatewayStatusNO) {
                         // 蜂窝数据
                         alertMessage = @"正在使用 蜂窝数据\n校园卡等服务无法使用";
-                        [self setLoginAndLogoutBtnHidden];
+                        [self setLoginBtnHidden];
                     }
                 } else if (_center.reachableStatus == GatewayStatusNO) {
                     alertMessage = @"连接以太网超时(10s)";
-                    [self setLoginAndLogoutBtnHidden];
+                    [self setLoginBtnHidden];
                 } else {
                     NSLog(@"网络状态未知");
                 }
-                
             }
                 break;
             case GatewayStatusUnknown:
             {
-                if (_center.wifiStatus == GatewayStatusYES) {
-                    // Wi-Fi
-                    alertMessage = @"正在使用 Wi-Fi";
-                    [self setLoginAndLogoutBtnHidden];
-                } else if (_center.wifiStatus == GatewayStatusNO) {
-                    // 蜂窝数据
-                    alertMessage = @"正在使用 蜂窝数据\n校园卡等服务无法使用";
-                    [self setLoginAndLogoutBtnHidden];
-                } else {
-                    NSLog(@"网络状态未知");
-                    [self setLoginAndLogoutBtnHidden];
-                }
+                alertMessage = @"正在检测网络环境...";
+                [self setLoginBtnHidden];
             }
                 break;
             default:
@@ -131,7 +135,7 @@
         }
     } else {
         alertMessage = @"网络已断开";
-        [self setLoginAndLogoutBtnHidden];
+        [self setLoginBtnHidden];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -141,8 +145,7 @@
         
         CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
         self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
-        [self initConstraints];
-        [self.view setNeedsLayout];
+        [self updateConstraints];
         [self.view layoutIfNeeded];
     });
 }
@@ -151,26 +154,30 @@
     [self.blurView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+
     [self.quitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.mas_equalTo(self.blurView).with.offset(30);
         make.height.and.width.mas_equalTo(25);
     }];
+
+}
+
+- (void)updateConstraints {
     
-    [self.gatewayStatusLb mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.quitBtn).with.offset(100);
+    [self.gatewayStatusLb mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.quitBtn).with.offset(120);
         make.centerX.equalTo(self.view.mas_centerX);
     }];
     
-    [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.cardView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.and.right.equalTo(self.blurView);
-        make.top.equalTo(self.gatewayStatusLb.mas_bottom).with.offset(30);
+        make.top.equalTo(self.gatewayStatusLb.mas_bottom).with.offset(20);
         make.bottom.equalTo(self.blurView.mas_bottom);
     }];
     
     if (_center.networkEnable == YES && _center.reachableStatus == YES) {
         [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.view).multipliedBy(0.3);
+//            make.height.equalTo(self.view).multipliedBy(0.3);
             make.width.equalTo(self.view);
             make.centerX.equalTo(self.gatewayStatusLb);
             make.top.equalTo(self.cardView);
@@ -178,18 +185,14 @@
         
         [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.gatewayStatusLb);
-            make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
+            make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
         }];
         
-        [self.logoutBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.gatewayStatusLb);
-            make.top.equalTo(self.loginBtn.mas_bottom).with.offset(20);
-        }];
     } else if (_center.networkEnable == YES && _center.reachableStatus == NO) {
         
         [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.gatewayStatusLb);
-            make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
+            make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
         }];
     } else {
         
@@ -200,12 +203,10 @@
 
 #pragma mark - Private Method
 
-- (void)setLoginAndLogoutBtnHidden {
+- (void)setLoginBtnHidden {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.loginBtn setTitle:@"" forState:UIControlStateNormal];
         self.loginBtn.enabled = NO;
-        [self.logoutBtn setTitle:@"" forState:UIControlStateNormal];
-        self.logoutBtn.enabled = NO;
     });
 }
 
@@ -214,104 +215,99 @@
     [self initNetworkStatus];
 }
 
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//    if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
+//        NSLog(@"%@", [LYTool getPresentedViewController]);
+//        [self.loginVC dismissViewControllerAnimated:YES completion:nil];
+//    }
+//}
+
 #pragma mark - GatewayModel delegate
 - (void)fetchGatewayDataFailureWithMsg:(NSString *)msg {
 //    在这个方法中处理登录失败信息
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:3 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//            若登录信息失败，并且连接了网关，则显示登录按钮，隐藏退出按钮
-            if (_center.campusStatus == YES && _center.reachableStatus == NO) {
-                [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.centerX.equalTo(self.gatewayStatusLb);
-                    make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
-                }];
-                //  通知不会及时更新文字，手动更新loginBtn的文字
-                self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
-                self.loginBtn.enabled = YES;
-                [_logoutBtn setTitle:@"" forState:UIControlStateNormal];
-                _logoutBtn.enabled = NO;
-            } else if (_center.campusStatus == YES && _center.reachableStatus == YES){
-                [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.centerX.equalTo(self.gatewayStatusLb);
-                    make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
-                }];
-                //  通知不会及时更新文字，手动更新loginBtn的文字
-                self.loginBtn.enabled = YES;
-                self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
-                [_logoutBtn setTitle:@"" forState:UIControlStateNormal];
-                _logoutBtn.enabled = NO;
-            } else {
-                [self setLoginAndLogoutBtnHidden];
-            }
-        } completion:nil];
-        [self.view setNeedsLayout];
+        if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
+            [self.loginVC stopVerifyWithSuccess:NO];
+        }
+        //            若登录信息失败，并且连接了网关，则显示登录按钮，隐藏退出按钮
+        if (_center.campusStatus == YES && _center.reachableStatus == NO) {
+            [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.gatewayStatusLb);
+                make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
+            }];
+            //  通知不会及时更新文字，手动更新loginBtn的文字
+            self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
+            self.loginBtn.enabled = YES;
+            [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
+            
+        } else if (_center.campusStatus == YES && _center.reachableStatus == YES){
+            [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.gatewayStatusLb);
+                make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
+            }];
+            //  通知不会及时更新文字，手动更新loginBtn的文字
+            self.loginBtn.enabled = YES;
+            self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
+            [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
+            
+            CGSize size = [LYTool sizeWithString:self.gatewayStatusLb.text font:_gatewayStatusLb.font];
+            _gatewayStatusLb.bounds = CGRectMake(0, 0, size.width, size.height);
+            CGSize loginBtnSize = [LYTool sizeWithString:self.loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
+            self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
+        } else {
+            [self setLoginBtnHidden];
+        }
+
+        [self.indicatorView stopAnimating];
         [self.view layoutIfNeeded];
+//        [UIView animateWithDuration:5 animations:^{
+//            [self.indicatorView stopAnimating];
+//            [self.view layoutIfNeeded];
+//        }];
     });
 }
 
 - (void)fetchGatewayDataSuccess {
-//    在这个方法中处理登录成功信息
-    _gatewayBean = [self.model gatewayInfo];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [UIView animateWithDuration:4 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
+            [self.loginVC stopVerifyWithSuccess:YES];
+        }
+//        NSLog(@"%@", [LYTool getPresentedViewController]);
+        
+        //    在这个方法中处理登录成功信息
+        _gatewayBean = [self.model gatewayInfo];
+        
         [self.infoView setUpWithGatewayBean:self.gatewayBean];
         
         [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.view).multipliedBy(0.3);
+            make.height.equalTo(self.view).multipliedBy(0.25);
             make.width.equalTo(self.view);
             make.centerX.equalTo(self.gatewayStatusLb);
             make.top.equalTo(self.cardView);
         }];
         [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.gatewayStatusLb);
-            make.top.equalTo(self.infoView.mas_bottom).with.offset(40);
+            make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
         }];
-            
+        
         //                通知不会及时更新文字，手动更新gatewayStatusLb和loginBtn的文字
         self.gatewayStatusLb.text = @"正在使用校园网 Wi-Fi\n可访问外网";
         [self.loginBtn setTitle:@"切换校园网账号" forState: UIControlStateNormal];
         self.loginBtn.enabled = YES;
+        
+        
         CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
         self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
-        [_logoutBtn setTitle:@"点此退出校园网" forState:UIControlStateNormal];
-        _logoutBtn.enabled = YES;
-        [self.logoutBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.gatewayStatusLb);
-            make.top.equalTo(self.loginBtn.mas_bottom).with.offset(20);
-        }];
-//        } completion:nil];
+        
+        [self.indicatorView stopAnimating];
+        [self.view layoutIfNeeded];
+//        [UIView animateWithDuration:5 animations:^{
+//            [self.indicatorView stopAnimating];
+//            [self.view layoutIfNeeded];
+//        }];
     });
-}
-
-- (void)didGatewayLogoutSuccess:(BOOL)isLogout {
-
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    if (isLogout) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"退出校园网成功！" preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.gatewayStatusLb setText:@"已退出校园网 Wi-Fi\n点击登录网关"];
-            [_logoutBtn setTitle:@"" forState:UIControlStateNormal];
-            _logoutBtn.enabled = NO;
-        });
-    } else {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您似乎未曾连接校园网！" preferredStyle:UIAlertControllerStyleAlert];
-        alertController.view.alpha = 0.8;
-        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        }]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_logoutBtn setTitle:@"" forState:UIControlStateNormal];
-            _logoutBtn.enabled = NO;
-            CGSize size = [LYTool sizeWithString:_logoutBtn.titleLabel.text font:_logoutBtn.titleLabel.font];
-            _logoutBtn.bounds = CGRectMake(0, 0, size.width, size.height);
-            [self.view layoutIfNeeded];
-        });
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
 }
 
 #pragma mark - ResponseMethod
@@ -319,14 +315,10 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)presentNoVerificationCodeVC {
-    LoginViewController *loginVC2 = [LoginViewController shareLoginViewController];
-    [loginVC2 setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault];
-    [self presentViewController:loginVC2 animated:YES completion:nil];
-}
-
-- (void)didLogoutBtnClicked {
-    [self.model quitTheGateway];
+- (void)presentLoginVC {
+    [_loginVC setModalPresentationStyle:UIModalPresentationCustom];
+    
+    [self presentViewController:self.loginVC animated:YES completion:nil];
 }
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
@@ -342,16 +334,16 @@
 - (UIVisualEffectView *)blurView {
     if (!_blurView) {
         _blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular]];
-
         [self.view addSubview:_blurView];
     }
-
+    
     return _blurView;
 }
 
 - (UIView *)cardView {
     if (!_cardView) {
         _cardView = [[UIView alloc] init];
+        _cardView.center = CGPointMake(self.view.center.x, self.view.frame.size.height);
         _cardView.backgroundColor = [UIColor clearColor];
         [self.blurView.contentView addSubview:_cardView];
     }
@@ -371,7 +363,7 @@
 - (GatewayModel *)model {
     if (!_model) {
         _model = [[GatewayModel alloc] init];
-        _model.delegate = self;
+//        _model.delegate = self;
     }
     return _model;
 }
@@ -386,6 +378,7 @@
 - (UILabel *)gatewayStatusLb {
     if (!_gatewayStatusLb) {
         _gatewayStatusLb = [[UILabel alloc] init];
+        _gatewayStatusLb.center = CGPointMake(self.view.center.x, self.view.frame.size.height);
         _gatewayStatusLb.textColor = [UIColor grayColor];
         _gatewayStatusLb.textAlignment = NSTextAlignmentCenter;
         _gatewayStatusLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
@@ -398,37 +391,42 @@
 - (GatewayComponentInfoView *)infoView {
     if (!_infoView) {
         _infoView = [[GatewayComponentInfoView alloc] init];
+//        _infoView.center = CGPointMake(self.view.center.x, self.view.frame.size.height);
         [self.cardView addSubview:_infoView];
     }
     
     return _infoView;
 }
 
-- (UIButton *)logoutBtn {
-    if (!_logoutBtn) {
-        _logoutBtn = [[UIButton alloc] init];
-        [_logoutBtn setTitle:@"点此退出校园网" forState:UIControlStateNormal];
-        _logoutBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-        CGSize size = [LYTool sizeWithString:_logoutBtn.titleLabel.text font:_logoutBtn.titleLabel.font];
-        _logoutBtn.bounds = CGRectMake(0, 0, size.width, size.height);
-        [_logoutBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        
-        [_logoutBtn addTarget:self action:@selector(didLogoutBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-        [self.cardView addSubview:_logoutBtn];
-    }
-    return _logoutBtn;
-}
-
 - (UIButton *)loginBtn {
     if (!_loginBtn) {
         _loginBtn = [[UIButton alloc] init];
-        [_loginBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        _loginBtn.center = CGPointMake(self.view.center.x, self.view.frame.size.height);
+        [_loginBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        [_loginBtn setTitleColor:[UIColor beautyTealBlue] forState:UIControlStateHighlighted];
         _loginBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
         
-        [_loginBtn addTarget:self action:@selector(presentNoVerificationCodeVC) forControlEvents:UIControlEventTouchUpInside];
+        [_loginBtn addTarget:self action:@selector(presentLoginVC) forControlEvents:UIControlEventTouchUpInside];
         [self.cardView addSubview:_loginBtn];
     }
     return _loginBtn;
 }
 
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView  = [[UIActivityIndicatorView alloc] init];
+        _indicatorView.center = CGPointMake(self.view.center.x, self.view.center.y);
+        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        [self.blurView.contentView addSubview:_indicatorView];
+    }
+    return _indicatorView;
+}
+
+- (LoginViewController *)loginVC {
+    if (!_loginVC) {
+        _loginVC = [LoginViewController shareLoginViewController];
+        [_loginVC setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault];
+    }
+    return _loginVC;
+}
 @end

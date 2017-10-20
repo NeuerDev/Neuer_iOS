@@ -9,6 +9,7 @@
 #import "GatewayModel.h"
 #import "JHRequest.h"
 #import "AFNetworking.h"
+#import "LYTool.h"
 
 @implementation GatewayBean
 
@@ -47,7 +48,7 @@
     return self.isLogin;
 }
 
-- (void)personalInformationWithDic:(NSDictionary<LoginKey,NSString *> *)info loginInfoViewType:(LoginComponentInfoViewType)infoViewType {
+- (void)personalInformationWithDic:(NSDictionary<LoginKey,NSString *> *)info {
     if (info.count >= 2) {
         _account = [info valueForKey:@"account"];
         _password = [info valueForKey:@"password"];
@@ -56,7 +57,6 @@
         NSAssert(info.count < 2, @"数据传输错误！");
     }
 }
-
 
 #pragma mark - load data
 - (BOOL)hasUser {
@@ -70,6 +70,7 @@
 
 - (void)fetchGatewayData {
     
+//    action=login&ac_id=1&user_ip=&nas_ip=&user_mac=&url=&username=20154883&password=123456&save_me=0
     NSString *userName = _account != nil ? _account :[userDefault objectForKey:@"account"];
     NSString *password = _password != nil ? _password : [userDefault objectForKey:@"password"];
     NSDictionary *param = @{
@@ -84,7 +85,7 @@
                             @"save_me":@"0"
                             };
     
-    NSURL *url = [NSURL URLWithString:@"http://ipgw.neu.edu.cn/srun_portal_pc.php"];
+    NSURL *url = [NSURL URLWithString:@"http://ipgw.neu.edu.cn/srun_portal_pc.php?"];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url method:@"POST" params:param];
     request.delegate = self;
     request.requestType = JHRequestTypeNone;
@@ -104,7 +105,7 @@
         //创建请求对象
         NSMutableURLRequest *nsRequest = [NSMutableURLRequest requestWithURL:url];
         [nsRequest setHTTPMethod:@"post"];
-        NSData *tempdata = [@"action=get_online_info&key=91714" dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *tempdata = [@"action=get_online_info&key=86316" dataUsingEncoding:NSUTF8StringEncoding];
         [nsRequest setHTTPBody:tempdata];
         
         NSURLSession *session =[NSURLSession sharedSession];
@@ -150,24 +151,20 @@
                             @"ac_id":@"1",
                             @"action":@"auto_logout",
                             @"info":@"",
-                            @"user_ip":self.bean.ip,
+                            @"user_ip":[LYTool getDeviceIPAddressesOnWifi],
                             @"username":[userDefault valueForKey:@"account"]
                             };
-    WS(ws);
 
     AFNetworkReachabilityManager *reachManager = [AFNetworkReachabilityManager manager];
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     [reachManager startMonitoring];
     
+//    NSLog(@"%@", [LYTool getDeviceIPAddressesOnWifi]);
     [manager POST:@"https://ipgw.neu.edu.cn/srun_portal_pc.php?" parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if (ws.delegate) {
-            [_delegate didGatewayLogoutSuccess:YES];
-        }
+        NSLog(@"退出成功！");
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (ws.delegate) {
-            [_delegate didGatewayLogoutSuccess:NO];
-        }
+        NSLog(@"退出失败");
     }];
 }
 

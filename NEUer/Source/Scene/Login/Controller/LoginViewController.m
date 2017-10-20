@@ -10,8 +10,8 @@
 #import "LYTextField.h"
 
 #import "Masonry.h"
-#import "MBProgressHUD.h"
 #import "JHTool.h"
+#import "UIColor+JHCategory.h"
 
 #import "LYAnimatedTransitioning.h"
 #import "LYInteractiveTransition.h"
@@ -29,10 +29,10 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 @property (strong, nonatomic) UILabel *loginLb;
 @property (strong, nonatomic) UIButton *loginBtn;
-@property (strong, nonatomic) UIButton *quitBtn;
+@property (strong, nonatomic) UILabel *alertLb;
+@property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
-@property (strong, nonatomic) MBProgressHUD *hud;
-//@property (strong, nonatomic) UIImage *verificationCode;
+@property (strong, nonatomic) UIImage *verificationCode;
 @property (strong, nonatomic) LYInteractiveTransition *interactiveDismiss;
 
 @property (assign, nonatomic) LoginComponentInfoViewType infoViewType;
@@ -83,13 +83,22 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 
 #pragma mark - Init
+
 - (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType {
     self.infoViewType = infoViewType;
+}
+
+- (void)setUpWithVerificationcode:(UIImage *)verificationcode {
+    self.verificationCode = verificationcode;
 }
 
 - (void)initData {
     
     userDefault = [NSUserDefaults standardUserDefaults];
+    
+//    设置手势交互为YES
+    self.interactiveDismiss.interactive = YES;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     [self registerForKeyboardNotification];
     //    设置代理
@@ -132,15 +141,10 @@ static LoginViewController *_sigletonLoginViewController = nil;
     [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    [self.quitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cardView).with.offset(30);
-        make.top.equalTo(self.cardView).with.offset(40);
-        make.width.and.height.equalTo(@25);
-    }];
     
     [self.loginLb mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.quitBtn);
-        make.top.equalTo(self.quitBtn.mas_bottom).with.offset(10);
+        make.left.equalTo(self.cardView).with.offset(30);
+        make.top.equalTo(self.cardView).with.offset(40);
         make.height.and.width.equalTo(@100);
     }];
     
@@ -188,8 +192,18 @@ static LoginViewController *_sigletonLoginViewController = nil;
             make.top.equalTo(self.passwordTF.mas_bottom).with.offset(30);
             make.height.equalTo(@45);
         }];
-
     }
+    
+    [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.loginBtn.mas_centerX);
+        make.centerY.equalTo(self.loginBtn.mas_centerY);
+    }];
+    
+    [self.alertLb mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.and.left.and.right.equalTo(self.loginBtn);
+        make.top.equalTo(self.loginBtn.mas_bottom).with.offset(20);
+    }];
+    
 }
 
 #pragma mark - Override
@@ -243,42 +257,38 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
+    NSString *regexString = nil;
     switch (textField.tag) {
         case 00:
         {
-            for (int i = 0; i < string.length; ++i) {
-                unichar character = [string characterAtIndex:i];
-                if (character < 48 || character > 57) {
-                    [self showAlertWithMessage:@"账号只允许输入数字"];
-                    return NO;
-                }
-            }
-            if (string.length + range.location + range.length > 8) {
-                [self showAlertWithMessage:@"账号最多只能输入8位"];
-                return NO;
-            }
+            regexString = @"^\\d{0,8}$";
         }
             break;
         case 01:
         {
-            if (string.length + range.location + range.length > 18) {
-                [self showAlertWithMessage:@"密码最多只能输入18位"];
-                return NO;
-            }
+//            密码6-18位
+            regexString = @"^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“'。，、？]){0,18}$";
         }
             break;
         case 02:
         {
-            if (string.length + range.location + range.length > 4) {
-                [self showAlertWithMessage:@"验证码最多只能输入4位"];
-                return NO;
-            }
+//            只能输入数字
+            regexString = @"^\\d{0,4}$";
+        }
+            break;
+        case 03:
+        {
+//            只允许输入身份证信息
+            regexString = @"^\\d{0,18}[0-9Xx]?$";
         }
             break;
         default:
             break;
     }
-    return YES;
+    
+    NSString *currentText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSPredicate *regexTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regexString];
+    return [regexTest evaluateWithObject:currentText] || currentText.length == 0;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -332,6 +342,164 @@ static LoginViewController *_sigletonLoginViewController = nil;
     }
 }
 
+#pragma mark - register keyboard Notification
+- (void)registerForKeyboardNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+#pragma mark - ResponseMethod
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+    [self.view endEditing:YES];
+    [self didVerifiedLoginBtnEnaled];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+//    if ([touches anyObject].view != self.view) {
+//        UIView *touchView = [touches anyObject].view;
+////        NSLog(@"%@", view);
+//        for (UIView *view in self.view.subviews) {
+//            if (view.subviews.count > 0) {
+//                for (UIView *subView in view.subviews) {
+//                    //                NSLog(@"%@", subView);
+//                    if (touchView == subView) {
+//                        return;
+//                    }
+//                }
+//            }
+//            if (touchView == view) {
+//                return;
+//            }
+//        }
+//
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
+    //获取所有的触摸位置
+    
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self.view];
+    
+    CGMutablePathRef pathRef = CGPathCreateMutable();
+//    从右下角开始画图
+    CGPathMoveToPoint(pathRef, NULL, self.view.frame.size.width, self.view.frame.size.height);
+//    (0,height)
+    CGPathAddLineToPoint(pathRef, NULL, 0, self.view.frame.size.height);
+//    当前视图原点,设置点击边框也能返回上一视图
+    CGPathAddLineToPoint(pathRef, NULL, 0, 20);
+    CGPathAddLineToPoint(pathRef, NULL, self.view.frame.size.width, 20);
+//    NSLog(@"%f", self.view.frame.origin.y);
+    CGPathCloseSubpath(pathRef);
+    
+    if (CGPathContainsPoint(pathRef, NULL, point, NO)) {
+//        如果在这个区域中就什么都不做
+    } else {
+//        如果超出了这个区域，则返回上一界面
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (void)didClickedLoginBtn {
+    
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] initWithCapacity:0];
+    [param setObject:self.accountTF.text forKey:@"account"];
+    [param setObject:self.passwordTF.text forKey:@"password"];
+    
+    if ([self.delegate respondsToSelector:@selector(personalInformationWithDic:)]) {
+        switch (self.infoViewType) {
+            case 3:
+            {
+                [param setObject:self.IDNumberTF.text forKey:@"idnumber"];
+            }
+                break;
+            case 5:
+            {
+                [param setObject:self.verificationTF.text forKey:@"verificationcode"];
+            }
+                break;
+            case 7:
+            {
+                [param setObject:self.IDNumberTF.text forKey:@"idnumber"];
+                [param setObject:self.verificationTF.text forKey:@"verificationcode"];
+            }
+                break;
+            default:
+                break;
+        }
+        [self.delegate personalInformationWithDic:param];
+    }
+    
+    [self.indicatorView startAnimating];
+    [self setUserInteractionEnable:NO];
+    [self.loginBtn setTitle:@"" forState:UIControlStateNormal];
+
+}
+
+- (void)stopVerifyWithSuccess:(BOOL)success {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (success) {
+            if ([self.indicatorView isAnimating]) {
+                [self.indicatorView stopAnimating];
+            }
+            [self setUserInteractionEnable:YES];
+        //    临时的数据,只有登录成功才存储数据
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [userDefault setObject:self.accountTF.text forKey:@"account"];
+                [userDefault setObject:self.passwordTF.text forKey:@"password"];
+            });
+
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+            }];
+            
+        } else {
+
+            if ([self.indicatorView isAnimating]) {
+                [self.indicatorView stopAnimating];
+            }
+            [self setUserInteractionEnable:YES];
+
+            [self showAlertWithMessage:@"登录失败！请检查您的账号密码"];
+            [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+        }
+    });
+}
+
+#pragma mark - UIKeyboardNotification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGFloat keyboardHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    
+    //    计算键盘弹出动画的时间
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    CGFloat y2 = self.view.frame.size.height - keyboardHeight;
+    CGFloat y1 = self.loginBtn.frame.size.height + self.loginBtn.frame.origin.y - 8;
+    CGFloat offset = y1 - y2 + 16;
+    if (offset > 0) {
+        [UIView animateWithDuration:duration animations:^{
+            [self.cardView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.view).with.offset(-offset);
+                make.bottom.equalTo(self.view).with.offset(-offset);
+            }];
+            [self.view layoutIfNeeded];
+        }];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [UIView animateWithDuration:duration animations:^{
+        [self.cardView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.and.bottom.equalTo(self.view);
+        }];
+        [self.view layoutIfNeeded];
+    }];
+}
+
+
 #pragma mark - Private Method
 - (void)setLoginBtnEnable {
     self.loginBtn.enabled = YES;
@@ -345,7 +513,7 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 - (void)didVerifiedLoginBtnEnaled {
     if (self.infoViewType & LoginComponentInfoViewTypeVerificationcode) {
-//        先设置为yes，若其他项未满足，再设为no
+        //        先设置为yes，若其他项未满足，再设为no
         if (![self.accountTF.text isEqualToString:@""] && ![self.passwordTF.text isEqualToString:@""]) {
             //        有身份证一定有验证码，有验证码不一定有身份证
             if (self.infoViewType & LoginComponentInfoViewTypeVerificationcode) {
@@ -367,125 +535,23 @@ static LoginViewController *_sigletonLoginViewController = nil;
     }
 }
 
-- (void)showAlertWithMessage:(NSString *)msg {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-#pragma mark - register keyboard Notification
-- (void)registerForKeyboardNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-#pragma mark - ResponseMethod
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
-    
-    [self.view endEditing:YES];
-    [self didVerifiedLoginBtnEnaled];
-}
-
-- (void)didClickedLoginBtn {
-    
-    NSMutableDictionary *param = [[NSMutableDictionary alloc] initWithCapacity:0];
-    [param setObject:self.accountTF.text forKey:@"account"];
-    [param setObject:self.passwordTF.text forKey:@"password"];
-    
-    if ([self.delegate respondsToSelector:@selector(personalInformationWithDic:loginInfoViewType:)]) {
-        switch (self.infoViewType) {
-            case 3:
-            {
-                [param setObject:self.IDNumberTF.text forKey:@"idnumber"];
+//设置子视图是否可交互
+- (void)setUserInteractionEnable:(BOOL)enable {
+    for (UIView *view in self.view.subviews) {
+        if (view.subviews.count > 0) {
+            for (UIView *subView in view.subviews) {
+                [subView setUserInteractionEnabled:enable];
+//                NSLog(@"%@", subView);
             }
-                break;
-            case 5:
-            {
-                [param setObject:self.verificationTF.text forKey:@"verificationcode"];
-            }
-                break;
-            case 7:
-            {
-                [param setObject:self.IDNumberTF.text forKey:@"idnumber"];
-                [param setObject:self.verificationTF.text forKey:@"verificationcode"];
-            }
-                break;
-            default:
-                break;
         }
-        [self.delegate personalInformationWithDic:param loginInfoViewType:self.infoViewType];
-    }
-    
-    self.hud = [MBProgressHUD showHUDAddedTo:self.loginBtn animated:YES];
-    _hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
-    _hud.bezelView.color = [UIColor colorWithWhite:0.f alpha:0];
-    _hud.contentColor = [UIColor whiteColor];
-    [self.loginBtn setTitle:@"" forState:UIControlStateNormal];
-
-//    延迟三秒执行代理方法，不然无法返回正确的值
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-            if ([self.delegate respondsToSelector:@selector(didLoginSuccessed)]) {
-                
-                BOOL isLogin = [self.delegate didLoginSuccessed];
-                if (isLogin) {
-                    NSLog(@"登录成功");
-                    [self.hud hideAnimated:YES];
-                    
-                    //    临时的数据,只有登录成功才存储数据
-                    [userDefault setObject:self.accountTF.text forKey:@"account"];
-                    [userDefault setObject:self.passwordTF.text forKey:@"password"];
-                    
-                    [self dismissViewControllerAnimated:YES completion:^{
-                        [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-                    }];
-                    
-                } else {
-                    NSLog(@"登录失败");
-                    [self.hud hideAnimated:YES];
-                    [self showAlertWithMessage:@"登录失败！请检查您的账号密码输入是否正确"];
-                    [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-                }
-            }
-        
-    });
-    
-}
-
-- (void)didClickedQuitBtn {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - UIKeyboardNotification
-- (void)keyboardWillShow:(NSNotification *)notification {
-    CGFloat keyboardHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    
-    //    计算键盘弹出动画的时间
-    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    CGFloat y2 = self.view.frame.size.height - keyboardHeight;
-    CGFloat y1 = self.loginBtn.frame.size.height + self.loginBtn.frame.origin.y - 8;
-    CGFloat offset = y1 - y2 + 16;
-    if (offset > 0) {
-        [UIView animateWithDuration:duration animations:^{
-            [self.cardView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view).with.offset(-offset);
-                make.bottom.equalTo(self.view).with.offset(-offset);
-            }];
-            [self.view layoutIfNeeded];
-            
-        }];
     }
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification {
-    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [UIView animateWithDuration:duration animations:^{
-        [self.cardView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.and.bottom.equalTo(self.view);
-        }];
-        [self.view layoutIfNeeded];
+- (void)showAlertWithMessage:(NSString *)msg {
+    self.alertLb.alpha = 1;
+    self.alertLb.text = msg;
+    [UIView animateWithDuration:4 animations:^{
+        self.alertLb.alpha = 0;
     }];
 }
 
@@ -519,8 +585,7 @@ static LoginViewController *_sigletonLoginViewController = nil;
 
 - (LYTextField *)verificationTF {
     if (!_verificationTF) {
-//        暂时传nil
-        _verificationTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeVerificationcode withVerificationCodeImg:nil];
+        _verificationTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeVerificationcode withVerificationCodeImg:self.verificationCode];
         _verificationTF.delegate = self;
         _verificationTF.text = @"";
         [self.cardView addSubview:_verificationTF];
@@ -557,16 +622,6 @@ static LoginViewController *_sigletonLoginViewController = nil;
     return _loginBtn;
 }
 
-- (UIButton *)quitBtn {
-    if (!_quitBtn) {
-        _quitBtn = [[UIButton alloc] init];
-        [_quitBtn setBackgroundImage:[UIImage imageNamed:@"quit"] forState:UIControlStateNormal];
-        [_quitBtn addTarget:self action:@selector(didClickedQuitBtn) forControlEvents:UIControlEventTouchUpInside];
-        [self.cardView addSubview:_quitBtn];
-    }
-    return _quitBtn;
-}
-
 - (UILabel *)loginLb {
     if (!_loginLb) {
         _loginLb = [[UILabel alloc] init];
@@ -584,9 +639,28 @@ static LoginViewController *_sigletonLoginViewController = nil;
     if (!_interactiveDismiss) {
         _interactiveDismiss = [LYInteractiveTransition interactiveTrainsitionWithTransitionType:LYInteractiveTransitionTypeDismiss GestureDirection:LYInteractiveTransitionGestureDirectionDown];
         [_interactiveDismiss addPanGestureToViewController:self];
-        _interactiveDismiss.interactive = YES;
     }
     return _interactiveDismiss;
+}
+
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView  = [[UIActivityIndicatorView alloc] init];
+        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        [self.loginBtn addSubview:_indicatorView];
+    }
+    return _indicatorView;
+}
+
+- (UILabel *)alertLb {
+    if (!_alertLb) {
+        _alertLb = [[UILabel alloc] init];
+        _alertLb.textColor = [UIColor beautyRed];
+        _alertLb.textAlignment = NSTextAlignmentCenter;
+        _alertLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        [self.view addSubview:_alertLb];
+    }
+    return _alertLb;
 }
 
 @end

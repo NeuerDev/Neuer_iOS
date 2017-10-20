@@ -22,7 +22,6 @@
 @required
 
 - (void)fetchGatewayDataSuccess;
-- (void)didGatewayLogoutSuccess:(BOOL)isLogout;
 - (void)fetchGatewayDataFailureWithMsg:(NSString *)msg;
 
 @end

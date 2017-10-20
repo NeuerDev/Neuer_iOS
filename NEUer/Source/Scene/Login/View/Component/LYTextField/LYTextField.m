@@ -17,6 +17,8 @@
 @property (strong, nonatomic) UILabel *passwordLb;
 @property (strong, nonatomic) UILabel *IDCardLb;
 @property (strong, nonatomic) UIButton *eyesBtn;
+
+
 @end
 
 @implementation LYTextField
