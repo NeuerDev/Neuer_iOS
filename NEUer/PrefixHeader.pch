@@ -32,6 +32,10 @@
 #import "EcardCenter.h"
 #import "UserCenter.h"
 
+#pragma mark - Tools
+
+#import "JHTool.h"
+
 #pragma mark - Category
 
 #import "UIColor+JHCategory.h"
@@ -39,6 +43,7 @@
 #import "UIView+JHCategory.h"
 #import "NSString+JHCategory.h"
 #import "NSURL+JHCategory.h"
+#import "NSDictionary+JHCategory.h"
 
 #pragma mark - Pod
 

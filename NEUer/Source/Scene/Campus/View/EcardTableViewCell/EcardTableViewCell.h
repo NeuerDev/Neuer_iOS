@@ -12,7 +12,7 @@
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UIView *infoView;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UILabel *descriptionLabel;
 @property (nonatomic, strong) UILabel *moneyLabel;
 
 @property (nonatomic, strong) EcardConsumeBean *consumeBean;

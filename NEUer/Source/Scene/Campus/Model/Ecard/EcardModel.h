@@ -13,6 +13,7 @@
 
 typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message);
 typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
+typedef void(^EcardQueryConsumeCompleteBlock)(BOOL success, BOOL hasMore, NSError *error);
 
 typedef NS_ENUM(NSUInteger, EcardInfoBalanceLevel) {
     EcardInfoBalanceLevelUnknown,
@@ -49,11 +50,13 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 @interface EcardConsumeBean : NSObject
 
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSNumber *cost;
-@property (nonatomic, strong) NSString *time;
-@property (nonatomic, strong) NSString *location;
-@property (nonatomic, assign) EcardConsumeType consumeType;
+@property (nonatomic, strong) NSString *title;              // 主标题
+@property (nonatomic, strong) NSString *desc;               // 副标题
+@property (nonatomic, strong) NSNumber *cost;               // 消费金额
+@property (nonatomic, assign) EcardConsumeType consumeType; // 消费类型
+
+- (instancetype)initWithTime:(NSString *)time station:(NSString *)station device:(NSString *)device money:(NSString *)money subject:(NSString *)subject;
+- (NSString *)time;
 
 @end
 
@@ -61,7 +64,8 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 @property (nonatomic, strong) EcardInfoBean *info;
 @property (nonatomic, strong) NSDictionary *consumeStatisicsDictionary;
-@property (nonatomic, strong) NSArray *consumeHistoryArray;
+@property (nonatomic, strong) NSArray<EcardConsumeBean *> *consumeHistoryArray;
+@property (nonatomic, strong) NSArray<EcardConsumeBean *> *todayConsumeArray;
 
 - (instancetype)initWithUser:(User *)user;
 
@@ -73,7 +77,7 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 - (void)queryInfoComplete:(EcardActionCompleteBlock)block;
 
-- (void)queryConsumeHistoryComplete:(EcardActionCompleteBlock)block;
+- (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block;
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block;
 

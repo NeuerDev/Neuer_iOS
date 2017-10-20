@@ -17,7 +17,9 @@ static NSString * const kEcardCustomHeaderViewId = @"kEcardCustomHeaderViewId";
 static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellId";
 
 @interface EcardMainViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UIButton *button;
 
 @property (nonatomic, strong) EcardModel *ecardModel;
 @property (nonatomic, strong) EcardInfoBean *infoBean;
@@ -29,7 +31,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 @property (nonatomic, strong) NSArray<UIButton *> *balanceViewButtons;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) UITableView *cardTableView;
+@property (nonatomic, strong) UITableView *todayConsumeTableView;
 
 @property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
 
@@ -56,7 +58,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     self.title = @"校卡中心";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
-//    self.cardTableView.refreshControl = self.refreshControl;
+    //    self.cardTableView.refreshControl = self.refreshControl;
     [self initConstraints];
     [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
     [self test];
@@ -68,28 +70,32 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 }
 
 - (void)test {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 200, 50)];
-    imageView.backgroundColor = [UIColor beautyBlue];
-    [self.view addSubview:imageView];
+    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 200, 50)];
+    _imageView.backgroundColor = [UIColor beautyBlue];
+    [self.view addSubview:_imageView];
     
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(100, 350, 200, 50)];
     _textField.backgroundColor = [UIColor beautyPurple];
     [self.view addSubview:_textField];
     
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 200, 50)];
-    button.backgroundColor = [UIColor beautyGreen];
-    [button setTitle:@"login" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
+    _button = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 200, 50)];
+    _button.backgroundColor = [UIColor beautyGreen];
+    [_button setTitle:@"login" forState:UIControlStateNormal];
+    [_button addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_button];
     
+    WS(ws);
     [self.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-        imageView.image = verifyImage;
+        ws.imageView.image = verifyImage;
     }];
 }
 
 - (void)login {
     WS(ws);
-    [self.ecardModel authorUser:@"20144786" password:@"951202" verifyCode:_textField.text complete:^(BOOL success, NSError *error) {
+    [self.ecardModel authorUser:@"20140097" password:@"960614" verifyCode:_textField.text complete:^(BOOL success, NSError *error) {
+        ws.imageView.hidden = YES;
+        ws.textField.hidden = YES;
+        ws.button.hidden = YES;
         if (success) {
             [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
                 if (success) {
@@ -97,13 +103,19 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
                     ws.infoBean = ws.ecardModel.info;
                 }
             }];
+            
+            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                if (success) {
+                    [ws.todayConsumeTableView reloadData];
+                }
+            }];
         }
     }];
 }
 
 - (void)initConstraints {
-
-    [self.cardTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    [self.todayConsumeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_topLayoutGuide);
         make.left.and.right.and.bottom.equalTo(self.view);
     }];
@@ -155,7 +167,12 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 }
 
 - (void)reportLost {
-    
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"确认挂失校园卡" message:@"一旦确认挂失，您的校园卡将暂时无法使用，直到您到校园卡服务中心重新激活或补办校园卡" preferredStyle:UIAlertControllerStyleAlert];
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"确认挂失" style:UIAlertActionStyleDestructive handler:nil]];
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alertVC animated:YES completion:nil];
+    });
 }
 
 - (void)recharge {
@@ -200,10 +217,6 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    view.tintColor = [UIColor whiteColor];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -224,29 +237,15 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
         cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardConsumeHistoryCellId];
     }
     
-    EcardConsumeBean *consumeBean0 = [[EcardConsumeBean alloc] init];
-    consumeBean0.title = @"手抓饼(浑南三楼79#)";
-    consumeBean0.consumeType = EcardConsumeTypeFood;
-    consumeBean0.time = @"19:01";
-    consumeBean0.cost = [NSNumber numberWithInteger:-8.00];
+    EcardConsumeBean *consumeBean = self.ecardModel.todayConsumeArray[indexPath.row];
     
-    EcardConsumeBean *consumeBean1 = [[EcardConsumeBean alloc] init];
-    consumeBean1.title = @"沐浴(浑南二楼1#)";
-    consumeBean1.consumeType = EcardConsumeTypeBath;
-    consumeBean1.time = @"20:01";
-    consumeBean1.cost = [NSNumber numberWithInteger:-3.50];
-    
-    if (indexPath.row == 0) {
-        cell.consumeBean = consumeBean1;
-    } else {
-        cell.consumeBean = consumeBean0;
-    }
+    cell.consumeBean = consumeBean;
     
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return self.ecardModel.todayConsumeArray.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -255,13 +254,14 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
         headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kEcardCustomHeaderViewId];
     }
     
+    headerView.contentView.backgroundColor = [UIColor whiteColor];
     headerView.section = section;
     headerView.titleLabel.text = @"今日消费";
     [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
     [headerView setPerformActionBlock:^(NSInteger section) {
         
     }];
-//    [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
+    //    [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
     [headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
             case 0:
@@ -345,14 +345,15 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     return _balanceInfoLabel;
 }
 
-- (UITableView *)cardTableView {
-    if (!_cardTableView) {
-        _cardTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _cardTableView.delegate = self;
-        _cardTableView.dataSource = self;
-        _cardTableView.showsVerticalScrollIndicator = NO;
-        _cardTableView.allowsSelection = NO;
-        _cardTableView.backgroundColor = [UIColor whiteColor];
+- (UITableView *)todayConsumeTableView {
+    if (!_todayConsumeTableView) {
+        _todayConsumeTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _todayConsumeTableView.delegate = self;
+        _todayConsumeTableView.dataSource = self;
+        _todayConsumeTableView.showsVerticalScrollIndicator = NO;
+        _todayConsumeTableView.allowsSelection = NO;
+        _todayConsumeTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        _todayConsumeTableView.backgroundColor = [UIColor whiteColor];
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
         [headerView addSubview:self.balanceView];
@@ -362,12 +363,12 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
             make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*0.5));
         }];
         [headerView layoutIfNeeded];
-        _cardTableView.tableHeaderView = headerView;
-        _cardTableView.tableFooterView = [[UIView alloc] init];
-        [self.view addSubview:_cardTableView];
+        _todayConsumeTableView.tableHeaderView = headerView;
+        _todayConsumeTableView.tableFooterView = [[UIView alloc] init];
+        [self.view addSubview:_todayConsumeTableView];
     }
     
-    return _cardTableView;
+    return _todayConsumeTableView;
 }
 
 - (UIRefreshControl *)refreshControl {
@@ -415,7 +416,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
         [reportLostButton setTitle:@"自助挂失" forState:UIControlStateNormal];
         [reportLostButton addTarget:self action:@selector(reportLost) forControlEvents:UIControlEventTouchUpInside];
         [self.balanceView addSubview:reportLostButton];
-
+        
         
         _balanceViewButtons = @[changePasswordButton, statisticButton, reportLostButton];
     }

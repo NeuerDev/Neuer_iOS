@@ -34,15 +34,14 @@
         make.left.equalTo(self.iconImageView.mas_right).with.offset(8);
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.contentView.mas_right).with.offset(-16);
-        make.height.mas_greaterThanOrEqualTo(self.iconImageView.mas_height).multipliedBy(0.8).priorityHigh();
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.left.equalTo(self.infoView);
     }];
     
-    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_greaterThanOrEqualTo(self.titleLabel.mas_bottom).priorityLow();
+    [self.descriptionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(4);
         make.left.and.bottom.equalTo(self.infoView);
     }];
     
@@ -56,12 +55,10 @@
 - (void)setConsumeBean:(EcardConsumeBean *)consumeBean {
     _consumeBean = consumeBean;
     _titleLabel.text = consumeBean.title;
-    _timeLabel.text = consumeBean.time;
+    _descriptionLabel.text = consumeBean.desc;
     _moneyLabel.text = [NSString stringWithFormat:@"%.2f", consumeBean.cost.floatValue];
     
     _iconImageView.image = [UIImage imageNamed:@[@"", @"ecard_bath", @"ecard_food"][consumeBean.consumeType]];
-    //    _titleLabel.textColor = [UIColor colorWithHexStr:@[@"#FFFFFF", @"#91BBF2", @"#DE8753"][consumeBean.consumeType]];
-    //    _moneyLabel.textColor = [UIColor colorWithHexStr:@[@"#FFFFFF", @"#91BBF2", @"#DE8753"][consumeBean.consumeType]];
 }
 
 #pragma mark - Getter
@@ -88,7 +85,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.numberOfLines = 0;
+        _titleLabel.numberOfLines = 1;
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         [self.infoView addSubview:_titleLabel];
     }
@@ -96,16 +93,16 @@
     return _titleLabel;
 }
 
-- (UILabel *)timeLabel {
-    if (!_timeLabel) {
-        _timeLabel = [[UILabel alloc] init];
-        _timeLabel.numberOfLines = 0;
-        _timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _timeLabel.textColor = [UIColor lightGrayColor];
-        [self.infoView addSubview:_timeLabel];
+- (UILabel *)descriptionLabel {
+    if (!_descriptionLabel) {
+        _descriptionLabel = [[UILabel alloc] init];
+        _descriptionLabel.numberOfLines = 1;
+        _descriptionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _descriptionLabel.textColor = [UIColor lightGrayColor];
+        [self.infoView addSubview:_descriptionLabel];
     }
     
-    return _timeLabel;
+    return _descriptionLabel;
 }
 
 - (UILabel *)moneyLabel {
