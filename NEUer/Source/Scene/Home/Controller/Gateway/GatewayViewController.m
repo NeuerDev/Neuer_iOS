@@ -8,6 +8,7 @@
 
 #import "GatewayViewController.h"
 #import "LoginViewController.h"
+#import "SigninViewController.h"
 
 #import "UIColor+JHCategory.h"
 #import "LYTool.h"
@@ -316,9 +317,15 @@
 }
 
 - (void)presentLoginVC {
-    [_loginVC setModalPresentationStyle:UIModalPresentationCustom];
-    
-    [self presentViewController:self.loginVC animated:YES completion:nil];
+    SigninViewController *authorizationViewController = [[SigninViewController alloc] init];
+    [authorizationViewController setupWithTitle:@"IP网关" inputType:SigninInputTypeAccount|SigninInputTypePassword|SigninInputTypeVerifyCode contents:@{@(SigninInputTypeAccount):@"20144786"} resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+        NSLog(@"%@", result);
+    }];
+    authorizationViewController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:authorizationViewController animated:NO completion:nil];
+//    [_loginVC setModalPresentationStyle:UIModalPresentationCustom];
+//
+//    [self presentViewController:self.loginVC animated:YES completion:nil];
 }
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
