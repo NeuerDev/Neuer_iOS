@@ -8,13 +8,11 @@
 
 #import "AppDelegate.h"
 
-#import "SkeletonViewController.h"
 #import "JHURLRouter.h"
 #import "UserCenter.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) JHURLRouter *router;
-@property (nonatomic, strong) SkeletonViewController *skelentonVC;
 @end
 
 @implementation AppDelegate

@@ -8,34 +8,44 @@
 
 #import "LoginViewController.h"
 #import "LYTextField.h"
+
 #import "Masonry.h"
 #import "JHTool.h"
+#import "UIColor+JHCategory.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>
+#import "LYAnimatedTransitioning.h"
+#import "LYInteractiveTransition.h"
+
+static LoginViewController *_sigletonLoginViewController = nil;
+
+@interface LoginViewController ()<UITextFieldDelegate, UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic) UIView *cardView;
 
 @property (strong, nonatomic) LYTextField *accountTF;
 @property (strong, nonatomic) LYTextField *passwordTF;
 @property (strong, nonatomic) LYTextField *verificationTF;
-@property (strong, nonatomic) UIImageView *iconImgView;
+@property (strong, nonatomic) LYTextField *IDNumberTF;
 
+@property (strong, nonatomic) UILabel *loginLb;
 @property (strong, nonatomic) UIButton *loginBtn;
-@property (strong, nonatomic) UIButton *quitBtn;
+@property (strong, nonatomic) UILabel *alertLb;
+@property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
 @property (strong, nonatomic) UIImage *verificationCode;
-@property (strong, nonatomic) UILabel *studentNumLb;
+@property (strong, nonatomic) LYInteractiveTransition *interactiveDismiss;
 
-@property (assign, nonatomic) LoginState loginState;
+@property (assign, nonatomic) LoginComponentInfoViewType infoViewType;
 
 @end
 
 @implementation LoginViewController
-
+{
+    NSUserDefaults *userDefault;
+}
 #pragma mark - LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self initData];
     [self initConstaints];
 }
@@ -45,17 +55,85 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Init
-- (instancetype)initWithLoginState:(LoginState)loginState {
-    if (self = [super init]) {
-        _loginState = loginState;
+- (void)viewWillAppear:(BOOL)animated {
+    if ([userDefault objectForKey:@"account"]) {
+        _accountTF.text = [userDefault objectForKey:@"account"];
     }
-    return self;
+    if ([userDefault objectForKey:@"password"]) {
+        _passwordTF.text = [userDefault objectForKey:@"password"];
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Singleton
++ (instancetype)shareLoginViewController {
+    return [[self alloc] init];
+}
+
++ (instancetype)allocWithZone:(struct _NSZone *)zone {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sigletonLoginViewController = [super allocWithZone:zone];
+    });
+    return _sigletonLoginViewController;
+}
+
+
+#pragma mark - Init
+
+- (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType {
+    self.infoViewType = infoViewType;
+}
+
+- (void)setUpWithVerificationcode:(UIImage *)verificationcode {
+    self.verificationCode = verificationcode;
 }
 
 - (void)initData {
+    
+    userDefault = [NSUserDefaults standardUserDefaults];
+    
+//    设置手势交互为YES
+    self.interactiveDismiss.interactive = YES;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     [self registerForKeyboardNotification];
+    //    设置代理
+    self.transitioningDelegate = self;
+    self.modalTransitionStyle = UIModalPresentationCustom;
+    
+    switch (self.infoViewType) {
+        case 1:
+        {
+//            暂时存到偏好设置
+            if ([userDefault objectForKey:@"account"] != nil && ![[userDefault objectForKey:@"account"] isEqualToString:@""]) {
+                if ([userDefault objectForKey:@"password"] != nil && ![[userDefault objectForKey:@"password"] isEqualToString:@""]) {
+                    [self setLoginBtnEnable];
+                }
+            }
+        }
+            break;
+        case 3:
+        {
+
+        }
+            break;
+        case 5:
+        {
+
+        }
+            break;
+        case 7:
+        {
+
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)initConstaints {
@@ -63,132 +141,98 @@
     [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    [self.quitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cardView).with.offset(20);
+    
+    [self.loginLb mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.cardView).with.offset(30);
         make.top.equalTo(self.cardView).with.offset(40);
-        make.width.and.height.equalTo(@25);
+        make.height.and.width.equalTo(@100);
     }];
     
-    [self.iconImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.cardView);
-        make.top.equalTo(self.quitBtn.mas_bottom).with.offset(50);
-        make.height.and.width.equalTo(@150);
+    [self.accountTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.loginLb);
+        make.top.equalTo(self.loginLb.mas_bottom).with.offset(30);
+        make.height.equalTo(@45);
+        make.right.equalTo(self.cardView).with.offset(-30);
     }];
-    
-    switch (self.loginState) {
-        case LoginStateHadLogin:
-        {
-            [self.studentNumLb mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.studentNumLb.mas_bottom).with.offset(5);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-        }
-            break;
-        case LoginStateNeverLogin:
-        {
-            [self.accountTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom).with.offset(20);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.accountTF.mas_bottom).with.offset(10);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
-        }
-            break;
-        case LoginStateHadLoginWithVerificationCode:
-        {
-            [self.studentNumLb mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom);
+    [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.accountTF);
+        make.top.equalTo(self.accountTF.mas_bottom).with.offset(40);
+        make.height.equalTo(@45);
+    }];
+    //        有身份证一定有验证码，有验证码不一定有身份证
+    if (self.infoViewType & LoginComponentInfoViewTypeVerificationcode) {
+        if (self.infoViewType & LoginComponentInfoViewTypeIDCard) {
+            [self.IDNumberTF mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.and.right.equalTo(self.accountTF);
+                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(40);
                 make.height.equalTo(@45);
             }];
-            
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.studentNumLb.mas_bottom).with.offset(5);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
             [self.verificationTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(10);
+                make.left.and.right.equalTo(self.accountTF);
+                make.top.equalTo(self.IDNumberTF.mas_bottom).with.offset(40);
                 make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
             }];
-        }
-            break;
-        case LoginStateNeverLoginWithVerificationCode:
-        {
-            [self.accountTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.iconImgView.mas_bottom).with.offset(5);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            [self.passwordTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.accountTF.mas_bottom).with.offset(10);
-                make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
-            }];
-            
+        } else {
+//            没idnumber
             [self.verificationTF mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.cardView.mas_centerX);
-                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(10);
+                make.left.and.right.equalTo(self.accountTF);
+                make.top.equalTo(self.passwordTF.mas_bottom).with.offset(40);
                 make.height.equalTo(@45);
-                make.width.equalTo(self.cardView).with.multipliedBy(0.8);
             }];
         }
-            break;
-        default:
-            break;
-    }
-    
-    if (self.loginState == LoginStateNeverLogin || self.loginState == LoginStateHadLogin) {
+        
         [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.cardView);
-            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(20);
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(30);
             make.height.equalTo(@45);
-            make.width.equalTo(self.cardView).with.multipliedBy(0.8);
         }];
     } else {
         [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.cardView);
-            make.top.equalTo(self.verificationTF.mas_bottom).with.offset(20);
-            make.width.equalTo(self.cardView).with.multipliedBy(0.8);
+            make.left.and.right.equalTo(self.accountTF);
+            make.top.equalTo(self.passwordTF.mas_bottom).with.offset(30);
             make.height.equalTo(@45);
         }];
     }
+    
+    [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.loginBtn.mas_centerX);
+        make.centerY.equalTo(self.loginBtn.mas_centerY);
+    }];
+    
+    [self.alertLb mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.and.left.and.right.equalTo(self.loginBtn);
+        make.top.equalTo(self.loginBtn.mas_bottom).with.offset(20);
+    }];
+    
 }
 
-#pragma mark - SetUp Method
-- (void)setUpWithLoginVerificationcodeImg:(UIImage *)image {
-    self.verificationCode = image;
+#pragma mark - Override
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
+    [super dismissViewControllerAnimated:flag completion:completion];
 }
 
-- (void)setDidLoginWithSuccessMsg:(SuccessWithMsg)successMsg FailureMsg:(FailureWithMsg)failureMsg {
-    self.successMsg = successMsg;
-    self.failureMsg = failureMsg;
+#pragma mark - UIViewControllerTransitioningDelegate
+//实现转场动画方法
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    return [LYAnimatedTransitioning transitionWithTransitioningType:LYAnimatedTransitioningTypePresent];
 }
 
-- (void)setUpWithStudentNumber:(NSString *)studentNumStr {
-    self.studentNumLb.text = studentNumStr;
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    return [LYAnimatedTransitioning transitionWithTransitioningType:LYAnimatedTransitioningTypeDismiss];
+}
+
+//实现添加手势方法
+//如果有需要，可以在present的时候添加上滑手势
+//- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
+//    if (self.delegate && [_delegate respondsToSelector:@selector(interactiveTransitioningPresent)]) {
+//        LYInteractiveTransition *interactiveTransitionPresent = [self.delegate interactiveTransitioningPresent];
+//        return interactiveTransitionPresent.isInteractive ? interactiveTransitionPresent : nil;
+//    }
+//    return nil;
+//}
+
+- (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
+    return self.interactiveDismiss.isInteractive ? self.interactiveDismiss : nil;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -202,116 +246,97 @@
     if ([self.verificationTF isFirstResponder]) {
         [self.verificationTF resignFirstResponder];
     }
+    if ([self.IDNumberTF isFirstResponder]) {
+        [self.IDNumberTF resignFirstResponder];
+    }
+    
+    [self didVerifiedLoginBtnEnaled];
+
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
+    NSString *regexString = nil;
     switch (textField.tag) {
         case 00:
         {
-            for (int i = 0; i < string.length; ++i) {
-                unichar character = [string characterAtIndex:i];
-                if (character < 48 || character > 57) {
-                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"账号只允许输入数字" preferredStyle:UIAlertControllerStyleAlert];
-                    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                    [self presentViewController:alertController animated:YES completion:nil];
-                    return NO;
-                }
-            }
-            if (string.length + range.location + range.length > 8) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"账号最多只能输入8位" preferredStyle:UIAlertControllerStyleAlert];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alertController animated:YES completion:nil];
-                return NO;
-            }
+            regexString = @"^\\d{0,8}$";
         }
             break;
         case 01:
         {
-            if (string.length + range.location + range.length > 18) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"密码最多只能输入18位" preferredStyle:UIAlertControllerStyleAlert];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alertController animated:YES completion:nil];
-                return NO;
-            }
+//            密码6-18位
+            regexString = @"^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“'。，、？]){0,18}$";
         }
             break;
         case 02:
         {
-            if (string.length + range.location + range.length > 4) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码最多只能输入4位" preferredStyle:UIAlertControllerStyleAlert];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alertController animated:YES completion:nil];
-                return NO;
-            }
+//            只能输入数字
+            regexString = @"^\\d{0,4}$";
+        }
+            break;
+        case 03:
+        {
+//            只允许输入身份证信息
+            regexString = @"^\\d{0,18}[0-9Xx]?$";
         }
             break;
         default:
             break;
     }
-    return YES;
+    
+    NSString *currentText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSPredicate *regexTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regexString];
+    return [regexTest evaluateWithObject:currentText] || currentText.length == 0;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.accountTF.text forKey:@"account"];
     switch (textField.tag) {
         case 00:
         {
             if (textField.text.length < 4) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"账号至少输入4位" preferredStyle:UIAlertControllerStyleAlert];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alertController animated:YES completion:nil];
-                self.loginBtn.enabled = NO;
-                self.loginBtn.alpha = 0.4;
+                [self showAlertWithMessage:@"账号至少输入4位"];
+                [self setLoginBtnDisable];
                 return;
-            }
-//            当用户不按顺序填写时
-            if (self.loginState == LoginStateHadLogin || self.loginState == LoginStateNeverLogin) {
-                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""]) {
-                    self.loginBtn.enabled = YES;
-                    self.loginBtn.alpha = 1;
-                }
-            } else {
-                if (![self.passwordTF.text isEqualToString:@""] && ![textField.text isEqualToString:@""] && ![self.verificationTF.text isEqualToString:@""]) {
-                    self.loginBtn.enabled = YES;
-                    self.loginBtn.alpha = 1;
-                }
             }
         }
             break;
         case 01:
         {
             if (textField.text.length < 6) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"密码至少输入6位" preferredStyle:UIAlertControllerStyleAlert];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alertController animated:YES completion:nil];
-                self.loginBtn.enabled = NO;
-                self.loginBtn.alpha = 0.4;
+                [self showAlertWithMessage:@"密码至少输入6位"];
+                [self setLoginBtnDisable];
                 return;
             }
-            if (self.loginState == LoginStateNeverLogin || self.loginState == LoginStateHadLogin) {
-                self.loginBtn.enabled = YES;
-                self.loginBtn.alpha = 1;
+            if (self.infoViewType == LoginComponentInfoViewTypeDefault) {
+                [self setLoginBtnEnable];
             }
         }
             break;
         case 02:
         {
             if (textField.text.length < 4) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"验证码至少输入4位" preferredStyle:UIAlertControllerStyleAlert];
-                [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-                [self presentViewController:alertController animated:YES completion:nil];
-                self.loginBtn.enabled = NO;
-                self.loginBtn.alpha = 0.4;
+                [self showAlertWithMessage:@"验证码至少输入4位"];
+                [self setLoginBtnDisable];
                 return;
             }
-            if (self.loginState == LoginStateHadLoginWithVerificationCode || self.loginState == LoginStateNeverLoginWithVerificationCode) {
-                self.loginBtn.enabled = YES;
-                self.loginBtn.alpha = 1;
+            if (self.infoViewType == 5) {
+                [self setLoginBtnEnable];
             }
         }
             break;
+        case 03:
+        {
+            if (textField.text.length != 18) {
+                [self showAlertWithMessage:@"请注意身份证的位数"];
+                [self setLoginBtnDisable];
+            } else {
+                if (self.infoViewType == 7) {
+                    [self setLoginBtnEnable];
+                }
+            }
+        }
         default:
             break;
     }
@@ -326,78 +351,123 @@
 #pragma mark - ResponseMethod
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
-    
     [self.view endEditing:YES];
+    [self didVerifiedLoginBtnEnaled];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+//    if ([touches anyObject].view != self.view) {
+//        UIView *touchView = [touches anyObject].view;
+////        NSLog(@"%@", view);
+//        for (UIView *view in self.view.subviews) {
+//            if (view.subviews.count > 0) {
+//                for (UIView *subView in view.subviews) {
+//                    //                NSLog(@"%@", subView);
+//                    if (touchView == subView) {
+//                        return;
+//                    }
+//                }
+//            }
+//            if (touchView == view) {
+//                return;
+//            }
+//        }
+//
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
+    //获取所有的触摸位置
+    
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self.view];
+    
+    CGMutablePathRef pathRef = CGPathCreateMutable();
+//    从右下角开始画图
+    CGPathMoveToPoint(pathRef, NULL, self.view.frame.size.width, self.view.frame.size.height);
+//    (0,height)
+    CGPathAddLineToPoint(pathRef, NULL, 0, self.view.frame.size.height);
+//    当前视图原点,设置点击边框也能返回上一视图
+    CGPathAddLineToPoint(pathRef, NULL, 0, 20);
+    CGPathAddLineToPoint(pathRef, NULL, self.view.frame.size.width, 20);
+//    NSLog(@"%f", self.view.frame.origin.y);
+    CGPathCloseSubpath(pathRef);
+    
+    if (CGPathContainsPoint(pathRef, NULL, point, NO)) {
+//        如果在这个区域中就什么都不做
+    } else {
+//        如果超出了这个区域，则返回上一界面
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didClickedLoginBtn {
     
-    [[NSUserDefaults standardUserDefaults] setObject:self.accountTF.text forKey:@"account"];
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] initWithCapacity:0];
+    [param setObject:self.accountTF.text forKey:@"account"];
+    [param setObject:self.passwordTF.text forKey:@"password"];
     
-    switch (self.loginState) {
-        case LoginStateHadLoginWithVerificationCode:
-        {
-            //    账号密码验证码都是必须的,其中账号可以预填
-            if (![self.passwordTF.text isEqualToString:@""] && ![self.verificationTF.text isEqualToString:@""]) {
-                self.successMsg(@[@"123455", self.passwordTF.text, self.verificationTF.text]);
-            } else {
-                if ([self.passwordTF.text isEqualToString:@""]) {
-                    self.failureMsg(@"密码未填写");
-                } else {
-                    self.failureMsg(@"验证码未填写");
-                }
+    if ([self.delegate respondsToSelector:@selector(personalInformationWithDic:)]) {
+        switch (self.infoViewType) {
+            case 3:
+            {
+                [param setObject:self.IDNumberTF.text forKey:@"idnumber"];
             }
-        }
-            break;
-        case LoginStateNeverLoginWithVerificationCode:
-        {
-            //    账号密码验证码都是必须的,其中账号可以预填
-            if (![self.accountTF.text isEqualToString:@""] && ![self.passwordTF.text isEqualToString:@""] && ![self.verificationTF.text isEqualToString:@""]) {
-                self.successMsg(@[self.accountTF.text, self.passwordTF.text, self.verificationTF.text]);
-            } else {
-                if ([self.accountTF.text isEqualToString:@""]) {
-                    self.failureMsg(@"账号未填写");
-                } else if ([self.passwordTF.text isEqualToString:@""]) {
-                    self.failureMsg(@"密码未填写");
-                } else {
-                    self.failureMsg(@"验证码未填写");
-                }
+                break;
+            case 5:
+            {
+                [param setObject:self.verificationTF.text forKey:@"verificationcode"];
             }
-        }
-            break;
-        case LoginStateHadLogin:
-        {
-            if (![self.passwordTF.text isEqualToString:@""]) {
-                self.successMsg(@[@"123456", self.passwordTF.text]);
-            } else {
-                self.failureMsg(@"请输入密码");
+                break;
+            case 7:
+            {
+                [param setObject:self.IDNumberTF.text forKey:@"idnumber"];
+                [param setObject:self.verificationTF.text forKey:@"verificationcode"];
             }
+                break;
+            default:
+                break;
         }
-            break;
-        case LoginStateNeverLogin:
-        {
-            //    账号密码是必须的,其中账号可以预填
-            if (![self.accountTF.text isEqualToString:@""] && ![self.passwordTF.text isEqualToString:@""]) {
-                self.successMsg(@[self.accountTF.text, self.passwordTF.text]);
-            } else {
-                if ([self.accountTF.text isEqualToString:@""]) {
-                    self.failureMsg(@"账号未填写");
-                } else {
-                    self.failureMsg(@"密码未填写");
-                }
-            }
-        }
-            break;
-        default:
-            break;
+        [self.delegate personalInformationWithDic:param];
     }
+    
+    [self.indicatorView startAnimating];
+    [self setUserInteractionEnable:NO];
+    [self.loginBtn setTitle:@"" forState:UIControlStateNormal];
+
 }
 
-- (void)didClickedQuitBtn {
-    [self dismissViewControllerAnimated:YES completion:^{
-        self.failureMsg(@"退出登录");
-    }];
+- (void)stopVerifyWithSuccess:(BOOL)success {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (success) {
+            if ([self.indicatorView isAnimating]) {
+                [self.indicatorView stopAnimating];
+            }
+            [self setUserInteractionEnable:YES];
+        //    临时的数据,只有登录成功才存储数据
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [userDefault setObject:self.accountTF.text forKey:@"account"];
+                [userDefault setObject:self.passwordTF.text forKey:@"password"];
+            });
+
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+            }];
+            
+        } else {
+
+            if ([self.indicatorView isAnimating]) {
+                [self.indicatorView stopAnimating];
+            }
+            [self setUserInteractionEnable:YES];
+
+            [self showAlertWithMessage:@"登录失败！请检查您的账号密码"];
+            [self.loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+        }
+    });
 }
+
+#pragma mark - UIKeyboardNotification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGFloat keyboardHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
@@ -415,7 +485,6 @@
                 make.bottom.equalTo(self.view).with.offset(-offset);
             }];
             [self.view layoutIfNeeded];
-            
         }];
     }
 }
@@ -427,6 +496,62 @@
             make.top.and.bottom.equalTo(self.view);
         }];
         [self.view layoutIfNeeded];
+    }];
+}
+
+
+#pragma mark - Private Method
+- (void)setLoginBtnEnable {
+    self.loginBtn.enabled = YES;
+    self.loginBtn.alpha = 1;
+}
+
+- (void)setLoginBtnDisable {
+    self.loginBtn.enabled = NO;
+    self.loginBtn.alpha = 0.4;
+}
+
+- (void)didVerifiedLoginBtnEnaled {
+    if (self.infoViewType & LoginComponentInfoViewTypeVerificationcode) {
+        //        先设置为yes，若其他项未满足，再设为no
+        if (![self.accountTF.text isEqualToString:@""] && ![self.passwordTF.text isEqualToString:@""]) {
+            //        有身份证一定有验证码，有验证码不一定有身份证
+            if (self.infoViewType & LoginComponentInfoViewTypeVerificationcode) {
+                if (self.infoViewType & LoginComponentInfoViewTypeIDCard) {
+                    if (![self.verificationTF.text isEqualToString:@""] && ![self.IDNumberTF.text isEqualToString:@""]) {
+                        [self setLoginBtnEnable];
+                    } else {
+                        [self setLoginBtnDisable];
+                    }
+                } else {
+                    if (![self.verificationTF.text isEqualToString:@""]) {
+                        [self setLoginBtnEnable];
+                    }
+                }
+            } else {
+                [self setLoginBtnEnable];
+            }
+        }
+    }
+}
+
+//设置子视图是否可交互
+- (void)setUserInteractionEnable:(BOOL)enable {
+    for (UIView *view in self.view.subviews) {
+        if (view.subviews.count > 0) {
+            for (UIView *subView in view.subviews) {
+                [subView setUserInteractionEnabled:enable];
+//                NSLog(@"%@", subView);
+            }
+        }
+    }
+}
+
+- (void)showAlertWithMessage:(NSString *)msg {
+    self.alertLb.alpha = 1;
+    self.alertLb.text = msg;
+    [UIView animateWithDuration:4 animations:^{
+        self.alertLb.alpha = 0;
     }];
 }
 
@@ -442,7 +567,7 @@
 
 - (LYTextField *)accountTF {
     if (!_accountTF) {
-        _accountTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeAccount];
+        _accountTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeAccount withVerificationCodeImg:nil];
         _accountTF.delegate = self;
         [self.cardView addSubview:_accountTF];
     }
@@ -451,7 +576,7 @@
 
 - (LYTextField *)passwordTF {
     if (!_passwordTF) {
-        _passwordTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypePassword];
+        _passwordTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypePassword withVerificationCodeImg:nil];
         _passwordTF.delegate = self;
         [self.cardView addSubview:_passwordTF];
     }
@@ -460,8 +585,7 @@
 
 - (LYTextField *)verificationTF {
     if (!_verificationTF) {
-        _verificationTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeVerificationcode];
-        [_verificationTF setUpWithVerificationCodeImg:self.verificationCode];
+        _verificationTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeVerificationcode withVerificationCodeImg:self.verificationCode];
         _verificationTF.delegate = self;
         _verificationTF.text = @"";
         [self.cardView addSubview:_verificationTF];
@@ -469,14 +593,15 @@
     return _verificationTF;
 }
 
-- (UIImageView *)iconImgView {
-    if (!_iconImgView) {
-        _iconImgView = [[UIImageView alloc] init];
-        _iconImgView.image = [UIImage imageNamed:@"icon"];
-        [self.cardView addSubview:_iconImgView];
+- (LYTextField *)IDNumberTF {
+    if (!_IDNumberTF) {
+        _IDNumberTF = [[LYTextField alloc] initWithLoginTextFieldType:loginTextFieldTypeIDcard withVerificationCodeImg:nil];
+        _IDNumberTF.delegate = self;
+        [self.cardView addSubview:_IDNumberTF];
     }
-    return _iconImgView;
+    return _IDNumberTF;
 }
+
 
 - (UIButton *)loginBtn {
     if (!_loginBtn) {
@@ -486,6 +611,9 @@
         _loginBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
         [_loginBtn setBackgroundColor:[JHTool colorWithHexStr:@"#3a99d9"]];
         [_loginBtn.layer setCornerRadius:2];
+        _loginBtn.layer.shadowOffset =  CGSizeMake(1, 1);
+        _loginBtn.layer.shadowOpacity = 0.5;
+        _loginBtn.layer.shadowColor =  [UIColor blackColor].CGColor;
         [_loginBtn addTarget:self action:@selector(didClickedLoginBtn) forControlEvents:UIControlEventTouchUpInside];
         _loginBtn.enabled = NO;
         _loginBtn.alpha = 0.4;
@@ -494,29 +622,45 @@
     return _loginBtn;
 }
 
-- (UIButton *)quitBtn {
-    if (!_quitBtn) {
-        _quitBtn = [[UIButton alloc] init];
-        [_quitBtn setBackgroundImage:[UIImage imageNamed:@"quit"] forState:UIControlStateNormal];
-        [_quitBtn addTarget:self action:@selector(didClickedQuitBtn) forControlEvents:UIControlEventTouchUpInside];
-        [self.cardView addSubview:_quitBtn];
+- (UILabel *)loginLb {
+    if (!_loginLb) {
+        _loginLb = [[UILabel alloc] init];
+        [_loginLb setTextColor:[UIColor blackColor]];
+        [_loginLb setText:@"Log In"];
+        [_loginLb setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle]];
+        _loginLb.textAlignment = NSTextAlignmentLeft;
+        [self.cardView addSubview:_loginLb];
     }
-    return _quitBtn;
+    return _loginLb;
 }
 
-- (UILabel *)studentNumLb {
-    if (!_studentNumLb) {
-        _studentNumLb = [[UILabel alloc] init];
-        _studentNumLb.textColor = [UIColor blackColor];
-        _studentNumLb.backgroundColor = [UIColor whiteColor];
-        _studentNumLb.textAlignment = NSTextAlignmentCenter;
-        _studentNumLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"account"] != NULL) {
-            _studentNumLb.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"account"];
-        }
-        [self.cardView addSubview:_studentNumLb];
+//添加dismiss手势
+- (LYInteractiveTransition *)interactiveDismiss {
+    if (!_interactiveDismiss) {
+        _interactiveDismiss = [LYInteractiveTransition interactiveTrainsitionWithTransitionType:LYInteractiveTransitionTypeDismiss GestureDirection:LYInteractiveTransitionGestureDirectionDown];
+        [_interactiveDismiss addPanGestureToViewController:self];
     }
-    return _studentNumLb;
+    return _interactiveDismiss;
+}
+
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView  = [[UIActivityIndicatorView alloc] init];
+        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        [self.loginBtn addSubview:_indicatorView];
+    }
+    return _indicatorView;
+}
+
+- (UILabel *)alertLb {
+    if (!_alertLb) {
+        _alertLb = [[UILabel alloc] init];
+        _alertLb.textColor = [UIColor beautyRed];
+        _alertLb.textAlignment = NSTextAlignmentCenter;
+        _alertLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        [self.view addSubview:_alertLb];
+    }
+    return _alertLb;
 }
 
 @end

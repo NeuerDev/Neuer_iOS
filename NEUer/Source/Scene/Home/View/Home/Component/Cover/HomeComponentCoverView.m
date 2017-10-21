@@ -7,10 +7,119 @@
 //
 
 #import "HomeComponentCoverView.h"
+#import "TouchableCollectionViewCell.h"
+static NSString * const kHomeComponentCoverCellId = @"kCellId";
 
-@interface HomeComponentCoverView ()
+@interface HomeComponentCoverCell : TouchableCollectionViewCell
+
+@property (nonatomic, strong) UIImageView *imageView;
+
+@end
+
+@implementation HomeComponentCoverCell
+
+#pragma mark - Init Methods
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        
+        self.contentView.layer.cornerRadius = 8;
+        
+        [self initConstraints];
+    }
+    
+    return self;
+}
+
+- (void)initConstraints {
+    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.contentView);
+    }];
+    
+    [self layoutIfNeeded];
+    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
+}
+
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] init];
+        [self.contentView addSubview:_imageView];
+    }
+    
+    return _imageView;
+}
+
+@end
+
+@interface HomeComponentCoverLayout : UICollectionViewFlowLayout
+@property (nonatomic, assign) NSInteger currentPage;
+@end
+
+@implementation HomeComponentCoverLayout
+
+- (CGFloat)pageWidth {
+    
+    return self.itemSize.width + self.minimumLineSpacing;
+}
+
+- (CGPoint)offsetAtCurrentPage {
+    
+    CGFloat width = -self.collectionView.contentInset.left - self.sectionInset.left;
+    for (int i = 0; i < self.currentPage; i++)
+        width += [self pageWidth];
+    
+    return CGPointMake(width, 0);
+}
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset {
+    
+    return [self offsetAtCurrentPage];
+}
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
+    
+    // To scroll paginated
+    /*
+     if (velocity.x > 0 && self.currentPage < [self.collectionView numberOfItemsInSection:0]-1) self.currentPage += 1;
+     else if (velocity.x < 0 && self.currentPage > 0) self.currentPage -= 1;
+     
+     return  [self offsetAtCurrentPage];
+     */
+    
+    // To scroll and stop always at the center of a page
+    CGRect proposedRect = CGRectMake(proposedContentOffset.x+self.collectionView.bounds.size.width/2 - self.pageWidth/2, 0, self.pageWidth, self.collectionView.bounds.size.height);
+    NSMutableArray <__kindof UICollectionViewLayoutAttributes *> *allAttributes = [[self layoutAttributesForElementsInRect:proposedRect] mutableCopy];
+    __block UICollectionViewLayoutAttributes *proposedAttributes = nil;
+    __block CGFloat minDistance = CGFLOAT_MAX;
+    [allAttributes enumerateObjectsUsingBlock:^(__kindof UICollectionViewLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        CGFloat distance = CGRectGetMidX(proposedRect) - obj.center.x;
+        
+        if (ABS(distance) < minDistance) {
+            proposedAttributes = obj;
+            minDistance = distance;
+        }
+    }];
+    
+    
+    // Scroll always
+    if (self.currentPage == proposedAttributes.indexPath.row) {
+        if (velocity.x > 0 && self.currentPage < [self.collectionView numberOfItemsInSection:0]-1) self.currentPage += 1;
+        else if (velocity.x < 0 && self.currentPage > 0) self.currentPage -= 1;
+    }
+    else  {
+        self.currentPage = proposedAttributes.indexPath.row;
+    }
+    
+    return  [self offsetAtCurrentPage];
+}
+
+@end
+
+@interface HomeComponentCoverView () <UICollectionViewDelegate, UICollectionViewDataSource>
 @property (nonatomic, strong) UIView *contentView;
-@property (nonatomic, strong) UIImageView *coverImageView;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSArray<NSDictionary *> *cellDataArray;
 @end
 
 @implementation HomeComponentCoverView
@@ -29,10 +138,31 @@
 }
 
 - (void)initConstraints {
-    [self.coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
+    CGFloat cellHeight = cellWidth * 10.0f / 16.0f;
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
-        make.height.equalTo(self.coverImageView.mas_width).multipliedBy(10.0f/16.0f);
+        make.height.mas_equalTo(cellHeight);
     }];
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    HomeComponentCoverCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeComponentCoverCellId forIndexPath:indexPath];
+    NSDictionary *item = self.cellDataArray[indexPath.item];
+    cell.imageView.image = [UIImage imageNamed:item[@"image"]];
+    return cell;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.cellDataArray.count;
 }
 
 #pragma mark - Getter
@@ -45,9 +175,9 @@
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
         
-        _contentView.layer.shadowOffset = CGSizeMake(0, 4);
-        _contentView.layer.shadowOpacity = 0.8;
-        _contentView.layer.shadowRadius = 4;
+//        _contentView.layer.shadowOffset = CGSizeMake(0, 4);
+//        _contentView.layer.shadowOpacity = 0.8;
+//        _contentView.layer.shadowRadius = 4;
         
         [self addSubview:_contentView];
     }
@@ -55,16 +185,45 @@
     return _contentView;
 }
 
-- (UIImageView *)coverImageView {
-    if (!_coverImageView) {
-        _coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home"]];
-        _coverImageView.layer.cornerRadius = 16.0f;
-        _coverImageView.layer.masksToBounds = YES;
-        self.contentView.layer.shadowColor = _coverImageView.image.mainColor.CGColor;
-        [self.contentView addSubview:_coverImageView];
+- (UICollectionView *)collectionView {
+    if (!_collectionView) {
+        HomeComponentCoverLayout *flowLayout = [[HomeComponentCoverLayout alloc] init];
+        CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
+        CGFloat cellHeight = cellWidth * 10.0f / 16.0f;
+        flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+        _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.layer.masksToBounds = NO;
+        [_collectionView registerClass:[HomeComponentCoverCell class] forCellWithReuseIdentifier:kHomeComponentCoverCellId];
+        _collectionView.delegate = self;
+        _collectionView.contentInset = UIEdgeInsetsMake(0, 16, 0, 16);
+        _collectionView.dataSource = self;
+        _collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.scrollsToTop = NO;
+        [self.contentView addSubview:_collectionView];
     }
     
-    return _coverImageView;
+    return _collectionView;
+}
+
+- (NSArray<NSDictionary *> *)cellDataArray {
+    if (!_cellDataArray) {
+        _cellDataArray = @[
+                           @{
+                               @"image":@"home1",
+                               },
+                           @{
+                               @"image":@"home2",
+                               },
+                           @{
+                               @"image":@"home3",
+                               },
+                           ];
+    }
+    
+    return _cellDataArray;
 }
 
 @end

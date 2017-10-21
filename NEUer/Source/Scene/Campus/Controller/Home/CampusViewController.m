@@ -35,6 +35,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
         self.contentView.layer.shadowOpacity = 0.5;
         self.contentView.layer.shadowRadius = 4;
+        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
         
         [self initConstraints];
     }

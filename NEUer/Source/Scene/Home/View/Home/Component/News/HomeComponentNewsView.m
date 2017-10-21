@@ -28,7 +28,9 @@
 }
 
 - (void)initConstraints {
-    
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(@(200));
+    }];
 }
 
 #pragma mark - Getter
