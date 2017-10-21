@@ -138,8 +138,16 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 }
 
 - (void)initConstraints {
+    
+    [self.bodyView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
+        make.left.and.right.equalTo(self);
+        make.bottom.equalTo(self.mas_bottom).with.offset(-8);
+    }];
+    
     CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
     CGFloat cellHeight = cellWidth * 10.0f / 16.0f;
+    
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
         make.height.mas_equalTo(cellHeight);
