@@ -61,7 +61,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     //    self.cardTableView.refreshControl = self.refreshControl;
     [self initConstraints];
     [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
-    [self test];
+//    [self test];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
