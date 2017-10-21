@@ -175,7 +175,7 @@ typedef void(^SigninInputViewActionBlock)(void);
 - (void)onActionButtonClicked:(id)sender {
     if (_type&SigninInputTypePassword
            || _type&SigninInputTypeRePassword
-           || _type&SigninInputTypeVerifyCode) {
+           || _type&SigninInputTypeNewPassword) {
         _textField.secureTextEntry = !_textField.secureTextEntry;
         _actionButton.selected = !_actionButton.selected;
     }
@@ -274,12 +274,11 @@ typedef void(^SigninInputViewActionBlock)(void);
     self.titleLabel.text = self.title;
     
     [self initConstraints];
+    [self refreshViewState];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated {
     [self showContentView];
-    [self refreshViewState];
 }
 
 - (void)initConstraints {
@@ -350,11 +349,13 @@ typedef void(^SigninInputViewActionBlock)(void);
         [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypeRePassword content:dictionary[@(SigninInputTypeRePassword)]]];
     }
     if (inputType & SigninInputTypeVerifyCode) {
-        [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypeVerifyCode content:dictionary[@(SigninInputTypeVerifyCode)] actionBlock:^{
+        SigninInputView *inputView = [[SigninInputView alloc] initWithInputType:SigninInputTypeVerifyCode content:dictionary[@(SigninInputTypeVerifyCode)] actionBlock:^{
             if (ws.changeVerifyImageBlock) {
                 ws.changeVerifyImageBlock();
             }
-        }]];
+        }];
+        inputView.verifyImageView.image = _verifyImage;
+        [inputViews addObject:inputView];
     }
     self.title = title;
     self.inputViews = inputViews;
@@ -415,8 +416,8 @@ typedef void(^SigninInputViewActionBlock)(void);
         self.maskView.alpha = 0;
         self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
     } completion:^(BOOL finished) {
-        [self dismissViewControllerAnimated:NO completion:nil];
         [self clear];
+        [self dismissViewControllerAnimated:NO completion:nil];
     }];
 }
 
@@ -553,6 +554,15 @@ typedef void(^SigninInputViewActionBlock)(void);
             inputView.textField.returnKeyType = UIReturnKeyDone;
         } else {
             inputView.textField.returnKeyType = UIReturnKeyNext;
+        }
+    }
+}
+
+- (void)setVerifyImage:(UIImage *)verifyImage {
+    _verifyImage = verifyImage;
+    for (SigninInputView *inputView in _inputViews) {
+        if (inputView.type&SigninInputTypeVerifyCode) {
+            inputView.verifyImageView.image = verifyImage;
         }
     }
 }

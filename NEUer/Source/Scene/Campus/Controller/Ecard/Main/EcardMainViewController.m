@@ -11,15 +11,14 @@
 #import "EcardTableViewCell.h"
 #import "EcardModel.h"
 
+#import "SigninViewController.h"
+
 #import "CustomSectionHeaderFooterView.h"
 
 static NSString * const kEcardCustomHeaderViewId = @"kEcardCustomHeaderViewId";
 static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellId";
 
 @interface EcardMainViewController () <UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UIButton *button;
 
 @property (nonatomic, strong) EcardModel *ecardModel;
 @property (nonatomic, strong) EcardInfoBean *infoBean;
@@ -67,35 +66,37 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-}
-
-- (void)test {
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 200, 50)];
-    _imageView.backgroundColor = [UIColor beautyBlue];
-    [self.view addSubview:_imageView];
-    
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(100, 350, 200, 50)];
-    _textField.backgroundColor = [UIColor beautyPurple];
-    [self.view addSubview:_textField];
-    
-    _button = [[UIButton alloc] initWithFrame:CGRectMake(100, 400, 200, 50)];
-    _button.backgroundColor = [UIColor beautyGreen];
-    [_button setTitle:@"login" forState:UIControlStateNormal];
-    [_button addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_button];
-    
     WS(ws);
-    [self.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-        ws.imageView.image = verifyImage;
+    SigninViewController *signinVC = [[SigninViewController alloc] init];
+    signinVC.modalPresentationStyle = UIModalPresentationCustom;
+    signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [signinVC setupWithTitle:@"登录校卡中心" inputType:SigninInputTypeAccount|SigninInputTypePassword|SigninInputTypeVerifyCode resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+        if (complete) {
+            NSString *userName = result[@(SigninInputTypeAccount)]?:@"";
+            NSString *password = result[@(SigninInputTypePassword)]?:@"";
+            NSString *verifyCode = result[@(SigninInputTypeVerifyCode)]?:@"";
+            [ws loginWithUser:userName password:password verifyCode:verifyCode];
+        } else {
+            [ws.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+    
+    __weak SigninViewController *weakSigninVC = signinVC;
+    signinVC.changeVerifyImageBlock = ^{
+        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+            weakSigninVC.verifyImage = verifyImage;
+        }];
+    };
+    [self presentViewController:signinVC animated:YES completion:^{
+        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+            weakSigninVC.verifyImage = verifyImage;
+        }];
     }];
 }
 
-- (void)login {
+- (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
     WS(ws);
-    [self.ecardModel authorUser:@"20140097" password:@"960614" verifyCode:_textField.text complete:^(BOOL success, NSError *error) {
-        ws.imageView.hidden = YES;
-        ws.textField.hidden = YES;
-        ws.button.hidden = YES;
+    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
         if (success) {
             [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
                 if (success) {
