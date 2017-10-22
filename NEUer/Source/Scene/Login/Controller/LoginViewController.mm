@@ -7,13 +7,13 @@
 //
 
 #import "TesseractCenter.h"
-#import "SigninViewController.h"
+#import "LoginViewController.h"
 
-#pragma mark - SigninInputView
+#pragma mark - LoginInputView
 
-typedef void(^SigninInputViewActionBlock)(void);
+typedef void(^LoginInputViewActionBlock)(void);
 
-@interface SigninInputView : UIView
+@interface LoginInputView : UIView
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *infoLabel;
@@ -21,31 +21,31 @@ typedef void(^SigninInputViewActionBlock)(void);
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIImageView *verifyImageView;
 @property (nonatomic, strong) UIView *seperatorLine;
-@property (nonatomic, strong) SigninInputViewActionBlock actionBlock;
-@property (nonatomic, assign) SigninInputType type;
+@property (nonatomic, strong) LoginInputViewActionBlock actionBlock;
+@property (nonatomic, assign) LoginInputType type;
 
-- (instancetype)initWithInputType:(SigninInputType)type;
-- (instancetype)initWithInputType:(SigninInputType)type content:(NSString *)content;
-- (instancetype)initWithInputType:(SigninInputType)type content:(NSString *)content actionBlock:(SigninInputViewActionBlock)actionBlock;
+- (instancetype)initWithInputType:(LoginInputType)type;
+- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content;
+- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content actionBlock:(LoginInputViewActionBlock)actionBlock;
 
 - (BOOL)legal;
 
 @end
 
-#pragma mark - SigninViewController
+#pragma mark - LoginViewController
 
-@interface SigninViewController () <UITextFieldDelegate, G8TesseractDelegate>
+@interface LoginViewController () <UITextFieldDelegate, G8TesseractDelegate>
 @property (nonatomic, strong) SigninResultBlock resultBlock;
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIVisualEffectView *maskView;
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) NSArray<SigninInputView *> *inputViews;
+@property (nonatomic, strong) NSArray<LoginInputView *> *inputViews;
 @property (nonatomic, strong) UIButton *loginButton;
 @end
 
-@implementation SigninViewController {
+@implementation LoginViewController {
     CGFloat _originY;
     CGFloat _viewBeginY;
     CGFloat _touchBeginY;
@@ -115,32 +115,32 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 #pragma mark - Public Methods
 
-- (void)setupWithTitle:(NSString *)title inputType:(SigninInputType)inputType resultBlock:(SigninResultBlock)resultBlock {
+- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType resultBlock:(SigninResultBlock)resultBlock {
     [self setupWithTitle:title inputType:inputType contents:nil resultBlock:resultBlock];
 }
 
-- (void)setupWithTitle:(NSString *)title inputType:(SigninInputType)inputType contents:(NSDictionary<NSNumber *,NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock {
+- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType contents:(NSDictionary<NSNumber *,NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock {
     WS(ws);
     _resultBlock = resultBlock;
     NSDictionary *dictionary = contents?:@{};
-    NSMutableArray<SigninInputView *> *inputViews = @[].mutableCopy;
-    if (inputType & SigninInputTypeAccount) {
-        [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypeAccount content:dictionary[@(SigninInputTypeAccount)]]];
+    NSMutableArray<LoginInputView *> *inputViews = @[].mutableCopy;
+    if (inputType & LoginInputTypeAccount) {
+        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeAccount content:dictionary[@(LoginInputTypeAccount)]]];
     }
-    if (inputType & SigninInputTypeIdentityNumber) {
-        [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypeIdentityNumber content:dictionary[@(SigninInputTypeIdentityNumber)]]];
+    if (inputType & LoginInputTypeIdentityNumber) {
+        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeIdentityNumber content:dictionary[@(LoginInputTypeIdentityNumber)]]];
     }
-    if (inputType & SigninInputTypePassword) {
-        [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypePassword content:dictionary[@(SigninInputTypePassword)]]];
+    if (inputType & LoginInputTypePassword) {
+        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypePassword content:dictionary[@(LoginInputTypePassword)]]];
     }
-    if (inputType & SigninInputTypeNewPassword) {
-        [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypeNewPassword content:dictionary[@(SigninInputTypeNewPassword)]]];
+    if (inputType & LoginInputTypeNewPassword) {
+        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeNewPassword content:dictionary[@(LoginInputTypeNewPassword)]]];
     }
-    if (inputType & SigninInputTypeRePassword) {
-        [inputViews addObject:[[SigninInputView alloc] initWithInputType:SigninInputTypeRePassword content:dictionary[@(SigninInputTypeRePassword)]]];
+    if (inputType & LoginInputTypeRePassword) {
+        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeRePassword content:dictionary[@(LoginInputTypeRePassword)]]];
     }
-    if (inputType & SigninInputTypeVerifyCode) {
-        SigninInputView *inputView = [[SigninInputView alloc] initWithInputType:SigninInputTypeVerifyCode content:dictionary[@(SigninInputTypeVerifyCode)] actionBlock:^{
+    if (inputType & LoginInputTypeVerifyCode) {
+        LoginInputView *inputView = [[LoginInputView alloc] initWithInputType:LoginInputTypeVerifyCode content:dictionary[@(LoginInputTypeVerifyCode)] actionBlock:^{
             if (ws.changeVerifyImageBlock) {
                 ws.changeVerifyImageBlock();
             }
@@ -213,7 +213,7 @@ typedef void(^SigninInputViewActionBlock)(void);
                 // 点击登录
                 if (_resultBlock) {
                     NSMutableDictionary<NSNumber *, NSString *> *result = @{}.mutableCopy;
-                    for (SigninInputView *inputView in _inputViews) {
+                    for (LoginInputView *inputView in _inputViews) {
                         [result setObject:inputView.textField.text?:@"" forKey:@(inputView.type)];
                     }
                     _resultBlock(result.copy, YES);
@@ -263,7 +263,7 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 - (void)clear {
     if (_inputViews) {
-        for (SigninInputView *view in _inputViews) {
+        for (LoginInputView *view in _inputViews) {
             [view removeFromSuperview];
         }
     }
@@ -271,7 +271,7 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 - (void)refreshViewState {
     BOOL isLegal = YES;
-    for (SigninInputView *inputView in _inputViews) {
+    for (LoginInputView *inputView in _inputViews) {
         if (inputView.legal) {
             continue;
         } else {
@@ -288,7 +288,7 @@ typedef void(^SigninInputViewActionBlock)(void);
         _loginButton.backgroundColor = [[UIColor beautyBlue] colorWithAlphaComponent:0.5];
     }
     
-    for (SigninInputView *inputView in _inputViews) {
+    for (LoginInputView *inputView in _inputViews) {
         if ([inputView.textField isFirstResponder]) {
             inputView.textField.textColor = [UIColor blackColor];
             inputView.seperatorLine.backgroundColor = [UIColor blackColor];
@@ -342,9 +342,9 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 #pragma mark - Setter
 
-- (void)setInputViews:(NSArray<SigninInputView *> *)inputViews {
+- (void)setInputViews:(NSArray<LoginInputView *> *)inputViews {
     _inputViews = inputViews;
-    for (SigninInputView *inputView in inputViews) {
+    for (LoginInputView *inputView in inputViews) {
         inputView.textField.delegate = self;
         if ([inputView isEqual:inputViews.lastObject]) {
             inputView.textField.returnKeyType = UIReturnKeyDone;
@@ -356,8 +356,8 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 - (void)setVerifyImage:(UIImage *)verifyImage {
     _verifyImage = verifyImage;
-    for (SigninInputView *inputView in _inputViews) {
-        if (inputView.type&SigninInputTypeVerifyCode) {
+    for (LoginInputView *inputView in _inputViews) {
+        if (inputView.type&LoginInputTypeVerifyCode) {
             inputView.verifyImageView.image = verifyImage;
             // try to use ocr
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -419,23 +419,23 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 @end
 
-@implementation SigninInputView
+@implementation LoginInputView
 
 #pragma mark - Init Methods
 
-- (instancetype)initWithInputType:(SigninInputType)type {
+- (instancetype)initWithInputType:(LoginInputType)type {
     return [self initWithInputType:type content:nil actionBlock:nil];
 }
 
-- (instancetype)initWithInputType:(SigninInputType)type content:(NSString *)content {
+- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content {
     return [self initWithInputType:type content:content actionBlock:nil];
 }
 
-- (instancetype)initWithInputType:(SigninInputType)type content:(NSString *)content actionBlock:(SigninInputViewActionBlock)actionBlock {
+- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content actionBlock:(LoginInputViewActionBlock)actionBlock {
     if (self = [super init]) {
         _type = type;
         _actionBlock = actionBlock;
-        if (type==SigninInputTypeAccount && content.length>0) {
+        if (type==LoginInputTypeAccount && content.length>0) {
             self.textField.text = content;
             self.textField.enabled = NO;
         }
@@ -448,19 +448,19 @@ typedef void(^SigninInputViewActionBlock)(void);
 
 - (void)initViews {
     switch (_type) {
-        case SigninInputTypeAccount:
+        case LoginInputTypeAccount:
         {
             self.titleLabel.text = @"学号";
             self.textField.keyboardType = UIKeyboardTypeAlphabet;
         }
             break;
-        case SigninInputTypeIdentityNumber:
+        case LoginInputTypeIdentityNumber:
         {
             self.titleLabel.text = @"身份证";
             self.textField.keyboardType = UIKeyboardTypeAlphabet;
         }
             break;
-        case SigninInputTypePassword:
+        case LoginInputTypePassword:
         {
             self.titleLabel.text = @"密码";
             self.textField.secureTextEntry = YES;
@@ -470,7 +470,7 @@ typedef void(^SigninInputViewActionBlock)(void);
             //            self.textField.placeholder = @"请输入学号";
         }
             break;
-        case SigninInputTypeNewPassword:
+        case LoginInputTypeNewPassword:
         {
             self.titleLabel.text = @"新密码";
             self.textField.keyboardType = UIKeyboardTypeAlphabet;
@@ -480,7 +480,7 @@ typedef void(^SigninInputViewActionBlock)(void);
             //            self.textField.placeholder = @"请输入新密码";
         }
             break;
-        case SigninInputTypeRePassword:
+        case LoginInputTypeRePassword:
         {
             self.titleLabel.text = @"确认密码";
             self.textField.keyboardType = UIKeyboardTypeAlphabet;
@@ -489,7 +489,7 @@ typedef void(^SigninInputViewActionBlock)(void);
             [self.actionButton setTitle:@"隐藏" forState:UIControlStateSelected];
         }
             break;
-        case SigninInputTypeVerifyCode:
+        case LoginInputTypeVerifyCode:
         {
             self.titleLabel.text = @"验证码";
             self.infoLabel.text = @"尽力识别了_(:з」∠)_";
@@ -513,9 +513,9 @@ typedef void(^SigninInputViewActionBlock)(void);
         make.lastBaseline.equalTo(self.titleLabel.mas_lastBaseline);
     }];
     
-    if (_type&SigninInputTypePassword
-        || _type&SigninInputTypeRePassword
-        || _type&SigninInputTypeVerifyCode) {
+    if (_type&LoginInputTypePassword
+        || _type&LoginInputTypeRePassword
+        || _type&LoginInputTypeVerifyCode) {
         [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.lastBaseline.equalTo(self.titleLabel.mas_lastBaseline);
             make.right.equalTo(self.mas_right);
@@ -525,14 +525,14 @@ typedef void(^SigninInputViewActionBlock)(void);
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
         make.left.equalTo(self);
-        if (_type&SigninInputTypeVerifyCode) {
+        if (_type&LoginInputTypeVerifyCode) {
             make.right.equalTo(self.verifyImageView.mas_left).with.offset(-8);
         } else {
             make.right.equalTo(self);
         }
     }];
     
-    if (_type&SigninInputTypeVerifyCode) {
+    if (_type&LoginInputTypeVerifyCode) {
         [self.verifyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.textField).with.offset(-4);
             make.bottom.equalTo(self.textField.mas_bottom).with.offset(8);
@@ -571,14 +571,14 @@ typedef void(^SigninInputViewActionBlock)(void);
 #pragma mark - Response Methods
 
 - (void)onActionButtonClicked:(id)sender {
-    if (_type&SigninInputTypePassword
-        || _type&SigninInputTypeRePassword
-        || _type&SigninInputTypeNewPassword) {
+    if (_type&LoginInputTypePassword
+        || _type&LoginInputTypeRePassword
+        || _type&LoginInputTypeNewPassword) {
         _textField.secureTextEntry = !_textField.secureTextEntry;
         _actionButton.selected = !_actionButton.selected;
     }
     
-    if (_type&SigninInputTypeVerifyCode) {
+    if (_type&LoginInputTypeVerifyCode) {
         if (_actionBlock) {
             _actionBlock();
         }

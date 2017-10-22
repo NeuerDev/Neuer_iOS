@@ -15,7 +15,7 @@
 
 @end
 
-@interface GatewayModel () <JHRequestDelegate, LoginViewControllerDelegate>
+@interface GatewayModel () <JHRequestDelegate>
 @property (nonatomic, strong) NSString *account;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, assign) BOOL isLogin;
@@ -39,7 +39,6 @@
 - (void)initData {
     _bean = [[GatewayBean alloc] init];
     userDefault = [NSUserDefaults standardUserDefaults];
-    [LoginViewController shareLoginViewController].delegate = self;
 }
 
 #pragma mark - LoginViewControllerDelegate
@@ -48,15 +47,15 @@
     return self.isLogin;
 }
 
-- (void)personalInformationWithDic:(NSDictionary<LoginKey,NSString *> *)info {
-    if (info.count >= 2) {
-        _account = [info valueForKey:@"account"];
-        _password = [info valueForKey:@"password"];
-       [self fetchGatewayData];
-    } else {
-        NSAssert(info.count < 2, @"数据传输错误！");
-    }
-}
+//- (void)personalInformationWithDic:(NSDictionary<LoginKey,NSString *> *)info {
+//    if (info.count >= 2) {
+//        _account = [info valueForKey:@"account"];
+//        _password = [info valueForKey:@"password"];
+//       [self fetchGatewayData];
+//    } else {
+//        NSAssert(info.count < 2, @"数据传输错误！");
+//    }
+//}
 
 #pragma mark - load data
 - (BOOL)hasUser {

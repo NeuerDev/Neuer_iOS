@@ -1,51 +1,31 @@
 //
-//  LoginViewController.h
+//  SigninViewController.h
 //  NEUer
 //
-//  Created by lanya on 2017/9/27.
+//  Created by Jiahong Xu on 2017/10/21.
 //  Copyright © 2017年 Jiahong Xu. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-typedef NS_OPTIONS(NSUInteger, LoginComponentInfoViewType) {
-    LoginComponentInfoViewTypeDefault              = 1 << 0,
-    LoginComponentInfoViewTypeIDCard               = 1 << 1,
-    LoginComponentInfoViewTypeVerificationcode     = 1 << 2,
+typedef NS_OPTIONS(NSUInteger, LoginInputType) {
+    LoginInputTypeAccount         = 1 << 0,
+    LoginInputTypeIdentityNumber  = 1 << 1,
+    LoginInputTypePassword        = 1 << 2,
+    LoginInputTypeNewPassword     = 1 << 3,
+    LoginInputTypeRePassword      = 1 << 4,
+    LoginInputTypeVerifyCode      = 1 << 5,
 };
 
-typedef NSString * LoginKey NS_EXTENSIBLE_STRING_ENUM;
-
-@protocol LoginViewControllerDelegate <NSObject>
-
-@required
-
-/**
- 将个人信息传递给model
- @prama info : 信息
- */
-- (void)personalInformationWithDic:(NSDictionary <LoginKey, NSString *>*)info;
-
-@end
-
+typedef void(^SigninResultBlock)(NSDictionary<NSNumber *, NSString *> *result, BOOL complete);
+typedef void(^SigninChangeVerifyImageBlock)(void);
 
 @interface LoginViewController : UIViewController
 
-@property (weak, nonatomic) id<LoginViewControllerDelegate> delegate;
+@property (nonatomic, strong) UIImage *verifyImage;
+@property (nonatomic, strong) SigninChangeVerifyImageBlock changeVerifyImageBlock;
 
-+ (instancetype)shareLoginViewController;
-
-//初始化类型
-- (void)setUpWithLoginInfoViewType:(LoginComponentInfoViewType)infoViewType;
-
-/**
- 初始化验证码
- */
-- (void)setUpWithVerificationcode:(UIImage *)verificationcode;
-
-/**
- 结束登陆动画，若登录成功则dismissLoginViewController
- */
-- (void)stopVerifyWithSuccess:(BOOL)success;
+- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType resultBlock:(SigninResultBlock)resultBlock;
+- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType contents:(NSDictionary<NSNumber *, NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock;
 
 @end

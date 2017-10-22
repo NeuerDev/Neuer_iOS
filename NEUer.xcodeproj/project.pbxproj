@@ -36,7 +36,7 @@
 		5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */; };
 		5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */; };
 		5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */; };
-		5C62BFBB1F9AEF19005EBDCE /* SigninViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* SigninViewController.mm */; };
+		5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */; };
 		5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */; };
 		5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
@@ -73,7 +73,6 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
-		5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66781F8D28D700F8F96C /* LoginViewController.m */; };
 		5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
 		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
 		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
@@ -181,8 +180,8 @@
 		5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpringCollectionViewLayout.m; sourceTree = "<group>"; };
 		5C5FD43A1F975CBF00B1EA2C /* EcardCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardCenter.h; sourceTree = "<group>"; };
 		5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardCenter.m; sourceTree = "<group>"; };
-		5C62BFB91F9AEF19005EBDCE /* SigninViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SigninViewController.h; sourceTree = "<group>"; };
-		5C62BFBA1F9AEF19005EBDCE /* SigninViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SigninViewController.mm; sourceTree = "<group>"; };
+		5C62BFB91F9AEF19005EBDCE /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LoginViewController.mm; sourceTree = "<group>"; };
 		5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardTableViewCell.h; sourceTree = "<group>"; };
 		5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardTableViewCell.m; sourceTree = "<group>"; };
 		5C64D8A41F999663001CDB89 /* NSDictionary+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JHCategory.h"; sourceTree = "<group>"; };
@@ -249,8 +248,6 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
-		5CCC66771F8D28D700F8F96C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		5CCC66781F8D28D700F8F96C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		5CCC667C1F8DA7D100F8F96C /* EcardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardModel.h; sourceTree = "<group>"; };
 		5CCC667D1F8DA7D100F8F96C /* EcardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardModel.m; sourceTree = "<group>"; };
 		5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JHCategory.h"; sourceTree = "<group>"; };
@@ -1200,10 +1197,8 @@
 		5CCC66761F8D28D700F8F96C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5CCC66771F8D28D700F8F96C /* LoginViewController.h */,
-				5CCC66781F8D28D700F8F96C /* LoginViewController.m */,
-				5C62BFB91F9AEF19005EBDCE /* SigninViewController.h */,
-				5C62BFBA1F9AEF19005EBDCE /* SigninViewController.mm */,
+				5C62BFB91F9AEF19005EBDCE /* LoginViewController.h */,
+				5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1704,7 +1699,6 @@
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
-				5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
@@ -1739,7 +1733,7 @@
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
-				5C62BFBB1F9AEF19005EBDCE /* SigninViewController.mm in Sources */,
+				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,

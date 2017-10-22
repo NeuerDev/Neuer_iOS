@@ -9,6 +9,8 @@
 #import "EcardMyViewController.h"
 #import "EcardModel.h"
 
+#import <Photos/Photos.h>
+
 @interface EcardMyViewController ()
 @property (nonatomic, copy) EcardInfoBean *infoBean;
 @property (nonatomic, copy) EcardModel *ecardModel;
@@ -19,7 +21,7 @@
 @property (nonatomic, strong) UILabel *cardInfoLabel;
 
 @property (nonatomic, strong) UIActivityIndicatorView *cardAvatarIndicator;
-@property (nonatomic, strong) UILabel *tipsLabel;
+@property (nonatomic, strong) UIButton *tipsButton;
 
 @end
 
@@ -94,7 +96,7 @@
         make.right.equalTo(self.cardImageView.mas_right).multipliedBy(0.95);
     }];
     
-    [self.tipsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.tipsButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.cardImageView.mas_bottom).with.offset(16);
     }];
@@ -131,11 +133,38 @@
 #pragma mark - Respond Methods
 
 - (void)onCardImageViewLongPressed:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state != UIGestureRecognizerStateBegan) {
+        return;
+    }
     
+    UIImage *image = [JHTool createImageWithView:self.cardImageView];
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+//                [_tipsButton setTitle:@"保存成功，点击打开相册" forState:UIControlStateNormal];
+                [_tipsButton setTitle:@"已保存到系统相册" forState:UIControlStateNormal];
+//                [_tipsButton addTarget:self action:@selector(openGallary) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+//                [_tipsButton setTitle:@"保存失败，点击检查是否开启相册访问权限" forState:UIControlStateNormal];
+                [_tipsButton setTitle:@"保存失败，请检查是否开启相册访问权限" forState:UIControlStateNormal];
+//                [_tipsButton addTarget:self action:@selector(openSetting) forControlEvents:UIControlEventTouchUpInside];
+            }
+        });
+    }];
 }
 
 - (void)onBlurViewTapped:(UITapGestureRecognizer *)recognizer {
     [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (void)openGallary {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"Photos://"] options:@{} completionHandler:nil];
+}
+
+- (void)openSetting {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General"] options:@{} completionHandler:nil];
 }
 
 #pragma mark - Getter
@@ -198,18 +227,17 @@
     return _cardAvatarIndicator;
 }
 
-- (UILabel *)tipsLabel {
-    if (!_tipsLabel) {
-        _tipsLabel = [[UILabel alloc] init];
-        _tipsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _tipsLabel.textColor = [UIColor blackColor];
-        _tipsLabel.textAlignment = NSTextAlignmentCenter;
-        _tipsLabel.alpha = 0.7;
-        _tipsLabel.text = @"长按校园卡保存到相册";
-        [self.view addSubview:_tipsLabel];
+- (UIButton *)tipsButton {
+    if (!_tipsButton) {
+        _tipsButton = [[UIButton alloc] init];
+        _tipsButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        [_tipsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _tipsButton.alpha = 0.7;
+        [_tipsButton setTitle:@"长按校园卡保存到相册" forState:UIControlStateNormal];
+        [self.view addSubview:_tipsButton];
     }
     
-    return _tipsLabel;
+    return _tipsButton;
 }
 
 - (EcardInfoBean *)infoBean {

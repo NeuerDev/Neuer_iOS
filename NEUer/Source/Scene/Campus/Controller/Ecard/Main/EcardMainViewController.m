@@ -11,7 +11,7 @@
 #import "EcardTableViewCell.h"
 #import "EcardModel.h"
 
-#import "SigninViewController.h"
+#import "LoginViewController.h"
 #import "EcardHistoryViewController.h"
 
 #import "CustomSectionHeaderFooterView.h"
@@ -157,24 +157,24 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 - (void)showLoginViewController {
     WS(ws);
-    SigninViewController *signinVC = [[SigninViewController alloc] init];
+    LoginViewController *signinVC = [[LoginViewController alloc] init];
     signinVC.modalPresentationStyle = UIModalPresentationCustom;
     signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [signinVC setupWithTitle:@"登录校卡中心"
-                   inputType:SigninInputTypeAccount|SigninInputTypePassword|SigninInputTypeVerifyCode
-                    contents:@{@(SigninInputTypeAccount):@"20144786"}
+                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
+                    contents:@{@(LoginInputTypeAccount):@"20144786"}
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
         if (complete) {
-            NSString *userName = result[@(SigninInputTypeAccount)]?:@"";
-            NSString *password = result[@(SigninInputTypePassword)]?:@"";
-            NSString *verifyCode = result[@(SigninInputTypeVerifyCode)]?:@"";
+            NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
+            NSString *password = result[@(LoginInputTypePassword)]?:@"";
+            NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
             [ws loginWithUser:userName password:password verifyCode:verifyCode];
         } else {
             [ws.navigationController popViewControllerAnimated:YES];
         }
     }];
     
-    __weak SigninViewController *weakSigninVC = signinVC;
+    __weak LoginViewController *weakSigninVC = signinVC;
     signinVC.changeVerifyImageBlock = ^{
         [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
             weakSigninVC.verifyImage = verifyImage;
@@ -326,7 +326,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         _balanceView.layer.cornerRadius = 8.0f;
         _balanceView.layer.borderColor = [UIColor grayColor].CGColor;
         _balanceView.userInteractionEnabled = YES;
-        [_balanceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyCard)]];
+        [_balanceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showStatistics)]];
         [_balanceView.gestureRecognizers lastObject].enabled = NO;
     }
     
@@ -400,11 +400,11 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 - (NSArray<UIButton *> *)balanceViewButtons {
     if (!_balanceViewButtons) {
-        UIButton *statisticButton = [[UIButton alloc] init];
-        [statisticButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-        [statisticButton setTitle:@"消费统计" forState:UIControlStateNormal];
-        [statisticButton addTarget:self action:@selector(showStatistics) forControlEvents:UIControlEventTouchUpInside];
-        [self.balanceView addSubview:statisticButton];
+        UIButton *mycardButton = [[UIButton alloc] init];
+        [mycardButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+        [mycardButton setTitle:@"我的校卡" forState:UIControlStateNormal];
+        [mycardButton addTarget:self action:@selector(showMyCard) forControlEvents:UIControlEventTouchUpInside];
+        [self.balanceView addSubview:mycardButton];
         
         UIButton *changePasswordButton = [[UIButton alloc] init];
         [changePasswordButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
@@ -419,7 +419,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         [self.balanceView addSubview:reportLostButton];
         
         
-        _balanceViewButtons = @[changePasswordButton, statisticButton, reportLostButton];
+        _balanceViewButtons = @[mycardButton, changePasswordButton, reportLostButton];
     }
     
     return _balanceViewButtons;

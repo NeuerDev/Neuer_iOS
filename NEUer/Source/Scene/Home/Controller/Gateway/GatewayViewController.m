@@ -8,7 +8,6 @@
 
 #import "GatewayViewController.h"
 #import "LoginViewController.h"
-#import "SigninViewController.h"
 
 #import "UIColor+JHCategory.h"
 #import "LYTool.h"
@@ -228,7 +227,7 @@
 //    在这个方法中处理登录失败信息
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
-            [self.loginVC stopVerifyWithSuccess:NO];
+//            [self.loginVC stopVerifyWithSuccess:NO];
         }
         //            若登录信息失败，并且连接了网关，则显示登录按钮，隐藏退出按钮
         if (_center.campusStatus == YES && _center.reachableStatus == NO) {
@@ -273,7 +272,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
-            [self.loginVC stopVerifyWithSuccess:YES];
+//            [self.loginVC stopVerifyWithSuccess:YES];
         }
 //        NSLog(@"%@", [LYTool getPresentedViewController]);
         
@@ -317,8 +316,8 @@
 }
 
 - (void)presentLoginVC {
-    SigninViewController *authorizationViewController = [[SigninViewController alloc] init];
-    [authorizationViewController setupWithTitle:@"IP网关" inputType:SigninInputTypeAccount|SigninInputTypePassword|SigninInputTypeVerifyCode contents:@{@(SigninInputTypeAccount):@"20144786"} resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+    LoginViewController *authorizationViewController = [[LoginViewController alloc] init];
+    [authorizationViewController setupWithTitle:@"IP网关" inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode contents:@{@(LoginInputTypeAccount):@"20144786"} resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
         NSLog(@"%@", result);
     }];
     authorizationViewController.modalPresentationStyle = UIModalPresentationCustom;
@@ -431,8 +430,8 @@
 
 - (LoginViewController *)loginVC {
     if (!_loginVC) {
-        _loginVC = [LoginViewController shareLoginViewController];
-        [_loginVC setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault];
+//        _loginVC = [LoginViewController shareLoginViewController];
+//        [_loginVC setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault];
     }
     return _loginVC;
 }
