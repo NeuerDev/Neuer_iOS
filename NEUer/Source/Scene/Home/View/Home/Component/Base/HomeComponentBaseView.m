@@ -26,7 +26,8 @@
 
 - (void)initBaseConstraints {
     [self.subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.and.left.equalTo(self).with.offset(16);
+        make.top.equalTo(self);
+        make.left.equalTo(self).with.offset(16);
         make.right.equalTo(self).with.offset(-16);
     }];
     
@@ -43,8 +44,8 @@
     NSAssert(self.bodyView, @"body view is nil");
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
-        make.left.and.right.equalTo(self.subTitleLabel);
-        make.bottom.equalTo(self.mas_bottom).with.offset(-24);
+        make.left.and.right.equalTo(self);
+        make.bottom.equalTo(self.mas_bottom).with.offset(-16);
     }];
 }
 
