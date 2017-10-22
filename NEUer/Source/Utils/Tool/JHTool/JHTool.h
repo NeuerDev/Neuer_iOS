@@ -66,5 +66,11 @@
  *  @return UIImage
  */
 + (UIImage *)createImageWithView:(UIView *)shareView;
+
+/**
+ *  获取用户友好的时间描述
+ *  @return 时间描述
+ */
++ (NSString *)fancyStringFromDate:(NSDate *)date;
 @end
 

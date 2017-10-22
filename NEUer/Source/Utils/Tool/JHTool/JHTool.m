@@ -193,5 +193,53 @@
     UIGraphicsEndImageContext();
     return image;
 }
+
+#pragma mark - fancyStringFromDate:
++ (NSString *)fancyStringFromDate:(NSDate *)date {
+    if (!date) {
+        return @"";
+    }
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
+    double beTime = [date timeIntervalSince1970];
+    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+    double distanceTime = now - beTime;
+    
+    NSString * distanceStr;
+    NSDate * beDate = [NSDate dateWithTimeIntervalSince1970:beTime];
+    
+    [formatter setDateFormat:@"HH:mm"];
+    NSString * newTimeStr = [formatter stringFromDate:beDate];
+    
+    [formatter setDateFormat:@"dd"];
+    NSString * nowDay = [formatter stringFromDate:[NSDate date]];
+    NSString * lastDay = [formatter stringFromDate:beDate];
+    
+    if (distanceTime < 60) {//小于一分钟
+        distanceStr = @"刚刚";
+    } else if (distanceTime < 60*60) {//时间小于一个小时
+        distanceStr = [NSString stringWithFormat:@"%ld分钟前", (long)distanceTime/60];
+    } else if(distanceTime < 24*60*60 && [nowDay integerValue] == [lastDay integerValue]){//时间小于一天
+        distanceStr = [NSString stringWithFormat:@"今天%@", newTimeStr];
+    } else if(distanceTime< 24*60*60*2 && [nowDay integerValue] != [lastDay integerValue]){
+        if ([nowDay integerValue] - [lastDay integerValue] == 1 || ([lastDay integerValue] - [nowDay integerValue] > 10 && [nowDay integerValue] == 1)) {
+            distanceStr = [NSString stringWithFormat:@"昨天%@", newTimeStr];
+        } else {
+            [formatter setDateFormat:@"M月dd日 HH:mm"];
+            distanceStr = [formatter stringFromDate:beDate];
+        }
+    } else if(distanceTime < 24*60*60*365){
+        [formatter setDateFormat:@"M月dd日 HH:mm"];
+        distanceStr = [formatter stringFromDate:beDate];
+    } else{
+        [formatter setDateFormat:@"yyyy年M月dd日 HH:mm"];
+        distanceStr = [formatter stringFromDate:beDate];
+    }
+    
+    return distanceStr;
+}
+
 @end
 

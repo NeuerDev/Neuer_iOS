@@ -8,7 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
-		33F88B831F8295AD0054B123 /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B821F8295AD0054B123 /* LYTextField.m */; };
+		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
+		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
+		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
+		3344EFD71F94B89E001ED45E /* LoginComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD61F94B89E001ED45E /* LoginComponentInfoView.m */; };
+		3344EFDB1F94B922001ED45E /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD91F94B922001ED45E /* LYTextField.m */; };
+		3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */; };
+		3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
@@ -18,6 +24,11 @@
 		5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A6A1F6E12FD0002A755 /* JHRequest.m */; };
 		5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A6E1F6E13B20002A755 /* JHResponse.m */; };
 		5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4602121F72BBD7009AF91A /* SearchLibrarySuggestModel.m */; };
+		5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C507C681F9C3DC000E857CA /* EcardHistoryViewController.m */; };
+		5C507C701F9CA30D00E857CA /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */; };
+		5C507C721F9CA31200E857CA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C507C711F9CA31200E857CA /* CoreImage.framework */; };
+		5C507C761F9CBB0B00E857CA /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5C507C751F9CBB0B00E857CA /* tessdata */; };
+		5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */; };
 		5C539D861F7297F500E7BABC /* router.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C539D851F7297F500E7BABC /* router.plist */; };
 		5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7C11F85D96500BBFC28 /* JHURLBaseHandler.m */; };
 		5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7CD1F85DD2D00BBFC28 /* NSURL+JHCategory.m */; };
@@ -25,6 +36,9 @@
 		5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */; };
 		5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */; };
 		5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */; };
+		5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */; };
+		5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */; };
+		5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
@@ -59,7 +73,6 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
-		5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66781F8D28D700F8F96C /* LoginViewController.m */; };
 		5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
 		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
 		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
@@ -111,8 +124,20 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
-		33F88B811F8295AD0054B123 /* LYTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTextField.h; sourceTree = "<group>"; };
-		33F88B821F8295AD0054B123 /* LYTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYTextField.m; sourceTree = "<group>"; };
+		3344EFC01F93A241001ED45E /* LYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTool.h; sourceTree = "<group>"; };
+		3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoLb.h; sourceTree = "<group>"; };
+		3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoLb.m; sourceTree = "<group>"; };
+		3344EFCE1F948983001ED45E /* GatewayComponentInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoView.h; sourceTree = "<group>"; };
+		3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoView.m; sourceTree = "<group>"; };
+		3344EFD11F949B62001ED45E /* LYTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTool.m; sourceTree = "<group>"; };
+		3344EFD51F94B89E001ED45E /* LoginComponentInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginComponentInfoView.h; sourceTree = "<group>"; };
+		3344EFD61F94B89E001ED45E /* LoginComponentInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginComponentInfoView.m; sourceTree = "<group>"; };
+		3344EFD91F94B922001ED45E /* LYTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTextField.m; sourceTree = "<group>"; };
+		3344EFDA1F94B922001ED45E /* LYTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYTextField.h; sourceTree = "<group>"; };
+		3354DAA81F90751C00ACBDF3 /* LYInteractiveTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYInteractiveTransition.h; sourceTree = "<group>"; };
+		3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYInteractiveTransition.m; sourceTree = "<group>"; };
+		3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYAnimatedTransitioning.h; sourceTree = "<group>"; };
+		3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYAnimatedTransitioning.m; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,6 +160,13 @@
 		5C449A6E1F6E13B20002A755 /* JHResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHResponse.m; sourceTree = "<group>"; };
 		5C4602111F72BBD7009AF91A /* SearchLibrarySuggestModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibrarySuggestModel.h; sourceTree = "<group>"; };
 		5C4602121F72BBD7009AF91A /* SearchLibrarySuggestModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibrarySuggestModel.m; sourceTree = "<group>"; };
+		5C507C671F9C3DC000E857CA /* EcardHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardHistoryViewController.h; sourceTree = "<group>"; };
+		5C507C681F9C3DC000E857CA /* EcardHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardHistoryViewController.m; sourceTree = "<group>"; };
+		5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		5C507C711F9CA31200E857CA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		5C507C751F9CBB0B00E857CA /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		5C507C781F9CCCAA00E857CA /* TesseractCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TesseractCenter.h; sourceTree = "<group>"; };
+		5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TesseractCenter.mm; sourceTree = "<group>"; };
 		5C539D851F7297F500E7BABC /* router.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = router.plist; sourceTree = "<group>"; };
 		5C5DC7C01F85D96500BBFC28 /* JHURLBaseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHURLBaseHandler.h; sourceTree = "<group>"; };
 		5C5DC7C11F85D96500BBFC28 /* JHURLBaseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHURLBaseHandler.m; sourceTree = "<group>"; };
@@ -148,6 +180,12 @@
 		5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpringCollectionViewLayout.m; sourceTree = "<group>"; };
 		5C5FD43A1F975CBF00B1EA2C /* EcardCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardCenter.h; sourceTree = "<group>"; };
 		5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardCenter.m; sourceTree = "<group>"; };
+		5C62BFB91F9AEF19005EBDCE /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LoginViewController.mm; sourceTree = "<group>"; };
+		5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardTableViewCell.h; sourceTree = "<group>"; };
+		5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardTableViewCell.m; sourceTree = "<group>"; };
+		5C64D8A41F999663001CDB89 /* NSDictionary+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JHCategory.h"; sourceTree = "<group>"; };
+		5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JHCategory.m"; sourceTree = "<group>"; };
 		5C6D59321F734B0600E7654B /* CalendarLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarLogic.h; sourceTree = "<group>"; };
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
@@ -210,8 +248,6 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
-		5CCC66771F8D28D700F8F96C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		5CCC66781F8D28D700F8F96C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		5CCC667C1F8DA7D100F8F96C /* EcardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardModel.h; sourceTree = "<group>"; };
 		5CCC667D1F8DA7D100F8F96C /* EcardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardModel.m; sourceTree = "<group>"; };
 		5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JHCategory.h"; sourceTree = "<group>"; };
@@ -260,6 +296,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C507C721F9CA31200E857CA /* CoreImage.framework in Frameworks */,
+				5C507C701F9CA30D00E857CA /* libstdc++.6.0.9.tbd in Frameworks */,
 				2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,11 +314,93 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3344EFBA1F939B22001ED45E /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFC81F94883D001ED45E /* Component */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
+		3344EFBF1F93A233001ED45E /* LYTool */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFC01F93A241001ED45E /* LYTool.h */,
+				3344EFD11F949B62001ED45E /* LYTool.m */,
+			);
+			path = LYTool;
+			sourceTree = "<group>";
+		};
+		3344EFC81F94883D001ED45E /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFCD1F94895A001ED45E /* Info */,
+				3344EFC91F948864001ED45E /* GatewayInfoLb */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		3344EFC91F948864001ED45E /* GatewayInfoLb */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */,
+				3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */,
+			);
+			path = GatewayInfoLb;
+			sourceTree = "<group>";
+		};
+		3344EFCD1F94895A001ED45E /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFCE1F948983001ED45E /* GatewayComponentInfoView.h */,
+				3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		3344EFD31F94B860001ED45E /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFD81F94B8BA001ED45E /* LYTextField */,
+				3344EFD41F94B889001ED45E /* LoginComponentInfoView */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		3344EFD41F94B889001ED45E /* LoginComponentInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFD51F94B89E001ED45E /* LoginComponentInfoView.h */,
+				3344EFD61F94B89E001ED45E /* LoginComponentInfoView.m */,
+			);
+			path = LoginComponentInfoView;
+			sourceTree = "<group>";
+		};
+		3344EFD81F94B8BA001ED45E /* LYTextField */ = {
+			isa = PBXGroup;
+			children = (
+				3344EFDA1F94B922001ED45E /* LYTextField.h */,
+				3344EFD91F94B922001ED45E /* LYTextField.m */,
+			);
+			path = LYTextField;
+			sourceTree = "<group>";
+		};
+		3354DAA71F9074E600ACBDF3 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				3354DAA81F90751C00ACBDF3 /* LYInteractiveTransition.h */,
+				3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */,
+				3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */,
+				3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
 		33F88B801F8295620054B123 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				33F88B811F8295AD0054B123 /* LYTextField.h */,
-				33F88B821F8295AD0054B123 /* LYTextField.m */,
+				3344EFD31F94B860001ED45E /* Component */,
+				3354DAA71F9074E600ACBDF3 /* Transition */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -306,6 +426,7 @@
 		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
 			isa = PBXGroup;
 			children = (
+				5C507C771F9CCC9200E857CA /* Tesseract */,
 				5C5FD4391F975C9F00B1EA2C /* Ecard */,
 				5CD098BF1F80DB6100252E4D /* User */,
 				5CE8AF951F7026D9008594F6 /* Gateway */,
@@ -363,6 +484,7 @@
 		5C0844C41F7B94BB00C69261 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -497,6 +619,24 @@
 			path = MemoryDay;
 			sourceTree = "<group>";
 		};
+		5C507C661F9C3DA100E857CA /* History */ = {
+			isa = PBXGroup;
+			children = (
+				5C507C671F9C3DC000E857CA /* EcardHistoryViewController.h */,
+				5C507C681F9C3DC000E857CA /* EcardHistoryViewController.m */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		5C507C771F9CCC9200E857CA /* Tesseract */ = {
+			isa = PBXGroup;
+			children = (
+				5C507C781F9CCCAA00E857CA /* TesseractCenter.h */,
+				5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */,
+			);
+			path = Tesseract;
+			sourceTree = "<group>";
+		};
 		5C5DC7BE1F85D96500BBFC28 /* URLHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -557,6 +697,24 @@
 				5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */,
 			);
 			path = Ecard;
+			sourceTree = "<group>";
+		};
+		5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */,
+				5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */,
+			);
+			path = EcardTableViewCell;
+			sourceTree = "<group>";
+		};
+		5C64D8A31F999643001CDB89 /* NSDictionary+JHCategory */ = {
+			isa = PBXGroup;
+			children = (
+				5C64D8A41F999663001CDB89 /* NSDictionary+JHCategory.h */,
+				5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */,
+			);
+			path = "NSDictionary+JHCategory";
 			sourceTree = "<group>";
 		};
 		5C6D59311F734AF700E7654B /* CalendarLogic */ = {
@@ -684,6 +842,7 @@
 				5C9107621F6D1C3100FA4270 /* Storyboard */,
 				5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */,
 				5CC233191F723E6A005F0A6E /* Localizable.strings */,
+				5C507C751F9CBB0B00E857CA /* tessdata */,
 				5C539D851F7297F500E7BABC /* router.plist */,
 				5C8B62951F7890F900310055 /* Json.bundle */,
 			);
@@ -769,6 +928,7 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				5C64D8A31F999643001CDB89 /* NSDictionary+JHCategory */,
 				5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */,
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
 				5CBA6E971F77504000DFF055 /* UIImage+JHCategory */,
@@ -816,6 +976,7 @@
 		5C9107721F6D3B2F00FA4270 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				3344EFBF1F93A233001ED45E /* LYTool */,
 				33F88B841F8296430054B123 /* JHTool */,
 				5C6D59311F734AF700E7654B /* CalendarLogic */,
 			);
@@ -1026,6 +1187,7 @@
 		5CCC66721F8D221100F8F96C /* Ecard */ = {
 			isa = PBXGroup;
 			children = (
+				5C507C661F9C3DA100E857CA /* History */,
 				5C5FD42D1F96484200B1EA2C /* MyCard */,
 				5CCC668C1F9060C200F8F96C /* Main */,
 			);
@@ -1035,8 +1197,8 @@
 		5CCC66761F8D28D700F8F96C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5CCC66771F8D28D700F8F96C /* LoginViewController.h */,
-				5CCC66781F8D28D700F8F96C /* LoginViewController.m */,
+				5C62BFB91F9AEF19005EBDCE /* LoginViewController.h */,
+				5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1200,6 +1362,7 @@
 		5CE4E15A1F6ECB99008780AC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3344EFBA1F939B22001ED45E /* Gateway */,
 				5C14F9801F80889900E5D0B9 /* Home */,
 			);
 			path = View;
@@ -1277,6 +1440,8 @@
 		B5BF3B383854E4DF15FB6AD9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C507C711F9CA31200E857CA /* CoreImage.framework */,
+				5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */,
 				5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */,
 				565994165BDBB6721C7545F6 /* Pods_NEUer.framework */,
 				5CE4E1601F6ED476008780AC /* NotificationCenter.framework */,
@@ -1393,6 +1558,7 @@
 				5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */,
 				5C8B62961F7890F900310055 /* Json.bundle in Resources */,
 				5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */,
+				5C507C761F9CBB0B00E857CA /* tessdata in Resources */,
 				5C539D861F7297F500E7BABC /* router.plist in Resources */,
 				5CC2330D1F723C3B005F0A6E /* InfoPlist.strings in Resources */,
 				5CC233061F723BBE005F0A6E /* LaunchScreen.storyboard in Resources */,
@@ -1425,6 +1591,7 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 				"${BUILT_PRODUCTS_DIR}/hpple/hpple.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1435,6 +1602,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hpple.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1521,19 +1689,22 @@
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
+				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
+				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
+				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
-				5CCC66791F8D28D700F8F96C /* LoginViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
+				5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
@@ -1544,6 +1715,8 @@
 				5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
+				3344EFDB1F94B922001ED45E /* LYTextField.m in Sources */,
+				3344EFD71F94B89E001ED45E /* LoginComponentInfoView.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
@@ -1559,15 +1732,20 @@
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
-				33F88B831F8295AD0054B123 /* LYTextField.m in Sources */,
+				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
+				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
+				3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
+				3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */,
+				3344EFD21F949B62001ED45E /* LYTool.m in Sources */,
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
 				5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */,
+				5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
@@ -1744,6 +1922,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
@@ -1764,6 +1943,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;

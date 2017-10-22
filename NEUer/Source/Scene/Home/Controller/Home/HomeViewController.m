@@ -26,7 +26,6 @@
 @property (nonatomic, strong) HomeComponentAccessView *accessView;      // 便捷访问
 @property (nonatomic, strong) HomeComponentScheduleView *scheduleView;  // 课表
 @property (nonatomic, strong) HomeComponentNewsView *newsView;          // 新闻
-@property (strong, nonatomic) LoginViewController *loginVC;
 
 @end
 
@@ -78,10 +77,6 @@
     [self.navigationController pushViewController:[[TelevisionWallViewController alloc] init] animated:YES];
 }
 
-- (void)pushLoginVC {
-    [self presentViewController:self.loginVC animated:YES completion:nil];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
@@ -115,19 +110,6 @@
     }
     
     return _backgroundImageView;
-}
-
-- (LoginViewController *)loginVC {
-    if (!_loginVC) {
-        _loginVC = [[LoginViewController alloc] initWithLoginState:LoginStateNeverLoginWithVerificationCode];
-        [_loginVC setUpWithLoginVerificationcodeImg:[UIImage imageNamed:@"verificationcode"]];
-        [_loginVC setDidLoginWithSuccessMsg:^(NSArray *msgArr) {
-            NSLog(@"%@", msgArr);
-        } FailureMsg:^(NSString *msg) {
-            NSLog(@"%@", msg);
-        }];
-    }
-    return _loginVC;
 }
 
 - (HomeComponentAccessView *)accessView {

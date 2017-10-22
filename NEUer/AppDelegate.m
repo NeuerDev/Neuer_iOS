@@ -8,13 +8,11 @@
 
 #import "AppDelegate.h"
 
-#import "SkeletonViewController.h"
 #import "JHURLRouter.h"
-#import "UserCenter.h"
+#import "TesseractCenter.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) JHURLRouter *router;
-@property (nonatomic, strong) SkeletonViewController *skelentonVC;
 @end
 
 @implementation AppDelegate
@@ -32,6 +30,9 @@
     
     // 开始监听网络
     [[GatewayCenter defaultCenter] startMonitoring];
+    
+    // 初始化耗时的任务
+    [[TesseractCenter defaultCenter] setup];
     
     // 配置路由表
     [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
