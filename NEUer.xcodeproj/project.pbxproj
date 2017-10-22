@@ -24,6 +24,11 @@
 		5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A6A1F6E12FD0002A755 /* JHRequest.m */; };
 		5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A6E1F6E13B20002A755 /* JHResponse.m */; };
 		5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4602121F72BBD7009AF91A /* SearchLibrarySuggestModel.m */; };
+		5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C507C681F9C3DC000E857CA /* EcardHistoryViewController.m */; };
+		5C507C701F9CA30D00E857CA /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */; };
+		5C507C721F9CA31200E857CA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C507C711F9CA31200E857CA /* CoreImage.framework */; };
+		5C507C761F9CBB0B00E857CA /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5C507C751F9CBB0B00E857CA /* tessdata */; };
+		5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */; };
 		5C539D861F7297F500E7BABC /* router.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C539D851F7297F500E7BABC /* router.plist */; };
 		5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7C11F85D96500BBFC28 /* JHURLBaseHandler.m */; };
 		5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7CD1F85DD2D00BBFC28 /* NSURL+JHCategory.m */; };
@@ -31,9 +36,9 @@
 		5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */; };
 		5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */; };
 		5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */; };
+		5C62BFBB1F9AEF19005EBDCE /* SigninViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* SigninViewController.mm */; };
 		5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */; };
 		5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */; };
-		5C62BFBB1F9AEF19005EBDCE /* SigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* SigninViewController.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
@@ -156,6 +161,13 @@
 		5C449A6E1F6E13B20002A755 /* JHResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHResponse.m; sourceTree = "<group>"; };
 		5C4602111F72BBD7009AF91A /* SearchLibrarySuggestModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibrarySuggestModel.h; sourceTree = "<group>"; };
 		5C4602121F72BBD7009AF91A /* SearchLibrarySuggestModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibrarySuggestModel.m; sourceTree = "<group>"; };
+		5C507C671F9C3DC000E857CA /* EcardHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardHistoryViewController.h; sourceTree = "<group>"; };
+		5C507C681F9C3DC000E857CA /* EcardHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardHistoryViewController.m; sourceTree = "<group>"; };
+		5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		5C507C711F9CA31200E857CA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		5C507C751F9CBB0B00E857CA /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
+		5C507C781F9CCCAA00E857CA /* TesseractCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TesseractCenter.h; sourceTree = "<group>"; };
+		5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TesseractCenter.mm; sourceTree = "<group>"; };
 		5C539D851F7297F500E7BABC /* router.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = router.plist; sourceTree = "<group>"; };
 		5C5DC7C01F85D96500BBFC28 /* JHURLBaseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHURLBaseHandler.h; sourceTree = "<group>"; };
 		5C5DC7C11F85D96500BBFC28 /* JHURLBaseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHURLBaseHandler.m; sourceTree = "<group>"; };
@@ -169,12 +181,12 @@
 		5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpringCollectionViewLayout.m; sourceTree = "<group>"; };
 		5C5FD43A1F975CBF00B1EA2C /* EcardCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardCenter.h; sourceTree = "<group>"; };
 		5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardCenter.m; sourceTree = "<group>"; };
+		5C62BFB91F9AEF19005EBDCE /* SigninViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SigninViewController.h; sourceTree = "<group>"; };
+		5C62BFBA1F9AEF19005EBDCE /* SigninViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SigninViewController.mm; sourceTree = "<group>"; };
 		5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardTableViewCell.h; sourceTree = "<group>"; };
 		5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardTableViewCell.m; sourceTree = "<group>"; };
 		5C64D8A41F999663001CDB89 /* NSDictionary+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JHCategory.h"; sourceTree = "<group>"; };
 		5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JHCategory.m"; sourceTree = "<group>"; };
-		5C62BFB91F9AEF19005EBDCE /* SigninViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SigninViewController.h; sourceTree = "<group>"; };
-		5C62BFBA1F9AEF19005EBDCE /* SigninViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SigninViewController.m; sourceTree = "<group>"; };
 		5C6D59321F734B0600E7654B /* CalendarLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarLogic.h; sourceTree = "<group>"; };
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
@@ -287,6 +299,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C507C721F9CA31200E857CA /* CoreImage.framework in Frameworks */,
+				5C507C701F9CA30D00E857CA /* libstdc++.6.0.9.tbd in Frameworks */,
 				2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +429,7 @@
 		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
 			isa = PBXGroup;
 			children = (
+				5C507C771F9CCC9200E857CA /* Tesseract */,
 				5C5FD4391F975C9F00B1EA2C /* Ecard */,
 				5CD098BF1F80DB6100252E4D /* User */,
 				5CE8AF951F7026D9008594F6 /* Gateway */,
@@ -605,6 +620,24 @@
 			children = (
 			);
 			path = MemoryDay;
+			sourceTree = "<group>";
+		};
+		5C507C661F9C3DA100E857CA /* History */ = {
+			isa = PBXGroup;
+			children = (
+				5C507C671F9C3DC000E857CA /* EcardHistoryViewController.h */,
+				5C507C681F9C3DC000E857CA /* EcardHistoryViewController.m */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		5C507C771F9CCC9200E857CA /* Tesseract */ = {
+			isa = PBXGroup;
+			children = (
+				5C507C781F9CCCAA00E857CA /* TesseractCenter.h */,
+				5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */,
+			);
+			path = Tesseract;
 			sourceTree = "<group>";
 		};
 		5C5DC7BE1F85D96500BBFC28 /* URLHandler */ = {
@@ -812,6 +845,7 @@
 				5C9107621F6D1C3100FA4270 /* Storyboard */,
 				5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */,
 				5CC233191F723E6A005F0A6E /* Localizable.strings */,
+				5C507C751F9CBB0B00E857CA /* tessdata */,
 				5C539D851F7297F500E7BABC /* router.plist */,
 				5C8B62951F7890F900310055 /* Json.bundle */,
 			);
@@ -1156,6 +1190,7 @@
 		5CCC66721F8D221100F8F96C /* Ecard */ = {
 			isa = PBXGroup;
 			children = (
+				5C507C661F9C3DA100E857CA /* History */,
 				5C5FD42D1F96484200B1EA2C /* MyCard */,
 				5CCC668C1F9060C200F8F96C /* Main */,
 			);
@@ -1168,7 +1203,7 @@
 				5CCC66771F8D28D700F8F96C /* LoginViewController.h */,
 				5CCC66781F8D28D700F8F96C /* LoginViewController.m */,
 				5C62BFB91F9AEF19005EBDCE /* SigninViewController.h */,
-				5C62BFBA1F9AEF19005EBDCE /* SigninViewController.m */,
+				5C62BFBA1F9AEF19005EBDCE /* SigninViewController.mm */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1410,6 +1445,8 @@
 		B5BF3B383854E4DF15FB6AD9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C507C711F9CA31200E857CA /* CoreImage.framework */,
+				5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */,
 				5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */,
 				565994165BDBB6721C7545F6 /* Pods_NEUer.framework */,
 				5CE4E1601F6ED476008780AC /* NotificationCenter.framework */,
@@ -1526,6 +1563,7 @@
 				5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */,
 				5C8B62961F7890F900310055 /* Json.bundle in Resources */,
 				5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */,
+				5C507C761F9CBB0B00E857CA /* tessdata in Resources */,
 				5C539D861F7297F500E7BABC /* router.plist in Resources */,
 				5CC2330D1F723C3B005F0A6E /* InfoPlist.strings in Resources */,
 				5CC233061F723BBE005F0A6E /* LaunchScreen.storyboard in Resources */,
@@ -1558,6 +1596,7 @@
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 				"${BUILT_PRODUCTS_DIR}/hpple/hpple.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1568,6 +1607,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hpple.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1654,10 +1694,12 @@
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
+				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
+				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
 				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
@@ -1697,7 +1739,7 @@
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
-				5C62BFBB1F9AEF19005EBDCE /* SigninViewController.m in Sources */,
+				5C62BFBB1F9AEF19005EBDCE /* SigninViewController.mm in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
@@ -1886,6 +1928,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
@@ -1906,6 +1949,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;

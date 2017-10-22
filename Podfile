@@ -11,6 +11,8 @@ target 'NEUer' do
   pod 'Masonry'
   pod 'DKNightVersion'
   pod 'hpple'
+  pod 'TesseractOCRiOS', '~> 4.0.0'
+  pod 'FMDB'
 
 end
 

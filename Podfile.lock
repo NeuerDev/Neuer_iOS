@@ -36,6 +36,7 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - TesseractOCRiOS (4.0.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
@@ -45,6 +46,7 @@ DEPENDENCIES:
   - Masonry
   - MBProgressHUD (~> 1.0.0)
   - SDWebImage (~> 3.8)
+  - TesseractOCRiOS (~> 4.0.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -54,7 +56,8 @@ SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
 
-PODFILE CHECKSUM: f99007581949606ac31b1b2415594b9481909486
+PODFILE CHECKSUM: b96e54f03861702924bcf48d5ee67b63a4f2dd29
 
 COCOAPODS: 1.4.0.beta.1

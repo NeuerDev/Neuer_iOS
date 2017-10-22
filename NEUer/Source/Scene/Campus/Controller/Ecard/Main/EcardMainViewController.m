@@ -12,11 +12,12 @@
 #import "EcardModel.h"
 
 #import "SigninViewController.h"
+#import "EcardHistoryViewController.h"
 
 #import "CustomSectionHeaderFooterView.h"
 
-static NSString * const kEcardCustomHeaderViewId = @"kEcardCustomHeaderViewId";
-static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellId";
+static NSString * const kEcardTodayConsumeHistoryHeaderViewId = @"kEcardTodayConsumeHistoryHeaderViewId";
+static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHistoryCellId";
 
 @interface EcardMainViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -30,11 +31,9 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 @property (nonatomic, strong) NSArray<UIButton *> *balanceViewButtons;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) UITableView *todayConsumeTableView;
+@property (nonatomic, strong) UITableView *consumeHistoryTableView;
 
 @property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
-
-@property (nonatomic, strong) NSArray<NSDictionary *> *sectionDataArray;
 @end
 
 @implementation EcardMainViewController
@@ -57,69 +56,24 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     self.title = @"校卡中心";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
-    //    self.cardTableView.refreshControl = self.refreshControl;
+    self.consumeHistoryTableView.refreshControl = self.refreshControl;
     [self initConstraints];
     [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
-//    [self test];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    WS(ws);
-    SigninViewController *signinVC = [[SigninViewController alloc] init];
-    signinVC.modalPresentationStyle = UIModalPresentationCustom;
-    signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [signinVC setupWithTitle:@"登录校卡中心" inputType:SigninInputTypeAccount|SigninInputTypePassword|SigninInputTypeVerifyCode resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
-        if (complete) {
-            NSString *userName = result[@(SigninInputTypeAccount)]?:@"";
-            NSString *password = result[@(SigninInputTypePassword)]?:@"";
-            NSString *verifyCode = result[@(SigninInputTypeVerifyCode)]?:@"";
-            [ws loginWithUser:userName password:password verifyCode:verifyCode];
-        } else {
-            [ws.navigationController popViewControllerAnimated:YES];
-        }
-    }];
-    
-    __weak SigninViewController *weakSigninVC = signinVC;
-    signinVC.changeVerifyImageBlock = ^{
-        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-            weakSigninVC.verifyImage = verifyImage;
-        }];
-    };
-    [self presentViewController:signinVC animated:YES completion:^{
-        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-            weakSigninVC.verifyImage = verifyImage;
-        }];
-    }];
-}
-
-- (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
-    WS(ws);
-    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
-        if (success) {
-            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-                if (success) {
-                    NSLog(@"success query info");
-                    ws.infoBean = ws.ecardModel.info;
-                }
-            }];
-            
-            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
-                if (success) {
-                    [ws.todayConsumeTableView reloadData];
-                }
-            }];
-        }
-    }];
+    [self showLoginViewController];
 }
 
 - (void)initConstraints {
     
-    [self.todayConsumeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.left.and.right.and.bottom.equalTo(self.view);
-    }];
+//    [self.consumeHistoryTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.mas_topLayoutGuide);
+//        make.left.and.right.and.bottom.equalTo(self.view);
+//    }];
+    
+    self.consumeHistoryTableView.frame = self.view.frame;
     
     [self.balanceValueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.balanceView.mas_top).with.offset(32);
@@ -201,6 +155,58 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 
 #pragma mark - Private Methods
 
+- (void)showLoginViewController {
+    WS(ws);
+    SigninViewController *signinVC = [[SigninViewController alloc] init];
+    signinVC.modalPresentationStyle = UIModalPresentationCustom;
+    signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [signinVC setupWithTitle:@"登录校卡中心"
+                   inputType:SigninInputTypeAccount|SigninInputTypePassword|SigninInputTypeVerifyCode
+                    contents:@{@(SigninInputTypeAccount):@"20144786"}
+                 resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+        if (complete) {
+            NSString *userName = result[@(SigninInputTypeAccount)]?:@"";
+            NSString *password = result[@(SigninInputTypePassword)]?:@"";
+            NSString *verifyCode = result[@(SigninInputTypeVerifyCode)]?:@"";
+            [ws loginWithUser:userName password:password verifyCode:verifyCode];
+        } else {
+            [ws.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+    
+    __weak SigninViewController *weakSigninVC = signinVC;
+    signinVC.changeVerifyImageBlock = ^{
+        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+            weakSigninVC.verifyImage = verifyImage;
+        }];
+    };
+    [self presentViewController:signinVC animated:YES completion:^{
+        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+            weakSigninVC.verifyImage = verifyImage;
+        }];
+    }];
+}
+
+- (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
+    WS(ws);
+    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
+        if (success) {
+            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"success query info");
+                    ws.infoBean = ws.ecardModel.info;
+                }
+            }];
+            
+            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                if (success) {
+                    [ws.consumeHistoryTableView reloadData];
+                }
+            }];
+        }
+    }];
+}
+
 - (void)setMainColor:(UIColor *)color animated:(BOOL)animated {
     NSTimeInterval interval = animated ? 0.3f : 0;
     
@@ -233,9 +239,9 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EcardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kEcardConsumeHistoryCellId];
+    EcardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kEcardTodayConsumeHistoryCellId];
     if (!cell) {
-        cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardConsumeHistoryCellId];
+        cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardTodayConsumeHistoryCellId];
     }
     
     EcardConsumeBean *consumeBean = self.ecardModel.todayConsumeArray[indexPath.row];
@@ -250,9 +256,9 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    CustomSectionHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kEcardCustomHeaderViewId];
+    CustomSectionHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kEcardTodayConsumeHistoryHeaderViewId];
     if (!headerView) {
-        headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kEcardCustomHeaderViewId];
+        headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kEcardTodayConsumeHistoryHeaderViewId];
     }
     
     headerView.contentView.backgroundColor = [UIColor whiteColor];
@@ -266,7 +272,10 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     [headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
             case 0:
-                NSLog(@"more");
+            {
+                EcardHistoryViewController *historyViewController = [[EcardHistoryViewController alloc] init];
+                [self.navigationController pushViewController:historyViewController animated:YES];
+            }
                 break;
                 
             default:
@@ -346,15 +355,15 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     return _balanceInfoLabel;
 }
 
-- (UITableView *)todayConsumeTableView {
-    if (!_todayConsumeTableView) {
-        _todayConsumeTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _todayConsumeTableView.delegate = self;
-        _todayConsumeTableView.dataSource = self;
-        _todayConsumeTableView.showsVerticalScrollIndicator = NO;
-        _todayConsumeTableView.allowsSelection = NO;
-        _todayConsumeTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-        _todayConsumeTableView.backgroundColor = [UIColor whiteColor];
+- (UITableView *)consumeHistoryTableView {
+    if (!_consumeHistoryTableView) {
+        _consumeHistoryTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _consumeHistoryTableView.delegate = self;
+        _consumeHistoryTableView.dataSource = self;
+        _consumeHistoryTableView.showsVerticalScrollIndicator = NO;
+        _consumeHistoryTableView.allowsSelection = NO;
+        _consumeHistoryTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        _consumeHistoryTableView.backgroundColor = [UIColor whiteColor];
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
         [headerView addSubview:self.balanceView];
@@ -364,12 +373,12 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
             make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*0.5));
         }];
         [headerView layoutIfNeeded];
-        _todayConsumeTableView.tableHeaderView = headerView;
-        _todayConsumeTableView.tableFooterView = [[UIView alloc] init];
-        [self.view addSubview:_todayConsumeTableView];
+        _consumeHistoryTableView.tableHeaderView = headerView;
+        _consumeHistoryTableView.tableFooterView = [[UIView alloc] init];
+        [self.view addSubview:_consumeHistoryTableView];
     }
     
-    return _todayConsumeTableView;
+    return _consumeHistoryTableView;
 }
 
 - (UIRefreshControl *)refreshControl {
@@ -379,15 +388,6 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     }
     
     return _refreshControl;
-}
-
-- (NSArray<NSDictionary *> *)sectionDataArray {
-    if (!_sectionDataArray) {
-        _sectionDataArray = @[
-                              ];
-    }
-    
-    return _sectionDataArray;
 }
 
 - (UIBarButtonItem *)rechargeButtonItem {
