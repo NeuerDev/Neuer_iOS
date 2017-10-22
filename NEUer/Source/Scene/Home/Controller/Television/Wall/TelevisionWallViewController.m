@@ -10,6 +10,8 @@
 #import "TelevisionDetailViewController.h"
 #import "TelevisionChannelSearchViewController.h"
 
+#import "SpringCollectionViewLayout.h"
+
 #import "TelevisionWallModel.h"
 
 #import "TouchableCollectionViewCell.h"
@@ -44,6 +46,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
         self.contentView.layer.shadowOpacity = 0.5;
         self.contentView.layer.shadowRadius = 4;
+        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
         
         [self.contentView addSubview:self.imageView];
         [self.contentView addSubview:self.titleLabel];
@@ -172,12 +175,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     if (@available(iOS 11.0, *)) {
 #ifdef __IPHONE_11_0
         self.navigationItem.searchController = self.searchViewController;
-        [self.navigationItem setHidesSearchBarWhenScrolling:NO];
+        [self.navigationItem setHidesSearchBarWhenScrolling:YES];
 #endif
     } else {
         
     }
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
     [self initConstraints];
     
     [self.wallModel fetchWallData];
@@ -185,10 +188,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 }
 
 - (void)initConstraints {
-    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.left.and.right.and.bottom.equalTo(self.view);
-    }];
+    self.collectionView.frame = self.view.frame;
 }
 
 - (void)didReceiveMemoryWarning {

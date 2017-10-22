@@ -54,7 +54,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [super viewDidLoad];
     
     self.title = @"校卡中心";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
     self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
     self.consumeHistoryTableView.refreshControl = self.refreshControl;
     [self initConstraints];
@@ -261,7 +261,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kEcardTodayConsumeHistoryHeaderViewId];
     }
     
-    headerView.contentView.backgroundColor = [UIColor whiteColor];
+    headerView.contentView.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
     headerView.section = section;
     headerView.titleLabel.text = @"今日消费";
     [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
@@ -363,7 +363,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         _consumeHistoryTableView.showsVerticalScrollIndicator = NO;
         _consumeHistoryTableView.allowsSelection = NO;
         _consumeHistoryTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-        _consumeHistoryTableView.backgroundColor = [UIColor whiteColor];
+        _consumeHistoryTableView.backgroundColor = [UIColor clearColor];
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
         [headerView addSubview:self.balanceView];

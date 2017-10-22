@@ -41,10 +41,7 @@
 
 - (void)initConstraints {
 
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.left.and.right.and.bottom.equalTo(self.view);
-    }];
+    self.scrollView.frame = self.view.frame;
 
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.scrollView);

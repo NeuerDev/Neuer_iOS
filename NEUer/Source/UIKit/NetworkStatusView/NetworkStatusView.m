@@ -123,13 +123,12 @@ const CGFloat kNetworkViewHeight = 80.0f;
 #pragma mark - Public Methods
 
 - (void)show {
-    _originY = CGRectGetMaxY(_parentView.frame) - kNetworkViewHeight - 64;
+    _originY = CGRectGetMaxY(_parentView.frame) - kNetworkViewHeight - 16;
     [_parentView bringSubviewToFront:self];
-    [self.layer removeAllAnimations];
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
     [self performSelector:@selector(dismiss) withObject:nil afterDelay:4.0f];
     
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.frame = CGRectMake(
                                         CGRectGetMinX(_parentView.frame) + 16,
                                         _originY,
@@ -143,8 +142,7 @@ const CGFloat kNetworkViewHeight = 80.0f;
 
 - (void)dismiss {
     [_parentView bringSubviewToFront:self];
-    [self.layer removeAllAnimations];
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.frame = CGRectMake(
                                         CGRectGetMinX(_parentView.frame) + 16,
                                         CGRectGetMaxY(_parentView.frame),

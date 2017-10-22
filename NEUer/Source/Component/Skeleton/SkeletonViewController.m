@@ -111,6 +111,40 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedURLRouterNotification:) name:kJHURLRouterHandleNotification object:nil];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self hideShadowImage];
+}
+
+- (void)hideShadowImage {
+    UIView *backgroundView;
+    for (UIView *subView in self.tabBar.subviews) {
+        if ([subView isKindOfClass:NSClassFromString(@"_UIBarBackground")]) {
+            backgroundView = subView;
+            break;
+        }
+    }
+    if (backgroundView) {
+        UIImageView *topLineImageView = [self findHairlineImageViewUnder:backgroundView];
+        if (topLineImageView) {
+            topLineImageView.hidden = YES;
+        }
+    }
+}
+
+- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
+    if ([view isKindOfClass:UIImageView.class] && CGRectGetHeight(view.bounds) <= 1.f) {
+        return (UIImageView *)view;
+    }
+    for (UIView *subview in view.subviews) {
+        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
+        if (imageView) {
+            return imageView;
+        }
+    }
+    return nil;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     

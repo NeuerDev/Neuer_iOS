@@ -31,7 +31,7 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"SearchLibraryNavigationBarTitle", nil);
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
     self.navigationItem.rightBarButtonItem = self.collectionBarButtonItem;
     if (@available(iOS 11.0, *)) {
 #ifdef __IPHONE_11_0

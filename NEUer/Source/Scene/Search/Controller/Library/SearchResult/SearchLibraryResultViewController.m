@@ -110,13 +110,15 @@ const NSInteger kPreloadThreshold = 3;
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.backgroundColor = [UIColor whiteColor];
-        self.contentView.layer.cornerRadius = 16;
-        self.contentView.layer.shadowColor = [UIColor grayColor].CGColor;
-        self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
-        self.contentView.layer.shadowOpacity = 0.2;
-        self.contentView.layer.shadowRadius = 4;
+        self.layer.cornerRadius = 16;
+        self.layer.shadowColor = [UIColor grayColor].CGColor;
+        self.layer.shadowOffset = CGSizeMake(0, 4);
+        self.layer.shadowOpacity = 0.2;
+        self.layer.shadowRadius = 4;
+        self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.frame byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
         
+        [self.contentView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
+        self.contentView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:self.imageView];
         [self.contentView addSubview:self.infoLabel];
         [self.contentView addSubview:self.visualEffectView];
@@ -256,8 +258,8 @@ const NSInteger kPreloadThreshold = 3;
     }
     
     _locationLabel.text = _resultBean.stockLocation;
-    [self layoutIfNeeded];
-    [self.visualEffectView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
+//    [self layoutIfNeeded];
+//    [self.visualEffectView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
     [self applyDisplayModeAnimated:NO];
 }
 
