@@ -13,6 +13,7 @@ target 'NEUer' do
   pod 'hpple'
   pod 'TesseractOCRiOS', '~> 4.0.0'
   pod 'FMDB'
+  pod 'JPFPSStatus', '~> 0.1.1'
 
 end
 

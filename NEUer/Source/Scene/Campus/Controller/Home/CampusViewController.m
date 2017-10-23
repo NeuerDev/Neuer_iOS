@@ -142,10 +142,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
 }
 
 - (void)initConstraints {
-    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.left.and.right.and.bottom.equalTo(self.view);
-    }];
+    self.collectionView.frame = self.view.frame;
 }
 
 - (void)didReceiveMemoryWarning {

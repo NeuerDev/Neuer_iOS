@@ -31,6 +31,7 @@ PODS:
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
   - hpple (0.2.0)
+  - JPFPSStatus (0.1.1)
   - Masonry (1.1.0)
   - MBProgressHUD (1.0.0)
   - SDWebImage (3.8.2):
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - DKNightVersion
   - FMDB
   - hpple
+  - JPFPSStatus (~> 0.1.1)
   - Masonry
   - MBProgressHUD (~> 1.0.0)
   - SDWebImage (~> 3.8)
@@ -53,11 +55,12 @@ SPEC CHECKSUMS:
   DKNightVersion: eaa80cc4014b4bae7d4b535fd87ecc6a3c2767b3
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
+  JPFPSStatus: 03f32aa3d4d7d0c5bf56f6f3e7cf8b7280a5f52c
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
 
-PODFILE CHECKSUM: b96e54f03861702924bcf48d5ee67b63a4f2dd29
+PODFILE CHECKSUM: e824e5cef70f98dbef0541b3bf7f2998dd01153c
 
 COCOAPODS: 1.4.0.beta.1

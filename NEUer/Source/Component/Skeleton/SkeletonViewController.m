@@ -10,7 +10,6 @@
 
 #import "HomeViewController.h"
 #import "CampusViewController.h"
-#import "SearchViewController.h"
 #import "MeViewController.h"
 
 #import "NetworkStatusView.h"
@@ -78,7 +77,6 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 @interface SkeletonViewController ()
 @property (nonatomic, strong) SkelentonNavigationViewController *homeNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *campusNavigationVC;
-@property (nonatomic, strong) SkelentonNavigationViewController *searchNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *meNavigationVC;
 
 @property (nonatomic, strong) NetworkStatusView *networkView;
@@ -96,7 +94,6 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     self.viewControllers = @[
                              self.homeNavigationVC,
                              self.campusNavigationVC,
-//                             self.searchNavigationVC,
                              self.meNavigationVC
                              ];
     
@@ -278,15 +275,6 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     }
     
     return _campusNavigationVC;
-}
-
-- (SkelentonNavigationViewController *)searchNavigationVC {
-    if (!_searchNavigationVC) {
-        _searchNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[SearchViewController alloc] init]];
-        _searchNavigationVC.tabBarItem.title = NSLocalizedString(@"SearchTabBarItemTitle", nil);
-    }
-    
-    return _searchNavigationVC;
 }
 
 - (SkelentonNavigationViewController *)meNavigationVC {

@@ -127,7 +127,6 @@ const CGFloat kNetworkViewHeight = 80.0f;
     [_parentView bringSubviewToFront:self];
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
     [self performSelector:@selector(dismiss) withObject:nil afterDelay:4.0f];
-    
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.6 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.frame = CGRectMake(
                                         CGRectGetMinX(_parentView.frame) + 16,

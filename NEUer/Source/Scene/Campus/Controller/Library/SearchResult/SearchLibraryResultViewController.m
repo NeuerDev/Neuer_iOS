@@ -193,41 +193,54 @@ const NSInteger kPreloadThreshold = 3;
 #pragma mark - Animation
 
 - (void)applyDisplayModeAnimated:(BOOL)animated {
-    NSTimeInterval interval = animated ? 1.0f/3.0f : 0;
+    NSTimeInterval interval = 1.0f/3.0f;
     
     //  高斯模糊动画
     if (_resultBean.showDetail) {
         _visualEffectView.hidden = NO;
         _visualEffectView.alpha = 1;
         _visualEffectView.effect = nil;
+        _detailView.hidden = NO;
         [_titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).with.offset(24);
             make.right.equalTo(self.contentView.mas_right).with.offset(-24);
             make.top.equalTo(self.contentView.mas_top).with.offset(14);
         }];
-        _detailView.hidden = NO;
-        [UIView animateWithDuration:interval animations:^{
+        
+        if (animated) {
+            [UIView animateWithDuration:interval animations:^{
+                _visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+                _detailView.alpha = 1;
+                [self.contentView layoutIfNeeded];
+            } completion:nil];
+        } else {
             _visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
             _detailView.alpha = 1;
-            [self.contentView layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            
-        }];
+        }
     } else {
         [_titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).with.offset(kCellHeight);
             make.right.equalTo(self.contentView.mas_right).with.offset(-8);
             make.top.equalTo(self.contentView.mas_top).with.offset(24);
         }];
-        [UIView animateWithDuration:interval animations:^{
+        
+        if (animated) {
+            [UIView animateWithDuration:interval animations:^{
+                _visualEffectView.alpha = 0;
+                _detailView.alpha = 0;
+                [self.contentView layoutIfNeeded];
+            } completion:^(BOOL finished) {
+                _visualEffectView.hidden = YES;
+                _detailView.hidden = YES;
+                _visualEffectView.effect = nil;
+            }];
+        } else {
             _visualEffectView.alpha = 0;
             _detailView.alpha = 0;
-            [self.contentView layoutIfNeeded];
-        } completion:^(BOOL finished) {
             _visualEffectView.hidden = YES;
             _detailView.hidden = YES;
             _visualEffectView.effect = nil;
-        }];
+        }
     }
 }
 
@@ -258,8 +271,6 @@ const NSInteger kPreloadThreshold = 3;
     }
     
     _locationLabel.text = _resultBean.stockLocation;
-//    [self layoutIfNeeded];
-//    [self.visualEffectView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
     [self applyDisplayModeAnimated:NO];
 }
 

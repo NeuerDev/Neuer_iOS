@@ -34,6 +34,7 @@ NSString * const kSearchSuggestListCellId = @"kSearchSuggestListCellId";
     if (self = [super initWithSearchResultsController:nil]) {
         self.dimsBackgroundDuringPresentation = NO;
         self.searchResultsUpdater = self;
+        self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.searchBar.delegate = self;
         self.searchBar.placeholder = NSLocalizedString(@"SearchLibrarySearchBarPlaceholder", nil);
         self.searchBar.scopeButtonTitles = @[

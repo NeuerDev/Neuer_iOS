@@ -6,8 +6,9 @@
 //  Copyright © 2017年 Jiahong Xu. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import <JPFPSStatus/JPFPSStatus.h>
 
+#import "AppDelegate.h"
 #import "JHURLRouter.h"
 #import "TesseractCenter.h"
 
@@ -22,11 +23,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self initAppearence];
     
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
     [self.window makeKeyAndVisible];
     self.window.rootViewController = self.skelentonVC;
+    
+#if defined(DEBUG)||defined(_DEBUG)
+    [[JPFPSStatus sharedInstance] open];
+#endif
     
     // 开始监听网络
     [[GatewayCenter defaultCenter] startMonitoring];

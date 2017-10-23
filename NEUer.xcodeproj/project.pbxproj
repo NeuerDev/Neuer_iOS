@@ -64,7 +64,6 @@
 		5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA6E951F77462F00DFF055 /* TouchableCollectionViewCell.m */; };
 		5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA6E991F77507000DFF055 /* UIImage+JHCategory.m */; };
 		5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC232E71F71FEC4005F0A6E /* HomeViewController.m */; };
-		5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC232F71F720776005F0A6E /* SearchViewController.m */; };
 		5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC233001F72090F005F0A6E /* SearchLibraryDoorViewController.m */; };
 		5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC233031F72090F005F0A6E /* SearchLibraryViewController.m */; };
 		5CC233061F723BBE005F0A6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233081F723BBE005F0A6E /* LaunchScreen.storyboard */; };
@@ -231,8 +230,6 @@
 		5CBA6E991F77507000DFF055 /* UIImage+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+JHCategory.m"; sourceTree = "<group>"; };
 		5CC232E61F71FEC4005F0A6E /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		5CC232E71F71FEC4005F0A6E /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		5CC232F61F720776005F0A6E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		5CC232F71F720776005F0A6E /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		5CC232FF1F72090F005F0A6E /* SearchLibraryDoorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchLibraryDoorViewController.h; sourceTree = "<group>"; };
 		5CC233001F72090F005F0A6E /* SearchLibraryDoorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryDoorViewController.m; sourceTree = "<group>"; };
 		5CC233021F72090F005F0A6E /* SearchLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchLibraryViewController.h; sourceTree = "<group>"; };
@@ -456,6 +453,7 @@
 		5C0844BF1F7B94BB00C69261 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5C7548B01F77382A0065E64E /* Library */,
 				5CCC66871F8F529800F8F96C /* Aao */,
 				5CCC667B1F8DA7BF00F8F96C /* Ecard */,
 			);
@@ -465,6 +463,7 @@
 		5C0844C01F7B94BB00C69261 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5CC232F11F720776005F0A6E /* Library */,
 				5CCC66831F8F521900F8F96C /* Aao */,
 				5CCC66721F8D221100F8F96C /* Ecard */,
 				5C0844C11F7B94BB00C69261 /* Home */,
@@ -774,6 +773,9 @@
 		5C7B8EDB1F8C64370088FC60 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				5CA976E81F73AB8400B1089A /* CollectionComponent */,
+				5CAB9E331F72471B009C8D04 /* SearchListComponent */,
+				5CBA6E931F7745F900DFF055 /* TouchableCell */,
 				5C5FD4351F974C7500B1EA2C /* SpringCollectionViewLayout */,
 				5C5FD4311F97454F00B1EA2C /* CustomSectionHeader */,
 				5C7B8EDC1F8C644A0088FC60 /* NetworkStatusView */,
@@ -884,7 +886,6 @@
 			children = (
 				33FBD6891F7BE0E4001B1F09 /* Login */,
 				5C91076A1F6D3B2F00FA4270 /* Home */,
-				5C91076B1F6D3B2F00FA4270 /* Search */,
 				5C0844BE1F7B947500C69261 /* Campus */,
 				5CAB9E471F7287C8009C8D04 /* Me */,
 			);
@@ -899,16 +900,6 @@
 				5CE4E14F1F6ECB89008780AC /* Controller */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		5C91076B1F6D3B2F00FA4270 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				5CE4E1531F6ECB92008780AC /* Controller */,
-				5CE4E1561F6ECB92008780AC /* Model */,
-				5CE4E1571F6ECB92008780AC /* View */,
-			);
-			path = Search;
 			sourceTree = "<group>";
 		};
 		5C91076C1F6D3B2F00FA4270 /* Utils */ = {
@@ -1094,23 +1085,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		5CBA6E911F7745E000DFF055 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				5CBA6E931F7745F900DFF055 /* TouchableCell */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		5CBA6E921F7745E600DFF055 /* Component */ = {
-			isa = PBXGroup;
-			children = (
-				5CA976E81F73AB8400B1089A /* CollectionComponent */,
-				5CAB9E331F72471B009C8D04 /* SearchListComponent */,
-			);
-			path = Component;
-			sourceTree = "<group>";
-		};
 		5CBA6E931F7745F900DFF055 /* TouchableCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1146,15 +1120,6 @@
 				5CC233011F72090F005F0A6E /* Search */,
 			);
 			path = Library;
-			sourceTree = "<group>";
-		};
-		5CC232F51F720776005F0A6E /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				5CC232F61F720776005F0A6E /* SearchViewController.h */,
-				5CC232F71F720776005F0A6E /* SearchViewController.m */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		5CC232FE1F72090F005F0A6E /* SearchDoor */ = {
@@ -1320,32 +1285,6 @@
 				5CC232E51F71FEC4005F0A6E /* Home */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		5CE4E1531F6ECB92008780AC /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				5CC232F51F720776005F0A6E /* Home */,
-				5CC232F11F720776005F0A6E /* Library */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		5CE4E1561F6ECB92008780AC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				5C7548B01F77382A0065E64E /* Library */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		5CE4E1571F6ECB92008780AC /* View */ = {
-			isa = PBXGroup;
-			children = (
-				5CBA6E921F7745E600DFF055 /* Component */,
-				5CBA6E911F7745E000DFF055 /* Cell */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		5CE4E1591F6ECB99008780AC /* Model */ = {
@@ -1588,6 +1527,7 @@
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DKNightVersion/DKNightVersion.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/JPFPSStatus/JPFPSStatus.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -1599,6 +1539,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKNightVersion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JPFPSStatus.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -1737,7 +1678,6 @@
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
-				5CC232F91F720776005F0A6E /* SearchViewController.m in Sources */,
 				3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
 				3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */,
@@ -1921,6 +1861,7 @@
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
