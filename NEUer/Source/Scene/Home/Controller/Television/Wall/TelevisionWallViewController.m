@@ -180,7 +180,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     } else {
         
     }
-    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self initConstraints];
     
     [self.wallModel fetchWallData];

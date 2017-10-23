@@ -24,7 +24,7 @@
     [self initAppearence];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor colorWithHexStr:@"#F8F8FA"];
+    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     self.window.rootViewController = self.skelentonVC;
     
@@ -45,8 +45,12 @@
 
 - (void)initAppearence {
     UINavigationBar *navigationBar = [UINavigationBar appearance];
-    [navigationBar setBackgroundColor:[UIColor whiteColor]];
+    [navigationBar setBackgroundImage:[[JHTool imageWithColor:[UIColor whiteColor]] init]
+                       forBarPosition:UIBarPositionAny
+                           barMetrics:UIBarMetricsDefault];
+    navigationBar.backgroundColor = [UIColor whiteColor];
     [navigationBar setShadowImage:[[UIImage alloc] init]];
+    
 }
 
 
