@@ -34,12 +34,6 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 }
 
 - (void)initConstraints {
-//    [self.consumeHistoryTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-//        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-//        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-//        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-//    }];
     self.consumeHistoryTableView.frame = self.view.frame;
 }
 

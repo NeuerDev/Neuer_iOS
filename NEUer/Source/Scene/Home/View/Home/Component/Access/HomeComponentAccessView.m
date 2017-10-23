@@ -92,7 +92,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
 - (void)initBaseConstraints {
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).with.insets(UIEdgeInsetsMake(0, 16, 24, 16));
+        make.edges.equalTo(self).with.insets(UIEdgeInsetsMake(0, 16, 0, 16));
     }];
 }
 

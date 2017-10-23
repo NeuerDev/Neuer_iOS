@@ -25,19 +25,15 @@
 }
 
 - (void)initBaseConstraints {
-    [self.subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self);
-        make.left.equalTo(self).with.offset(16);
-        make.right.equalTo(self).with.offset(-16);
-    }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.subTitleLabel.mas_bottom).with.offset(4);
-        make.left.and.right.equalTo(self.subTitleLabel);
+        make.top.equalTo(self.mas_top).with.offset(16);
+        make.left.equalTo(self.mas_left).with.offset(16);
+        make.right.equalTo(self.mas_right).with.offset(-16);
     }];
     
     [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.subTitleLabel);
+        make.right.equalTo(self.mas_right).with.offset(-16);
         make.lastBaseline.equalTo(self.titleLabel);
     }];
     
@@ -45,7 +41,7 @@
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
         make.left.and.right.equalTo(self);
-        make.bottom.equalTo(self.mas_bottom).with.offset(-16);
+        make.bottom.equalTo(self.mas_bottom);
     }];
 }
 
@@ -59,15 +55,6 @@
     }
     
     return _titleLabel;
-}
-
-- (UILabel *)subTitleLabel {
-    if (!_subTitleLabel) {
-        _subTitleLabel = [[UILabel alloc] init];
-        [self addSubview:_subTitleLabel];
-    }
-    
-    return _subTitleLabel;
 }
 
 - (UIButton *)actionButton {

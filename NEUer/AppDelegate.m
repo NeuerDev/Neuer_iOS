@@ -21,8 +21,6 @@
 #pragma mark - Life Circle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [self initAppearence];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -43,47 +41,30 @@
     return YES;
 }
 
-- (void)initAppearence {
-    UINavigationBar *navigationBar = [UINavigationBar appearance];
-    [navigationBar setBackgroundImage:[[JHTool imageWithColor:[UIColor whiteColor]] init]
-                       forBarPosition:UIBarPositionAny
-                           barMetrics:UIBarMetricsDefault];
-    navigationBar.backgroundColor = [UIColor whiteColor];
-    [navigationBar setShadowImage:[[UIImage alloc] init]];
-    
-}
-
-
 - (void)applicationWillResignActive:(UIApplication *)application {
     
 }
-
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     
 }
 
-
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     
 }
-
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     
 }
 
-
 - (void)applicationWillTerminate:(UIApplication *)application {
     
 }
-
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     NSLog(@"url = %@", url.absoluteString);
     return [self.router handleUrl:url];
 }
-
 
 #pragma mark - Getter
 

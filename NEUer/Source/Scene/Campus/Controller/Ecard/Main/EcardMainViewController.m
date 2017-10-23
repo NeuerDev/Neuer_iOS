@@ -67,12 +67,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 }
 
 - (void)initConstraints {
-    
-//    [self.consumeHistoryTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.mas_topLayoutGuide);
-//        make.left.and.right.and.bottom.equalTo(self.view);
-//    }];
-    
     self.consumeHistoryTableView.frame = self.view.frame;
     
     [self.balanceValueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
