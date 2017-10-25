@@ -48,10 +48,10 @@
         
     }
     
+    self.borrowingModel.sortType = @"ALL";
+    self.borrowingModel.date = @"y";
     [self.borrowingModel search];
     [self initConstraints];
-    self.recentSearchComponent.strings = @[@"iOS", @"The Great Gatsby", @"Oliver Twist", @"The Phantom Of the Opera", @"Khaled Hosseini", @"莫言"];
-//    [self reloadData];
 }
 
 - (void)initConstraints {
@@ -87,7 +87,7 @@
         [array addObject:bean.title];
     }
     self.mostSearchComponent.strings = array;
-//    self.recentSearchComponent.strings = @[@"iOS", @"The Great Gatsby", @"Oliver Twist", @"The Phantom Of the Opera", @"Khaled Hosseini", @"莫言"];
+    self.recentSearchComponent.strings = @[@"iOS", @"The Great Gatsby", @"Oliver Twist", @"The Phantom Of the Opera", @"Khaled Hosseini", @"莫言"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -333,7 +333,7 @@
 
 - (NSArray *)typeParameterArray {
     if (!_typeParameterArray) {
-        _typeParameterArray = @[@"ALL",@"A",@"",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"N",@"O",@"O2",@"O3",@"O4",@"O5",@"O6",@"O7",@"P",@"Q",@"R",@"S",@"T",@"TB",@"TD",@"TE",@"TF",@"TG",@"TH",@"TJ",@"TK",@"TL",@"TM",@"TN",@"TP",@"TQ",@"TS",@"TU",@"TV",@"U",@"V",@"X",@"Z"];
+        _typeParameterArray = @[@"ALL",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"N",@"O",@"O2",@"O3",@"O4",@"O5",@"O6",@"O7",@"P",@"Q",@"R",@"S",@"T",@"TB",@"TD",@"TE",@"TF",@"TG",@"TH",@"TJ",@"TK",@"TL",@"TM",@"TN",@"TP",@"TQ",@"TS",@"TU",@"TV",@"U",@"V",@"X",@"Z"];
     }
    return _typeParameterArray;
 }

@@ -20,7 +20,7 @@
 			<key>class</key>
 			<string>SearchLibraryViewController</string>
 			<key>regex</key>
-			<string>/lib</string>
+			<string>/lib/search</string>
 		</dict>
 		<dict>
 			<key>host</key>

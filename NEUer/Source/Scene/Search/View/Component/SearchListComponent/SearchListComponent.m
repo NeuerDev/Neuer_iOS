@@ -195,6 +195,8 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
         } completion:^(BOOL finished) {
             [_tableView reloadData];
         }];
+    } else {
+        [_tableView reloadData];
     }
 }
 

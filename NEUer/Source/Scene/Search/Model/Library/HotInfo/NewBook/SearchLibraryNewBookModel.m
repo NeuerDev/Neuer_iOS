@@ -74,10 +74,16 @@
     jsonStr = [jsonStr stringByReplacingCharactersInRange:NSMakeRange(jsonStr.length - 1, 1) withString:@"]"];
     jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"b:" withString:@"\"b\":"];
     jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"t:" withString:@"\"t\":"];
-    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"[0-9]{4}:" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange (0, jsonStr.length)];
-    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"[0-9]{3}:" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange (0, jsonStr.length)];
-    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"[0-9]{2}:" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange (0, jsonStr.length)];
-    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"[0-9]{1}:" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange (0, jsonStr.length)];
+    
+    NSString *claimStr = [[jsonStr substringToIndex:jsonStr.length - 1] substringFromIndex:1];
+    NSArray *claimNumberArr = [claimStr componentsSeparatedByString:@"},"];
+    for (NSString *str in claimNumberArr) {
+        NSString *claimNumber = [[str componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
+        claimNumber = [claimNumber substringToIndex:claimNumber.length - 6];
+        NSLog(@"claimNumber - %@",claimNumber);
+    }
+
+    jsonStr = [jsonStr stringByReplacingOccurrencesOfString:@"[0-9]{1,4}:" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange (0, jsonStr.length)];
     
     NSData *data = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
     NSError *err;

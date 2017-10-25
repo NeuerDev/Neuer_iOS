@@ -8,7 +8,7 @@
 
 #import "HomeComponentAccessView.h"
 #import "TouchableCollectionViewCell.h"
-#import "LibraryLoginModel.h"
+#import "SearchLibraryNewBookModel.h"
 
 static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
@@ -62,7 +62,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray<NSDictionary *> *cellDataArray;
-@property (nonatomic, strong) LibraryLoginModel *model;
+@property (nonatomic, strong) SearchLibraryNewBookModel *model;
 @end
 
 @implementation HomeComponentAccessView
@@ -92,7 +92,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self.model gotoLogin];
+    [self.model search];
     NSURL *url = [NSURL URLWithString:self.cellDataArray[indexPath.item][@"url"]];
     [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 }
@@ -171,7 +171,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
                                },
                            @{
                                @"title":@"书刊查询",
-                               @"url":@"neu://go/lib",
+                               @"url":@"neu://go/lib/search",
                                @"color":@"#A2C9B4",
                                },
                            @{
@@ -190,11 +190,12 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     return _cellDataArray;
 }
 
-- (LibraryLoginModel *)model {
+- (SearchLibraryNewBookModel *)model {
     if (!_model) {
-        _model = [[LibraryLoginModel alloc] init];
+        _model = [[SearchLibraryNewBookModel alloc] init];
     }
    return _model;
 }
+
 
 @end
