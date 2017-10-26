@@ -75,4 +75,28 @@
     return topVC;
 }
 
+// 截取字符串方法封装
++ (NSString *)subStringFromString:(NSString *)originString startString:(NSString *)startString endString:(NSString *)endString {
+    
+    NSRange startRange = [originString rangeOfString:startString];
+    NSRange endRange = [originString rangeOfString:endString];
+    NSRange range = NSMakeRange(startRange.location + startRange.length, endRange.location - startRange.location - startRange.length);
+    return [originString substringWithRange:range];
+    
+}
+
++ (NSString *)dateOfTimeIntervalFromToday:(NSInteger)days {
+    
+    NSDate *today = [NSDate date];
+    NSTimeInterval oneDaysInterval = 24 * 60 * 60;
+    NSDate *beforeDate = [today initWithTimeIntervalSinceNow: - oneDaysInterval * days];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSString *resultDate = [dateFormatter stringFromDate:beforeDate];
+    
+    return resultDate;
+}
+
 @end

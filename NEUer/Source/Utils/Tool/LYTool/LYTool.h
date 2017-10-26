@@ -30,4 +30,18 @@
  */
 + (UIViewController *)getPresentedViewController;
 
+
+/**
+ 截取字符串
+ @param originString 用于被截取的字符串
+ @param startString 开始的字符串
+ @param endString 结束的字符串
+ */
++ (NSString *)subStringFromString:(NSString *)originString startString:(NSString *)startString endString:(NSString *)endString;
+
+/**
+ 距离今天间距有 days 的日期
+ */
++ (NSString *)dateOfTimeIntervalFromToday:(NSInteger)days;
+
 @end
