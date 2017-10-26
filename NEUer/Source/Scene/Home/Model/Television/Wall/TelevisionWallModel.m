@@ -196,4 +196,14 @@
 
 @implementation TelevisionWallChannelBean
 
+- (NSArray<NSString *> *)sourceArray {
+    NSMutableArray *sourceArray = @[].mutableCopy;
+    for (NSString *urlStr in _videoUrlArray) {
+        NSString *sourceStr = [[urlStr stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
+        [sourceArray addObject:sourceStr];
+    }
+    
+    return sourceArray.copy;
+}
+
 @end
