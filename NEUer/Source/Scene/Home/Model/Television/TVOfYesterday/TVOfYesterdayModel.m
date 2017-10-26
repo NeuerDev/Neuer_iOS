@@ -45,8 +45,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if (_delegate) {
             [_delegate fetchTVOfYesterdayModelFailureWithMsg:@"加载失败！"];
-        } else {
-            NSLog(@"没有代理");
         }
     });
 }
@@ -59,8 +57,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if (_delegate) {
             [_delegate fetchTVOfYesterdayModelSuccess];
-        } else {
-            NSLog(@"没代理");
         }
     });
 }

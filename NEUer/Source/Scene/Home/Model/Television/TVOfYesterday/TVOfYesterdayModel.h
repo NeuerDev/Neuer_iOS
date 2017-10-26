@@ -33,8 +33,19 @@ typedef NS_ENUM(NSInteger, TVOfYesterdaySelectionType) {
 @property (nonatomic, weak) id<TVOfYesterdayModelDelegate> delegate;
 @property (nonatomic, assign) TVOfYesterdaySelectionType selectedType;
 
+/**
+ @param videoUrl 播放源地址
+ */
 - (void)fecthTVOfYesterdayDataWithVideoUrl:(NSString *)videoUrl;
+
+/**
+ 获取该播放源的近8天所有播放过的节目单
+ */
 - (NSDictionary *)TVOfYesterdayDictionary;
+
+/**
+ 获取某一天播放过的节目单
+ */
 - (NSArray *)TVOfYesterdaySelectionDayArrayWithType:(TVOfYesterdaySelectionType)type;
 
 @end
