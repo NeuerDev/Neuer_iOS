@@ -8,22 +8,87 @@
 
 #import "UserKeychain.h"
 
+@implementation UserKey
+
+@end
+
+@interface UserKeychain ()
+@property (nonatomic, strong) NSArray<UserKey *> *keys;
+@end
+
 @implementation UserKeychain
 
 + (instancetype)keychainForUser:(User *)user {
-    return [[UserKeychain alloc] init];
+    UserKeychain *keyChain = [[UserKeychain alloc] init];
+    FMDatabase *db = [DataBaseCenter defaultCenter].database;
+    FMResultSet *result = [db executeQuery:@"select * from t_key where number = ?", user.number];
+    NSMutableArray *keys = @[].mutableCopy;
+    while ([result next]) {
+        UserKey *key = [[UserKey alloc] init];
+        key.type = [result intForColumn:@"keyType"];
+        key.value = [result stringForColumn:@"password"];
+        [keys addObject:key];
+    }
+    keyChain.keys = keys.copy;
+    keyChain.user = user;
+    return keyChain;
 }
 
 - (NSArray<UserKey *> *)allKeys {
-    return @[];
+    return self.keys;
 }
 
-- (NSString *)passwordForType:(UserKeyType)type {
-    return @"";
+- (NSString *)passwordForKeyType:(UserKeyType)type {
+    UserKey *targetKey = nil;
+    for (UserKey *key in self.keys) {
+        if (key.type == type) {
+            targetKey = key;
+            break;
+        }
+    }
+    return targetKey.value;
 }
 
-- (void)setPassword:(NSString *)password forType:(UserKeyType)type {
+- (void)setPassword:(NSString *)password forKeyType:(UserKeyType)type {
+    NSMutableArray *keys = self.keys.mutableCopy;
+    UserKey *targetKey = nil;
+    for (UserKey *key in keys) {
+        if (key.type == type) {
+            targetKey = key;
+            break;
+        }
+    }
+    if (targetKey) {
+        targetKey.value = password;
+    } else {
+        targetKey = [[UserKey alloc] init];
+        targetKey.type = type;
+        targetKey.value = password;
+        [keys addObject:targetKey];
+    }
     
+    FMDatabase *db = [DataBaseCenter defaultCenter].database;
+    [db executeUpdate:@"update t_key set password = ? where number = ? and keyType = ?;", password, _user.number, @(type)];
+    [db executeUpdate:@"insert into t_key (number, keyType, password) select ?, ?, ? where not exists(select * from t_key where number = ? and keyType = ?);", _user.number, @(type), password, _user.number, @(type)];
+}
+
+#pragma mark - Getter
+
+- (NSArray *)keys {
+    if (!_keys) {
+        NSMutableArray<UserKey *> *keys = @[].mutableCopy;
+        FMDatabase *db = [DataBaseCenter defaultCenter].database;
+        FMResultSet *result = [db executeQuery:@"select * from t_key where number = ?", _user.number];
+        while ([result next]) {
+            UserKey *key = [[UserKey alloc] init];
+            key.value = [result stringForColumn:@"password"];
+            key.type = [result intForColumn:@"keyType"];
+            [keys addObject:key];
+        }
+        _keys = keys.copy;
+    }
+    
+    return _keys;
 }
 
 @end

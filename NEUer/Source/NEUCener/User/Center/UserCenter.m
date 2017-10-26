@@ -59,8 +59,21 @@ static UserCenter *_singletonCenter = nil;
 
 #pragma mark - Public Methods
 
+- (void)setup {
+    User *currentUser = nil;
+    for (User *user in self.allUsers) {
+        if (!currentUser || user.lastLoginTime > currentUser.lastLoginTime) {
+            currentUser = user;
+        } else {
+            continue;
+        }
+    }
+    
+    _currentUser = currentUser;
+}
+
 - (NSArray<User *> *)allUsers {
-    return nil;
+    return [User allUsers];
 }
 
 - (void)switchToUser:(User *)user complete:(void (^)(BOOL success, NSString *message))complete {
@@ -82,6 +95,7 @@ static UserCenter *_singletonCenter = nil;
     [user authorWithAccount:account password:password complete:^(BOOL success, NSString *message) {
         if (success) {
             ws.currentUser = user;
+            [user commitUpdates];
         }
         
         complete(success, message);
@@ -102,6 +116,40 @@ static UserCenter *_singletonCenter = nil;
 
 - (void)connectWithWeibo:(NSString *)weiboId {
     
+}
+
+- (void)setAccount:(NSString *)account password:(NSString *)password forKeyType:(UserKeyType)keyType {
+    User *user = nil;
+    for (User *tempUser in self.allUsers) {
+        if ([tempUser.number isEqualToString:account]) {
+            user = tempUser;
+            break;
+        }
+    }
+    
+    if (user) {
+        [user setPassword:password forKeyType:keyType];
+    } else {
+        User *user = [[User alloc] init];
+        user.number = account;
+        [self addUser:user];
+        [user setPassword:password forKeyType:keyType];
+    }
+}
+
+#pragma mark - Private Methods
+
+- (void)addUser:(User *)user {
+    _currentUser = user;
+    [user commitUpdates];
+}
+
+- (User *)currentUser {
+    if (!_currentUser) {
+        _currentUser = [User allUsers].firstObject;
+    }
+    
+    return _currentUser;
 }
 
 @end

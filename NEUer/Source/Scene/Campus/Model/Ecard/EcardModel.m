@@ -24,7 +24,7 @@
 @end
 
 @implementation EcardModel {
-    EcardActionCompleteBlock _authorCompleteBlock;
+    EcardActionCompleteBlock _currentActionBlock;
     EcardQueryConsumeCompleteBlock _queryTodayConsumeCompleteBlock;
 }
 
@@ -39,6 +39,12 @@
 - (void)getVerifyImage:(EcardGetVerifyImageBlock)block {
     WS(ws);
     
+    NSArray<NSHTTPCookie *> *cookies = self.session.configuration.HTTPCookieStorage.cookies;
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.domain isEqualToString:@"ecard.neu.edu.cn"]) {
+            [self.session.configuration.HTTPCookieStorage deleteCookie:cookie];
+        }
+    }
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -77,7 +83,7 @@
 
 - (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block {
     WS(ws);
-    _authorCompleteBlock = block;
+    _currentActionBlock = block;
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     urlRequest.HTTPMethod = @"POST";
     NSDictionary *params = @{
@@ -115,6 +121,15 @@
         if (data && !error) {
             UIImage *image = [[UIImage alloc] initWithData:data];
             ws.info.image = image;
+            
+            if (image) {
+                // 同步设置当前用户的info
+                User *currentUser = [UserCenter defaultCenter].currentUser;
+                if (!currentUser.imageData) {
+                    currentUser.imageData = data;
+                }
+                [currentUser commitUpdates];                
+            }
         }
         if (block) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -128,7 +143,7 @@
 
 - (void)queryInfoComplete:(EcardActionCompleteBlock)block {
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/Home.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-    
+    _currentActionBlock = block;
     WS(ws);
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data && !error) {
@@ -148,7 +163,8 @@
                     NSString *balance = [string substringFromIndex:@"主钱包余额：".length];
                     ws.info.balance = [balance stringByReplacingOccurrencesOfString:@"元" withString:@""];
                 } else if ([string hasPrefix:@"性别："]) {
-                    ws.info.sex = [string substringFromIndex:@"性别：".length];
+                    NSString *sexStr = [string substringFromIndex:@"性别：".length];
+                    ws.info.sex = [sexStr isEqualToString:@"男"] ? 1 : [sexStr isEqualToString:@"女"] ? 2 : 0;
                 } else if ([string hasPrefix:@"补助余额："]) {
                     ws.info.allowance = [string substringFromIndex:@"补助余额：".length];
                 } else if ([string hasPrefix:@"身份："]) {
@@ -164,6 +180,8 @@
                     ws.info.major = array[1];
                 }
             }
+            ws.info.lastUpdateTime = [[[NSDate alloc] init] timeIntervalSince1970];
+            [ws.info commitUpdates];
         }
         
         if (block) {
@@ -293,7 +311,6 @@
                 NSString *money = childArray[3].text;
                 NSString *station = childArray[6].text;
                 NSString *device = childArray[7].text;
-                NSLog(@"%@ - %@ - %@ - %@ - %@", time, subject, money, station, device);
                 EcardConsumeBean *consumeBean = [[EcardConsumeBean alloc] initWithTime:time station:station device:device money:money subject:subject];
                 [consumeBeanArray addObject:consumeBean];
             }
@@ -311,7 +328,18 @@
 #pragma mark - NSURLSessionTaskDelegate
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
-    __strong EcardActionCompleteBlock block = _authorCompleteBlock;
+    
+    // 如果重定向到login的话说明登录失效 需要重新登录
+    if ([request.URL.absoluteString isEqualToString:@"http://ecard.neu.edu.cn/SelfSearch/login.aspx"]) {
+        if (_currentActionBlock) {
+            NSError *error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeRequireLogin userInfo:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _currentActionBlock(NO, error);
+            });
+        }
+        return;
+    }
+    __strong EcardActionCompleteBlock block = _currentActionBlock;
     NSURLSessionDataTask *newTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (block) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -342,8 +370,23 @@
 
 + (EcardInfoBean *)infoWithUser:(User *)user {
     EcardInfoBean *info = [[EcardInfoBean alloc] init];
-    info.name = user.realName;
-    info.number = user.number;
+    FMDatabase *db = [DataBaseCenter defaultCenter].database;
+    FMResultSet *result = [db executeQuery:@"select * from t_ecard where number = ?", user.number];
+    while ([result next]) {
+        info.name = user.realName;
+        info.number = user.number;
+        info.major = user.major;
+        info.campus = user.campus;
+        info.sex = user.sex;
+        info.campus = user.campus;
+        info.major = user.major;
+        info.state = [result stringForColumn:@"state"];
+        info.balance = [result stringForColumn:@"balance"];
+        info.allowance = [result stringForColumn:@"allowance"];
+        info.status = [result stringForColumn:@"status"];
+        info.image = [UIImage imageWithData:[result dataForColumn:@"imageData"]];
+        info.lastUpdateTime = [result intForColumn:@"lastUpdateTime"];
+    }
     return info;
 }
 
@@ -368,7 +411,28 @@
 }
 
 - (NSString *)lastUpdate {
-    return @"刚刚更新";
+    return [JHTool fancyStringFromDate:[NSDate dateWithTimeIntervalSince1970:_lastUpdateTime]];
+}
+
+- (void)commitUpdates {
+    // 同步设置当前用户的info
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    if (!currentUser.realName) {
+        currentUser.realName = _name;
+    }
+    if (!currentUser.sex) {
+        currentUser.sex = _sex;
+    }
+    if (!currentUser.campus) {
+        currentUser.campus = _campus;
+    }
+    if (!currentUser.major) {
+        currentUser.major = _major;
+    }
+    [currentUser commitUpdates];
+    
+    FMDatabase *db = [DataBaseCenter defaultCenter].database;
+    [db executeUpdate:@"replace into t_ecard (number, state, balance, status, lastUpdateTime) values (?, ?, ?, ?, ?)", _number, _state, _balance, _status, @(_lastUpdateTime)];
 }
 
 @end;
@@ -461,7 +525,9 @@
                   @"浑南一楼1#":@"豆浆",
                   @"浑南一楼2#":@"豆浆",
                   @"浑南一楼5#":@"面包糕点",
+                  @"浑南一楼17#":@"油条",
                   @"浑南一楼38#":@"早餐馄饨",
+                  @"浑南三楼123#":@"饮料粥品",
                   }[_device] ? : _device;
             } else if (hour>=10 && hour<15) {
                 // 午餐
@@ -474,6 +540,7 @@
                   @"浑南二楼74#":@"锅贴炖汤",
                   @"浑南二楼91#":@"米饭",
                   @"浑南二楼103#":@"煎蛋饭",
+                  @"浑南三楼123#":@"饮料粥品",
                   }[_device] ? : _device;
             } else if (hour>=15 && hour<23) {
                 // 晚餐
@@ -486,6 +553,7 @@
                             @"浑南二楼74#":@"锅贴炖汤",
                             @"浑南二楼91#":@"米饭",
                             @"浑南二楼103#":@"煎蛋饭",
+                            @"浑南三楼123#":@"饮料粥品",
                             }[_device] ? : _device;
             }
         }
@@ -526,11 +594,13 @@
                             @"浑南一楼1#":@"原磨豆浆窗口",
                             @"浑南一楼2#":@"原磨豆浆窗口",
                             @"浑南一楼5#":@"早餐西点窗口",
+                            @"浑南一楼17#":@"早餐油条窗口",
                             @"浑南一楼38#":@"蒸笼窗口",
                             @"浑南一楼40#":@"水饺窗口",
                             @"浑南二楼74#":@"锅贴炖汤窗口",
                             @"浑南二楼91#":@"米饭窗口",
                             @"浑南二楼103#":@"煎蛋饭窗口",
+                            @"浑南三楼123#":@"粥品窗口",
                             }[_device] ? : _device;
                 
             }

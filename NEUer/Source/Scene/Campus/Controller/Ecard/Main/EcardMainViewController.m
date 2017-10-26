@@ -58,12 +58,12 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
     self.consumeHistoryTableView.refreshControl = self.refreshControl;
     [self initConstraints];
-    [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
+    [self setInfoBean:[EcardInfoBean infoWithUser:[UserCenter defaultCenter].currentUser]];
+    [self checkLoginState];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    [self showLoginViewController];
 }
 
 - (void)initConstraints {
@@ -149,24 +149,69 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 #pragma mark - Private Methods
 
-- (void)showLoginViewController {
+- (void)checkLoginState {
     WS(ws);
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard] ? : @"";
+    if (account.length>0 && password.length>0) {
+        [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"success query info");
+                ws.infoBean = ws.ecardModel.info;
+                
+                [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                    if (success) {
+                        [ws.consumeHistoryTableView reloadData];
+                    }
+                }];
+            } else {
+                [ws handleError:error];
+            }
+        }];
+    } else {
+        [ws showLoginBox];
+    }
+}
+
+- (void)handleError:(NSError *)error {
+    switch (error.code) {
+        case JHErrorTypeUnknown:
+            
+            break;
+        case JHErrorTypeRequireLogin:
+            [self showLoginBox];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showLoginBox {
+    WS(ws);
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard]  ? : @"";
     LoginViewController *signinVC = [[LoginViewController alloc] init];
     signinVC.modalPresentationStyle = UIModalPresentationCustom;
     signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [signinVC setupWithTitle:@"登录校卡中心"
                    inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
-                    contents:@{@(LoginInputTypeAccount):@"20144786"}
+                    contents:@{
+                               @(LoginInputTypeAccount):account,
+                               @(LoginInputTypePassword):password,
+                               }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
-        if (complete) {
-            NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
-            NSString *password = result[@(LoginInputTypePassword)]?:@"";
-            NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
-            [ws loginWithUser:userName password:password verifyCode:verifyCode];
-        } else {
-            [ws.navigationController popViewControllerAnimated:YES];
-        }
-    }];
+                     if (complete) {
+                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
+                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
+                         NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
+                         [ws loginWithUser:userName password:password verifyCode:verifyCode];
+                     } else {
+                         [ws.navigationController popViewControllerAnimated:YES];
+                     }
+                 }];
     
     __weak LoginViewController *weakSigninVC = signinVC;
     signinVC.changeVerifyImageBlock = ^{
@@ -185,6 +230,8 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     WS(ws);
     [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
         if (success) {
+            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeCard];
+            
             [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
                 if (success) {
                     NSLog(@"success query info");
@@ -262,7 +309,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [headerView setPerformActionBlock:^(NSInteger section) {
         
     }];
-    //    [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
     [headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
             case 0:

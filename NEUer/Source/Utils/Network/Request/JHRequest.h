@@ -10,6 +10,17 @@
 @class JHRequest;
 @class JHResponse;
 
+static NSString * const JHErrorDomain = @"com.JHError.Domain";
+
+typedef NS_ENUM(NSUInteger, JHErrorType) {
+    JHErrorTypeUnknown,
+    JHErrorTypeNetworkUnavailable,
+    JHErrorTypeNotInsideCampus,
+    JHErrorTypeNoResponse,
+    JHErrorTypeInvaildAccountPassword,
+    JHErrorTypeRequireLogin,
+};
+
 typedef void(^JHRequestCompleteBlock)(JHRequest *request);
 
 typedef NS_ENUM(NSInteger, JHRequestType) {

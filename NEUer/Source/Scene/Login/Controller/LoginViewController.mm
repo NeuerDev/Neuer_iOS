@@ -366,6 +366,7 @@ typedef void(^LoginInputViewActionBlock)(void);
                 if ([tesseract recognize]) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         inputView.textField.text = [[tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+                        [self refreshViewState];
                     });
                 }
             });
@@ -435,8 +436,8 @@ typedef void(^LoginInputViewActionBlock)(void);
     if (self = [super init]) {
         _type = type;
         _actionBlock = actionBlock;
+        self.textField.text = content;
         if (type==LoginInputTypeAccount && content.length>0) {
-            self.textField.text = content;
             self.textField.enabled = NO;
         }
         [self initViews];

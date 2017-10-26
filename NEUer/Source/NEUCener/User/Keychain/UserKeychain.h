@@ -25,13 +25,14 @@ typedef NS_ENUM(NSInteger, UserKeyType) {
 @end
 
 @interface UserKeychain : NSObject
+@property (nonatomic, weak) User *user;
 
 + (instancetype)keychainForUser:(User *)user;
 
 - (NSArray<UserKey *> *)allKeys;
 
-- (NSString *)passwordForType:(UserKeyType)type;
+- (NSString *)passwordForKeyType:(UserKeyType)type;
 
-- (void)setPassword:(NSString *)password forType:(UserKeyType)type;
+- (void)setPassword:(NSString *)password forKeyType:(UserKeyType)type;
 
 @end
