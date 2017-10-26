@@ -53,6 +53,5 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 @property (nonatomic, strong) NSString *quality;
 @property (nonatomic, assign) NSInteger viewerCount;
 @property (nonatomic, strong) UIColor *mainColor;
-
-- (NSArray<NSString *> *)sourceArray;
+@property (nonatomic, strong) NSArray<NSString *> *sourceArray;
 @end
