@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
-		3341C3711FA16ECA00798BFC /* TVOfYesterdayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3341C3701FA16ECA00798BFC /* TVOfYesterdayModel.m */; };
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
 		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
@@ -124,8 +123,6 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
-		3341C36F1FA16ECA00798BFC /* TVOfYesterdayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVOfYesterdayModel.h; sourceTree = "<group>"; };
-		3341C3701FA16ECA00798BFC /* TVOfYesterdayModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVOfYesterdayModel.m; sourceTree = "<group>"; };
 		3344EFC01F93A241001ED45E /* LYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTool.h; sourceTree = "<group>"; };
 		3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoLb.h; sourceTree = "<group>"; };
 		3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoLb.m; sourceTree = "<group>"; };
@@ -314,15 +311,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3341C36E1FA16EB100798BFC /* TVOfYesterday */ = {
-			isa = PBXGroup;
-			children = (
-				3341C36F1FA16ECA00798BFC /* TVOfYesterdayModel.h */,
-				3341C3701FA16ECA00798BFC /* TVOfYesterdayModel.m */,
-			);
-			path = TVOfYesterday;
-			sourceTree = "<group>";
-		};
 		3344EFBA1F939B22001ED45E /* Gateway */ = {
 			isa = PBXGroup;
 			children = (
@@ -758,7 +746,6 @@
 		5C7548B11F7738890065E64E /* Television */ = {
 			isa = PBXGroup;
 			children = (
-				3341C36E1FA16EB100798BFC /* TVOfYesterday */,
 				5C945B621F7A949D001D9DC1 /* Channel */,
 				5C7548B21F77389B0065E64E /* Wall */,
 			);
@@ -1698,7 +1685,6 @@
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
 				5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */,
-				3341C3711FA16ECA00798BFC /* TVOfYesterdayModel.m in Sources */,
 				5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
