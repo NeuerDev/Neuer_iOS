@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 @class SearchLibraryNewBookBean;
 
+@protocol SearchLibraryNewBookDelegate
+- (void)searchDidSuccess;
+- (void)searchDidFail:(NSString *)message;
+@end
+
 @interface SearchLibraryNewBookModel : NSObject
 
 @property (nonatomic, strong) NSString *languageType;
@@ -16,6 +21,7 @@
 @property (nonatomic, strong) NSString *date;
 @property (nonatomic, strong) NSString *total;
 @property (nonatomic, strong) NSString *page;
+@property (nonatomic, weak) id <SearchLibraryNewBookDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray<SearchLibraryNewBookBean *> *resultArray;
 
 - (void)search;

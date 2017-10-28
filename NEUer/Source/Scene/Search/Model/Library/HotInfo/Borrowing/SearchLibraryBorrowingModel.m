@@ -16,7 +16,7 @@
 #pragma mark - Public Methods
 - (void)search {
     _resultArray = [NSMutableArray array];
-    _languageType = @"ALL"; // ALL:全部 01:中文文献库 02:外文文献库
+//    _languageType = @"ALL"; // ALL:全部 01:中文文献库 02:外文文献库
 //    _sortType = @"ALL";     // ALL:全部 A:马列主义、毛泽东思想、邓小平理论 B:宗教、哲学 C:社会科学总论 D:政治、法律 E:军事 F:经济 G:文化、科学、教育、体育
                             // H:语言、文字 I:文学 J:艺术 K:历史、地理 N:自然科学总论 O:数理科学与化学 O2:数学 O3:力学 O4:物理学1 O5:物理学2 O6:化学
                             // O7:晶体学 P:天文学、地球科学 Q:生物科学 R:医药、卫生 S:农业科学 T:工业技术 TB:一般工业技术 TD:矿业工程 TE:石油、天然气工业

@@ -79,7 +79,11 @@
 		770968C81F8FABF500219937 /* LibraryBookDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 770968C71F8FABF500219937 /* LibraryBookDetailModel.m */; };
 		774DA4361F919A8800C3AC07 /* LibraryLoginMyInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 774DA4351F919A8800C3AC07 /* LibraryLoginMyInfoModel.m */; };
 		77B809721F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B809711F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m */; };
+		77CB56E91FA06C7900D4AE0C /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77CB56E81FA06C7900D4AE0C /* LibraryViewController.m */; };
 		77E932031F8CE0D100E034F2 /* LibraryLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E932021F8CE0D100E034F2 /* LibraryLoginModel.m */; };
+		77E995191FA2139F00526523 /* LibraryNewBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E995181FA2139F00526523 /* LibraryNewBookViewController.m */; };
+		77E9951C1FA213D800526523 /* LibraryMostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E9951B1FA213D800526523 /* LibraryMostViewController.m */; };
+		77E995211FA2191100526523 /* LibraryBookListComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E995201FA2191100526523 /* LibraryBookListComponent.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -251,8 +255,16 @@
 		774DA4351F919A8800C3AC07 /* LibraryLoginMyInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryLoginMyInfoModel.m; sourceTree = "<group>"; };
 		77B809701F8B05D0007BB0B3 /* SearchLibraryNewBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryNewBookModel.h; sourceTree = "<group>"; };
 		77B809711F8B05D0007BB0B3 /* SearchLibraryNewBookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryNewBookModel.m; sourceTree = "<group>"; };
+		77CB56E71FA06C7900D4AE0C /* LibraryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
+		77CB56E81FA06C7900D4AE0C /* LibraryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
 		77E932011F8CE0D100E034F2 /* LibraryLoginModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryLoginModel.h; sourceTree = "<group>"; };
 		77E932021F8CE0D100E034F2 /* LibraryLoginModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryLoginModel.m; sourceTree = "<group>"; };
+		77E995171FA2139F00526523 /* LibraryNewBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryNewBookViewController.h; sourceTree = "<group>"; };
+		77E995181FA2139F00526523 /* LibraryNewBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryNewBookViewController.m; sourceTree = "<group>"; };
+		77E9951A1FA213D800526523 /* LibraryMostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryMostViewController.h; sourceTree = "<group>"; };
+		77E9951B1FA213D800526523 /* LibraryMostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryMostViewController.m; sourceTree = "<group>"; };
+		77E9951F1FA2191100526523 /* LibraryBookListComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryBookListComponent.h; sourceTree = "<group>"; };
+		77E995201FA2191100526523 /* LibraryBookListComponent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryBookListComponent.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -346,6 +358,7 @@
 		5C0844C01F7B94BB00C69261 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				77CB56E31FA0695E00D4AE0C /* Library */,
 				5CCC66831F8F521900F8F96C /* Aao */,
 				5CCC66721F8D221100F8F96C /* Ecard */,
 				5C0844C11F7B94BB00C69261 /* Home */,
@@ -1255,6 +1268,20 @@
 			path = Borrowing;
 			sourceTree = "<group>";
 		};
+		77CB56E31FA0695E00D4AE0C /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				77E9951E1FA218FD00526523 /* LibraryBookListComponent */,
+				77CB56E71FA06C7900D4AE0C /* LibraryViewController.h */,
+				77CB56E81FA06C7900D4AE0C /* LibraryViewController.m */,
+				77E995171FA2139F00526523 /* LibraryNewBookViewController.h */,
+				77E995181FA2139F00526523 /* LibraryNewBookViewController.m */,
+				77E9951A1FA213D800526523 /* LibraryMostViewController.h */,
+				77E9951B1FA213D800526523 /* LibraryMostViewController.m */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 		77E932001F8CD99B00E034F2 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -1264,6 +1291,15 @@
 				774DA4351F919A8800C3AC07 /* LibraryLoginMyInfoModel.m */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		77E9951E1FA218FD00526523 /* LibraryBookListComponent */ = {
+			isa = PBXGroup;
+			children = (
+				77E9951F1FA2191100526523 /* LibraryBookListComponent.h */,
+				77E995201FA2191100526523 /* LibraryBookListComponent.m */,
+			);
+			path = LibraryBookListComponent;
 			sourceTree = "<group>";
 		};
 		9C23063B159BDC7CF94A2327 /* Pods */ = {
@@ -1528,6 +1564,7 @@
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
+				77E995211FA2191100526523 /* LibraryBookListComponent.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				77E932031F8CE0D100E034F2 /* LibraryLoginModel.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
@@ -1542,6 +1579,7 @@
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CCC66751F8D225A00F8F96C /* EcardViewController.m in Sources */,
+				77E995191FA2139F00526523 /* LibraryNewBookViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */,
@@ -1552,11 +1590,13 @@
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
+				77E9951C1FA213D800526523 /* LibraryMostViewController.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
+				77CB56E91FA06C7900D4AE0C /* LibraryViewController.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,

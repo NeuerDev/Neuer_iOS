@@ -10,6 +10,14 @@
 			<key>host</key>
 			<string>go</string>
 			<key>class</key>
+			<string>LibraryViewController</string>
+			<key>regex</key>
+			<string>/lib</string>
+		</dict>
+		<dict>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
 			<string>TelevisionWallViewController</string>
 			<key>regex</key>
 			<string>/tv</string>
