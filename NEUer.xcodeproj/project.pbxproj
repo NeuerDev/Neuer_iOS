@@ -30,6 +30,7 @@
 		5C507C761F9CBB0B00E857CA /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5C507C751F9CBB0B00E857CA /* tessdata */; };
 		5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */; };
 		5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C507C7D1F9DE61400E857CA /* DataBaseCenter.m */; };
+		5C533E5C1FA420DE00CDD73F /* JHNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C533E5B1FA420DE00CDD73F /* JHNetworkOperation.m */; };
 		5C539D861F7297F500E7BABC /* router.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C539D851F7297F500E7BABC /* router.plist */; };
 		5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7C11F85D96500BBFC28 /* JHURLBaseHandler.m */; };
 		5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DC7CD1F85DD2D00BBFC28 /* NSURL+JHCategory.m */; };
@@ -169,6 +170,8 @@
 		5C507C791F9CCCAA00E857CA /* TesseractCenter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TesseractCenter.mm; sourceTree = "<group>"; };
 		5C507C7C1F9DE61400E857CA /* DataBaseCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBaseCenter.h; sourceTree = "<group>"; };
 		5C507C7D1F9DE61400E857CA /* DataBaseCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBaseCenter.m; sourceTree = "<group>"; };
+		5C533E5A1FA420DE00CDD73F /* JHNetworkOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHNetworkOperation.h; sourceTree = "<group>"; };
+		5C533E5B1FA420DE00CDD73F /* JHNetworkOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHNetworkOperation.m; sourceTree = "<group>"; };
 		5C539D851F7297F500E7BABC /* router.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = router.plist; sourceTree = "<group>"; };
 		5C5DC7C01F85D96500BBFC28 /* JHURLBaseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHURLBaseHandler.h; sourceTree = "<group>"; };
 		5C5DC7C11F85D96500BBFC28 /* JHURLBaseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHURLBaseHandler.m; sourceTree = "<group>"; };
@@ -649,6 +652,15 @@
 			path = DataBase;
 			sourceTree = "<group>";
 		};
+		5C533E591FA420A400CDD73F /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				5C533E5A1FA420DE00CDD73F /* JHNetworkOperation.h */,
+				5C533E5B1FA420DE00CDD73F /* JHNetworkOperation.m */,
+			);
+			path = Operation;
+			sourceTree = "<group>";
+		};
 		5C5DC7BE1F85D96500BBFC28 /* URLHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -968,6 +980,7 @@
 		5C9107711F6D3B2F00FA4270 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				5C533E591FA420A400CDD73F /* Operation */,
 				5C449A701F6E1A4F0002A755 /* Filter */,
 				5C449A641F6E12AC0002A755 /* Request */,
 				5C449A6C1F6E139F0002A755 /* Response */,
@@ -1640,6 +1653,7 @@
 				5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */,
 				5C7B8EDF1F8C646A0088FC60 /* NetworkStatusView.m in Sources */,
 				5C9895E31F822A5B00C2F93E /* User.m in Sources */,
+				5C533E5C1FA420DE00CDD73F /* JHNetworkOperation.m in Sources */,
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
