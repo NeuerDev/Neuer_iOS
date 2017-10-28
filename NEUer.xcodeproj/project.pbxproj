@@ -1382,7 +1382,7 @@
 				TargetAttributes = {
 					5C21B9911F6D1A9100BC2961 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 4CAVM94J89;
+						DevelopmentTeam = 6Y694Y7JV9;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1789,7 +1789,7 @@
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4CAVM94J89;
+				DEVELOPMENT_TEAM = 6Y694Y7JV9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
@@ -1809,7 +1809,7 @@
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4CAVM94J89;
+				DEVELOPMENT_TEAM = 6Y694Y7JV9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;

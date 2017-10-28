@@ -8,7 +8,6 @@
 
 #import "HomeComponentAccessView.h"
 #import "TouchableCollectionViewCell.h"
-#import "SearchLibraryNewBookModel.h"
 
 static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
@@ -62,7 +61,6 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray<NSDictionary *> *cellDataArray;
-@property (nonatomic, strong) SearchLibraryNewBookModel *model;
 @end
 
 @implementation HomeComponentAccessView
@@ -92,7 +90,6 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self.model search];
     NSURL *url = [NSURL URLWithString:self.cellDataArray[indexPath.item][@"url"]];
     [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
 }
@@ -190,12 +187,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     return _cellDataArray;
 }
 
-- (SearchLibraryNewBookModel *)model {
-    if (!_model) {
-        _model = [[SearchLibraryNewBookModel alloc] init];
-    }
-   return _model;
-}
+
 
 
 @end

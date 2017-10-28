@@ -9,6 +9,7 @@
 #import "LibraryViewController.h"
 #import "LibraryNewBookViewController.h"
 #import "LibraryMostViewController.h"
+#import "SearchLibraryResultViewController.h"
 
 #import "SearchListComponent.h"
 
@@ -24,6 +25,7 @@
 @property (nonatomic, strong) SearchListComponent *mostSearchComponent;
 @property (nonatomic, strong) SearchLibraryNewBookModel *newbookModel;
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
 @end
 
@@ -70,7 +72,10 @@
 
 #pragma mark - SearchListComponentDelegate
 - (void)component:(SearchListComponent *)component didSelectedString:(NSString *)string {
-    
+    SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+    [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+    [resultVC searchWithKeyword:string scope:0];
+    [self.navigationController pushViewController:resultVC animated:YES];
 }
 
 - (void)component:(SearchListComponent *)component willPerformAction:(NSString *)action {
@@ -166,6 +171,12 @@
     return _mostModel;
 }
 
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView = [[UIActivityIndicatorView alloc] init];
+    }
+   return _indicatorView;
+}
 
 
 @end

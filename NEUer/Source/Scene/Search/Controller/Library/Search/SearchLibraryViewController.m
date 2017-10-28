@@ -48,6 +48,7 @@
         
     }
     
+    self.borrowingModel.languageType = @"ALL";
     self.borrowingModel.sortType = @"ALL";
     self.borrowingModel.date = @"y";
     [self.borrowingModel search];

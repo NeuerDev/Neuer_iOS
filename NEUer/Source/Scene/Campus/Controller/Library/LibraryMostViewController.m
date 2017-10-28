@@ -7,6 +7,7 @@
 //
 
 #import "LibraryMostViewController.h"
+#import "SearchLibraryResultViewController.h"
 #import "LibraryBookListComponent.h"
 #import "SearchLibraryBorrowingModel.h"
 
@@ -65,7 +66,10 @@
 
 #pragma mark - LibraryBookListComponentDelegate
 - (void)component:(LibraryBookListComponent *)component didSelectedString:(NSString *)string {
-    
+    SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+    [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+    [resultVC searchWithKeyword:string scope:0];
+    [self.navigationController pushViewController:resultVC animated:YES];
 }
 
 #pragma mark - Getter
@@ -90,6 +94,7 @@
         _bookListComponent = [[LibraryBookListComponent alloc] initWithModelType:ComponentModelTypeMost];
         _bookListComponent.viewController = self;
         _bookListComponent.mostModel = self.model;
+        _bookListComponent.delegate = self;
         [self.contentView addSubview:_bookListComponent.view];
     }
    return _bookListComponent;
