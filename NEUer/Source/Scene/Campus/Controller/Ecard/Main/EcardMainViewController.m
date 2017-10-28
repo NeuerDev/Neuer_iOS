@@ -24,16 +24,17 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 @property (nonatomic, strong) EcardModel *ecardModel;
 @property (nonatomic, strong) EcardInfoBean *infoBean;
 
+// 余额 view
 @property (nonatomic, strong) UIView *balanceView;
 @property (nonatomic, strong) UILabel *balanceValueLabel;
 @property (nonatomic, strong) UILabel *balanceInfoLabel;
-
 @property (nonatomic, strong) NSArray<UIButton *> *balanceViewButtons;
 
+// 下拉刷新 充值 以及 tableView
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
 @property (nonatomic, strong) UITableView *consumeHistoryTableView;
 
-@property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
 @end
 
 @implementation EcardMainViewController
@@ -94,59 +95,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Respond Methods
-
-- (void)showMyCard {
-    EcardMyViewController *ecardMyVC = [[EcardMyViewController alloc] init];
-    [ecardMyVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [ecardMyVC setModalPresentationStyle:UIModalPresentationCustom];
-    [self presentViewController:ecardMyVC animated:YES completion:nil];
-}
-
-- (void)showStatistics {
-    
-}
-
-- (void)showBills {
-    
-}
-
-- (void)changePassword {
-    
-}
-
-- (void)reportLost {
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"确认挂失校园卡" message:@"一旦确认挂失，您的校园卡将暂时无法使用，直到您到校园卡服务中心重新激活或补办校园卡" preferredStyle:UIAlertControllerStyleAlert];
-    [alertVC addAction:[UIAlertAction actionWithTitle:@"确认挂失" style:UIAlertActionStyleDestructive handler:nil]];
-    [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self presentViewController:alertVC animated:YES completion:nil];
-    });
-}
-
-- (void)recharge {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"wx2654d9155d70a468://"] options:@{} completionHandler:^(BOOL success) {
-        if (!success) {
-            NSLog(@"assssddd");
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"打开中国建设银行App失败" message:@"请检查是否已正确安装\"中国建设银行App\"" preferredStyle:UIAlertControllerStyleAlert];
-            [alertVC addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self presentViewController:alertVC animated:YES completion:nil];
-            });
-        }
-    }];
-}
-
-- (void)beginRefreshing {
-    NSLog(@"refresh");
-    [self.refreshControl beginRefreshing];
-    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:3.0f];
-}
-
-- (void)endRefreshing {
-    [self.refreshControl endRefreshing];
-}
-
 #pragma mark - Private Methods
 
 - (void)checkLoginState {
@@ -154,12 +102,15 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard] ? : @"";
+    
+    // 如果用户、密码都存在 则进行登录（查询信息）操作
     if (account.length>0 && password.length>0) {
         [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
             if (success) {
                 NSLog(@"success query info");
                 ws.infoBean = ws.ecardModel.info;
                 
+                // 查询今日消费记录
                 [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
                     if (success) {
                         [ws.consumeHistoryTableView reloadData];
@@ -261,6 +212,61 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
             [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
         }
     }];
+}
+
+
+
+#pragma mark - Respond Methods
+
+- (void)showMyCard {
+    EcardMyViewController *ecardMyVC = [[EcardMyViewController alloc] init];
+    [ecardMyVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [ecardMyVC setModalPresentationStyle:UIModalPresentationCustom];
+    [self presentViewController:ecardMyVC animated:YES completion:nil];
+}
+
+- (void)showStatistics {
+    
+}
+
+- (void)showBills {
+    
+}
+
+- (void)changePassword {
+    
+}
+
+- (void)reportLost {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"确认挂失校园卡" message:@"一旦确认挂失，您的校园卡将暂时无法使用，直到您到校园卡服务中心重新激活或补办校园卡" preferredStyle:UIAlertControllerStyleAlert];
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"确认挂失" style:UIAlertActionStyleDestructive handler:nil]];
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alertVC animated:YES completion:nil];
+    });
+}
+
+- (void)recharge {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"wx2654d9155d70a468://"] options:@{} completionHandler:^(BOOL success) {
+        if (!success) {
+            NSLog(@"assssddd");
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"打开中国建设银行App失败" message:@"请检查是否已正确安装\"中国建设银行App\"" preferredStyle:UIAlertControllerStyleAlert];
+            [alertVC addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:alertVC animated:YES completion:nil];
+            });
+        }
+    }];
+}
+
+- (void)beginRefreshing {
+    NSLog(@"refresh");
+    [self.refreshControl beginRefreshing];
+    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:3.0f];
+}
+
+- (void)endRefreshing {
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - UITableViewDelegate
@@ -464,4 +470,5 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     
     return _balanceViewButtons;
 }
+
 @end
