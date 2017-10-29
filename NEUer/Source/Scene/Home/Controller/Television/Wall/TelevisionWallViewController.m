@@ -40,13 +40,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.backgroundColor = [UIColor blackColor];
-        self.contentView.layer.cornerRadius = 16;
+        self.contentView.layer.cornerRadius = 8;
         self.contentView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
         self.contentView.layer.shadowOpacity = 0.5;
         self.contentView.layer.shadowRadius = 4;
-        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
+        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)].CGPath;
         
         [self.contentView addSubview:self.imageView];
         [self.contentView addSubview:self.titleLabel];
@@ -109,8 +108,8 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     self.titleLabel.attributedText = titleString;
     self.viewerCountLabel.attributedText = viewerCountString;
     
-    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
     [self layoutIfNeeded];
+    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
 }
 
 #pragma mark - Getter
