@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class User;
+#import "User.h"
 
 @interface UserCenter : NSObject
 
@@ -22,6 +22,10 @@
  */
 + (instancetype)defaultCenter;
 
+/**
+ 初始化用户中心
+ */
+- (void)setup;
 
 /**
  返回所有登录过的用户
@@ -60,5 +64,7 @@
 - (void)connectWithWeibo:(NSString *)weiboId;
 
 - (void)connectWithQQ:(NSString *)qqId;
+
+- (void)setAccount:(NSString *)account password:(NSString *)password forKeyType:(UserKeyType)keyType;
 
 @end

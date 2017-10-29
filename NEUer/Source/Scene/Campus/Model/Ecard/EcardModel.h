@@ -24,21 +24,28 @@ typedef NS_ENUM(NSUInteger, EcardInfoBalanceLevel) {
 
 @interface EcardInfoBean : NSObject
 
+// 通用属性
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *number;
-@property (nonatomic, strong) NSString *state;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *balance;
-@property (nonatomic, strong) NSString *sex;
-@property (nonatomic, strong) NSString *allowance;
-@property (nonatomic, strong) NSString *status;
+@property (nonatomic, assign) NSInteger sex;    // 0 未知 1 男 2 女
 @property (nonatomic, strong) NSString *campus;
 @property (nonatomic, strong) NSString *major;
-@property (nonatomic, strong) NSString *lastUpdate;
+
+// 校园卡特有属性
+@property (nonatomic, strong) NSString *state;
+@property (nonatomic, strong) NSString *balance;
+@property (nonatomic, strong) NSString *allowance;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, assign) NSTimeInterval lastUpdateTime;
 @property (nonatomic, assign) BOOL enable;                          // 是否正常卡 否为挂失
 @property (nonatomic, assign) EcardInfoBalanceLevel balanceLevel;   // 余额级别 充足、偏低、警报
 
 + (EcardInfoBean *)infoWithUser:(User *)user;
+
+- (NSString *)lastUpdate;
+
+- (void)commitUpdates;
 
 @end
 

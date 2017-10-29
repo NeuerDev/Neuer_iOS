@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "JHURLRouter.h"
 #import "TesseractCenter.h"
+#import "DataBaseCenter.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) JHURLRouter *router;
@@ -30,11 +31,17 @@
     [[JPFPSStatus sharedInstance] open];
 #endif
     
+    // 异步初始化耗时的任务
+    [[TesseractCenter defaultCenter] setup];
+    
+    // 初始化数据库
+    [[DataBaseCenter defaultCenter] setup];
+    
+    // 初始化用户系统
+    [[UserCenter defaultCenter] setup];
+    
     // 开始监听网络
     [[GatewayCenter defaultCenter] startMonitoring];
-    
-    // 初始化耗时的任务
-    [[TesseractCenter defaultCenter] setup];
     
     // 配置路由表
     [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];

@@ -24,16 +24,17 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 @property (nonatomic, strong) EcardModel *ecardModel;
 @property (nonatomic, strong) EcardInfoBean *infoBean;
 
+// 余额 view
 @property (nonatomic, strong) UIView *balanceView;
 @property (nonatomic, strong) UILabel *balanceValueLabel;
 @property (nonatomic, strong) UILabel *balanceInfoLabel;
-
 @property (nonatomic, strong) NSArray<UIButton *> *balanceViewButtons;
 
+// 下拉刷新 充值 以及 tableView
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
 @property (nonatomic, strong) UITableView *consumeHistoryTableView;
 
-@property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
 @end
 
 @implementation EcardMainViewController
@@ -58,12 +59,12 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
     self.consumeHistoryTableView.refreshControl = self.refreshControl;
     [self initConstraints];
-    [self setMainColor:[UIColor colorWithHexStr:@"#64B74E"] animated:NO];
+    [self setInfoBean:[EcardInfoBean infoWithUser:[UserCenter defaultCenter].currentUser]];
+    [self checkLoginState];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    [self showLoginViewController];
 }
 
 - (void)initConstraints {
@@ -93,6 +94,127 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Private Methods
+
+- (void)checkLoginState {
+    WS(ws);
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard] ? : @"";
+    
+    // 如果用户、密码都存在 则进行登录（查询信息）操作
+    if (account.length>0 && password.length>0) {
+        [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"success query info");
+                ws.infoBean = ws.ecardModel.info;
+                
+                // 查询今日消费记录
+                [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                    if (success) {
+                        [ws.consumeHistoryTableView reloadData];
+                    }
+                }];
+            } else {
+                [ws handleError:error];
+            }
+        }];
+    } else {
+        [ws showLoginBox];
+    }
+}
+
+- (void)handleError:(NSError *)error {
+    switch (error.code) {
+        case JHErrorTypeUnknown:
+            
+            break;
+        case JHErrorTypeRequireLogin:
+            [self showLoginBox];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)showLoginBox {
+    WS(ws);
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard]  ? : @"";
+    LoginViewController *signinVC = [[LoginViewController alloc] init];
+    signinVC.modalPresentationStyle = UIModalPresentationCustom;
+    signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [signinVC setupWithTitle:@"登录校卡中心"
+                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
+                    contents:@{
+                               @(LoginInputTypeAccount):account,
+                               @(LoginInputTypePassword):password,
+                               }
+                 resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+                     if (complete) {
+                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
+                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
+                         NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
+                         [ws loginWithUser:userName password:password verifyCode:verifyCode];
+                     } else {
+                         [ws.navigationController popViewControllerAnimated:YES];
+                     }
+                 }];
+    
+    __weak LoginViewController *weakSigninVC = signinVC;
+    signinVC.changeVerifyImageBlock = ^{
+        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+            weakSigninVC.verifyImage = verifyImage;
+        }];
+    };
+    [self presentViewController:signinVC animated:YES completion:^{
+        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+            weakSigninVC.verifyImage = verifyImage;
+        }];
+    }];
+}
+
+- (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
+    WS(ws);
+    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
+        if (success) {
+            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeCard];
+            
+            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"success query info");
+                    ws.infoBean = ws.ecardModel.info;
+                }
+            }];
+            
+            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                if (success) {
+                    [ws.consumeHistoryTableView reloadData];
+                }
+            }];
+        }
+    }];
+}
+
+- (void)setMainColor:(UIColor *)color animated:(BOOL)animated {
+    NSTimeInterval interval = animated ? 0.3f : 0;
+    
+    [UIView animateWithDuration:interval animations:^{
+        _balanceView.layer.borderColor = color.CGColor;
+        _balanceView.backgroundColor = [color colorWithAlphaComponent:0.1];
+        _balanceValueLabel.textColor = color;
+        _balanceInfoLabel.textColor = color;
+        for (UIButton *button in _balanceViewButtons) {
+            [button setTitleColor:color forState:UIControlStateNormal];
+            [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+        }
+    }];
+}
+
+
 
 #pragma mark - Respond Methods
 
@@ -147,75 +269,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [self.refreshControl endRefreshing];
 }
 
-#pragma mark - Private Methods
-
-- (void)showLoginViewController {
-    WS(ws);
-    LoginViewController *signinVC = [[LoginViewController alloc] init];
-    signinVC.modalPresentationStyle = UIModalPresentationCustom;
-    signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [signinVC setupWithTitle:@"登录校卡中心"
-                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
-                    contents:@{@(LoginInputTypeAccount):@"20144786"}
-                 resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
-        if (complete) {
-            NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
-            NSString *password = result[@(LoginInputTypePassword)]?:@"";
-            NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
-            [ws loginWithUser:userName password:password verifyCode:verifyCode];
-        } else {
-            [ws.navigationController popViewControllerAnimated:YES];
-        }
-    }];
-    
-    __weak LoginViewController *weakSigninVC = signinVC;
-    signinVC.changeVerifyImageBlock = ^{
-        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-            weakSigninVC.verifyImage = verifyImage;
-        }];
-    };
-    [self presentViewController:signinVC animated:YES completion:^{
-        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-            weakSigninVC.verifyImage = verifyImage;
-        }];
-    }];
-}
-
-- (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
-    WS(ws);
-    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
-        if (success) {
-            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-                if (success) {
-                    NSLog(@"success query info");
-                    ws.infoBean = ws.ecardModel.info;
-                }
-            }];
-            
-            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
-                if (success) {
-                    [ws.consumeHistoryTableView reloadData];
-                }
-            }];
-        }
-    }];
-}
-
-- (void)setMainColor:(UIColor *)color animated:(BOOL)animated {
-    NSTimeInterval interval = animated ? 0.3f : 0;
-    
-    [UIView animateWithDuration:interval animations:^{
-        _balanceView.layer.borderColor = color.CGColor;
-        _balanceView.backgroundColor = [color colorWithAlphaComponent:0.1];
-        _balanceValueLabel.textColor = color;
-        _balanceInfoLabel.textColor = color;
-        for (UIButton *button in _balanceViewButtons) {
-            [button setTitleColor:color forState:UIControlStateNormal];
-            [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
-        }
-    }];
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -262,7 +315,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [headerView setPerformActionBlock:^(NSInteger section) {
         
     }];
-    //    [headerView.actionButton setTitle:@"历史账单" forState:UIControlStateNormal];
     [headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
             case 0:
@@ -418,4 +470,5 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     
     return _balanceViewButtons;
 }
+
 @end

@@ -28,6 +28,7 @@
 
 #pragma mark - Centers
 
+#import "DataBaseCenter.h"
 #import "GatewayCenter.h"
 #import "EcardCenter.h"
 #import "UserCenter.h"
@@ -51,5 +52,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <hpple/TFHpple.h>
 #import <DKNightVersion/DKNightVersion.h>
+#import <FMDB/FMDB.h>
 
 #endif /* PrefixHeader_pch */

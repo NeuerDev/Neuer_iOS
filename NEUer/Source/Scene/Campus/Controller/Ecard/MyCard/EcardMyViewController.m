@@ -60,7 +60,7 @@
     NSString *string = [NSString stringWithFormat:@"姓   名: %@\n学   号: %@\n性   别: %@\n学   院: %@\n专   业: %@",
                         self.infoBean.name,
                         self.infoBean.number,
-                        self.infoBean.sex,
+                        self.infoBean.sex == 1 ? @"男" : self.infoBean.sex == 2 ? @"女" : @"未知",
                         self.infoBean.campus,
                         self.infoBean.major];
     NSDictionary<NSAttributedStringKey, id> *attributes = @{NSTextEffectAttributeName:NSTextEffectLetterpressStyle,NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]};
