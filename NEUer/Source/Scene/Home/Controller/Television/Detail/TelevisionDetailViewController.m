@@ -208,6 +208,8 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 @end
 
 
+static NSString *dateBtnTitle = @"今天";
+static NSString *sourceBtnTitle = @"清华大学";
 
 @interface TelevisionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TelevisionChannelModelDelegate, TelevisionPlayerListCellDelegate>
 
@@ -254,6 +256,8 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.playerView.player pause];
+    dateBtnTitle = @"今天";
+    sourceBtnTitle = @"清华大学";
 }
 
 #pragma mark - Init
@@ -350,14 +354,6 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
     _headerView.section = section;
     
     __weak typeof(self) weakSelf = self;
-    static NSString *dateBtnTitle = @"今天";
-    static NSString *sourceBtnTitle = @"清华大学";
-    
-    if (section == 1) {
-        [_headerView.actionButton setTitle:dateBtnTitle forState:UIControlStateNormal];
-    } else {
-        [_headerView.actionButton setTitle:sourceBtnTitle forState:UIControlStateNormal];
-    }
 
     [self.headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
