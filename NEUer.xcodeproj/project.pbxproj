@@ -1902,6 +1902,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = NEUerTodayExtension/NEUerTodayExtension.entitlements;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NEUerTodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer.NEUerTodayExtension;
@@ -1916,6 +1917,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = NEUerTodayExtension/NEUerTodayExtension.entitlements;
 				DEVELOPMENT_TEAM = 6Y694Y7JV9;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NEUerTodayExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer.NEUerTodayExtension;

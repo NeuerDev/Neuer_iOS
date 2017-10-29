@@ -227,16 +227,9 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 //    self.searchViewController.active = NO;
-//    TelevisionDetailViewController *detailVC = [[TelevisionDetailViewController alloc] init];
-//    detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
-//    [self.navigationController pushViewController:detailVC animated:YES];
-    AVPlayerViewController *playerVC = [[AVPlayerViewController alloc] init];
-    playerVC.updatesNowPlayingInfoCenter = NO;
-    playerVC.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:self.wallModel.channelArray[indexPath.item].videoUrlArray[0]]];
-    [playerVC.player play];
-    playerVC.videoGravity = AVLayerVideoGravityResizeAspect;
-    
-    [self presentViewController:playerVC animated:YES completion:nil];
+    TelevisionDetailViewController *detailVC = [[TelevisionDetailViewController alloc] init];
+    detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource

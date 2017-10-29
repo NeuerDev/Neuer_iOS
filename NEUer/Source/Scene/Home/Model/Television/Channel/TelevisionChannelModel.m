@@ -9,6 +9,7 @@
 #import "TelevisionChannelModel.h"
 #import <hpple/TFHpple.h>
 #import "LYTool.h"
+#import "TelevisionWallModel.h"
 
 @interface TelevisionChannelModel () <JHRequestDelegate>
 
@@ -31,7 +32,8 @@
 
 - (void)fecthTelevisionChannelDataWithVideoUrl:(NSString *)videoUrl {
 
-    _videoSource = [LYTool subStringFromString:videoUrl startString:@"hls/" endString:@".m3u8"];
+    _videoSource = videoUrl;
+//    _videoSource = [LYTool subStringFromString:videoUrl startString:@"hls/" endString:@".m3u8"];
     NSString *urlStr = [NSString stringWithFormat:@"http://hdtv.neu6.edu.cn/newplayer?p=%@", self.videoSource];
     JHRequest *request = [[JHRequest alloc] initWithUrl:[NSURL URLWithString:urlStr]];
     request.delegate = self;
@@ -106,12 +108,23 @@
                         TFHppleElement *urlElement = [element firstChildWithTagName:@"a"];
 //                    转化成可以播放的视频地址
 //                        切换视频源
-                        NSArray *videoUrlArray = [[urlElement objectForKey:@"href"] componentsSeparatedByString:@"-"];
-                        NSMutableArray *videoMutableArray = [NSMutableArray arrayWithArray:videoUrlArray];
+//                        http://media2.neu6.edu.cn/review/program-1509120000-1509125400-hunanhd.m3u8
+//                        http://hdtv.neu6.edu.cn/player-review?timeline=1509036480-1509039180-cctv1hd
+                        
+//                        先去掉等号前面的字符串
+                        NSArray *videoUrlArray = [[urlElement objectForKey:@"href"] componentsSeparatedByString:@"="];
+                        NSString *remainingStr = [videoUrlArray lastObject];
+                        
+//                        再将等号后面的字符串分割
+                        NSArray *remainUrlArray = [remainingStr componentsSeparatedByString:@"-"];
+                        NSMutableArray *videoMutableArray = [NSMutableArray arrayWithArray:remainUrlArray];
+                        
+//                        去掉最后一个元素：即视频类型，再添加从外界传入的视频源类型
                         [videoMutableArray removeLastObject];
                         [videoMutableArray addObject:self.videoSource];
                         NSString *videoRealUrl = [videoMutableArray componentsJoinedByString:@"-"];
-                        NSString *urlStr = [@"http://hdtv.neu6.edu.cn/" stringByAppendingString:videoRealUrl];
+                        NSString *tempUrlStr = [@"http://media2.neu6.edu.cn/review/program-" stringByAppendingString:videoRealUrl];
+                        NSString *urlStr = [tempUrlStr stringByAppendingString:@".m3u8"];
                         
                         bean.videoUrl = urlStr;
                         
@@ -145,6 +158,24 @@
         [listArr removeAllObjects];
     }
     _TelevisionChannelDic = listDic;
+}
+
+- (NSArray *)TelevisionChannelModelSelectionTypeArray {
+
+    NSMutableArray *keyArr = [NSMutableArray arrayWithCapacity:0];
+    for (int i = 0; i < 8; ++i) {
+        NSString *selectStr = [NSString stringWithFormat:@"%d", i];
+        NSString *dateStr = [LYTool dateOfTimeIntervalFromToday:i];
+        NSDictionary *tempDic = @{
+                                  selectStr : dateStr
+                                  };
+        [keyArr addObject:tempDic];
+    }
+    return keyArr;
+}
+
+- (NSString *)sourceStr {
+    return self.videoSource;
 }
 
 @end

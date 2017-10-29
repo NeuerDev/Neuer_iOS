@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, TelevisionChannelModelSelectionType) {
 
 @property (nonatomic, weak) id<TelevisionChannelModelDelegate> delegate;
 @property (nonatomic, assign) TelevisionChannelModelSelectionType selectedType;
+@property (nonatomic, strong) NSString *sourceStr; // 当前正在播放的视频源
 
 /**
  @param videoUrl 播放源地址
@@ -47,6 +48,11 @@ typedef NS_ENUM(NSInteger, TelevisionChannelModelSelectionType) {
  获取某一天播放过的节目单
  */
 - (NSArray *)TelevisionChannelSelectionDayArrayWithType:(TelevisionChannelModelSelectionType)type;
+
+/**
+ 获取播放天数类型数组
+ */
+- (NSArray *)TelevisionChannelModelSelectionTypeArray;
 
 @end
 
