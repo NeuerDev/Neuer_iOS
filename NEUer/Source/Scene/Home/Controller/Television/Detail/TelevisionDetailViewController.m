@@ -14,85 +14,121 @@
 #import "TelevisionChannelModel.h"
 #import "CustomSectionHeaderFooterView.h"
 
+typedef void(^DidAVPlayerControllerShowBlock)(void);
 @interface TelevisionPlayerView : UIView
 
-@property (nonatomic, strong) UIView *containerView;
-//@property (nonatomic, strong) UIButton *playBtn;
+@property (nonatomic, strong) UIImageView *imgView;
+@property (nonatomic, strong) UIButton *playBtn;
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, copy) DidAVPlayerControllerShowBlock didAVPlayerControllerShowBlock;
 
-@property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) AVPlayer *player;
+@property (nonatomic, strong) NSString *url;
 
-- (instancetype)initWithUrl:(NSURL *)url;
+- (void)setDidAVPlayerControllerShowBlock:(DidAVPlayerControllerShowBlock)didAVPlayerControllerShowBlock;
+- (instancetype)initWithImgUrl:(NSString *)preImgUrl;
 
 @end
 
 @implementation TelevisionPlayerView
-{
-    AVPlayerLayer *_playerLayer;
-    BOOL _isPlaying;
-}
+
 #pragma mark - Init
-- (instancetype)initWithUrl:(NSURL *)url {
+- (instancetype)initWithImgUrl:(NSString *)preImgUrl {
     if (self = [super init]) {
-        self.url = url;
-        self.backgroundColor = [UIColor clearColor];
-        _isPlaying = YES;
+        NSInteger timestamp = [[[NSDate alloc] init] timeIntervalSince1970]/60;
+        self.url = [NSString stringWithFormat:@"%@?time=%ld", preImgUrl, timestamp];
+        [self initData];
+        [self initConstaints];
     }
     
     return self;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
+- (void)initData {
     
-    self.containerView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    _playerLayer.frame = CGRectMake(0, 0, self.containerView.frame.size.width, self.containerView.frame.size.height);
-//    _playBtn.frame = CGRectMake(0, 0, 80, 80);
-//    [self.containerView bringSubviewToFront:self.playBtn];
+    self.backgroundColor = [UIColor clearColor];
+
 }
 
-#pragma mark - Response
+- (void)initConstaints {
+    
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+    [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.contentView);
+    }];
+    [self.playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.imgView);
+        make.height.and.width.equalTo(@60);
+    }];
+    [self.imgView bringSubviewToFront:self.playBtn];
+    [self layoutIfNeeded];
+    
+}
 
+#pragma mark - ResponseMethod
 - (void)didClickedPlayButton {
-    if (_isPlaying) {
-        [self.player pause];
-    } else {
-        [self.player play];
+    if (_didAVPlayerControllerShowBlock) {
+        _didAVPlayerControllerShowBlock();
     }
 }
 
 #pragma mark - GETTER
 
-- (UIView *)containerView {
-    if (!_containerView) {
-        _containerView = [[UIView alloc] init];
-        _containerView.backgroundColor = [UIColor clearColor];
-        _containerView.userInteractionEnabled = YES;
-        [self addSubview:_containerView];
+- (UIImageView *)imgView {
+    if (!_imgView) {
+        _imgView = [[UIImageView alloc] init];
+        _imgView.backgroundColor = [UIColor clearColor];
+        _imgView.userInteractionEnabled = YES;
+        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+        _imgView.hidden = NO;
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSURL *url = [NSURL URLWithString:self.url];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            UIImage *img = [UIImage imageWithData:data];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_imgView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
+                _imgView.image = img;
+            });
+        });
+
+        [self.contentView addSubview:_imgView];
     }
-    return _containerView;
+    return _imgView;
 }
 
-- (AVPlayer *)player {
-    if (!_player) {
-        AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:self.url];
-        _player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-        _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        _playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-        [self.containerView.layer addSublayer:_playerLayer];
+- (UIView *)contentView {
+    if (!_contentView) {
+        _contentView = [[UIView alloc] init];
+        _contentView.contentMode = UIViewContentModeScaleAspectFit;
+        _contentView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+        _contentView.layer.shadowOffset = CGSizeMake(0, 4);
+        _contentView.layer.shadowOpacity = 0.5;
+        _contentView.backgroundColor = [UIColor blackColor];
+        _contentView.layer.shadowRadius = 4;
+        _contentView.layer.cornerRadius = 16;
+        _contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
+
+        [self addSubview:_contentView];
     }
-    return _player;
+    return _contentView;
 }
 
-//- (UIButton *)playBtn {
-//    if (!_playBtn) {
-//        _playBtn = [[UIButton alloc] init];
-//        [_playBtn addTarget:self action:@selector(didClickedPlayButton) forControlEvents:UIControlEventTouchUpInside];
-//        _playBtn.backgroundColor = [UIColor greenColor];
-//        [self.containerView addSubview:_playBtn];
-//    }
-//    return _playBtn;
-//}
+- (UIButton *)playBtn {
+    if (!_playBtn) {
+        _playBtn = [[UIButton alloc] init];
+        [_playBtn addTarget:self action:@selector(didClickedPlayButton) forControlEvents:UIControlEventTouchUpInside];
+        [_playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+        [self.imgView addSubview:_playBtn];
+    }
+    return _playBtn;
+}
+
+#pragma mark - SETTER
+- (void)setDidAVPlayerControllerShowBlock:(DidAVPlayerControllerShowBlock)didAVPlayerControllerShowBlock {
+    _didAVPlayerControllerShowBlock = didAVPlayerControllerShowBlock;
+}
 
 @end
 
@@ -171,7 +207,7 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 - (UILabel *)nameLb {
     if (!_nameLb) {
         _nameLb = [[UILabel alloc] init];
-        _nameLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
+        _nameLb.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _nameLb.textAlignment = NSTextAlignmentLeft;
         _nameLb.numberOfLines = 0;
         [self.contentView addSubview:_nameLb];
@@ -192,12 +228,15 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 - (UIButton *)backToViewBtn {
     if (!_backToViewBtn) {
         _backToViewBtn = [[UIButton alloc] init];
-        _backToViewBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
         _backToViewBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
         _backToViewBtn.contentEdgeInsets = UIEdgeInsetsMake(8, 12, 8, 12);
         [_backToViewBtn addTarget:self action:@selector(didSelectBackToViewBtnWithTVShow) forControlEvents:UIControlEventTouchUpInside];
         [_backToViewBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
         [_backToViewBtn setTitle:@"回看" forState:UIControlStateNormal];
+        _backToViewBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _backToViewBtn.layer.cornerRadius = 16;
+        _backToViewBtn.layer.borderColor = [UIColor beautyBlue].CGColor;
+        _backToViewBtn.backgroundColor = [UIColor groupTableViewBackgroundColor];
         _backToViewBtn.layer.cornerRadius = 8;
         _backToViewBtn.alpha = 0.8;
         [self.contentView addSubview:_backToViewBtn];
@@ -210,15 +249,15 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 
 static NSString *dateBtnTitle = @"今天";
 static NSString *sourceBtnTitle = @"清华大学";
+static TelevisionChannelModelSelectionType selectionType = TelevisionChannelModelSelectionTypeToday;
 
 @interface TelevisionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TelevisionChannelModelDelegate, TelevisionPlayerListCellDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) TelevisionPlayerView *playerView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) CustomSectionHeaderFooterView *headerView;
 @property (nonatomic, strong) UIBarButtonItem *collectBarButtonItem;
-@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @property (nonatomic, strong) TelevisionChannelModel *channelDetailModel;
 @property (nonatomic, strong) NSMutableArray <TelevisionChannelScheduleBean *> *beanArray; // 所有视频信息
@@ -229,69 +268,43 @@ static NSString *sourceBtnTitle = @"清华大学";
 @end
 
 @implementation TelevisionDetailViewController
-{
-    BOOL _isPlaying;
-}
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [self initData];
-    [self initConstraints];
     [self.tableView reloadData];
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    
-    [self.indicatorView startAnimating];
-    [self.playerView.player play];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.indicatorView stopAnimating];
-        });
-    });
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
-    [self.playerView.player pause];
     dateBtnTitle = @"今天";
     sourceBtnTitle = @"清华大学";
+    selectionType = TelevisionChannelModelSelectionTypeToday;
 }
 
 #pragma mark - Init
 
 - (void)initData {
     self.view.backgroundColor = [UIColor whiteColor];
-    _isPlaying = YES;
     self.title = _channelBean.channelName;
     [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:self.channelBean.sourceArray[0]];
     _beanArray = [NSMutableArray arrayWithCapacity:0];
     self.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
-
-}
-
-
-- (void)initConstraints {
+    self.tableView.refreshControl = self.refreshControl;
     
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.left.and.bottom.and.right.equalTo(self.view);
-    }];
-    
-    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.width.mas_equalTo(SCREEN_WIDTH_ACTUAL);
-        make.height.mas_equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
-    }];
-    [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.playerView);
-    }];
-
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.playerView.mas_bottom);
-        make.left.and.bottom.and.right.equalTo(self.scrollView);
+    WS(ws);
+    [self.playerView setDidAVPlayerControllerShowBlock:^{
+        NSURL *url = [NSURL URLWithString:ws.sourceStr];
+        AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:url];
+        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        playerViewController.updatesNowPlayingInfoCenter = NO;;
+        playerViewController.player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+        [playerViewController.player play];
+        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+        
+        [ws presentViewController:playerViewController animated:YES completion:nil];
     }];
 }
 
@@ -322,6 +335,8 @@ static NSString *sourceBtnTitle = @"清华大学";
 - (void)fetchTelevisionChannelModelSuccess {
     _beanArray = [self.channelDetailModel TelevisionChannelSelectionDayArrayWithType:TelevisionChannelModelSelectionTypeToday].copy;
     self.playingArray = _beanArray;
+    dateBtnTitle = @"今天";
+    selectionType = TelevisionChannelModelSelectionTypeToday;
     [self.tableView reloadData];
 }
 
@@ -382,6 +397,7 @@ static NSString *sourceBtnTitle = @"清华大学";
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [weakSelf.headerView.actionButton setTitle:dateStr forState:UIControlStateNormal];
                             dateBtnTitle = dateStr;
+                            selectionType = dateType;
                             [weakSelf.tableView reloadData];
                         });
                     }]];
@@ -453,6 +469,12 @@ static NSString *sourceBtnTitle = @"清华大学";
         [cell setUpWithTelevisionChannelScheduleBean:self.beanArray[indexPath.row]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
+        if (indexPath.row == self.beanArray.count - 1 && selectionType == TelevisionChannelModelSelectionTypeToday) {
+            [cell.backToViewBtn setTitle:@"直播中..." forState:UIControlStateNormal];
+            cell.scheduleBean.videoUrl = self.sourceStr;
+        } else {
+            [cell.backToViewBtn setTitle:@"回看" forState:UIControlStateNormal];
+        }
         return cell;
     }
 }
@@ -483,32 +505,16 @@ static NSString *sourceBtnTitle = @"清华大学";
     
 }
 
-- (void)didSingleClickedPlayerView {
-    if (_isPlaying) {
-        [self.playerView.player pause];
-        _isPlaying = NO;
-    } else {
-        [self.playerView.player play];
-        _isPlaying = YES;
-    }
+- (void)beginRefreshing {
+    [self.refreshControl beginRefreshing];
+    [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:self.channelDetailModel.sourceStr];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self endRefreshing];
+    });
 }
 
-- (void)didDoubleClickedPlayerView {
-    
-    if (_isPlaying) {
-        _isPlaying = NO;
-        [self.playerView.player pause];
-    }
-    
-    NSURL *url = [NSURL URLWithString:self.sourceStr];
-    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:url];
-    AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-    playerViewController.updatesNowPlayingInfoCenter = NO;;
-    playerViewController.player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-    [playerViewController.player play];
-    playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-    
-    [self presentViewController:playerViewController animated:YES completion:nil];
+- (void)endRefreshing {
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - Override Methods
@@ -529,39 +535,32 @@ static NSString *sourceBtnTitle = @"清华大学";
 
 - (TelevisionPlayerView *)playerView {
     if (!_playerView) {
-        _playerView = [[TelevisionPlayerView alloc] initWithUrl:[NSURL URLWithString:self.sourceStr]];
-//        点击暂停
-        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSingleClickedPlayerView)];
-//        长按进入下一页播放
-         UITapGestureRecognizer *doubleGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didDoubleClickedPlayerView)];
-        doubleGestureRecognizer.numberOfTapsRequired = 2;
-        [_playerView addGestureRecognizer:doubleGestureRecognizer];
-        [_playerView addGestureRecognizer:gestureRecognizer];
-        [self.view addSubview:_playerView];
+        _playerView = [[TelevisionPlayerView alloc] initWithImgUrl:self.channelBean.previewImageUrl];
     }
 
     return _playerView;
 }
 
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        [self.view addSubview:_scrollView];
-    }
-    
-    return _scrollView;
-}
-
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.estimatedRowHeight = kTelevisionDetailListCellHeight;
         _tableView.rowHeight = UITableViewAutomaticDimension;
-        _tableView.separatorColor = [UIColor clearColor];
         [_tableView setShowsVerticalScrollIndicator:NO];
         _tableView.backgroundColor = [UIColor clearColor];
+        
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL * 0.6)];
+        [headerView addSubview:self.playerView];
+        [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(headerView);
+            make.width.mas_equalTo(SCREEN_WIDTH_ACTUAL - 32);
+            make.height.mas_equalTo(self.playerView.mas_width).multipliedBy(9.0f/16.0f);
+        }];
+        [headerView layoutIfNeeded];
+        _tableView.tableHeaderView = headerView;
+        _tableView.tableFooterView = [[UIView alloc] init];
         [self.view addSubview:_tableView];
     }
     return _tableView;
@@ -582,12 +581,12 @@ static NSString *sourceBtnTitle = @"清华大学";
     return _collectBarButtonItem;
 }
 
-- (UIActivityIndicatorView *)indicatorView {
-    if (!_indicatorView) {
-        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [self.playerView addSubview:_indicatorView];
+- (UIRefreshControl *)refreshControl {
+    if (!_refreshControl) {
+        _refreshControl = [[UIRefreshControl alloc] init];
+        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
     }
-    return _indicatorView;
+    return _refreshControl;
 }
 
 - (NSArray *)sourceArr {
