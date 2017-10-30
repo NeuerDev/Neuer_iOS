@@ -89,6 +89,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
             return;
         }
         
+        if (image.size.height / image.size.width - 9.0f / 16.0f < 0.1) {
+            weakSelf.imageView.backgroundColor = [UIColor clearColor];
+        } else {
+            weakSelf.imageView.backgroundColor = [UIColor blackColor];
+        }
+        
         if (cacheType==SDImageCacheTypeNone || !weakSelf.channelBean.mainColor) {
             weakSelf.channelBean.mainColor = [image mainColor].compressRangeColor;
             weakSelf.contentView.layer.shadowColor = weakSelf.channelBean.mainColor.CGColor;
