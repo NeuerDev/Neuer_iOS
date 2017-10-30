@@ -53,5 +53,7 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 @property (nonatomic, strong) NSString *quality;
 @property (nonatomic, assign) NSInteger viewerCount;
 @property (nonatomic, strong) UIColor *mainColor;
-@property (nonatomic, strong) NSArray<NSString *> *sourceArray;
+@property (nonatomic, strong) NSArray<NSDictionary *> *sourceArray;
+@property (nonatomic, strong) NSDictionary *choosenSource; // 被用户选中的播放源
+@property (nonatomic, strong) NSString *choosenDate;
 @end

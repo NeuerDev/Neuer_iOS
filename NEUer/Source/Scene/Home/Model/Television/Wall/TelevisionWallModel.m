@@ -196,17 +196,51 @@
 
 @implementation TelevisionWallChannelBean
 
-- (NSArray<NSString *> *)sourceArray {
+- (NSArray<NSDictionary *> *)sourceArray {
     if (!_sourceArray) {
         NSMutableArray *sourceArray = @[].mutableCopy;
+        int i = 1;
+        NSDictionary *tempDic = [[NSDictionary alloc] init];
         for (NSString *urlStr in _videoUrlArray) {
             NSString *sourceStr = [[urlStr stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
-            [sourceArray addObject:sourceStr];
+            if ([sourceStr rangeOfString:@"hls"].location != NSNotFound) {
+                tempDic = @{
+                            [NSString stringWithFormat:@"测试%d", i] : sourceStr
+                            };
+                i++;
+                    
+            } else if ([sourceStr rangeOfString:@"jlu_"].location != NSNotFound) {
+                tempDic = @{
+                            @"吉林大学" : sourceStr
+                            };
+            } else {
+                tempDic = @{
+                            @"清华大学" : sourceStr
+                            };
+            }
+                
+            [sourceArray addObject:tempDic];
         }
+        
         _sourceArray = sourceArray.copy;
     }
     
     return _sourceArray;
+}
+
+//当用户没有设置choosenSource时，默认选中第一个
+- (NSDictionary *)choosenSource {
+    if (!_choosenSource) {
+        _choosenSource = self.sourceArray[0];
+    }
+    return _choosenSource;
+}
+
+- (NSString *)choosenDate {
+    if (!_choosenDate) {
+        _choosenDate = @"今天";
+    }
+    return _choosenDate;
 }
 
 @end

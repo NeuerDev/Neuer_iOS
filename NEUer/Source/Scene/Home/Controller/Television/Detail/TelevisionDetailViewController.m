@@ -94,7 +94,7 @@
 
 - (UIImageView *)maskImageView {
     if (!_maskImageView) {
-        _maskImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"play"]];
+        _maskImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tv_play"]];
         _maskImageView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
         _maskImageView.userInteractionEnabled = YES;
         _maskImageView.contentMode = UIViewContentModeCenter;
@@ -121,6 +121,7 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 @required
 
 - (void)prensentLookBackViewControllerFromTelevisionPlayerListCell:(TelevisionPlayerListCell *)cell;
+- (void)makeAnAppointmentToTVShow:(TelevisionPlayerListCell *)cell;
 
 @end
 
@@ -132,8 +133,6 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 @property (nonatomic, strong) UIView *centerView;
 @property (nonatomic, strong) TelevisionChannelScheduleBean *scheduleBean;
 @property (nonatomic, weak) id<TelevisionPlayerListCellDelegate> delegate;
-
-- (void)setUpWithTelevisionChannelScheduleBean:(TelevisionChannelScheduleBean *)scheduleBean;
 
 @end
 
@@ -172,19 +171,37 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
     }];
 }
 
-- (void)setUpWithTelevisionChannelScheduleBean:(TelevisionChannelScheduleBean *)scheduleBean {
-    _scheduleBean = scheduleBean;
-    self.nameLabel.text = self.scheduleBean.name;
-    self.timeLabel.text = self.scheduleBean.time;
-}
-
 - (void)didSelectBackToViewBtnWithTVShow {
-    if (_delegate) {
-        [_delegate prensentLookBackViewControllerFromTelevisionPlayerListCell:self];
+    NSComparisonResult result = [self.scheduleBean.time compare:[LYTool timeOfNow]];
+    if (result == NSOrderedDescending && [self.scheduleBean.date isEqualToString:[LYTool dateOfTimeIntervalFromToday:0]]) {
+        if (_delegate) {
+            [_delegate makeAnAppointmentToTVShow:self];
+        }
+    } else {
+        if (_delegate) {
+            [_delegate prensentLookBackViewControllerFromTelevisionPlayerListCell:self];
+        }
     }
 }
 
-#pragma mark - GETTER
+#pragma mark - Setter
+- (void)setScheduleBean:(TelevisionChannelScheduleBean *)scheduleBean {
+    _scheduleBean = scheduleBean;
+    _nameLabel.text = _scheduleBean.name;
+    _timeLabel.text = _scheduleBean.time;
+
+    [_backToViewBtn setTitle:_scheduleBean.status forState:UIControlStateNormal];
+    NSComparisonResult result = [scheduleBean.time compare:[LYTool timeOfNow]];
+    if (result == NSOrderedDescending && [_scheduleBean.date isEqualToString: [LYTool dateOfTimeIntervalFromToday:0]]) {
+        _backToViewBtn.backgroundColor = [UIColor beautyBlue];
+        [_backToViewBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    } else {
+        [_backToViewBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        _backToViewBtn.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    }
+}
+
+#pragma mark - Getter
 
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
@@ -214,11 +231,8 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
         _backToViewBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
         _backToViewBtn.contentEdgeInsets = UIEdgeInsetsMake(8, 12, 8, 12);
         [_backToViewBtn addTarget:self action:@selector(didSelectBackToViewBtnWithTVShow) forControlEvents:UIControlEventTouchUpInside];
-        [_backToViewBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
-        [_backToViewBtn setTitle:@"回看" forState:UIControlStateNormal];
         _backToViewBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _backToViewBtn.layer.cornerRadius = 30.0f/2;
-        _backToViewBtn.backgroundColor = [UIColor groupTableViewBackgroundColor];
         _backToViewBtn.alpha = 0.8;
         [self.centerView addSubview:_backToViewBtn];
     }
@@ -238,8 +252,8 @@ NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
 @end
 
 
-static NSString *dateBtnTitle = @"今天";
-static NSString *sourceBtnTitle = @"清华大学";
+static NSString *dateButtonTitle = @"今天";
+static NSString *sourceButtonsTitle = @"清华大学";
 static TelevisionChannelModelSelectionType selectionType = TelevisionChannelModelSelectionTypeToday;
 
 @interface TelevisionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TelevisionChannelModelDelegate, TelevisionPlayerListCellDelegate>
@@ -252,9 +266,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 @property (nonatomic, strong) TelevisionChannelModel *channelDetailModel;
 @property (nonatomic, strong) NSMutableArray <TelevisionChannelScheduleBean *> *beanArray; // 所有视频信息
-@property (nonatomic, strong) NSArray *sourceArray; // 视频源字符串
-@property (nonatomic, strong) NSString *videoUrlStr; // 正在使用的视频源字符串
-@property (nonatomic, copy) NSArray <TelevisionChannelScheduleBean *> *playingArray; // 正在播放的视频
+@property (nonatomic, copy) NSMutableArray <TelevisionChannelScheduleBean *> *playingArray; // 正在播放的视频
 
 @end
 
@@ -269,8 +281,8 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    dateBtnTitle = @"今天";
-    sourceBtnTitle = @"清华大学";
+    dateButtonTitle = @"今天";
+    sourceButtonsTitle = @"清华大学";
     selectionType = TelevisionChannelModelSelectionTypeToday;
 }
 
@@ -279,8 +291,9 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 - (void)initData {
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = _channelBean.channelName;
-    [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:self.channelBean.sourceArray[0]];
+    [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:self.channelBean.choosenSource.allValues[0]];
     _beanArray = [NSMutableArray arrayWithCapacity:0];
+    _playingArray = [NSMutableArray arrayWithCapacity:0];
     self.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
     self.tableView.refreshControl = self.refreshControl;
 }
@@ -304,6 +317,10 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     [self presentViewController:playerViewController animated:YES completion:nil];
 }
 
+- (void)makeAnAppointmentToTVShow:(TelevisionPlayerListCell *)cell {
+    NSLog(@"%@", cell.nameLabel.text);
+}
+
 #pragma mark - TelevisionChannelModelDelegate
 
 - (void)fetchTelevisionChannelModelFailureWithMsg:(NSString *)msg {
@@ -312,8 +329,13 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (void)fetchTelevisionChannelModelSuccess {
     _beanArray = [self.channelDetailModel TelevisionChannelSelectionDayArrayWithType:TelevisionChannelModelSelectionTypeToday].copy;
-    self.playingArray = _beanArray;
-    dateBtnTitle = @"今天";
+    for (TelevisionChannelScheduleBean *bean in self.beanArray) {
+        NSComparisonResult result = [bean.time compare:[LYTool timeOfNow]];
+        if (result == NSOrderedAscending) {
+            [_playingArray addObject:bean];
+        }
+    }
+    dateButtonTitle = @"今天";
     selectionType = TelevisionChannelModelSelectionTypeToday;
     [self.tableView reloadData];
 }
@@ -342,13 +364,13 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     switch (section) {
         case 0:
         {
-            [headerView.actionButton setTitle:sourceBtnTitle forState:UIControlStateNormal];
+            [headerView.actionButton setTitle:sourceButtonsTitle forState:UIControlStateNormal];
             headerView.titleLabel.text = @"正在播放";
         }
             break;
         case 1:
         {
-            [headerView.actionButton setTitle:dateBtnTitle forState:UIControlStateNormal];
+            [headerView.actionButton setTitle:dateButtonTitle forState:UIControlStateNormal];
             headerView.titleLabel.text = @"节目单";
         }
             break;
@@ -362,60 +384,19 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         switch (section) {
             case 1:
             {
-                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"选择节目日期" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                for (int i = 0; i < self.channelDetailModel.TelevisionChannelModelSelectionTypeArray.count; ++i) {
-//                    获取节目日期类型
-                    NSArray *allkey = [[weakSelf.channelDetailModel.TelevisionChannelModelSelectionTypeArray objectAtIndex:i] allKeys];
-                    int dateType = [[allkey objectAtIndex:0] intValue];
-
-//                    根据节目类型获取实际节目日期字符串
-                    NSString *dateStr = [[weakSelf.channelDetailModel.TelevisionChannelModelSelectionTypeArray objectAtIndex:i] valueForKey:[NSString stringWithFormat:@"%d", i]];
-                    NSString *date = [LYTool dateOfTimeIntervalFromToday:0];
-                    if ([dateStr isEqualToString:date]) {
-                        dateStr = @"今天";
-                    }
-                    date = [LYTool dateOfTimeIntervalFromToday:1];
-                    if ([dateStr isEqualToString:date]) {
-                        dateStr = @"昨天";
-                    }
-                    
-                    [weakHeaderView.actionButton setTitle:dateStr forState:UIControlStateNormal];
-
-                    [alertVC addAction:[UIAlertAction actionWithTitle:dateStr style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        weakSelf.beanArray = (NSMutableArray *)[weakSelf.channelDetailModel TelevisionChannelSelectionDayArrayWithType:dateType];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            dateBtnTitle = dateStr;
-                            selectionType = dateType;
-                            [weakSelf.tableView reloadData];
-                        });
-                    }]];
-                }
-
-                [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-                [weakSelf presentViewController:alertVC animated:YES completion:^{
-                }];
+                [weakSelf showAlertControllerWithDate];
+//                [weakHeaderView.actionButton setTitle:self.channelBean.choosenDate forState:UIControlStateNormal];
+                [weakHeaderView.actionButton setTitle:dateButtonTitle forState:UIControlStateNormal];
+//                [weakSelf.tableView reloadData];
             }
                 break;
             case 0:
             {
-                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"选择视频源类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                for (int i = 0; i < self.sourceArray.count; ++i) {
-                    //                    获取节目源类型的key，展示在sheet上
-                    NSArray *allkey = [weakSelf.sourceArray[i] allKeys];
-                    NSString *sourceType = allkey[0];
-                    //                    根据节目源key获取节目源字符串
-                    NSString *sourceStr = [weakSelf.sourceArray[i] valueForKey:sourceType];
-                    [alertVC addAction:[UIAlertAction actionWithTitle:sourceType style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [weakSelf.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:sourceStr];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            sourceBtnTitle = sourceType;
-                            dateBtnTitle = @"今天";
-                            [weakSelf.tableView reloadData];
-                        });
-                    }]];
-                }
-                [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-                [weakSelf presentViewController:alertVC animated:YES completion:nil];
+                
+                [weakSelf showAlertControllerWithSelectionType];
+//                [weakHeaderView.actionButton setTitle:[self.channelBean.choosenSource allKeys][0] forState:UIControlStateNormal];
+                [weakHeaderView.actionButton setTitle:sourceButtonsTitle forState:UIControlStateNormal];
+//                [weakSelf.tableView reloadData];
             }
             default:
                 break;
@@ -435,10 +416,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
             cell = [[TelevisionPlayerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kTelevisionPlayingCellId];
             cell.backToViewBtn.hidden = YES;
         }
-        if (indexPath.section == 0 && indexPath.row == 0) {
-            cell.nameLabel.text = [self.playingArray lastObject].name;
-            cell.timeLabel.text = [self.playingArray lastObject].time;
-        }
+        cell.scheduleBean = [self.playingArray lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
@@ -448,15 +426,10 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         if (!cell) {
             cell = [[TelevisionPlayerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kTelevisionDetailListCellId];
         }
-        [cell setUpWithTelevisionChannelScheduleBean:self.beanArray[indexPath.row]];
+        cell.scheduleBean = self.beanArray[indexPath.row];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.delegate = self;
-        if (indexPath.row == self.beanArray.count - 1 && selectionType == TelevisionChannelModelSelectionTypeToday) {
-            [cell.backToViewBtn setTitle:@"直播中" forState:UIControlStateNormal];
-            cell.scheduleBean.videoUrl = self.videoUrlStr;
-        } else {
-            [cell.backToViewBtn setTitle:@"回看" forState:UIControlStateNormal];
-        }
+        
         return cell;
     }
 }
@@ -470,13 +443,17 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    if (self.beanArray.count != 0) {
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 #pragma mark - Response Method
 
 - (void)didClickedPlayButton:(UITapGestureRecognizer *)gestureRecognizer {
-    NSURL *url = [NSURL URLWithString:self.videoUrlStr];
+    NSURL *url = [NSURL URLWithString:[self.playingArray lastObject].videoUrl];
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:url];
     AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
     playerViewController.updatesNowPlayingInfoCenter = NO;;
@@ -502,6 +479,70 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 - (void)endRefreshing {
     [self.refreshControl endRefreshing];
 }
+
+#pragma mark - Private Method
+
+- (void)showAlertControllerWithDate {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"选择节目日期" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+  
+    for (int i = 0; i < self.channelDetailModel.TelevisionChannelModelSelectionTypeArray.count; ++i) {
+        //                    获取节目日期类型
+        NSArray *allkey = [[self.channelDetailModel.TelevisionChannelModelSelectionTypeArray objectAtIndex:i] allKeys];
+        int dateType = [[allkey objectAtIndex:0] intValue];
+        
+        //                    根据节目类型获取实际节目日期字符串
+        NSString *dateStr = [[self.channelDetailModel.TelevisionChannelModelSelectionTypeArray objectAtIndex:i] valueForKey:[NSString stringWithFormat:@"%d", i]];
+        NSString *date = [LYTool dateOfTimeIntervalFromToday:0];
+        if ([dateStr isEqualToString:date]) {
+            dateStr = @"今天";
+        }
+        date = [LYTool dateOfTimeIntervalFromToday:1];
+        if ([dateStr isEqualToString:date]) {
+            dateStr = @"昨天";
+        }
+        
+        [alertVC addAction:[UIAlertAction actionWithTitle:dateStr style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            self.beanArray = (NSMutableArray *)[self.channelDetailModel TelevisionChannelSelectionDayArrayWithType:dateType];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                self.channelBean.choosenDate = dateStr;
+                selectionType = dateType;
+                dateButtonTitle = dateStr;
+                [self.tableView reloadData];
+            });
+        }]];
+    }
+    
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
+    
+    
+}
+
+- (void)showAlertControllerWithSelectionType {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"选择视频源类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    for (int i = 0; i < self.channelBean.sourceArray.count; ++i) {
+        //                    获取节目源类型的key，展示在sheet上
+        NSArray *allkey = [self.channelBean.sourceArray[i] allKeys];
+        NSString *sourceType = allkey[0];
+        //                    根据节目源key获取节目源字符串
+        NSString *sourceStr = [self.channelBean.sourceArray[i] valueForKey:sourceType];
+        [alertVC addAction:[UIAlertAction actionWithTitle:sourceType style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:sourceStr];
+            [self.channelBean setChoosenSource:@{
+                                                 sourceType : sourceStr
+                                                 }];
+            sourceButtonsTitle = sourceType;
+            [self.tableView reloadData];
+        }]];
+    }
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertVC animated:YES completion:nil];
+    
+}
+
 
 #pragma mark - Getter
 
@@ -559,43 +600,6 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
     }
     return _refreshControl;
-}
-
-- (NSArray *)sourceArray {
-    if (!_sourceArray) {
-        NSMutableArray *sourceMutableArr = [[NSMutableArray alloc] initWithCapacity:0];
-        NSDictionary *tempDic = [[NSDictionary alloc] init];
-        int i = 1;
-        for (NSString *sourceType in _channelBean.sourceArray) {
-            if ([sourceType rangeOfString:@"hls"].location != NSNotFound) {
-                tempDic = @{
-                            [NSString stringWithFormat:@"测试%d", i] : sourceType
-                           };
-                i++;
-                
-            } else if ([sourceType rangeOfString:@"jlu_"].location != NSNotFound) {
-                tempDic = @{
-                            @"吉林大学" : sourceType
-                           };
-            } else {
-                tempDic = @{
-                            @"清华大学" : sourceType
-                            };
-            }
-            
-            [sourceMutableArr addObject:tempDic];
-        }
-        
-        _sourceArray = sourceMutableArr;
-    }
-    
-    return _sourceArray;
-}
-
-- (NSString *)videoUrlStr {
-    NSString *videoSourceTempStr = [@"http://media2.neu6.edu.cn/hls/" stringByAppendingString:self.channelDetailModel.sourceStr];
-    NSString *videoSourceStr = [videoSourceTempStr stringByAppendingString:@".m3u8"];
-    return videoSourceStr;
 }
 
 @end

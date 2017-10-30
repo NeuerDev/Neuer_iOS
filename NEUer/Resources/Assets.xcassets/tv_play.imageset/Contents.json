@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "1cec6889b67056debba2e1bd0c6bd733.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "tv_play@2x.png",
       "scale" : "2x"
     },
     {

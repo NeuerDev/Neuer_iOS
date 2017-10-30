@@ -33,7 +33,6 @@
 - (void)fecthTelevisionChannelDataWithVideoUrl:(NSString *)videoUrl {
 
     _videoSource = videoUrl;
-//    _videoSource = [LYTool subStringFromString:videoUrl startString:@"hls/" endString:@".m3u8"];
     NSString *urlStr = [NSString stringWithFormat:@"http://hdtv.neu6.edu.cn/newplayer?p=%@", self.videoSource];
     JHRequest *request = [[JHRequest alloc] initWithUrl:[NSURL URLWithString:urlStr]];
     request.delegate = self;
@@ -110,7 +109,7 @@
 //                        切换视频源
 //                        http://media2.neu6.edu.cn/review/program-1509120000-1509125400-hunanhd.m3u8
 //                        http://hdtv.neu6.edu.cn/player-review?timeline=1509036480-1509039180-cctv1hd
-                        
+//                        http://media2.neu6.edu.cn/hls/cctv13.m3u8
 //                        先去掉等号前面的字符串
                         NSArray *videoUrlArray = [[urlElement objectForKey:@"href"] componentsSeparatedByString:@"="];
                         NSString *remainingStr = [videoUrlArray lastObject];
@@ -143,11 +142,33 @@
                     }
                     if (i % 2 != 0) {
                         if (bean.name && bean.time && bean.videoUrl) {
+                            bean.status = @"回看";
                             [listArr addObject:bean];
                             bean = [[TelevisionChannelScheduleBean alloc] init];
                         }
-                    } else {
-                        continue;
+                    }
+                    if ([date isEqualToString:[LYTool dateOfTimeIntervalFromToday:0]]) {
+                        if (![bean.time isEqualToString:@" "]) {
+                            NSComparisonResult result = [bean.time compare:[LYTool timeOfNow]];
+                            //                        降序
+                            if (result == NSOrderedDescending && ![bean.name isEqualToString:@" "]) {
+                                
+//                                将当前listArr最后一个元素，也就是正在播放的元素设为正在播放并且改变url
+                                TelevisionChannelScheduleBean *playingBean = (TelevisionChannelScheduleBean *)[listArr lastObject];
+                                NSComparisonResult compareNowResult = [playingBean.time compare:[LYTool timeOfNow]];
+                                if (compareNowResult == NSOrderedAscending) {
+                                    [listArr removeLastObject];
+//                                    说明当前时间已经超过视频正在播放的开始时间
+                                    playingBean.videoUrl = [NSString stringWithFormat:@"http://media2.neu6.edu.cn/hls/%@.m3u8", _videoSource];
+                                    playingBean.status = @"直播中";
+                                    [listArr addObject:playingBean];
+                                }
+                                
+                                bean.status = @"预约";
+                                [listArr addObject:bean];
+                                bean = [[TelevisionChannelScheduleBean alloc] init];
+                            }
+                        }
                     }
                 }
             } else {

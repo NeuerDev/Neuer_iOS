@@ -44,4 +44,8 @@
  */
 + (NSString *)dateOfTimeIntervalFromToday:(NSInteger)days;
 
+/**
+ 获取当前时间 HH:mm格式
+ */
++ (NSString *)timeOfNow;
 @end

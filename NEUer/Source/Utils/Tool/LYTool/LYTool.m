@@ -99,4 +99,12 @@
     return resultDate;
 }
 
++ (NSString *)timeOfNow {
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSString *time = [dateFormatter stringFromDate:today];
+    return time;
+}
+
 @end
