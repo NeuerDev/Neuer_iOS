@@ -214,7 +214,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
                            @{
                                @"title":@"图书馆",
                                @"detail":@"在图书馆邂逅那个抠脚大汉",
-                               @"url":@"",
+                               @"url":@"neu://go/lib",
                                @"image":@"library_campus_background",
                                },
                            @{

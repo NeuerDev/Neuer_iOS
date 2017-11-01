@@ -11,7 +11,7 @@
 
 @class SearchListComponent;
 
-@protocol SearchListComponentDelegate
+@protocol SearchListComponentDelegate <NSObject>
 
 @required
 - (void)component:(SearchListComponent *)component didSelectedString:(NSString *)string;
