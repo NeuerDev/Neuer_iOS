@@ -16,8 +16,8 @@
 
 #import "TouchableCollectionViewCell.h"
 
-#import <AVKit/AVKit.h>
-#import <AVFoundation/AVFoundation.h>
+//#import <AVKit/AVKit.h>
+//#import <AVFoundation/AVFoundation.h>
 
 #define SCREEN_WIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 
@@ -160,7 +160,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 @end
 
-@interface TelevisionWallViewController () <TelevisionWallDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface TelevisionWallViewController () <TelevisionWallDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 @property (nonatomic, strong) TelevisionChannelSearchViewController *searchViewController;
 
 @property (nonatomic, strong) TelevisionWallModel *wallModel;
@@ -228,12 +228,40 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     
 }
 
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(nonnull UISearchController *)searchController {
+    NSString *searchString = [self.searchViewController.searchBar text];
+    [self.wallModel queryWallWithKeyword:searchString];
+    
+    [self.collectionView reloadData];
+}
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self.collectionView reloadData];
+    self.searchViewController.searchBar.text = searchBar.text;
+    [self.searchViewController.searchBar resignFirstResponder];
+    self.searchViewController.active = YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self.collectionView reloadData];
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    self.searchViewController.active = NO;
+    
     TelevisionDetailViewController *detailVC = [[TelevisionDetailViewController alloc] init];
-    detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
+
+    if (self.searchViewController.active) {
+        detailVC.channelBean = self.wallModel.resultArray[indexPath.item];
+    } else {
+        detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
+    }
+    
+    self.searchViewController.active = NO;
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
@@ -241,12 +269,27 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     TelevisionWallChannelCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelCellId forIndexPath:indexPath];
-    cell.channelBean = self.wallModel.channelArray[indexPath.item];
+    
+    if (self.searchViewController.active) {
+
+        if (self.wallModel.resultArray.count != 0) {
+            cell.channelBean = self.wallModel.resultArray[indexPath.item];
+        }
+    }
+    else{
+        cell.channelBean = self.wallModel.channelArray[indexPath.item];
+    }
+    
     return cell;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.wallModel.channelArray.count;
+    
+    if (self.searchViewController.isActive) {
+        return self.wallModel.resultArray.count;
+    } else {
+        return self.wallModel.channelArray.count;
+    }
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -257,7 +300,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 - (TelevisionChannelSearchViewController *)searchViewController {
     if (!_searchViewController) {
-        _searchViewController = [[TelevisionChannelSearchViewController alloc] init];
+        _searchViewController = [[TelevisionChannelSearchViewController alloc] initWithSearchResultsController:nil];
+        _searchViewController.delegate = self;
+        _searchViewController.dimsBackgroundDuringPresentation = YES;
+        _searchViewController.searchResultsUpdater = self;
+        _searchViewController.searchBar.delegate = self;
+        _searchViewController.obscuresBackgroundDuringPresentation = NO;
     }
     
     return _searchViewController;

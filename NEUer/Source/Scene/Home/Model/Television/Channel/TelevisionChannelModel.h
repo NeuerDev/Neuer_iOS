@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class TelevisionChannelScheduleBean;
 
 typedef NS_ENUM(NSInteger, TelevisionChannelModelSelectionType) {
     TelevisionChannelModelSelectionTypeToday = 0,
@@ -33,6 +34,8 @@ typedef NS_ENUM(NSInteger, TelevisionChannelModelSelectionType) {
 @property (nonatomic, weak) id<TelevisionChannelModelDelegate> delegate;
 @property (nonatomic, assign) TelevisionChannelModelSelectionType selectedType;
 @property (nonatomic, strong) NSString *sourceStr; // 当前正在播放的视频源
+@property (nonatomic, strong) NSArray <TelevisionChannelScheduleBean *> *beanArray; // 所有视频信息
+@property (nonatomic, copy) NSMutableArray <TelevisionChannelScheduleBean *> *playingArray; // 正在播放的视频
 
 /**
  @param videoUrl 播放源地址
@@ -40,19 +43,9 @@ typedef NS_ENUM(NSInteger, TelevisionChannelModelSelectionType) {
 - (void)fecthTelevisionChannelDataWithVideoUrl:(NSString *)videoUrl;
 
 /**
- 获取该播放源的近8天所有播放过的节目单
- */
-- (NSDictionary *)TelevisionChannelDictionary;
-
-/**
- 获取某一天播放过的节目单
- */
-- (NSArray *)TelevisionChannelSelectionDayArrayWithType:(TelevisionChannelModelSelectionType)type;
-
-/**
  获取播放天数类型数组
  */
-- (NSArray *)TelevisionChannelModelSelectionTypeArray;
+- (NSArray *)televisionChannelModelSelectionTypeArray;
 
 @end
 

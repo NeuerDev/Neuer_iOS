@@ -18,6 +18,8 @@
 @interface TelevisionWallModel () <JHRequestDelegate>
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableArray<TelevisionWallChannelBean *> *> *channelArrayDictionary;
 @property (nonatomic, strong) NSMutableDictionary *name2TypeDic;
+@property (nonatomic, strong) NSString *keyword;
+
 @end
 
 @implementation TelevisionWallModel
@@ -43,11 +45,10 @@
         NSArray *liveArray = neuTVDic[@"live"];
         NSDictionary *typeMap = @{
                                   @"uidall"  :   @(0),
-                                  @"uid0"    :   @(TelevisionChannelTypeHD),
                                   @"uid1"    :   @(TelevisionChannelTypeZhongyang),
                                   @"uid2"    :   @(TelevisionChannelTypeWeishi),
-                                  @"uid3"    :   @(TelevisionChannelTypeLiaoning),
-                                  @"uid4"    :   @(TelevisionChannelTypeBeijing),
+                                  @"uid3"    :   @(TelevisionChannelTypeVariety),
+                                  @"uid4"    :   @(TelevisionChannelTypeSports),
                                   @"uid5"    :   @(TelevisionChannelTypeShaoer),
                                   @"uid6"    :   @(TelevisionChannelTypeOther),
                                   };
@@ -86,6 +87,22 @@
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
     [request start];
+}
+
+- (void)queryWallWithKeyword:(NSString *)keyword {
+    
+    _keyword = keyword;
+    NSMutableArray *queryArray = [NSMutableArray arrayWithCapacity:0];
+    NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", keyword];
+    for (TelevisionWallChannelBean *bean in self.channelArray) {
+        if ([preicate evaluateWithObject:bean.channelName]) {
+            [queryArray addObject:bean];
+        }
+    }
+    if (self.resultArray.count != 0) {
+        [_resultArray removeAllObjects];
+    }
+    [_resultArray addObjectsFromArray:queryArray];
 }
 
 #pragma mark - JHRequestDelegate
@@ -141,11 +158,10 @@
 - (void)setCurrentTypeWithName:(NSString *)typeName {
     _currentType = [@{
                       @"uidall"  :   @(0),
-                      @"uid0"    :   @(TelevisionChannelTypeHD),
                       @"uid1"    :   @(TelevisionChannelTypeZhongyang),
                       @"uid2"    :   @(TelevisionChannelTypeWeishi),
-                      @"uid3"    :   @(TelevisionChannelTypeLiaoning),
-                      @"uid4"    :   @(TelevisionChannelTypeBeijing),
+                      @"uid3"    :   @(TelevisionChannelTypeVariety),
+                      @"uid4"    :   @(TelevisionChannelTypeSports),
                       @"uid5"    :   @(TelevisionChannelTypeShaoer),
                       @"uid6"    :   @(TelevisionChannelTypeOther),
                       }[_name2TypeDic[typeName]] integerValue];
@@ -182,14 +198,20 @@
 - (NSArray<NSString *> *)channelTypeArray {
     return @[
              @"全部频道",
-             @"高清频道",
              @"中央频道",
              @"卫视频道",
-             @"辽宁地区",
-             @"北京地区",
+             @"热门综艺",
+             @"体育频道",
              @"少儿频道",
              @"其他频道",
              ];
+}
+
+- (NSMutableArray<TelevisionWallChannelBean *> *)resultArray {
+    if (!_resultArray) {
+        _resultArray = [NSMutableArray arrayWithArray:self.channelArray];
+    }
+    return _resultArray;
 }
 
 @end
@@ -242,5 +264,7 @@
     }
     return _choosenDate;
 }
+
+
 
 @end

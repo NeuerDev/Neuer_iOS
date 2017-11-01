@@ -13,11 +13,10 @@
 
 typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
     TelevisionChannelTypeAll        = 0,
-    TelevisionChannelTypeHD         = 1<<0,
-    TelevisionChannelTypeZhongyang  = 1<<1,
+    TelevisionChannelTypeZhongyang  = 1<<0,
     TelevisionChannelTypeWeishi     = 1<<2,
-    TelevisionChannelTypeLiaoning   = 1<<3,
-    TelevisionChannelTypeBeijing    = 1<<4,
+    TelevisionChannelTypeVariety    = 1<<3,
+    TelevisionChannelTypeSports     = 1<<4,
     TelevisionChannelTypeShaoer     = 1<<5,
     TelevisionChannelTypeOther      = 1<<6,
 };
@@ -34,6 +33,7 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 
 @property (nonatomic, strong) NSMutableArray<TelevisionWallChannelBean *> *channelArray;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, TelevisionWallChannelBean *> *channelDictionary;
+@property (nonatomic, strong) NSMutableArray<TelevisionWallChannelBean *> *resultArray;
 @property (nonatomic, weak) id<TelevisionWallDelegate> delegate;
 @property (nonatomic, assign) TelevisionChannelType currentType;
 
@@ -41,6 +41,7 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 - (void)setCurrentTypeWithName:(NSString *)typeName;
 - (NSMutableArray<TelevisionWallChannelBean *> *)channelArrayWithType:(TelevisionChannelType)type;
 - (NSArray<NSString *> *)channelTypeArray;
+- (void)queryWallWithKeyword:(NSString *)keyword;
 
 @end
 

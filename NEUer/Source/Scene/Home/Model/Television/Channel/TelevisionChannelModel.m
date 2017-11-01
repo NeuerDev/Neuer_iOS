@@ -40,19 +40,6 @@
     [request start];
 }
 
-- (NSDictionary *)TelevisionChannelDictionary {
-    return self.TelevisionChannelDic;
-}
-
-- (NSArray *)TelevisionChannelSelectionDayArrayWithType:(TelevisionChannelModelSelectionType)type {
-    _selectedType = type;
-    if ([self.TelevisionChannelDic objectForKey:[LYTool dateOfTimeIntervalFromToday:self.selectedType]]) {
-        return [self.TelevisionChannelDic objectForKey:[LYTool dateOfTimeIntervalFromToday:self.selectedType]];
-    } else {
-        return nil;
-    }
-}
-
 #pragma mark - JHRequest
 
 - (void)requestDidFail:(JHRequest *)request {
@@ -82,10 +69,14 @@
     TFHpple *hpple = [[TFHpple alloc ]initWithHTMLData:htmlData];
     
     NSMutableDictionary *listDic = [[NSMutableDictionary alloc] initWithCapacity:0];
-    NSMutableArray *listArr = [[NSMutableArray alloc] initWithCapacity:0];
+    NSMutableArray<TelevisionChannelScheduleBean *> *listArr = [[NSMutableArray alloc] initWithCapacity:0];
     
     //    日期div
     NSArray <TFHppleElement *>* dateArray = [hpple searchWithXPathQuery:@"//*[@id='tabs']/div"];
+    if (dateArray.count == 0) {
+        NSLog(@"该节目没有节目回放单");
+        return;
+    }
     
     for (TFHppleElement *dateElement in dateArray) {
         
@@ -175,13 +166,22 @@
                 continue;
             }
         }
+//        一天中最后一个节目
+        if (_selectedType == TelevisionChannelModelSelectionTypeToday) {
+            NSComparisonResult result = [[listArr lastObject].time compare:[LYTool timeOfNow]];
+            if (result == NSOrderedAscending) {
+                [listArr lastObject].videoUrl = [NSString stringWithFormat:@"http://media2.neu6.edu.cn/hls/%@.m3u8", _videoSource];
+                [listArr lastObject].status = @"直播中";
+            }
+        }
+        
         [listDic setObject:listArr.copy forKey:date];
         [listArr removeAllObjects];
     }
     _TelevisionChannelDic = listDic;
 }
 
-- (NSArray *)TelevisionChannelModelSelectionTypeArray {
+- (NSArray *)televisionChannelModelSelectionTypeArray {
 
     NSMutableArray *keyArr = [NSMutableArray arrayWithCapacity:0];
     for (int i = 0; i < 8; ++i) {
@@ -193,6 +193,65 @@
         [keyArr addObject:tempDic];
     }
     return keyArr;
+}
+
+
+- (NSArray *)televisionChannelSelectionDayArrayWithType {
+    if (_selectedType) {
+    } else {
+        _selectedType = TelevisionChannelModelSelectionTypeToday;
+    }
+    if ([self.TelevisionChannelDic objectForKey:[LYTool dateOfTimeIntervalFromToday:self.selectedType]]) {
+        return [self.TelevisionChannelDic objectForKey:[LYTool dateOfTimeIntervalFromToday:self.selectedType]];
+    } else {
+        return nil;
+    }
+}
+
+///**
+// 获取该播放源的近8天所有播放过的节目单
+// */
+//- (NSDictionary *)televisionChannelDictionary {
+//    return self.TelevisionChannelDic;
+//}
+
+#pragma mark - Setter
+
+- (void)setSelectedType:(TelevisionChannelModelSelectionType)selectedType {
+    _selectedType = selectedType;
+}
+
+#pragma mark - Getter
+- (NSArray<TelevisionChannelScheduleBean *> *)beanArray {
+    if (!_beanArray) {
+        _beanArray = [NSArray array];
+    }
+    _beanArray = [self televisionChannelSelectionDayArrayWithType].copy;
+    
+    return _beanArray;
+}
+
+- (NSMutableArray<TelevisionChannelScheduleBean *> *)playingArray {
+    if (!_playingArray) {
+        _playingArray = [NSMutableArray arrayWithCapacity:0];
+    }
+    if (_selectedType == TelevisionChannelModelSelectionTypeToday) {
+        [_playingArray removeAllObjects];
+        if (self.beanArray.count != 0) {
+            for (TelevisionChannelScheduleBean *bean in self.beanArray) {
+                NSComparisonResult result = [bean.time compare:[LYTool timeOfNow]];
+                if (result == NSOrderedAscending) {
+                    [_playingArray addObject:bean];
+                }
+            }
+        } else {
+            TelevisionChannelScheduleBean *bean = [[TelevisionChannelScheduleBean alloc] init];
+            bean.videoUrl = [NSString stringWithFormat:@"http://media2.neu6.edu.cn/hls/%@.m3u8", self.videoSource];
+            [_playingArray addObject:bean];
+        }
+    }
+    
+    return _playingArray;
 }
 
 - (NSString *)sourceStr {
