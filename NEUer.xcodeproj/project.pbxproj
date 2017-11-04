@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAB81FA9C56900AB6D8B /* GatewayModel.m */; };
+		3339FABD1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */; };
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
 		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
@@ -44,7 +46,6 @@
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
 		5C7B8ED51F8B40190088FC60 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
-		5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B8ED81F8B41290088FC60 /* GatewayModel.m */; };
 		5C7B8EDF1F8C646A0088FC60 /* NetworkStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B8EDE1F8C646A0088FC60 /* NetworkStatusView.m */; };
 		5C8B62961F7890F900310055 /* Json.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C8B62951F7890F900310055 /* Json.bundle */; };
 		5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8B629C1F78FC4C00310055 /* JHBaseViewController.m */; };
@@ -124,6 +125,10 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
+		3339FAB71FA9C56900AB6D8B /* GatewayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
+		3339FAB81FA9C56900AB6D8B /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
+		3339FABB1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewaySelfServiceMenuModel.h; sourceTree = "<group>"; };
+		3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewaySelfServiceMenuModel.m; sourceTree = "<group>"; };
 		3344EFC01F93A241001ED45E /* LYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTool.h; sourceTree = "<group>"; };
 		3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoLb.h; sourceTree = "<group>"; };
 		3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoLb.m; sourceTree = "<group>"; };
@@ -192,8 +197,6 @@
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
 		5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+JHCategory.m"; sourceTree = "<group>"; };
-		5C7B8ED71F8B41290088FC60 /* GatewayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
-		5C7B8ED81F8B41290088FC60 /* GatewayModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
 		5C7B8EDD1F8C646A0088FC60 /* NetworkStatusView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkStatusView.h; sourceTree = "<group>"; };
 		5C7B8EDE1F8C646A0088FC60 /* NetworkStatusView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkStatusView.m; sourceTree = "<group>"; };
 		5C8B62951F7890F900310055 /* Json.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Json.bundle; sourceTree = "<group>"; };
@@ -314,6 +317,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3339FAB61FA9C53B00AB6D8B /* BasicInfo */ = {
+			isa = PBXGroup;
+			children = (
+				3339FAB71FA9C56900AB6D8B /* GatewayModel.h */,
+				3339FAB81FA9C56900AB6D8B /* GatewayModel.m */,
+			);
+			path = BasicInfo;
+			sourceTree = "<group>";
+		};
+		3339FABA1FA9C96A00AB6D8B /* UserHomePageInfo */ = {
+			isa = PBXGroup;
+			children = (
+				3339FABB1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.h */,
+				3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */,
+			);
+			path = UserHomePageInfo;
+			sourceTree = "<group>";
+		};
 		3344EFBA1F939B22001ED45E /* Gateway */ = {
 			isa = PBXGroup;
 			children = (
@@ -777,8 +798,8 @@
 		5C7B8ED61F8B41160088FC60 /* Gateway */ = {
 			isa = PBXGroup;
 			children = (
-				5C7B8ED71F8B41290088FC60 /* GatewayModel.h */,
-				5C7B8ED81F8B41290088FC60 /* GatewayModel.m */,
+				3339FABA1FA9C96A00AB6D8B /* UserHomePageInfo */,
+				3339FAB61FA9C53B00AB6D8B /* BasicInfo */,
 			);
 			path = Gateway;
 			sourceTree = "<group>";
@@ -1644,6 +1665,7 @@
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
+				3339FABD1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
@@ -1657,7 +1679,6 @@
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
-				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
@@ -1678,6 +1699,7 @@
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
+				3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */,
