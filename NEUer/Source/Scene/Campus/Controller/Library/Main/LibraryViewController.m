@@ -10,22 +10,33 @@
 #import "LibraryNewBookViewController.h"
 #import "LibraryMostViewController.h"
 #import "SearchLibraryResultViewController.h"
+#import "LoginViewController.h"
 
 #import "SearchListComponent.h"
 
 #import "SearchLibraryNewBookModel.h"
 #import "SearchLibraryBorrowingModel.h"
+#import "LibraryLoginModel.h"
+#import "LibraryLoginMyInfoModel.h"
 
 
-@interface LibraryViewController () <SearchListComponentDelegate,SearchLibraryNewBookDelegate,SearchLibraryBorrowingDelegate>
-
+@interface LibraryViewController () <SearchListComponentDelegate,SearchLibraryNewBookDelegate,SearchLibraryBorrowingDelegate,UITableViewDelegate,UITableViewDataSource>
+//信息
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UIBarButtonItem *loginButtonItem;
+@property (nonatomic, strong) UITableView *infoTableView;
+@property (nonatomic, strong) UIView *infoView;
+//新书和热门
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) SearchListComponent *newbookSearchComponent;
 @property (nonatomic, strong) SearchListComponent *mostSearchComponent;
+
 @property (nonatomic, strong) SearchLibraryNewBookModel *newbookModel;
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
-@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) LibraryLoginModel *loginModel;
+@property (nonatomic, strong) LibraryLoginMyInfoModel *infoModel;
+
 
 @end
 
@@ -43,24 +54,28 @@
 - (void)initData {
     [self setTitle:@"图书馆"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    self.scrollView.refreshControl = self.refreshControl;
+    self.navigationItem.rightBarButtonItem = self.loginButtonItem;
     [self.newbookModel search];
     [self.mostModel search];
 }
 
 - (void)initConstraints {
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.bottom.equalTo(self.mas_bottomLayoutGuide);
-        make.left.and.right.equalTo(self.view);
-    }];
+    self.scrollView.frame = self.view.frame;
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.scrollView);
         make.width.equalTo(self.scrollView);
     }];
     
+    [self.infoTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.contentView);
+        make.height.mas_equalTo(SCREEN_WIDTH_ACTUAL*0.5);
+    }];
+    
     [self.newbookSearchComponent.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.and.left.and.right.equalTo(self.contentView);
+        make.top.mas_equalTo(self.infoTableView.mas_bottom);
+        make.left.and.right.equalTo(self.contentView);
         make.height.mas_equalTo(20 * 44);
     }];
     
@@ -68,6 +83,45 @@
         make.top.equalTo(self.newbookSearchComponent.view.mas_bottom);
         make.bottom.and.left.and.right.equalTo(self.contentView);
     }];
+}
+
+#pragma mark - Respond Methods
+- (void)beginRefreshing {
+    [self.refreshControl beginRefreshing];
+    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:3.0f];
+}
+
+- (void)endRefreshing {
+    [self.refreshControl endRefreshing];
+}
+
+- (void)login {
+    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    loginVC.modalPresentationStyle = UIModalPresentationCustom;
+    loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [loginVC setupWithTitle:@"登录图书馆" inputType:LoginInputTypeAccount|LoginInputTypePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+        if (complete) {
+            NSLog(@"yes");
+        } else {
+            NSLog(@"no");
+        }
+    }];
+    
+    [self presentViewController:loginVC animated:YES completion:^{
+        
+    }];
+}
+
+#pragma mark - UITableViewDelegate
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    return cell;
 }
 
 #pragma mark - SearchListComponentDelegate
@@ -171,12 +225,69 @@
     return _mostModel;
 }
 
-- (UIActivityIndicatorView *)indicatorView {
-    if (!_indicatorView) {
-        _indicatorView = [[UIActivityIndicatorView alloc] init];
+- (UIRefreshControl *)refreshControl {
+    if (!_refreshControl) {
+        _refreshControl = [[UIRefreshControl alloc] init];
+        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
     }
-    return _indicatorView;
+   return _refreshControl;
 }
 
+- (UIBarButtonItem *)loginButtonItem {
+    if (!_loginButtonItem) {
+        _loginButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
+    }
+   return _loginButtonItem;
+}
+
+- (LibraryLoginModel *)loginModel {
+    if (!_loginModel) {
+        _loginModel = [[LibraryLoginModel alloc] init];
+    }
+   return _loginModel;
+}
+
+- (LibraryLoginMyInfoModel *)infoModel {
+    if (!_infoModel) {
+        _infoModel = [[LibraryLoginMyInfoModel alloc] init];
+    }
+   return _infoModel;
+}
+
+- (UITableView *)infoTableView {
+    if (!_infoTableView) {
+        _infoTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _infoTableView.dataSource = self;
+        _infoTableView.delegate = self;
+        
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
+        [headerView addSubview:self.infoView];
+        [self.infoView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(headerView);
+            make.width.mas_equalTo(@(SCREEN_WIDTH_ACTUAL-32));
+            make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*0.5));
+        }];
+        [headerView layoutIfNeeded];
+        
+        _infoTableView.tableHeaderView = headerView;
+        _infoTableView.tableFooterView = [[UIView alloc] init];
+        [self.contentView addSubview:_infoTableView];
+    }
+   return _infoTableView;
+}
+
+- (UIView *)infoView {
+    if (!_infoView) {
+        _infoView = [[UIView alloc] init];
+        _infoView.layer.borderWidth = 1.0f;
+        _infoView.layer.cornerRadius = 8.0f;
+        //@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"]
+        UIColor *mainColor = [UIColor colorWithHexStr:@"#9C9C9C"];
+        _infoView.layer.borderColor = mainColor.CGColor;
+        _infoView.backgroundColor = [mainColor colorWithAlphaComponent:0.1];
+        _infoView.userInteractionEnabled = YES;
+    }
+   return _infoView;
+}
 
 @end

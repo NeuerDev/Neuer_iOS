@@ -9,6 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "JHURLRouter.h"
 
+
 @interface JHBaseViewController : UIViewController <JHURLRouterViewControllerProtocol>
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UILabel *detailLaebl;
+@property (nonatomic, strong) UIButton *retryBtn;
+
+
+- (void)showLabel;
+- (void)hideLabel;
+- (void)retry:(UIButton *)sender;
+
 
 @end
