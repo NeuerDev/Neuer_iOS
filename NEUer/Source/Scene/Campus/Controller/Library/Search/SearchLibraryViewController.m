@@ -59,9 +59,6 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
 }
 
 - (void)initData {
-    self.mostModel.languageType = @"ALL";
-    self.mostModel.sortType = @"ALL";
-    self.mostModel.date = @"y";
     [self.mostModel search];
 }
 
@@ -131,6 +128,13 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.searchDoorViewController.active = YES;
+    if (indexPath.section == 0) {
+        [self.searchDoorViewController searchKeyword:self.recentStrings[indexPath.row]];
+    } else {
+        [self.searchDoorViewController searchKeyword:self.mosetStrings[indexPath.row]];
+    }
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -317,6 +321,9 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
 - (SearchLibraryBorrowingModel *)mostModel {
     if (!_mostModel) {
         _mostModel = [[SearchLibraryBorrowingModel alloc] init];
+        _mostModel.languageType = @"ALL";
+        _mostModel.sortType = @"ALL";
+        _mostModel.date = @"y";
         _mostModel.delegate = self;
     }
    return _mostModel;

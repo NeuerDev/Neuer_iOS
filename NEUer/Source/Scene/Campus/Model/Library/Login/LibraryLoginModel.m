@@ -34,8 +34,8 @@
 
 - (void)login {
     _isLogin = YES;
-    _username = @"20154858";
-    _password = @"154858";
+//    _username = @"20154858";
+//    _password = @"154858";
     
     NSString *urlStr = [NSString stringWithFormat:@"%@",_tmpURL];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -58,7 +58,8 @@
     } else {
         NSData *htmlData = request.response.data;
         [self resultFromHtmlData:htmlData];
-        [self.infoModel searchBorrowHistoryInfo];
+//        [self.infoModel searchBorrowHistoryInfo];
+        [_delegate loginDidSuccess];
     }
     
 }

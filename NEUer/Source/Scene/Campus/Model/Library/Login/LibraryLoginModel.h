@@ -8,10 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol LibraryLoginDelegate
+- (void)loginDidSuccess;
+@end
+
 @interface LibraryLoginModel : NSObject
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *tmpURL;
+@property (nonatomic, weak) id <LibraryLoginDelegate> delegate;
 
 - (void)gotoLogin;
 
