@@ -84,11 +84,13 @@
     switch (_infoType) {
         case 1: {
             _borrowingArr = [self borrowingArrayFromHtmlData:htmlData];
+            [_delegate getBorrowingInfoDidSuccess];
         }
             break;
             
         case 2: {
             _borrowHistoryArr = [self borrowHistoryArrayFromHtmlData:htmlData];
+            [_delegate getBorrowHistoryInfoDidSuccess];
         }
             break;
             

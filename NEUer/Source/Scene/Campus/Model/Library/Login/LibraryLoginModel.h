@@ -22,6 +22,13 @@
 
 @end
 
+typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
+    LibraryInfoReturnDateLevelLow,
+    LibraryInfoReturnDateLevelMiddle,
+    LibraryInfoReturnDateLevelHigh,
+    LibraryInfoReturnDateLevelHurry
+};
+
 @interface LibraryLoginBean : NSObject
 //我的流通
 @property (nonatomic, strong) NSString *borrowingStr;
@@ -40,5 +47,7 @@
 @property (nonatomic, strong) NSString *statusStr;
 @property (nonatomic, strong) NSString *barCodeStr;
 @property (nonatomic, strong) NSString *registrationStr;
+//其他
+@property (nonatomic, assign) LibraryInfoReturnDateLevel *returnDateLevel;
 
 @end

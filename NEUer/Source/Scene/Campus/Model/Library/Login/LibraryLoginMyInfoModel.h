@@ -13,6 +13,15 @@
 @class LibraryLoginMyInfoBookedBean;
 @class LibraryLoginMyInfoCashBean;
 
+@protocol LibraryLoginInfoDelegate
+@optional
+- (void)getBorrowingInfoDidSuccess;
+- (void)getBorrowHistoryInfoDidSuccess;
+- (void)getReservationInfoDidSuccess;
+- (void)getBookedInfoDidSuccess;
+- (void)getCashInfoDidSuccess;
+@end
+
 @interface LibraryLoginMyInfoModel : NSObject
 @property (nonatomic, strong) NSString *borrowingURL;
 @property (nonatomic, strong) NSString *borrowHistoryURL;
@@ -25,6 +34,8 @@
 @property (nonatomic, strong) NSMutableArray<LibraryLoginMyInfoReservationBean *> *reservationArr;
 @property (nonatomic, strong) NSMutableArray<LibraryLoginMyInfoBookedBean *> *bookedArr;
 @property (nonatomic, strong) NSMutableArray<LibraryLoginMyInfoCashBean *> *cashArr;
+
+@property (nonatomic, weak) id <LibraryLoginInfoDelegate> delegate;
 
 - (void)searchBorrowingInfo;
 - (void)searchBorrowHistoryInfo;

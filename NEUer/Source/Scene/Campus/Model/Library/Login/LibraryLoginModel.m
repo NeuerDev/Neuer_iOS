@@ -10,7 +10,7 @@
 #import "LibraryLoginMyInfoModel.h"
 
 
-@interface LibraryLoginModel () <JHRequestDelegate>
+@interface LibraryLoginModel () <JHRequestDelegate,LibraryLoginInfoDelegate>
 
 @property (nonatomic, strong) LibraryLoginMyInfoModel *infoModel;
 @property (nonatomic, strong) LibraryLoginBean *loginBean;
@@ -58,8 +58,7 @@
     } else {
         NSData *htmlData = request.response.data;
         [self resultFromHtmlData:htmlData];
-//        [self.infoModel searchBorrowHistoryInfo];
-        [_delegate loginDidSuccess];
+        [_infoModel searchBorrowingInfo];
     }
     
 }
@@ -108,7 +107,15 @@
     _infoModel.reservationURL = [array objectAtIndex:2];
     _infoModel.bookedURL = [array objectAtIndex:3];
     _infoModel.cashURL = [array objectAtIndex:4];
+    _infoModel.delegate = self;
     
+}
+
+#pragma mark - LibraryLoginInfoDelegate
+- (void)getBorrowingInfoDidSuccess {
+    for (LibraryLoginMyInfoBorrowingBean *bean in _infoModel.borrowingArr) {
+        NSLog(@"date - %@",bean.shouldReturnDate);
+    }
 }
 
 @end

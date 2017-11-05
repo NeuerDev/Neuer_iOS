@@ -52,6 +52,9 @@
     [super viewDidLoad];
     [self initData];
     [self initConstraints];
+    //@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"]
+    UIColor *mainColor = [UIColor colorWithHexStr:@"#9C9C9C"];
+    [self setMainColor:mainColor animated:YES];
     
 }
 
@@ -242,10 +245,6 @@
         _infoView = [[UIView alloc] init];
         _infoView.layer.borderWidth = 1.0f;
         _infoView.layer.cornerRadius = 8.0f;
-        //@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"]
-        UIColor *mainColor = [UIColor colorWithHexStr:@"#9C9C9C"];
-        _infoView.layer.borderColor = mainColor.CGColor;
-        _infoView.backgroundColor = [mainColor colorWithAlphaComponent:0.1];
         _infoView.userInteractionEnabled = YES;
     }
     return _infoView;
@@ -269,29 +268,21 @@
 
 - (NSArray<UIButton *> *)infoViewBtns {
     if (!_infoViewBtns) {
-        UIColor *mainColor = [UIColor colorWithHexStr:@"#9C9C9C"];
-        
         UIButton *searchButton = [[UIButton alloc] init];
         [searchButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         [searchButton setTitle:@"书刊查询" forState:UIControlStateNormal];
-        [searchButton setTitleColor:mainColor forState:UIControlStateNormal];
-        [searchButton setTitleColor:[mainColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
         [searchButton addTarget:self action:@selector(searchBook) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:searchButton];
         
         UIButton *changePasswordButton = [[UIButton alloc] init];
         [changePasswordButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         [changePasswordButton setTitle:@"修改密码" forState:UIControlStateNormal];
-        [changePasswordButton setTitleColor:mainColor forState:UIControlStateNormal];
-        [changePasswordButton setTitleColor:[mainColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
 //        [changePasswordButton addTarget:self action:@selector(changePassword) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:changePasswordButton];
         
         UIButton *reportLostButton = [[UIButton alloc] init];
         [reportLostButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         [reportLostButton setTitle:@"自助挂失" forState:UIControlStateNormal];
-        [reportLostButton setTitleColor:mainColor forState:UIControlStateNormal];
-        [reportLostButton setTitleColor:[mainColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
 //        [reportLostButton addTarget:self action:@selector(reportLost) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:reportLostButton];
         
@@ -381,6 +372,22 @@
     return _infoModel;
 }
 
+
+#pragma mark - Setter
+- (void)setMainColor:(UIColor *)color animated:(BOOL)animated{
+    NSTimeInterval interval = animated ? 0.3f : 0;
+    
+    [UIView animateWithDuration:interval animations:^{
+        self.infoView.layer.borderColor = color.CGColor;
+        self.infoView.backgroundColor = [color colorWithAlphaComponent:0.1];
+        self.bookNumLabel.textColor = color;
+        self.bookNumInfoLabel.textColor = color;
+        for (UIButton *button in self.infoViewBtns) {
+            [button setTitleColor:color forState:UIControlStateNormal];
+            [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+        }
+    }];
+}
 
 
 
