@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class LibraryLoginBean;
 
 @protocol LibraryLoginDelegate
 - (void)loginDidSuccess;
@@ -16,6 +17,7 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *tmpURL;
+@property (nonatomic, strong) LibraryLoginBean *loginBean;
 @property (nonatomic, weak) id <LibraryLoginDelegate> delegate;
 
 - (void)gotoLogin;
@@ -25,8 +27,7 @@
 typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
     LibraryInfoReturnDateLevelLow,
     LibraryInfoReturnDateLevelMiddle,
-    LibraryInfoReturnDateLevelHigh,
-    LibraryInfoReturnDateLevelHurry
+    LibraryInfoReturnDateLevelHigh
 };
 
 @interface LibraryLoginBean : NSObject
@@ -48,6 +49,7 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @property (nonatomic, strong) NSString *barCodeStr;
 @property (nonatomic, strong) NSString *registrationStr;
 //其他
-@property (nonatomic, assign) LibraryInfoReturnDateLevel *returnDateLevel;
+@property (nonatomic, assign) LibraryInfoReturnDateLevel returnDateLevel;
+@property (nonatomic, assign) int days;
 
 @end

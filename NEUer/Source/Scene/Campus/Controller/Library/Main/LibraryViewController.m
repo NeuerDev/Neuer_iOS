@@ -113,6 +113,14 @@
     }];
 }
 
+#pragma mark - Private Methods
+- (void)checkLoginState {
+    LibraryLoginBean *loginBean = self.loginModel.loginBean;
+    UIColor *mainColor = [UIColor colorWithHexStr:@[@"#64B74E",@"#FFBA13",@"#FF5100"][loginBean.returnDateLevel]];
+    [self setMainColor:mainColor animated:YES];
+    
+}
+
 #pragma mark - Respond Methods
 - (void)beginRefreshing {
     [self.refreshControl beginRefreshing];
@@ -204,7 +212,7 @@
 
 #pragma mark - LibraryLoginDelegate
 - (void)loginDidSuccess {
-    NSLog(@"ok");
+    [self checkLoginState];
 }
 
 
