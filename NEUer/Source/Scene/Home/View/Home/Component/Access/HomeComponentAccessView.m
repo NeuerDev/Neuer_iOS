@@ -162,8 +162,8 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     if (!_cellDataArray) {
         _cellDataArray = @[
                            @{
-                               @"title":@"VR 校园",
-                               @"url":@"",
+                               @"title":@"AR 校园",
+                               @"url":@"neu://go/ar",
                                @"color":@"#DFC3BB",
                                },
                            @{
