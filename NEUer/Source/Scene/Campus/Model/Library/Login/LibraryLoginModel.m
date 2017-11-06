@@ -12,7 +12,7 @@
 
 @interface LibraryLoginModel () <JHRequestDelegate,LibraryLoginInfoDelegate>
 
-@property (nonatomic, strong) LibraryLoginMyInfoModel *infoModel;
+
 @property (nonatomic) BOOL isLogin;
 
 @end
@@ -116,7 +116,7 @@
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     unsigned int unitFlags = NSCalendarUnitDay;
     NSDateComponents *comps = [gregorian components:unitFlags fromDate:nowDate  toDate:date  options:0];
-    int days = (int)[comps day];
+    NSInteger days = (NSInteger)[comps day];
     _loginBean.days = days;
     if (days > 15) {
         _loginBean.returnDateLevel = LibraryInfoReturnDateLevelLow;
@@ -133,7 +133,7 @@
         _loginBean.returnDateLevel = LibraryInfoReturnDateLevelLow;
     } else {
         int min = 30000000;
-        for (int i = 0; i < _infoModel.borrowingArr.count; i++) {
+        for (NSInteger i = 0; i < _infoModel.borrowingArr.count; i++) {
             if ([_infoModel.borrowingArr[i].shouldReturnDate intValue] < min) {
                 min = [_infoModel.borrowingArr[i].shouldReturnDate intValue];
             }

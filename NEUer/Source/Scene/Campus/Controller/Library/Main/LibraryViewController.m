@@ -13,18 +13,18 @@
 #import "LoginViewController.h"
 #import "SearchLibraryViewController.h"
 
-#import "SearchListComponent.h"
+#import "CustomSectionHeaderFooterView.h"
 
 #import "SearchLibraryNewBookModel.h"
 #import "SearchLibraryBorrowingModel.h"
 #import "LibraryLoginModel.h"
 #import "LibraryLoginMyInfoModel.h"
 
+static NSString * const kLibraryReturnConsumeHistoryHeaderViewId = @"kLibraryReturnConsumeHistoryHeaderViewId";
+static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 
-@interface LibraryViewController () <SearchListComponentDelegate,SearchLibraryNewBookDelegate,SearchLibraryBorrowingDelegate,UITableViewDelegate,UITableViewDataSource,LibraryLoginDelegate>
+@interface LibraryViewController () <UITableViewDelegate,UITableViewDataSource,LibraryLoginDelegate,SearchLibraryBorrowingDelegate,SearchLibraryNewBookDelegate>
 //全局
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIBarButtonItem *loginButtonItem;
 //信息
@@ -33,14 +33,14 @@
 @property (nonatomic, strong) UILabel *bookNumInfoLabel;
 @property (nonatomic, strong) NSArray<UIButton *> *infoViewBtns;
 @property (nonatomic, strong) UITableView *infoTableView;
-//新书和热门
-@property (nonatomic, strong) SearchListComponent *newbookSearchComponent;
-@property (nonatomic, strong) SearchListComponent *mostSearchComponent;
 //model
 @property (nonatomic, strong) SearchLibraryNewBookModel *newbookModel;
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
 @property (nonatomic, strong) LibraryLoginModel *loginModel;
 @property (nonatomic, strong) LibraryLoginMyInfoModel *infoModel;
+
+@property (nonatomic, strong) NSArray<NSString *> *bookStrings;
+@property (nonatomic, strong) NSArray<NSString *> *mostStrings;
 
 
 @end
@@ -62,24 +62,14 @@
 - (void)initData {
     [self setTitle:@"图书馆"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    self.scrollView.refreshControl = self.refreshControl;
+    self.infoTableView.refreshControl = self.refreshControl;
     self.navigationItem.rightBarButtonItem = self.loginButtonItem;
     [self.newbookModel search];
     [self.mostModel search];
 }
 
 - (void)initConstraints {
-    self.scrollView.frame = self.view.frame;
-    
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.scrollView);
-        make.width.equalTo(self.scrollView);
-    }];
-    
-    [self.infoTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.contentView);
-        make.height.mas_equalTo(SCREEN_WIDTH_ACTUAL*0.5);
-    }];
+    self.infoTableView.frame = self.view.frame;
     
     [self.bookNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.infoView.mas_top).with.offset(32);
@@ -99,18 +89,6 @@
             make.height.mas_equalTo(@(54));
         }];
     }
-    
-    
-    [self.newbookSearchComponent.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.infoTableView.mas_bottom);
-        make.left.and.right.equalTo(self.contentView);
-        make.height.mas_equalTo(20 * 44);
-    }];
-    
-    [self.mostSearchComponent.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.newbookSearchComponent.view.mas_bottom);
-        make.bottom.and.left.and.right.equalTo(self.contentView);
-    }];
 }
 
 #pragma mark - Private Methods
@@ -118,6 +96,8 @@
     LibraryLoginBean *loginBean = self.loginModel.loginBean;
     UIColor *mainColor = [UIColor colorWithHexStr:@[@"#64B74E",@"#FFBA13",@"#FF5100"][loginBean.returnDateLevel]];
     [self setMainColor:mainColor animated:YES];
+    NSLog(@"count - %lu",self.infoModel.bookedArr.count);
+    [self.infoTableView reloadData];
     
 }
 
@@ -158,33 +138,158 @@
 }
 
 #pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.section) {
+        case 0: {
+            
+        }
+            break;
+            
+        case 1: {
+            SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+            [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+            [resultVC searchWithKeyword:self.bookStrings[indexPath.row] scope:0];
+            [self.navigationController pushViewController:resultVC animated:YES];
+        }
+            break;
+            
+        case 2: {
+            SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+            [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+            [resultVC searchWithKeyword:self.mostStrings[indexPath.row] scope:0];
+            [self.navigationController pushViewController:resultVC animated:YES];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    CustomSectionHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kLibraryReturnConsumeHistoryHeaderViewId];
+    if (!headerView) {
+        headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kLibraryReturnConsumeHistoryHeaderViewId];
+        headerView.contentView.backgroundColor = [UIColor whiteColor];
+    }
+    headerView.section = section;
+    switch (section) {
+        case 0: {
+            headerView.titleLabel.text = @"当前借阅";
+            [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
+        }
+            break;
+            
+        case 1: {
+            headerView.titleLabel.text = @"新书通报";
+            [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
+        }
+            break;
+        
+        case 2: {
+            headerView.titleLabel.text = @"热门排行";
+            [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [headerView setPerformActionBlock:^(NSInteger section) {
+        switch (section) {
+            case 0: {
+                
+            }
+                break;
+                
+            case 1: {
+                LibraryNewBookViewController *newbookVC = [[LibraryNewBookViewController alloc] init];
+                [self.navigationController pushViewController:newbookVC animated:YES];
+            }
+                break;
+            
+            case 2: {
+                LibraryMostViewController *mostVC =[[LibraryMostViewController alloc] init];
+                [self.navigationController pushViewController:mostVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    
+    return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (self.infoModel.borrowingArr.count == 0) {
+        if (section == 0) {
+            return 0;
+        }
+    }
+    return 64;
+}
 
 #pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 3;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    switch (section ) {
+        case 0:
+            return self.infoModel.borrowingArr.count;
+            break;
+        
+        case 1:
+            return self.bookStrings.count;
+            break;
+            
+        case 2:
+            return self.mostStrings.count;
+            break;
+            
+        default:
+            break;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
-    return cell;
-}
-
-#pragma mark - SearchListComponentDelegate
-- (void)component:(SearchListComponent *)component didSelectedString:(NSString *)string {
-    SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
-    [resultVC.view setBackgroundColor:[UIColor whiteColor]];
-    [resultVC searchWithKeyword:string scope:0];
-    [self.navigationController pushViewController:resultVC animated:YES];
-}
-
-- (void)component:(SearchListComponent *)component willPerformAction:(NSString *)action {
-    if (component.view.tag == 101) {
-        LibraryNewBookViewController *newbookVC = [[LibraryNewBookViewController alloc] init];
-        [self.navigationController pushViewController:newbookVC animated:YES];
-    } else {
-        LibraryMostViewController *mostVC =[[LibraryMostViewController alloc] init];
-        [self.navigationController pushViewController:mostVC animated:YES];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryDefaultCellId];
+        cell.textLabel.textColor = [UIColor beautyBlue];
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
     }
+    switch (indexPath.section) {
+        case 0: {
+            cell.textLabel.text = @"111";
+        }
+            break;
+            
+        case 1: {
+            cell.textLabel.text = self.bookStrings[indexPath.row];
+        }
+            break;
+            
+        case 2: {
+            cell.textLabel.text = self.mostStrings[indexPath.row];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    return cell;
 }
 
 #pragma mark - SearchLibraryBorrowingDelegate
@@ -192,17 +297,19 @@
 - (void)searchDidSuccess {
     if (self.newbookModel.resultArray.count && self.mostModel.resultArray.count) {
         NSMutableArray *newbookArr = [NSMutableArray array];
-        for (SearchLibraryNewBookBean *bean in self.newbookModel.resultArray) {
-            [newbookArr addObject:bean.title];
+        for (NSInteger i = 0; i < 6; i++) {
+            [newbookArr addObject:self.newbookModel.resultArray[i].title];
         }
-        
+
         NSMutableArray *mostArr = [NSMutableArray array];
-        for (SearchLibraryBorrowingBean *bean in self.mostModel.resultArray) {
-            [mostArr addObject:bean.title];
+        for (NSInteger i = 0; i < 6; i++) {
+            [mostArr addObject:self.mostModel.resultArray[i].title];
         }
         
-        self.newbookSearchComponent.strings = newbookArr;
-        self.mostSearchComponent.strings = mostArr;
+        self.bookStrings = newbookArr;
+        self.mostStrings = mostArr;
+        [self.infoTableView reloadData];
+
     }
 }
 
@@ -217,22 +324,6 @@
 
 
 #pragma mark - Getter
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        [self.view addSubview:_scrollView];
-    }
-    return _scrollView;
-}
-
-- (UIView *)contentView {
-    if (!_contentView) {
-        _contentView = [[UIView alloc] init];
-        [self.scrollView addSubview:_contentView];
-    }
-    return _contentView;
-}
-
 - (UIRefreshControl *)refreshControl {
     if (!_refreshControl) {
         _refreshControl = [[UIRefreshControl alloc] init];
@@ -261,6 +352,8 @@
 - (UILabel *)bookNumLabel {
     if (!_bookNumLabel) {
         _bookNumLabel = [[UILabel alloc] init];
+        _bookNumLabel.font = [UIFont systemFontOfSize:48.0 weight:UIFontWeightLight];
+        _bookNumLabel.text = @"未获取";
         [self.infoView addSubview:_bookNumLabel];
     }
     return _bookNumLabel;
@@ -269,6 +362,8 @@
 - (UILabel *)bookNumInfoLabel {
     if (!_bookNumInfoLabel) {
         _bookNumInfoLabel = [[UILabel alloc] init];
+        _bookNumInfoLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _bookNumInfoLabel.text = @"图书馆不可用";
         [self.infoView addSubview:_bookNumInfoLabel];
     }
    return _bookNumInfoLabel;
@@ -317,29 +412,9 @@
         
         _infoTableView.tableHeaderView = headerView;
         _infoTableView.tableFooterView = [[UIView alloc] init];
-        [self.contentView addSubview:_infoTableView];
+        [self.view addSubview:_infoTableView];
     }
     return _infoTableView;
-}
-
-- (SearchListComponent *)newbookSearchComponent {
-    if (!_newbookSearchComponent) {
-        _newbookSearchComponent = [[SearchListComponent alloc] initWithTitle:@"新书通报" action:@"查看全部"];
-        _newbookSearchComponent.delegate = self;
-        _newbookSearchComponent.view.tag = 101;
-        [self.contentView addSubview:_newbookSearchComponent.view];
-    }
-    return _newbookSearchComponent;
-}
-
-- (SearchListComponent *)mostSearchComponent {
-    if (!_mostSearchComponent) {
-        _mostSearchComponent = [[SearchListComponent alloc] initWithTitle:@"热门排行" action:@"查看全部"];
-        _mostSearchComponent.delegate = self;
-        _mostSearchComponent.view.tag = 102;
-        [self.contentView addSubview:_mostSearchComponent.view];
-    }
-    return _mostSearchComponent;
 }
 
 //model
@@ -375,9 +450,23 @@
 
 - (LibraryLoginMyInfoModel *)infoModel {
     if (!_infoModel) {
-        _infoModel = [[LibraryLoginMyInfoModel alloc] init];
+        _infoModel = self.loginModel.infoModel;
     }
     return _infoModel;
+}
+
+- (NSArray<NSString *> *)bookStrings {
+   if (!_bookStrings) {
+       _bookStrings = [[NSArray alloc] init];
+    }
+   return _bookStrings;
+}
+
+- (NSArray<NSString *> *)mostStrings {
+    if (!_mostStrings) {
+        _mostStrings = [[NSArray alloc] init];
+    }
+    return _mostStrings;
 }
 
 
