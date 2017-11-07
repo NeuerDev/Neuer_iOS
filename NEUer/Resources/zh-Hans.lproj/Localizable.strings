@@ -108,6 +108,26 @@
 
 
 /*
+ Campus
+ */
+
+"CampusAAOSystemTitle" = "教务系统";
+"CampusAAOSystemSubtitle" = "关心你 更关心你的成绩";
+
+"CampusEcardCenterTitle" = "校卡中心";
+"CampusEcardCenterSubtitle" = "再也不用担心打菜时余额不足了";
+
+"CampusLibraryTitle" = "图书馆";
+"CampusLibrarySubtitle" = "在图书馆邂逅那个抠脚大汉";
+
+"CampusNetworkCenterTitle" = "网络中心";
+"CampusNetworkCenterSubtitle" = "看个剧分分钟爆流量的网关";
+
+"CampusRestaurantTitle" = "东大食堂";
+"CampusRestaurantSubtitle" = "据说浑南三楼甜辣鸡很好吃";
+
+
+/*
  Me
  */
 

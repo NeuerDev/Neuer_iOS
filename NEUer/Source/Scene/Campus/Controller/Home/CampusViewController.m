@@ -203,32 +203,32 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     if (!_cellDataArray) {
         _cellDataArray = @[
                            @{
-                               @"title":@"教务系统",
-                               @"detail":@"关心你 更关心你的成绩",
+                               @"title":NSLocalizedString(@"CampusAAOSystemTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusAAOSystemSubtitle", nil),
                                @"url":@"",
                                @"image":@"aao_campus_background",
                                },
                            @{
-                               @"title":@"校卡中心",
-                               @"detail":@"再也不怕打菜时余额不足了",
+                               @"title":NSLocalizedString(@"CampusEcardCenterTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusEcardCenterSubtitle", nil),
                                @"url":@"neu://go/ecard",
                                @"image":@"ecard_campus_background",
                                },
                            @{
-                               @"title":@"图书馆",
-                               @"detail":@"在图书馆邂逅那个抠脚大汉",
+                               @"title":NSLocalizedString(@"CampusLibraryTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusLibrarySubtitle", nil),
                                @"url":@"",
                                @"image":@"library_campus_background",
                                },
                            @{
-                               @"title":@"网络中心",
-                               @"detail":@"看个剧分分钟爆流量的网关",
+                               @"title":NSLocalizedString(@"CampusNetworkCenterTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusNetworkCenterSubtitle", nil),
                                @"url":@"",
                                @"image":@"ipgw_campus_background",
                                },
                            @{
-                               @"title":@"东大食堂",
-                               @"detail":@"据说三楼的甜辣鸡最好吃",
+                               @"title":NSLocalizedString(@"CampusRestaurantTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusRestaurantSubtitle", nil),
                                @"url":@"",
                                @"image":@"",
                                },

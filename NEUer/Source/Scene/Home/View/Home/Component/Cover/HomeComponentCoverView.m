@@ -24,7 +24,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
     if (self = [super initWithFrame:frame]) {
         
         self.contentView.layer.cornerRadius = 8;
-        
+        self.contentView.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
         [self initConstraints];
     }
     
@@ -166,6 +166,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
     HomeComponentCoverCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeComponentCoverCellId forIndexPath:indexPath];
     NSDictionary *item = self.cellDataArray[indexPath.item];
     cell.imageView.image = [UIImage imageNamed:item[@"image"]];
+    cell.contentView.layer.borderColor = [[UIImage imageNamed:item[@"image"]].mainColor colorWithAlphaComponent:0.8].CGColor;
     return cell;
 }
 

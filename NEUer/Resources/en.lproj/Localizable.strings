@@ -109,6 +109,26 @@
 
 
 /*
+ Campus
+ */
+
+"CampusAAOSystemTitle" = "AAO System";
+"CampusAAOSystemSubtitle" = "Score, schedule and courses";
+
+"CampusEcardCenterTitle" = "Ecard Center";
+"CampusEcardCenterSubtitle" = "Balance and consume history";
+
+"CampusLibraryTitle" = "Library";
+"CampusLibrarySubtitle" = "Find books and borrow history";
+
+"CampusNetworkCenterTitle" = "Network Center";
+"CampusNetworkCenterSubtitle" = "Data usage and analytics";
+
+"CampusRestaurantTitle" = "Restaurant";
+"CampusRestaurantSubtitle" = "What to eat for the next meal?";
+
+
+/*
  Me
  */
 

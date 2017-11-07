@@ -95,6 +95,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     [super viewDidLoad];
     
     self.hidesBottomBarWhenPushed = YES;
+    self.tabBar.tintColor = [UIColor colorWithHexStr:@"#4DABF5"];
     self.viewControllers = @[
                              self.homeNavigationVC,
                              self.campusNavigationVC,
