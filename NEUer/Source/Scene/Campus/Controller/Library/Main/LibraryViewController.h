@@ -11,3 +11,12 @@
 @interface LibraryViewController : JHBaseViewController
 
 @end
+
+@interface LibraryReturnCell : UITableViewCell
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *callNumLabel;
+@property (nonatomic, strong) UILabel *authorLabel;
+@property (nonatomic, strong) UILabel *returndateLabel;
+@property (nonatomic, strong) UIButton *refurbishBtn;
+
+@end

@@ -491,7 +491,80 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
         }
     }];
 }
+@end
+
+@implementation LibraryReturnCell
+#pragma mark - Init Methods
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.layer.cornerRadius = 16;
+        self.layer.shadowColor = [UIColor grayColor].CGColor;
+        self.layer.shadowOffset = CGSizeMake(0, 4);
+        self.layer.shadowOpacity = 0.2;
+        self.layer.shadowRadius = 4;
+        self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.frame byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
+        
+        [self.contentView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        
+        [self initConstraints];
+    }
+    return self;
+}
+
+- (void)initConstraints {
+    
+}
+
+#pragma mark - Getter
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+       _titleLabel = [[UILabel alloc] init];
+       [self.contentView addSubview:_titleLabel];
+    }
+   return _titleLabel;
+}
+
+- (UILabel *)callNumLabel {
+    if (!_callNumLabel) {
+        _callNumLabel = [[UILabel alloc] init];
+        [self.contentView addSubview:_callNumLabel];
+    }
+   return _callNumLabel;
+}
+
+- (UILabel *)authorLabel {
+    if (!_authorLabel) {
+        _authorLabel = [[UILabel alloc] init];
+        [self.contentView addSubview:_authorLabel];
+    }
+   return _authorLabel;
+}
+
+- (UILabel *)returndateLabel {
+    if (!_returndateLabel) {
+        _returndateLabel = [[UILabel alloc] init];
+        [self.contentView addSubview:_returndateLabel];
+    }
+   return _returndateLabel;
+}
+
+- (UIButton *)refurbishBtn {
+    if (!_refurbishBtn) {
+        _refurbishBtn = [[UIButton alloc] init];
+        [self.contentView addSubview:_refurbishBtn];
+    }
+   return _refurbishBtn;
+}
+
+
 
 
 
 @end
+
+
+
+
+
+

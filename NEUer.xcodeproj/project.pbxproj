@@ -93,6 +93,7 @@
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
 		772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */; };
+		772116E31FB1D871008A305E /* LibraryRecommendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 772116E21FB1D871008A305E /* LibraryRecommendModel.m */; };
 		77643EFF1FAF070D00F37265 /* LibraryCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 77643EFE1FAF070D00F37265 /* LibraryCenter.m */; };
 		776697E11FA975B000BB7544 /* SearchLibraryNewBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E01FA975B000BB7544 /* SearchLibraryNewBookModel.m */; };
 		776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */; };
@@ -299,6 +300,8 @@
 		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
 		772116DD1FB19F58008A305E /* LibraryHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryHistoryViewController.h; sourceTree = "<group>"; };
 		772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryHistoryViewController.m; sourceTree = "<group>"; };
+		772116E11FB1D871008A305E /* LibraryRecommendModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryRecommendModel.h; sourceTree = "<group>"; };
+		772116E21FB1D871008A305E /* LibraryRecommendModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryRecommendModel.m; sourceTree = "<group>"; };
 		77643EFD1FAF070D00F37265 /* LibraryCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryCenter.h; sourceTree = "<group>"; };
 		77643EFE1FAF070D00F37265 /* LibraryCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryCenter.m; sourceTree = "<group>"; };
 		776697DF1FA975B000BB7544 /* SearchLibraryNewBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryNewBookModel.h; sourceTree = "<group>"; };
@@ -785,6 +788,7 @@
 		5C7548B01F77382A0065E64E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				772116E01FB1D848008A305E /* Recommend */,
 				776697DE1FA9757400BB7544 /* BookDetail */,
 				776697DD1FA9755400BB7544 /* Login */,
 				776697DC1FA9754100BB7544 /* Borrowing */,
@@ -1428,6 +1432,15 @@
 			path = History;
 			sourceTree = "<group>";
 		};
+		772116E01FB1D848008A305E /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				772116E11FB1D871008A305E /* LibraryRecommendModel.h */,
+				772116E21FB1D871008A305E /* LibraryRecommendModel.m */,
+			);
+			path = Recommend;
+			sourceTree = "<group>";
+		};
 		77643EFC1FAF069B00F37265 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -1816,6 +1829,7 @@
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
+				772116E31FB1D871008A305E /* LibraryRecommendModel.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
