@@ -31,6 +31,14 @@
 
 
 /*
+ Today Cover
+ */
+
+"HomeCoverTitle" = "{0} DAYS IN NEU";
+"HomeCoverActionButton" = "See All";
+
+
+/*
  Today Access
  */
 
@@ -47,7 +55,7 @@
  */
 
 "HomeScheduleTitle" = "SCHEDULE";
-"HomeScheduleActionButton" = "More";
+"HomeScheduleActionButton" = "See All";
 
 
 /*
@@ -55,7 +63,7 @@
  */
 
 "HomeNewsTitle" = "NEWS";
-"HomeNewsActionButton" = "More";
+"HomeNewsActionButton" = "See All";
 
 
 /*

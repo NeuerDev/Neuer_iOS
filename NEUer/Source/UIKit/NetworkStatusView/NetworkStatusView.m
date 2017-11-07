@@ -68,7 +68,7 @@ const CGFloat kNetworkViewHeight = 80.0f;
         self.layer.cornerRadius = 16.0f;
         self.layer.shadowColor = [UIColor grayColor].CGColor;
         self.layer.shadowOffset = CGSizeMake(0, 4);
-        self.layer.shadowOpacity = 0.7;
+        self.layer.shadowOpacity = 0.5;
     }
     
     return self;
@@ -123,7 +123,11 @@ const CGFloat kNetworkViewHeight = 80.0f;
 #pragma mark - Public Methods
 
 - (void)show {
-    _originY = CGRectGetMaxY(_parentView.frame) - kNetworkViewHeight - 16;
+    if (@available(iOS 11.0, *)) {
+        _originY = CGRectGetMaxY(_parentView.frame) - _parentView.safeAreaInsets.bottom - kNetworkViewHeight - 16;
+    } else {
+        _originY = CGRectGetMaxY(_parentView.frame) - kNetworkViewHeight - 16;
+    }
     [_parentView bringSubviewToFront:self];
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
     [self performSelector:@selector(dismiss) withObject:nil afterDelay:4.0f];
@@ -178,7 +182,7 @@ const CGFloat kNetworkViewHeight = 80.0f;
 
 - (UIVisualEffectView *)effectView {
     if (!_effectView) {
-        _effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+        _effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent]];
         _effectView.layer.cornerRadius = 16.0f;
         _effectView.layer.masksToBounds = YES;
         [self addSubview:_effectView];

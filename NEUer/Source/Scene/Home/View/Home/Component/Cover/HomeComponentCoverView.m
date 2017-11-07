@@ -128,8 +128,8 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.titleLabel.text = @"在东大的678天";
-        [self.actionButton setTitle:@"往期作品" forState:UIControlStateNormal];
+        self.titleLabel.text = [NSLocalizedString(@"HomeCoverTitle", nil) stringByReplacingOccurrencesOfString:@"{0}" withString:@"987"];
+        [self.actionButton setTitle:NSLocalizedString(@"HomeCoverActionButton", nil) forState:UIControlStateNormal];
         
         [self initConstraints];
     }

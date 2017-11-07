@@ -24,6 +24,11 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 @implementation SkelentonNavigationViewController
 
++ (void)initialize {
+    UINavigationBar *navigationBar = [UINavigationBar appearance];
+    navigationBar.barTintColor = [UIColor whiteColor];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         

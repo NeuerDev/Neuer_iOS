@@ -29,6 +29,13 @@
 "HomeTabBarItemTitle" = "今天";
 "HomeNavigationBarTitle" = "今天";
 
+/*
+ Today Cover
+ */
+
+"HomeCoverTitle" = "在东大的{0}天";
+"HomeCoverActionButton" = "更多作品";
+
 
 /*
  Today Access
@@ -47,7 +54,7 @@
  */
 
 "HomeScheduleTitle" = "今日课程";
-"HomeScheduleActionButton" = "更多";
+"HomeScheduleActionButton" = "查看全部";
 
 
 /*
@@ -55,7 +62,7 @@
  */
 
 "HomeNewsTitle" = "东大新闻";
-"HomeNewsActionButton" = "更多";
+"HomeNewsActionButton" = "查看全部";
 
 
 /*
