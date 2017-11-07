@@ -12,6 +12,7 @@
 #import "SearchLibraryResultViewController.h"
 #import "LoginViewController.h"
 #import "SearchLibraryViewController.h"
+#import "LibraryHistoryViewController.h"
 
 #import "CustomSectionHeaderFooterView.h"
 
@@ -55,7 +56,7 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
     //@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"]
     UIColor *mainColor = [UIColor colorWithHexStr:@"#9C9C9C"];
     [self setMainColor:mainColor animated:YES];
-    
+
 }
 
 #pragma mark - Init Methods
@@ -96,7 +97,7 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
     LibraryLoginBean *loginBean = self.loginModel.loginBean;
     UIColor *mainColor = [UIColor colorWithHexStr:@[@"#64B74E",@"#FFBA13",@"#FF5100"][loginBean.returnDateLevel]];
     [self setMainColor:mainColor animated:YES];
-    NSLog(@"count - %lu",self.infoModel.bookedArr.count);
+    [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
     [self.infoTableView reloadData];
     
 }
@@ -135,6 +136,11 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 - (void)searchBook {
     SearchLibraryViewController *searchVC = [[SearchLibraryViewController alloc] init];
     [self.navigationController pushViewController:searchVC animated:YES];
+}
+
+- (void)checkHistory {
+    LibraryHistoryViewController *historyVC = [[LibraryHistoryViewController alloc] init];
+    [self.navigationController pushViewController:historyVC animated:YES];
 }
 
 #pragma mark - UITableViewDelegate
@@ -363,7 +369,7 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
     if (!_bookNumInfoLabel) {
         _bookNumInfoLabel = [[UILabel alloc] init];
         _bookNumInfoLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _bookNumInfoLabel.text = @"图书馆不可用";
+        _bookNumInfoLabel.text = @"距还书日期";
         [self.infoView addSubview:_bookNumInfoLabel];
     }
    return _bookNumInfoLabel;
@@ -379,13 +385,13 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
         
         UIButton *changePasswordButton = [[UIButton alloc] init];
         [changePasswordButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-        [changePasswordButton setTitle:@"修改密码" forState:UIControlStateNormal];
-//        [changePasswordButton addTarget:self action:@selector(changePassword) forControlEvents:UIControlEventTouchUpInside];
+        [changePasswordButton setTitle:@"借阅历史" forState:UIControlStateNormal];
+        [changePasswordButton addTarget:self action:@selector(checkHistory) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:changePasswordButton];
         
         UIButton *reportLostButton = [[UIButton alloc] init];
         [reportLostButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-        [reportLostButton setTitle:@"自助挂失" forState:UIControlStateNormal];
+        [reportLostButton setTitle:@"荐购新书" forState:UIControlStateNormal];
 //        [reportLostButton addTarget:self action:@selector(reportLost) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:reportLostButton];
         

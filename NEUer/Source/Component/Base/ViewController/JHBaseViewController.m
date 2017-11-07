@@ -29,22 +29,31 @@
 }
 
 - (void)initConstraints {
-    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
+    [self.placeholderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
         make.width.mas_equalTo(SCREEN_WIDTH_ACTUAL);
+        make.top.equalTo(self.view.mas_centerY);
+    }];
+    
+    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.placeholderView.mas_top);
+        make.width.mas_equalTo(self.placeholderView);
+        make.height.mas_equalTo(30);
+    }];
+
+    [self.detailLaebl mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.label.mas_bottom).with.offset(10);
+        make.left.equalTo(self.placeholderView.mas_left).with.offset(50);
+        make.right.equalTo(self.placeholderView.mas_right).with.offset(-50);
         make.height.mas_equalTo(60);
     }];
-    
-    [self.detailLaebl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.label);
-        make.top.equalTo(self.label.mas_bottom);
-        make.width.height.equalTo(self.label);
-    }];
-    
+
     [self.retryBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.detailLaebl);
-        make.top.equalTo(self.detailLaebl.mas_bottom);
-        make.width.height.equalTo(self.detailLaebl);
+        make.top.equalTo(self.detailLaebl.mas_bottom).with.offset(30);
+        make.height.mas_equalTo(50);
+        make.width.equalTo(self.detailLaebl.mas_width).with.multipliedBy(0.5);
+        make.centerX.equalTo(self.placeholderView);
+        make.bottom.equalTo(self.placeholderView.mas_bottom);
     }];
 }
 
@@ -76,29 +85,37 @@
 }
 
 #pragma mark - Public Methods
-- (void)showLabel {
-    _label.hidden = NO;
-    _detailLaebl.hidden = NO;
-    _retryBtn.hidden = NO;
+- (void)showPlaceHolder {
+    self.placeholderView.hidden = NO;
+    self.activityIndicatorView.hidden = YES;
 }
 
-- (void)hideLabel {
-    _label.hidden = YES;
-    _detailLaebl.hidden = YES;
-    _retryBtn.hidden = YES;
+- (void)hidePlaceHolder {
+    self.placeholderView.hidden = YES;
+    self.activityIndicatorView.hidden = NO;
 }
 
 #pragma mark - Respond Methods
 - (void)retry:(UIButton *)sender {
-   
+ 
 }
 
 #pragma mark - Getter
+- (UIView *)placeholderView {
+    if (!_placeholderView) {
+        _placeholderView = [[UIView alloc] init];
+        [self.view addSubview:_placeholderView];
+    }
+   return _placeholderView;
+}
+
 - (UILabel *)label {
     if (!_label) {
         _label = [[UILabel alloc] init];
-        _label.hidden = YES;
-        [self.view addSubview:_label];
+        _label.textAlignment = NSTextAlignmentCenter;
+        _label.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightRegular];
+        _label.text = @"Page Not Found";
+        [self.placeholderView addSubview:_label];
     }
    return _label;
 }
@@ -106,8 +123,15 @@
 - (UILabel *)detailLaebl {
     if (!_detailLaebl) {
         _detailLaebl = [[UILabel alloc] init];
-        _detailLaebl.hidden = YES;
-        [self.view addSubview:_detailLaebl];
+        _detailLaebl.numberOfLines = 0;
+        _detailLaebl.text = @"The page you are looking for doesn't seem to exist...";
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_detailLaebl.text];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:8.0];
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, _detailLaebl.text.length)];
+        _detailLaebl.attributedText = attributedString;
+        _detailLaebl.textAlignment = NSTextAlignmentCenter;
+        [self.placeholderView addSubview:_detailLaebl];
     }
    return _detailLaebl;
 }
@@ -115,9 +139,20 @@
 - (UIButton *)retryBtn {
     if (!_retryBtn) {
         _retryBtn = [[UIButton alloc] init];
-        _retryBtn.hidden = YES;
-        [self.view addSubview:_retryBtn];
+        [_retryBtn setTitle:@"重    试" forState:UIControlStateNormal];
+        [_retryBtn setBackgroundColor:[UIColor colorWithRed:0.45 green:0.58 blue:0.92 alpha:1.0]];
+        _retryBtn.layer.cornerRadius = 25.0;
+        [self.placeholderView addSubview:_retryBtn];
     }
    return _retryBtn;
+}
+
+- (UIActivityIndicatorView *)activityIndicatorView {
+    if (!_activityIndicatorView) {
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] init];
+        _activityIndicatorView.hidden = YES;
+        [self.view addSubview:_activityIndicatorView];
+    }
+   return _activityIndicatorView;
 }
 @end

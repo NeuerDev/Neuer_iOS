@@ -92,6 +92,7 @@
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
+		772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */; };
 		77643EFF1FAF070D00F37265 /* LibraryCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 77643EFE1FAF070D00F37265 /* LibraryCenter.m */; };
 		776697E11FA975B000BB7544 /* SearchLibraryNewBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E01FA975B000BB7544 /* SearchLibraryNewBookModel.m */; };
 		776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */; };
@@ -296,6 +297,8 @@
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
 		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
 		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
+		772116DD1FB19F58008A305E /* LibraryHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryHistoryViewController.h; sourceTree = "<group>"; };
+		772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryHistoryViewController.m; sourceTree = "<group>"; };
 		77643EFD1FAF070D00F37265 /* LibraryCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryCenter.h; sourceTree = "<group>"; };
 		77643EFE1FAF070D00F37265 /* LibraryCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryCenter.m; sourceTree = "<group>"; };
 		776697DF1FA975B000BB7544 /* SearchLibraryNewBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryNewBookModel.h; sourceTree = "<group>"; };
@@ -1164,6 +1167,7 @@
 		5CC232F11F720776005F0A6E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				772116DC1FB19F30008A305E /* History */,
 				776697FD1FA978C700BB7544 /* Most */,
 				776697F91FA978A000BB7544 /* NewBook */,
 				776697F21FA9783D00BB7544 /* Main */,
@@ -1413,6 +1417,15 @@
 				5CE99C521F7294820062DBF9 /* JHURLRouter.m */,
 			);
 			path = URLRouter;
+			sourceTree = "<group>";
+		};
+		772116DC1FB19F30008A305E /* History */ = {
+			isa = PBXGroup;
+			children = (
+				772116DD1FB19F58008A305E /* LibraryHistoryViewController.h */,
+				772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */,
+			);
+			path = History;
 			sourceTree = "<group>";
 		};
 		77643EFC1FAF069B00F37265 /* Library */ = {
@@ -1832,6 +1845,7 @@
 				5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */,
 				5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
+				772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
 				776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */,
