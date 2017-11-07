@@ -31,11 +31,45 @@
 
 
 /*
- Search
+ Today Access
  */
 
-"SearchTabBarItemTitle" = "Search";
-"SearchNavigationBarTitle" = "Search";
+"HomeAccessARCampus" = "AR Campus";
+"HomeAccessIPGateway" = "IP Gateway";
+"HomeAccessTelevision" = "Television";
+"HomeAccessLibraryBooks" = "Find Books";
+"HomeAccessEcard" = "My Ecard";
+"HomeAccessScore" = "Query Score";
+
+
+/*
+ Today Schedule
+ */
+
+"HomeScheduleTitle" = "SCHEDULE";
+"HomeScheduleActionButton" = "More";
+
+
+/*
+ Today News
+ */
+
+"HomeNewsTitle" = "NEWS";
+"HomeNewsActionButton" = "More";
+
+
+/*
+ Today Television
+ */
+"TelevisionChannelSearchBarPlaceholder" = "Search";
+
+
+/*
+ Campus
+ */
+
+"CampusTabBarItemTitle" = "Campus";
+"CampusNavigationBarTitle" = "Campus";
 
 
 /*
@@ -43,7 +77,7 @@
  */
 
 "SearchLibraryNavigationBarTitle" = "Library";
-"SearchLibrarySearchBarPlaceholder" = "Find books in library";
+"SearchLibrarySearchBarPlaceholder" = "Search";
 
 "SearchLibrarySearchListRecentSearchTitle" = "RECENT SEARCHES";
 "SearchLibrarySearchListMostSearchTitle" = "MOST SEARCHES";

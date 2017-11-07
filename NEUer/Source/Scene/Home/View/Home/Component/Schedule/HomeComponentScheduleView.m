@@ -139,8 +139,8 @@ static NSString * const kHomeComponentScheduleCellId = @"kCellId";
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.titleLabel.text = @"今日课程";
-        [self.actionButton setTitle:@"更多" forState:UIControlStateNormal];
+        self.titleLabel.text = NSLocalizedString(@"HomeScheduleTitle", nil);
+        [self.actionButton setTitle:NSLocalizedString(@"HomeScheduleActionButton", nil) forState:UIControlStateNormal];
         
         [self initConstraints];
     }

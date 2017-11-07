@@ -228,6 +228,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     if (!_homeNavigationVC) {
         _homeNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
         _homeNavigationVC.tabBarItem.title = NSLocalizedString(@"HomeTabBarItemTitle", nil);
+        _homeNavigationVC.tabBarItem.image = [UIImage imageNamed:@"tab_home"];
     }
     
     return _homeNavigationVC;
@@ -237,6 +238,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     if (!_campusNavigationVC) {
         _campusNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[CampusViewController alloc] init]];
         _campusNavigationVC.tabBarItem.title = NSLocalizedString(@"CampusTabBarItemTitle", nil);
+        _campusNavigationVC.tabBarItem.image = [UIImage imageNamed:@"tab_campus"];
     }
     
     return _campusNavigationVC;
@@ -246,6 +248,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     if (!_meNavigationVC) {
         _meNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[MeViewController alloc] init]];
         _meNavigationVC.tabBarItem.title = NSLocalizedString(@"MeTabBarItemTitle", nil);
+        _meNavigationVC.tabBarItem.image = [UIImage imageNamed:@"tab_me"];
     }
     
     return _meNavigationVC;

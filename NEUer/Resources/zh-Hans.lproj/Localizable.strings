@@ -29,6 +29,35 @@
 "HomeTabBarItemTitle" = "今天";
 "HomeNavigationBarTitle" = "今天";
 
+
+/*
+ Today Access
+ */
+
+"HomeAccessARCampus" = "AR 校园";
+"HomeAccessIPGateway" = "一键联网";
+"HomeAccessTelevision" = "电视直播";
+"HomeAccessLibraryBooks" = "图书检索";
+"HomeAccessEcard" = "校卡余额";
+"HomeAccessScore" = "成绩查询";
+
+
+/*
+ Today Schedule
+ */
+
+"HomeScheduleTitle" = "今日课程";
+"HomeScheduleActionButton" = "更多";
+
+
+/*
+ Today News
+ */
+
+"HomeNewsTitle" = "东大新闻";
+"HomeNewsActionButton" = "更多";
+
+
 /*
  Today Television
  */
@@ -41,14 +70,6 @@
 
 "CampusTabBarItemTitle" = "校园";
 "CampusNavigationBarTitle" = "校园";
-
-
-/*
- Search
- */
-
-"SearchTabBarItemTitle" = "搜索";
-"SearchNavigationBarTitle" = "搜索";
 
 
 /*
