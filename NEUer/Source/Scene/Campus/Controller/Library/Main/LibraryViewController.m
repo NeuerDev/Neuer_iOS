@@ -16,6 +16,7 @@
 
 #import "CustomSectionHeaderFooterView.h"
 
+
 #import "SearchLibraryNewBookModel.h"
 #import "SearchLibraryBorrowingModel.h"
 #import "LibraryLoginModel.h"
@@ -23,6 +24,7 @@
 
 static NSString * const kLibraryReturnConsumeHistoryHeaderViewId = @"kLibraryReturnConsumeHistoryHeaderViewId";
 static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
+static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 @interface LibraryViewController () <UITableViewDelegate,UITableViewDataSource,LibraryLoginDelegate,SearchLibraryBorrowingDelegate,SearchLibraryNewBookDelegate>
 //全局
@@ -183,7 +185,7 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
     switch (section) {
         case 0: {
             headerView.titleLabel.text = @"当前借阅";
-            [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
+            [headerView.actionButton setTitle:@"全部续借" forState:UIControlStateNormal];
         }
             break;
             
@@ -231,6 +233,9 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return 128;
+    }
     return 44;
 }
 
@@ -269,33 +274,32 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryDefaultCellId];
-        cell.textLabel.textColor = [UIColor beautyBlue];
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-    }
-    switch (indexPath.section) {
-        case 0: {
-            cell.textLabel.text = @"111";
+    if (indexPath.section == 0) {
+        LibraryReturnCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryResultCellId];
+        if (!cell) {
+            cell = [[LibraryReturnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryResultCellId];
         }
-            break;
-            
-        case 1: {
+        [cell setBorrowingBean:self.infoModel.borrowingArr[indexPath.row]];
+        return cell;
+    } else {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryDefaultCellId];
+            cell.textLabel.textColor = [UIColor beautyBlue];
+            cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
+        }
+        if (indexPath.section == 1) {
             cell.textLabel.text = self.bookStrings[indexPath.row];
-        }
-            break;
-            
-        case 2: {
+        } else {
             cell.textLabel.text = self.mostStrings[indexPath.row];
         }
-            break;
-            
-        default:
-            break;
+        
+        return cell;
     }
     
-    return cell;
+    
+    
+    
 }
 
 #pragma mark - SearchLibraryBorrowingDelegate
@@ -406,6 +410,7 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
         _infoTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _infoTableView.dataSource = self;
         _infoTableView.delegate = self;
+        _infoView.backgroundColor = [UIColor clearColor];
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
         [headerView addSubview:self.infoView];
@@ -513,13 +518,41 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 }
 
 - (void)initConstraints {
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).with.offset(24);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-24);
+        make.top.equalTo(self.contentView.mas_top).with.offset(14);
+    }];
     
+    [self.callNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.titleLabel);
+        make.top.equalTo(self.titleLabel.mas_bottom);
+    }];
+    
+    [self.returndateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.contentView).with.offset(-14);
+        make.left.equalTo(self.titleLabel);
+    }];
+    
+    [self.authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.returndateLabel.mas_top).with.offset(-5);
+        make.left.equalTo(self.titleLabel);
+    }];
+    
+    [self.refurbishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(30);
+        make.width.mas_equalTo(80);
+        make.right.equalTo(self.contentView).with.offset(-24);
+        make.bottom.equalTo(self.returndateLabel);
+    }];
 }
 
 #pragma mark - Getter
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        _titleLabel.numberOfLines = 2;
        [self.contentView addSubview:_titleLabel];
     }
    return _titleLabel;
@@ -528,6 +561,9 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 - (UILabel *)callNumLabel {
     if (!_callNumLabel) {
         _callNumLabel = [[UILabel alloc] init];
+        _callNumLabel.textColor = [UIColor grayColor];
+        _callNumLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _callNumLabel.numberOfLines = 1;
         [self.contentView addSubview:_callNumLabel];
     }
    return _callNumLabel;
@@ -536,6 +572,9 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 - (UILabel *)authorLabel {
     if (!_authorLabel) {
         _authorLabel = [[UILabel alloc] init];
+        _authorLabel.textColor = [UIColor grayColor];
+        _authorLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _authorLabel.numberOfLines = 1;
         [self.contentView addSubview:_authorLabel];
     }
    return _authorLabel;
@@ -544,6 +583,9 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 - (UILabel *)returndateLabel {
     if (!_returndateLabel) {
         _returndateLabel = [[UILabel alloc] init];
+        _returndateLabel.textColor = [UIColor grayColor];
+        _returndateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _returndateLabel.numberOfLines = 1;
         [self.contentView addSubview:_returndateLabel];
     }
    return _returndateLabel;
@@ -552,12 +594,24 @@ static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
 - (UIButton *)refurbishBtn {
     if (!_refurbishBtn) {
         _refurbishBtn = [[UIButton alloc] init];
+        _refurbishBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _refurbishBtn.layer.cornerRadius = 15;
+        _refurbishBtn.layer.borderColor = [UIColor beautyBlue].CGColor;
+        _refurbishBtn.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        [_refurbishBtn setTitle:@"续借" forState:UIControlStateNormal];
+        [_refurbishBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
         [self.contentView addSubview:_refurbishBtn];
     }
    return _refurbishBtn;
 }
 
-
+#pragma mark - Setter
+- (void)setBorrowingBean:(LibraryLoginMyInfoBorrowingBean *)bean {
+    self.titleLabel.text = bean.title;
+    self.callNumLabel.text = [NSString stringWithFormat:@"索书号: %@",bean.claimNumber];
+    self.returndateLabel.text = [NSString stringWithFormat:@"归还日期: %@",bean.shouldReturnDate];
+    self.authorLabel.text = [NSString stringWithFormat:@"作者: %@",bean.author];
+}
 
 
 
