@@ -128,12 +128,12 @@
                 if (!currentUser.imageData) {
                     currentUser.imageData = data;
                 }
-                [currentUser commitUpdates];                
+                [currentUser commitUpdates];
             }
         }
         if (block) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                    block(data && !error, error);
+                block(data && !error, error);
             });
         }
     }];
@@ -384,7 +384,7 @@
         info.balance = [result stringForColumn:@"balance"];
         info.allowance = [result stringForColumn:@"allowance"];
         info.status = [result stringForColumn:@"status"];
-        info.image = [UIImage imageWithData:[result dataForColumn:@"imageData"]];
+        info.image = [UIImage imageWithData:UserCenter.defaultCenter.currentUser.imageData];
         info.lastUpdateTime = [result intForColumn:@"lastUpdateTime"];
     }
     return info;
@@ -432,7 +432,7 @@
     [currentUser commitUpdates];
     
     FMDatabase *db = [DataBaseCenter defaultCenter].database;
-    [db executeUpdate:@"replace into t_ecard (number, state, balance, status, lastUpdateTime) values (?, ?, ?, ?, ?)", _number, _state, _balance, _status, @(_lastUpdateTime)];
+    [db executeUpdate:@"replace into t_ecard (number, state, balance, allowance, status, lastUpdateTime) values (?, ?, ?, ?, ?, ?)", _number, _state, _balance, _allowance, _status, @(_lastUpdateTime)];
 }
 
 @end;
@@ -522,32 +522,40 @@
             if (hour>5 && hour<10) {
                 // 早餐
                 _detail = @{
-                  @"浑南一楼1#":@"豆浆",
-                  @"浑南一楼2#":@"豆浆",
-                  @"浑南一楼5#":@"面包糕点",
-                  @"浑南一楼17#":@"油条",
-                  @"浑南一楼38#":@"早餐馄饨",
-                  @"浑南三楼123#":@"饮料粥品",
-                  }[_device] ? : _device;
+                            @"浑南一楼1#":@"豆浆",
+                            @"浑南一楼2#":@"豆浆",
+                            @"浑南一楼5#":@"面包糕点",
+                            @"浑南一楼17#":@"油条",
+                            @"浑南一楼38#":@"早餐馄饨",
+                            @"浑南三楼123#":@"饮料粥品",
+                            }[_device] ? : _device;
             } else if (hour>=10 && hour<15) {
                 // 午餐
                 _detail = @{
-                  @"浑南一楼1#":@"豆浆",
-                  @"浑南一楼2#":@"豆浆",
-                  @"浑南一楼5#":@"一楼面",
-                  @"浑南一楼38#":@"蒸笼",
-                  @"浑南一楼40#":@"水饺",
-                  @"浑南二楼74#":@"锅贴炖汤",
-                  @"浑南二楼91#":@"米饭",
-                  @"浑南二楼103#":@"煎蛋饭",
-                  @"浑南三楼123#":@"饮料粥品",
-                  }[_device] ? : _device;
+                            @"浑南一楼1#":@"豆浆",
+                            @"浑南一楼2#":@"豆浆",
+                            @"浑南一楼5#":@"面食",
+                            @"浑南一楼7#":@"拉面、干拌面",
+                            @"浑南一楼24#":@"自选菜品",
+                            @"浑南一楼26#":@"煎蛋饭",
+                            @"浑南一楼27#":@"米饭",
+                            @"浑南一楼38#":@"蒸笼",
+                            @"浑南一楼40#":@"水饺",
+                            @"浑南二楼74#":@"锅贴炖汤",
+                            @"浑南二楼91#":@"米饭",
+                            @"浑南二楼103#":@"煎蛋饭",
+                            @"浑南三楼123#":@"饮料粥品",
+                            }[_device] ? : _device;
             } else if (hour>=15 && hour<23) {
                 // 晚餐
                 _detail = @{
                             @"浑南一楼1#":@"豆浆",
                             @"浑南一楼2#":@"豆浆",
-                            @"浑南一楼5#":@"一楼面",
+                            @"浑南一楼5#":@"面食",
+                            @"浑南一楼7#":@"拉面、干拌面",
+                            @"浑南一楼24#":@"自选菜品",
+                            @"浑南一楼26#":@"煎蛋饭",
+                            @"浑南一楼27#":@"米饭",
                             @"浑南一楼38#":@"蒸笼",
                             @"浑南一楼40#":@"水饺",
                             @"浑南二楼74#":@"锅贴炖汤",
@@ -577,7 +585,7 @@
                                                      @"一楼超市":@"一楼超市",
                                                      @"二楼超市":@"二楼超市",
                                                      @"水果":@"水果店",
-                                                  };
+                                                     };
             
             for (NSString *regex in specificWindowRegexMap) {
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
@@ -594,13 +602,17 @@
                             @"浑南一楼1#":@"原磨豆浆窗口",
                             @"浑南一楼2#":@"原磨豆浆窗口",
                             @"浑南一楼5#":@"早餐西点窗口",
-                            @"浑南一楼17#":@"早餐油条窗口",
-                            @"浑南一楼38#":@"蒸笼窗口",
-                            @"浑南一楼40#":@"水饺窗口",
-                            @"浑南二楼74#":@"锅贴炖汤窗口",
-                            @"浑南二楼91#":@"米饭窗口",
-                            @"浑南二楼103#":@"煎蛋饭窗口",
-                            @"浑南三楼123#":@"粥品窗口",
+                            @"浑南一楼7#":@"一楼兰州拉面窗口",
+                            @"浑南一楼17#":@"一楼早餐油条窗口",
+                            @"浑南一楼24#":@"一楼自选菜品窗口",
+                            @"浑南一楼26#":@"一楼煎蛋饭窗口",
+                            @"浑南一楼27#":@"一楼米饭窗口",
+                            @"浑南一楼38#":@"一楼蒸笼窗口",
+                            @"浑南一楼40#":@"一楼水饺窗口",
+                            @"浑南二楼74#":@"二楼锅贴炖汤窗口",
+                            @"浑南二楼91#":@"二楼米饭窗口",
+                            @"浑南二楼103#":@"二楼煎蛋饭窗口",
+                            @"浑南三楼123#":@"三楼粥品窗口",
                             }[_device] ? : _device;
                 
             }

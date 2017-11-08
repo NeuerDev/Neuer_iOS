@@ -11,10 +11,6 @@
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
 		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
-		3344EFD71F94B89E001ED45E /* LoginComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD61F94B89E001ED45E /* LoginComponentInfoView.m */; };
-		3344EFDB1F94B922001ED45E /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD91F94B922001ED45E /* LYTextField.m */; };
-		3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */; };
-		3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
@@ -130,14 +126,6 @@
 		3344EFCE1F948983001ED45E /* GatewayComponentInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoView.h; sourceTree = "<group>"; };
 		3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoView.m; sourceTree = "<group>"; };
 		3344EFD11F949B62001ED45E /* LYTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTool.m; sourceTree = "<group>"; };
-		3344EFD51F94B89E001ED45E /* LoginComponentInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginComponentInfoView.h; sourceTree = "<group>"; };
-		3344EFD61F94B89E001ED45E /* LoginComponentInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginComponentInfoView.m; sourceTree = "<group>"; };
-		3344EFD91F94B922001ED45E /* LYTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTextField.m; sourceTree = "<group>"; };
-		3344EFDA1F94B922001ED45E /* LYTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYTextField.h; sourceTree = "<group>"; };
-		3354DAA81F90751C00ACBDF3 /* LYInteractiveTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYInteractiveTransition.h; sourceTree = "<group>"; };
-		3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYInteractiveTransition.m; sourceTree = "<group>"; };
-		3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYAnimatedTransitioning.h; sourceTree = "<group>"; };
-		3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYAnimatedTransitioning.m; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -356,53 +344,6 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
-		3344EFD31F94B860001ED45E /* Component */ = {
-			isa = PBXGroup;
-			children = (
-				3344EFD81F94B8BA001ED45E /* LYTextField */,
-				3344EFD41F94B889001ED45E /* LoginComponentInfoView */,
-			);
-			path = Component;
-			sourceTree = "<group>";
-		};
-		3344EFD41F94B889001ED45E /* LoginComponentInfoView */ = {
-			isa = PBXGroup;
-			children = (
-				3344EFD51F94B89E001ED45E /* LoginComponentInfoView.h */,
-				3344EFD61F94B89E001ED45E /* LoginComponentInfoView.m */,
-			);
-			path = LoginComponentInfoView;
-			sourceTree = "<group>";
-		};
-		3344EFD81F94B8BA001ED45E /* LYTextField */ = {
-			isa = PBXGroup;
-			children = (
-				3344EFDA1F94B922001ED45E /* LYTextField.h */,
-				3344EFD91F94B922001ED45E /* LYTextField.m */,
-			);
-			path = LYTextField;
-			sourceTree = "<group>";
-		};
-		3354DAA71F9074E600ACBDF3 /* Transition */ = {
-			isa = PBXGroup;
-			children = (
-				3354DAA81F90751C00ACBDF3 /* LYInteractiveTransition.h */,
-				3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */,
-				3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */,
-				3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */,
-			);
-			path = Transition;
-			sourceTree = "<group>";
-		};
-		33F88B801F8295620054B123 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				3344EFD31F94B860001ED45E /* Component */,
-				3354DAA71F9074E600ACBDF3 /* Transition */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		33F88B841F8296430054B123 /* JHTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,7 +357,6 @@
 			isa = PBXGroup;
 			children = (
 				5CCC66761F8D28D700F8F96C /* Controller */,
-				33F88B801F8295620054B123 /* View */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1535,7 +1475,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-NEUer/Pods-NEUer-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DKNightVersion/DKNightVersion.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/JPFPSStatus/JPFPSStatus.framework",
@@ -1544,10 +1483,10 @@
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 				"${BUILT_PRODUCTS_DIR}/hpple/hpple.framework",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKNightVersion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JPFPSStatus.framework",
@@ -1556,6 +1495,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hpple.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1647,7 +1587,6 @@
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
-				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
@@ -1667,8 +1606,6 @@
 				5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
-				3344EFDB1F94B922001ED45E /* LYTextField.m in Sources */,
-				3344EFD71F94B89E001ED45E /* LoginComponentInfoView.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
@@ -1685,7 +1622,6 @@
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
-				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
 				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,

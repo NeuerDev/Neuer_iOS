@@ -66,6 +66,7 @@
         targetKey.value = password;
         [keys addObject:targetKey];
     }
+    self.keys = keys.copy;
     
     FMDatabase *db = [DataBaseCenter defaultCenter].database;
     [db executeUpdate:@"update t_key set password = ? where number = ? and keyType = ?;", password, _user.number, @(type)];

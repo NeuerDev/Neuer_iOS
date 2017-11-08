@@ -71,7 +71,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     self.consumeHistoryTableView.frame = self.view.frame;
     
     [self.balanceValueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.balanceView.mas_top).with.offset(32);
+        make.centerY.equalTo(self.balanceView.mas_bottom).multipliedBy(1-0.618);
         make.centerX.equalTo(self.balanceView);
     }];
     
@@ -101,7 +101,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     WS(ws);
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
-    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard] ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeECard] ? : @"";
     
     // 如果用户、密码都存在 则进行登录（查询信息）操作
     if (account.length>0 && password.length>0) {
@@ -143,7 +143,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     WS(ws);
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
-    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeCard]  ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeECard]  ? : @"";
     LoginViewController *signinVC = [[LoginViewController alloc] init];
     signinVC.modalPresentationStyle = UIModalPresentationCustom;
     signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -181,7 +181,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     WS(ws);
     [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
         if (success) {
-            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeCard];
+            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeECard];
             
             [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
                 if (success) {
@@ -280,7 +280,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 64;
+    return 44;
 }
 
 #pragma mark - UITableViewDataSource
@@ -411,12 +411,12 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         _consumeHistoryTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _consumeHistoryTableView.backgroundColor = [UIColor clearColor];
         
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*9.0f/16.0f)];
         [headerView addSubview:self.balanceView];
         [self.balanceView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(headerView);
             make.width.mas_equalTo(@(SCREEN_WIDTH_ACTUAL-32));
-            make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*0.5));
+            make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*9.0f/16.0f));
         }];
         [headerView layoutIfNeeded];
         _consumeHistoryTableView.tableHeaderView = headerView;
@@ -438,7 +438,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 - (UIBarButtonItem *)rechargeButtonItem {
     if (!_rechargeButtonItem) {
-        _rechargeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"充值" style:UIBarButtonItemStylePlain target:self action:@selector(recharge)];
+        _rechargeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"打开建行" style:UIBarButtonItemStylePlain target:self action:@selector(recharge)];
     }
     
     return _rechargeButtonItem;
