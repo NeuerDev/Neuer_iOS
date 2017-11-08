@@ -220,7 +220,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
                            @{
                                @"title":@"网络中心",
                                @"detail":@"看个剧分分钟爆流量的网关",
-                               @"url":@"",
+                               @"url":@"neu://go/network",
                                @"image":@"ipgw_campus_background",
                                },
                            @{

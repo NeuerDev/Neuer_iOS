@@ -107,4 +107,25 @@
     return time;
 }
 
++ (NSString *)dateOfTodayWithFormat:(NSString *)format {
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:format];
+    NSString *time = [dateFormatter stringFromDate:today];
+    return time;
+}
+
++ (NSString *)changeDateFormatterFromDateFormat:(NSString *)fromDateFormat toDateFormat:(NSString *)toDateFormat withDateString:(NSString *)dateString {
+//    先将字符串转化为date
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:fromDateFormat];
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    
+//    再将date转为string形式
+    [dateFormatter setDateFormat:toDateFormat];
+    NSString *newDateString = [dateFormatter stringFromDate:date];
+    
+    return newDateString;
+}
+
 @end

@@ -15,7 +15,7 @@
 #import "GatewayComponentInfoView.h"
 #import "GatewaySelfServiceMenuModel.h"
 
-@interface GatewayViewController ()
+@interface GatewayViewController () <GatewayModelDelegate>
 @property (nonatomic, strong) UIVisualEffectView *blurView;
 @property (nonatomic, strong) UIView *cardView;
 @property (nonatomic, strong) UIButton *loginBtn;
@@ -68,21 +68,17 @@
 - (void)initData {
     
     _center = [GatewayCenter defaultCenter];
-//    self.model.delegate = self;
+    self.model.delegate = self;
 
 //    当进入界面时发现已经联网了，则先退出再请求才能正常显示数据
-//    if ([self.model hasUser] && _center.networkEnable == YES && _center.campusStatus == YES) {
-//        [self.model quitTheGateway];
-//        [self.model fetchGatewayData];
-//        [self.indicatorView startAnimating];
-//    }
+    if ([self.model hasUser] && _center.networkEnable == YES && _center.campusStatus == YES) {
+        [self.model quitTheGateway];
+        [self.model fetchGatewayData];
+        [self.indicatorView startAnimating];
+    }
     [self initNetworkStatus];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGatewayNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self presentLoginVC];
-    });
 
 }
 
@@ -232,92 +228,92 @@
 
 
 #pragma mark - GatewayModel delegate
-//- (void)fetchGatewayDataFailureWithMsg:(NSString *)msg {
-////    在这个方法中处理登录失败信息
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
-////            [self.loginVC stopVerifyWithSuccess:NO];
-//        }
-//        //            若登录信息失败，并且连接了网关，则显示登录按钮，隐藏退出按钮
-//        if (_center.campusStatus == YES && _center.reachableStatus == NO) {
-//            [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-//                make.centerX.equalTo(self.gatewayStatusLb);
-//                make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
-//            }];
-//            //  通知不会及时更新文字，手动更新loginBtn的文字
-//            self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
-//            self.loginBtn.enabled = YES;
-//            [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
-//
-//        } else if (_center.campusStatus == YES && _center.reachableStatus == YES){
-//            [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-//                make.centerX.equalTo(self.gatewayStatusLb);
-//                make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
-//            }];
-//            //  通知不会及时更新文字，手动更新loginBtn的文字
-//            self.loginBtn.enabled = YES;
-//            self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
-//            [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
-//
-//            CGSize size = [LYTool sizeWithString:self.gatewayStatusLb.text font:_gatewayStatusLb.font];
-//            _gatewayStatusLb.bounds = CGRectMake(0, 0, size.width, size.height);
-//            CGSize loginBtnSize = [LYTool sizeWithString:self.loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
-//            self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
-//        } else {
-//            [self setLoginBtnHidden];
-//        }
-//
-//        [self.indicatorView stopAnimating];
-//        [self.view layoutIfNeeded];
-////        [UIView animateWithDuration:5 animations:^{
-////            [self.indicatorView stopAnimating];
-////            [self.view layoutIfNeeded];
-////        }];
-//    });
-//}
-//
-//- (void)fetchGatewayDataSuccess {
-//
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//        if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
-////            [self.loginVC stopVerifyWithSuccess:YES];
-//        }
-////        NSLog(@"%@", [LYTool getPresentedViewController]);
-//
-//        //    在这个方法中处理登录成功信息
-//        _gatewayBean = [self.model gatewayInfo];
-//
-//        [self.infoView setUpWithGatewayBean:self.gatewayBean];
-//
-//        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.height.equalTo(self.view).multipliedBy(0.25);
-//            make.width.equalTo(self.view);
-//            make.centerX.equalTo(self.gatewayStatusLb);
-//            make.top.equalTo(self.cardView);
+- (void)fetchGatewayDataFailureWithMsg:(NSString *)msg {
+//    在这个方法中处理登录失败信息
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
+//            [self.loginVC stopVerifyWithSuccess:NO];
+        }
+        //            若登录信息失败，并且连接了网关，则显示登录按钮，隐藏退出按钮
+        if (_center.campusStatus == YES && _center.reachableStatus == NO) {
+            [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.gatewayStatusLb);
+                make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
+            }];
+            //  通知不会及时更新文字，手动更新loginBtn的文字
+            self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
+            self.loginBtn.enabled = YES;
+            [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
+
+        } else if (_center.campusStatus == YES && _center.reachableStatus == YES){
+            [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.gatewayStatusLb);
+                make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
+            }];
+            //  通知不会及时更新文字，手动更新loginBtn的文字
+            self.loginBtn.enabled = YES;
+            self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
+            [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
+
+            CGSize size = [LYTool sizeWithString:self.gatewayStatusLb.text font:_gatewayStatusLb.font];
+            _gatewayStatusLb.bounds = CGRectMake(0, 0, size.width, size.height);
+            CGSize loginBtnSize = [LYTool sizeWithString:self.loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
+            self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
+        } else {
+            [self setLoginBtnHidden];
+        }
+
+        [self.indicatorView stopAnimating];
+        [self.view layoutIfNeeded];
+//        [UIView animateWithDuration:5 animations:^{
+//            [self.indicatorView stopAnimating];
+//            [self.view layoutIfNeeded];
 //        }];
-//        [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.centerX.equalTo(self.gatewayStatusLb);
-//            make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
+    });
+}
+
+- (void)fetchGatewayDataSuccess {
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
+//            [self.loginVC stopVerifyWithSuccess:YES];
+        }
+//        NSLog(@"%@", [LYTool getPresentedViewController]);
+
+        //    在这个方法中处理登录成功信息
+        _gatewayBean = [self.model gatewayInfo];
+
+        [self.infoView setUpWithGatewayBean:self.gatewayBean];
+
+        [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(self.view).multipliedBy(0.25);
+            make.width.equalTo(self.view);
+            make.centerX.equalTo(self.gatewayStatusLb);
+            make.top.equalTo(self.cardView);
+        }];
+        [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.gatewayStatusLb);
+            make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
+        }];
+
+        //                通知不会及时更新文字，手动更新gatewayStatusLb和loginBtn的文字
+        self.gatewayStatusLb.text = @"正在使用校园网 Wi-Fi\n可访问外网";
+        [self.loginBtn setTitle:@"切换校园网账号" forState: UIControlStateNormal];
+        self.loginBtn.enabled = YES;
+
+
+        CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
+        self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
+
+        [self.indicatorView stopAnimating];
+        [self.view layoutIfNeeded];
+//        [UIView animateWithDuration:5 animations:^{
+//            [self.indicatorView stopAnimating];
+//            [self.view layoutIfNeeded];
 //        }];
-//
-//        //                通知不会及时更新文字，手动更新gatewayStatusLb和loginBtn的文字
-//        self.gatewayStatusLb.text = @"正在使用校园网 Wi-Fi\n可访问外网";
-//        [self.loginBtn setTitle:@"切换校园网账号" forState: UIControlStateNormal];
-//        self.loginBtn.enabled = YES;
-//
-//
-//        CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
-//        self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
-//
-//        [self.indicatorView stopAnimating];
-//        [self.view layoutIfNeeded];
-////        [UIView animateWithDuration:5 animations:^{
-////            [self.indicatorView stopAnimating];
-////            [self.view layoutIfNeeded];
-////        }];
-//    });
-//}
+    });
+}
 
 #pragma mark - ResponseMethod
 - (void)quitGatewayViewController {
@@ -325,7 +321,7 @@
 }
 
 - (void)presentLoginVC {
-    WS(ws);
+//    WS(ws);
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeIPGW] ? : @"";
@@ -334,7 +330,7 @@
     loginViewController.modalPresentationStyle = UIModalPresentationCustom;
     loginViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [loginViewController setupWithTitle:@"IP网关" inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
+    [loginViewController setupWithTitle:@"IP网关" inputType:LoginInputTypeAccount|LoginInputTypePassword
                         contents:@{
                                    @(LoginInputTypeAccount):@"20154883",
                                    @(LoginInputTypePassword):@"123456"
@@ -343,54 +339,13 @@
                          if (complete) {
                              NSString *account = result[@(LoginInputTypeAccount)] ? : @"";
                              NSString *password = result[@(LoginInputTypePassword)] ? : @"";
-                             NSString *verifycode = result[@(LoginInputTypeVerifyCode)] ? : @"";
-                              [ws loginWithAccount:account password:password verifyCode:verifycode];
+//                              [ws loginWithAccount:account password:password verifyCode:verifycode];
                          }
     }];
     [self presentViewController:loginViewController animated:NO completion:^{
-        [ws.serviceModel getVerifyImage:^(UIImage *verifyImage, NSString *msg) {
-            loginViewController.verifyImage = verifyImage;
-        }];
-    }];
-    
-//    修改验证码
-    __weak LoginViewController *weakLoginViewController = loginViewController;
-    loginViewController.changeVerifyImageBlock = ^{
-        [ws.serviceModel getVerifyImage:^(UIImage *verifyImage, NSString *msg) {
-            weakLoginViewController.verifyImage = verifyImage;
-        }];
-    };
-}
 
-- (void)loginWithAccount:(NSString *)account password:(NSString *)password verifyCode:(NSString *)verifyCode {
-    WS(ws);
-    [self.serviceModel loginGatewaySelfServiceMenuWithUser:account password:password verifyCode:verifyCode loginState:^(BOOL success, NSString *msg) {
-        if (success) {
-//            [ws.serviceModel queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
-//
-//            }];
-//            [ws.serviceModel queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {
-//
-//            }];
-            [ws.serviceModel queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
-                NSLog(@"%@", data);
-            }];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [ws.serviceModel queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
-                    NSLog(@"%@", data);
-                }];
-            });
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [ws.serviceModel queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
-                    NSLog(@"%@", data);
-                }];
-            });
-            
-            [self.serviceModel refreshData];
-        }
     }];
+
 }
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
@@ -492,13 +447,6 @@
         [self.blurView.contentView addSubview:_indicatorView];
     }
     return _indicatorView;
-}
-
-- (GatewaySelfServiceMenuModel *)serviceModel {
-    if (!_serviceModel) {
-        _serviceModel = [[GatewaySelfServiceMenuModel alloc] init];
-    }
-    return _serviceModel;
 }
 
 @end

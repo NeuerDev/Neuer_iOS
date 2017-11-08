@@ -46,6 +46,14 @@
 			<key>regex</key>
 			<string>/aao</string>
 		</dict>
+		<dict>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
+			<string>NetworkMainViewController</string>
+			<key>regex</key>
+			<string>/network</string>
+		</dict>
 	</array>
 </dict>
 </plist>

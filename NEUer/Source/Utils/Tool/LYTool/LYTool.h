@@ -48,4 +48,19 @@
  获取当前时间 HH:mm格式
  */
 + (NSString *)timeOfNow;
+
+/**
+ 获取今天日期
+ */
++ (NSString *)dateOfTodayWithFormat:(NSString *)format;
+
+/**
+ 根据给定 “yyyy-MM-dd HH:mm:ss” 格式日期的字符串 将该日期字符串转化为所需格式
+ @prama fromDateFormat 转换前的格式
+ @prama toDateFormat 转换后的格式
+ @prama dateString 转换的具体时间字符串
+ */
+
++ (NSString *)changeDateFormatterFromDateFormat:(NSString *)fromDateFormat toDateFormat:(NSString *)toDateFormat withDateString:(NSString *)dateString;
+
 @end

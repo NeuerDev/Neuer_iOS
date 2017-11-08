@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, GatewaySelfServiceMenuRestFlowLevel) {
+    GatewaySelfServiceMenuRestFlowLevelUnknow = 0,
+    GatewaySelfServiceMenuRestFlowLevelEnough,
+    GatewaySelfServiceMenuRestFlowLevelNotEnough,
+    GatewaySelfServiceMenuRestFlowLevelNegativeNumber
+};
+
 typedef void(^GatewaySelfServiceMenuGetVerifyImageBlock)(UIImage *verifyImage, NSString *msg);
 typedef void(^GatewaySelfServiceMenuLoginBlock)(BOOL success, NSString *msg);
 typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
@@ -18,6 +25,7 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 //用户信息
 @property (nonatomic, strong) NSString *user_name; // 姓名
 @property (nonatomic, strong) NSString *user_number; // 学号
+@property (nonatomic, strong) NSString *user_state; 
 @property (nonatomic, strong) NSString *user_E_walletBalance; // 电子钱包
 
 //产品信息
@@ -31,6 +39,9 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 @property (nonatomic, strong) NSString *product_balance; // 产品余额
 @property (nonatomic, strong) NSString *product_carrierBundle; // 运营商绑定
 @property (nonatomic, strong) NSString *product_closingDate; // 结算日期
+@property (nonatomic, strong) NSString *product_restFlow; // 剩余流量
+//@property (nonatomic, assign) GatewaySelfServiceMenuRestFlowLevel restFlowLevel;
+@property (nonatomic, strong) NSDictionary <NSNumber *, NSString *> *restFlowLevelDictionary;
 
 @end
 
@@ -43,6 +54,7 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 @property (nonatomic, strong) NSString *online_lastactive; // 上线时间
 @property (nonatomic, strong) NSString *online_operation; // 操作系统
 @property (nonatomic, strong) NSString *online_AccountingStrategy; // 计费策略
+@property (nonatomic, strong) NSString *online_ID; // 在线设备的id
 
 @end
 
@@ -89,9 +101,10 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 @interface GatewaySelfServiceMenuModel : NSObject
 
 @property (nonatomic, strong) GatewaySelfServiceMenuBasicInfoBean *basicInfo;
-@property (nonatomic, strong) GatewaySelfServiceMenuOnlineInfoBean *onlineInfo;
 
+@property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuOnlineInfoBean *> *onlineInfoArray;
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuInternetRecordsInfoBean *> *internetRecordInfoArray;
+@property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuInternetRecordsInfoBean *> *todayInternetRecordInfoArray;
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuFinancialPayInfoBean *> *financialPayInfoArray;
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuFinancialCheckOutInfoBean *> *financialCheckoutInfoArray;
 
@@ -136,8 +149,31 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 - (void)queryUserFinancialCheckOutListComlete:(GatewaySelfServiceMenuQueryBlock)block;
 
 /**
+ 强制在线设备下线
+ */
+- (void)offLineTheIPGWWithDevicesID:(NSInteger)deviceID;
+
+/**
  刷新数据
  */
 - (void)refreshData;
+- (void)refreshInternetRecordsData;
+- (void)refreshCheckoutData;
+- (void)refreshPayInfoData;
+
+/**
+ 暂停账户
+ */
+- (void)pauseAccountComplete:(GatewaySelfServiceMenuQueryBlock)block;
+
+/**
+ 
+ */
+- (void)openAccountComplete:(GatewaySelfServiceMenuQueryBlock)block;
+
+/**
+ 获取最新的csrf
+ */
+- (void)updateCsrfValue;
 
 @end
