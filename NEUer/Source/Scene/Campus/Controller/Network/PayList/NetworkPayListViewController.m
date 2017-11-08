@@ -38,13 +38,16 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     [self.timeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self.contentView).with.offset(16);
         make.width.equalTo(@(80));
+        make.centerY.equalTo(self.contentView);
         make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-16);
     }];
     [self.monthLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.and.top.equalTo(self.timeView);
+        make.left.equalTo(self.timeView);
+        make.top.equalTo(self.timeView.mas_top).with.offset(8);
     }];
     [self.yearsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.and.bottom.equalTo(self.timeView);
+        make.left.equalTo(self.timeView);
+        make.top.equalTo(self.monthLabel.mas_bottom).with.offset(4);
     }];
     [self.seperatorView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeView.mas_right);
@@ -109,7 +112,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     if (!_monthLabel) {
         _monthLabel = [[UILabel alloc] init];
         _monthLabel.textColor = [UIColor darkGrayColor];
-        _monthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
+        _monthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         
         [self.contentView addSubview:_monthLabel];
     }
@@ -120,7 +123,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     if (!_yearsLabel) {
         _yearsLabel = [[UILabel alloc] init];
         _yearsLabel.textColor = [UIColor lightGrayColor];
-        _yearsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
+        _yearsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         [self.contentView addSubview:_yearsLabel];
     }
     return _yearsLabel;
@@ -142,7 +145,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     if (!_productNameLabel) {
         _productNameLabel = [[UILabel alloc] init];
         _productNameLabel.numberOfLines = 1;
-        _productNameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        _productNameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         [self.contentView addSubview:_productNameLabel];
     }
     return _productNameLabel;

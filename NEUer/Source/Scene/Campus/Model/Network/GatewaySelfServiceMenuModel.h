@@ -19,6 +19,14 @@ typedef void(^GatewaySelfServiceMenuGetVerifyImageBlock)(UIImage *verifyImage, N
 typedef void(^GatewaySelfServiceMenuLoginBlock)(BOOL success, NSString *msg);
 typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 
+@interface GatewayCellBasicInfoBean : NSObject
+
+@property (nonatomic, strong) NSString *messageName;
+@property (nonatomic, strong) NSString *message;
+@property (nonatomic, assign) NSInteger messageType;
+
+@end
+
 //基础信息
 @interface GatewaySelfServiceMenuBasicInfoBean : NSObject
 
@@ -40,8 +48,10 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 @property (nonatomic, strong) NSString *product_carrierBundle; // 运营商绑定
 @property (nonatomic, strong) NSString *product_closingDate; // 结算日期
 @property (nonatomic, strong) NSString *product_restFlow; // 剩余流量
-//@property (nonatomic, assign) GatewaySelfServiceMenuRestFlowLevel restFlowLevel;
 @property (nonatomic, strong) NSDictionary <NSNumber *, NSString *> *restFlowLevelDictionary;
+
+@property (nonatomic, strong) NSArray <GatewayCellBasicInfoBean *> *userInfoBeanArray;
+@property (nonatomic, strong) NSArray <GatewayCellBasicInfoBean *> *productInfoBeanArray;
 
 @end
 
