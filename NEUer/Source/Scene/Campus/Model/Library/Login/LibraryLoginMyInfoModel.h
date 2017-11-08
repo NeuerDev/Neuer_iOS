@@ -13,6 +13,7 @@
 @class LibraryLoginMyInfoBookedBean;
 @class LibraryLoginMyInfoCashBean;
 
+
 @protocol LibraryLoginInfoDelegate
 @optional
 - (void)getBorrowingInfoDidSuccess;
@@ -44,6 +45,10 @@
 - (void)searchCashInfo;
 
 @end
+typedef NS_ENUM(NSUInteger, ReturnDateLevel) {
+    ReturnDateLevelLow,
+    ReturnDateLevelHigh
+};
 
 @interface LibraryLoginMyInfoBorrowingBean : NSObject
 @property (nonatomic, strong) NSString *title;
@@ -54,6 +59,7 @@
 @property (nonatomic, strong) NSString *branch;
 @property (nonatomic, strong) NSString *claimNumber;
 @property (nonatomic, strong) NSString *itemDescription;
+@property (nonatomic, assign) ReturnDateLevel returnDateLevel;
 
 @end
 

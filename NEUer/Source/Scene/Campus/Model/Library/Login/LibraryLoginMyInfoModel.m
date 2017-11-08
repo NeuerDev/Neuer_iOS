@@ -187,6 +187,22 @@
     return array;
 }
 
+- (void)setReturnDateLevelFormMin:(int)min withBorrowHistoryBean:(LibraryLoginMyInfoBorrowingBean *)bean{
+    NSDate *nowDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    NSDate *date = [dateFormatter dateFromString:[NSString stringWithFormat:@"%d",min]];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned int unitFlags = NSCalendarUnitDay;
+    NSDateComponents *comps = [gregorian components:unitFlags fromDate:nowDate  toDate:date  options:0];
+    NSInteger days = (NSInteger)[comps day];
+    if (days > 0) {
+        bean.returnDateLevel = ReturnDateLevelLow;
+    } else {
+        bean.returnDateLevel = ReturnDateLevelHigh;
+    }
+}
+
 @end
 
 @implementation LibraryLoginMyInfoBorrowingBean
