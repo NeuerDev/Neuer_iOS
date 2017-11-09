@@ -30,12 +30,13 @@ static NSString * const kCampusCellId = @"kCampusCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.layer.cornerRadius = 16;
-        self.contentView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-        self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
-        self.contentView.layer.shadowOpacity = 0.5;
-        self.contentView.layer.shadowRadius = 4;
-        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
+        self.layer.cornerRadius = 8;
+        self.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+        self.layer.shadowOffset = CGSizeMake(0, 4);
+        self.layer.shadowOpacity = 0.5;
+        self.layer.shadowRadius = 4;
+        self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)].CGPath;
+        self.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
         
         [self initConstraints];
     }
@@ -52,14 +53,14 @@ static NSString * const kCampusCellId = @"kCampusCellId";
         make.top.and.left.and.right.equalTo(self.contentView);
         make.bottom.equalTo(self.titleLabel.mas_bottom).with.offset(12);
     }];
-    
-    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self.contentView).with.offset(12);
     }];
     
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.detailLabel);
-        make.top.equalTo(self.detailLabel.mas_bottom).with.offset(4);
+    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.titleLabel.mas_right).with.offset(8);
+        make.lastBaseline.equalTo(self.titleLabel.mas_lastBaseline);
     }];
 }
 
@@ -67,9 +68,11 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     _imageView.image = [UIImage imageNamed:dictionary[@"image"]];
     _titleLabel.text = dictionary[@"title"];
     _detailLabel.text = dictionary[@"detail"];
-    self.contentView.layer.shadowColor = [UIImage imageNamed:dictionary[@"image"]].mainColor.CGColor;
+    CGColorRef mainColor = [[UIImage imageNamed:dictionary[@"image"]].mainColor colorWithAlphaComponent:0.8].CGColor;
+    self.layer.shadowColor = mainColor;
+    self.layer.borderColor = mainColor;
     [self layoutIfNeeded];
-    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
+    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
 }
 
 #pragma mark - Getter
@@ -88,7 +91,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
 
 - (UIVisualEffectView *)blurView {
     if (!_blurView) {
-        _blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+        _blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent]];
         
         [self.imageView addSubview:_blurView];
     }
@@ -99,7 +102,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
         _titleLabel.numberOfLines = 1;
         _titleLabel.textColor = [UIColor blackColor];
         
@@ -112,9 +115,9 @@ static NSString * const kCampusCellId = @"kCampusCellId";
 - (UILabel *)detailLabel {
     if (!_detailLabel) {
         _detailLabel = [[UILabel alloc] init];
-        _detailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
+        _detailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         _detailLabel.numberOfLines = 1;
-        _detailLabel.textColor = [UIColor darkGrayColor];
+        _detailLabel.textColor = [UIColor grayColor];
         
         [self.contentView addSubview:_detailLabel];
     }
@@ -178,9 +181,9 @@ static NSString * const kCampusCellId = @"kCampusCellId";
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH_ACTUAL-32.0f, (SCREEN_WIDTH_ACTUAL-32.0f)*3.0f/4.0f);
+        flowLayout.itemSize = CGSizeMake(SCREEN_WIDTH_ACTUAL-32.0f, (SCREEN_WIDTH_ACTUAL-32.0f)*1.0f/2.0f);
         flowLayout.sectionInset = UIEdgeInsetsMake(8, 16, 8, 16);
-        flowLayout.minimumLineSpacing = 24.0f;
+        flowLayout.minimumLineSpacing = 16.0f;
         flowLayout.minimumInteritemSpacing = 8.0f;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
@@ -200,32 +203,32 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     if (!_cellDataArray) {
         _cellDataArray = @[
                            @{
-                               @"title":@"教务系统",
-                               @"detail":@"关心你 更关心你的成绩",
+                               @"title":NSLocalizedString(@"CampusAAOSystemTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusAAOSystemSubtitle", nil),
                                @"url":@"",
                                @"image":@"aao_campus_background",
                                },
                            @{
-                               @"title":@"校卡中心",
-                               @"detail":@"再也不怕打菜时余额不足了",
+                               @"title":NSLocalizedString(@"CampusEcardCenterTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusEcardCenterSubtitle", nil),
                                @"url":@"neu://go/ecard",
                                @"image":@"ecard_campus_background",
                                },
                            @{
-                               @"title":@"图书馆",
-                               @"detail":@"在图书馆邂逅那个抠脚大汉",
+                               @"title":NSLocalizedString(@"CampusLibraryTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusLibrarySubtitle", nil),
                                @"url":@"",
                                @"image":@"library_campus_background",
                                },
                            @{
-                               @"title":@"网络中心",
-                               @"detail":@"看个剧分分钟爆流量的网关",
+                               @"title":NSLocalizedString(@"CampusNetworkCenterTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusNetworkCenterSubtitle", nil),
                                @"url":@"",
                                @"image":@"ipgw_campus_background",
                                },
                            @{
-                               @"title":@"东大食堂",
-                               @"detail":@"据说三楼的甜辣鸡最好吃",
+                               @"title":NSLocalizedString(@"CampusRestaurantTitle", nil),
+                               @"detail":NSLocalizedString(@"CampusRestaurantSubtitle", nil),
                                @"url":@"",
                                @"image":@"",
                                },

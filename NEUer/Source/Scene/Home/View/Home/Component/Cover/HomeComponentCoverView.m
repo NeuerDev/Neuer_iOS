@@ -24,7 +24,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
     if (self = [super initWithFrame:frame]) {
         
         self.contentView.layer.cornerRadius = 8;
-        
+        self.contentView.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
         [self initConstraints];
     }
     
@@ -128,8 +128,8 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.titleLabel.text = @"在东大的678天";
-        [self.actionButton setTitle:@"往期作品" forState:UIControlStateNormal];
+        self.titleLabel.text = [NSLocalizedString(@"HomeCoverTitle", nil) stringByReplacingOccurrencesOfString:@"{0}" withString:@"987"];
+        [self.actionButton setTitle:NSLocalizedString(@"HomeCoverActionButton", nil) forState:UIControlStateNormal];
         
         [self initConstraints];
     }
@@ -166,6 +166,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
     HomeComponentCoverCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeComponentCoverCellId forIndexPath:indexPath];
     NSDictionary *item = self.cellDataArray[indexPath.item];
     cell.imageView.image = [UIImage imageNamed:item[@"image"]];
+    cell.contentView.layer.borderColor = [[UIImage imageNamed:item[@"image"]].mainColor colorWithAlphaComponent:0.8].CGColor;
     return cell;
 }
 

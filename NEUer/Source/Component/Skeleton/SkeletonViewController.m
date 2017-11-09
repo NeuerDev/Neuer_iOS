@@ -24,6 +24,11 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 @implementation SkelentonNavigationViewController
 
++ (void)initialize {
+    UINavigationBar *navigationBar = [UINavigationBar appearance];
+    navigationBar.barTintColor = [UIColor whiteColor];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         
@@ -90,6 +95,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     [super viewDidLoad];
     
     self.hidesBottomBarWhenPushed = YES;
+    self.tabBar.tintColor = [UIColor colorWithHexStr:@"#4DABF5"];
     self.viewControllers = @[
                              self.homeNavigationVC,
                              self.campusNavigationVC,
@@ -228,6 +234,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     if (!_homeNavigationVC) {
         _homeNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
         _homeNavigationVC.tabBarItem.title = NSLocalizedString(@"HomeTabBarItemTitle", nil);
+        _homeNavigationVC.tabBarItem.image = [UIImage imageNamed:@"tab_home"];
     }
     
     return _homeNavigationVC;
@@ -237,6 +244,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     if (!_campusNavigationVC) {
         _campusNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[CampusViewController alloc] init]];
         _campusNavigationVC.tabBarItem.title = NSLocalizedString(@"CampusTabBarItemTitle", nil);
+        _campusNavigationVC.tabBarItem.image = [UIImage imageNamed:@"tab_campus"];
     }
     
     return _campusNavigationVC;
@@ -246,6 +254,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     if (!_meNavigationVC) {
         _meNavigationVC = [[SkelentonNavigationViewController alloc] initWithRootViewController:[[MeViewController alloc] init]];
         _meNavigationVC.tabBarItem.title = NSLocalizedString(@"MeTabBarItemTitle", nil);
+        _meNavigationVC.tabBarItem.image = [UIImage imageNamed:@"tab_me"];
     }
     
     return _meNavigationVC;

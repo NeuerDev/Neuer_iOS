@@ -31,11 +31,53 @@
 
 
 /*
- Search
+ Today Cover
  */
 
-"SearchTabBarItemTitle" = "Search";
-"SearchNavigationBarTitle" = "Search";
+"HomeCoverTitle" = "{0} DAYS IN NEU";
+"HomeCoverActionButton" = "See All";
+
+
+/*
+ Today Access
+ */
+
+"HomeAccessARCampus" = "AR Campus";
+"HomeAccessIPGateway" = "IP Gateway";
+"HomeAccessTelevision" = "Television";
+"HomeAccessLibraryBooks" = "Find Books";
+"HomeAccessEcard" = "My Ecard";
+"HomeAccessScore" = "Query Score";
+
+
+/*
+ Today Schedule
+ */
+
+"HomeScheduleTitle" = "SCHEDULE";
+"HomeScheduleActionButton" = "See All";
+
+
+/*
+ Today News
+ */
+
+"HomeNewsTitle" = "NEWS";
+"HomeNewsActionButton" = "See All";
+
+
+/*
+ Today Television
+ */
+"TelevisionChannelSearchBarPlaceholder" = "Search";
+
+
+/*
+ Campus
+ */
+
+"CampusTabBarItemTitle" = "Campus";
+"CampusNavigationBarTitle" = "Campus";
 
 
 /*
@@ -43,7 +85,7 @@
  */
 
 "SearchLibraryNavigationBarTitle" = "Library";
-"SearchLibrarySearchBarPlaceholder" = "Find books in library";
+"SearchLibrarySearchBarPlaceholder" = "Search";
 
 "SearchLibrarySearchListRecentSearchTitle" = "RECENT SEARCHES";
 "SearchLibrarySearchListMostSearchTitle" = "MOST SEARCHES";
@@ -64,6 +106,26 @@
 "SearchLibraryResultReachedEnd" = "Reached End";
 "SearchLibraryResultFoundNumberSubfix" = "{0} books founded";
 "SearchLibraryResultNotFound" = "Not Found";
+
+
+/*
+ Campus
+ */
+
+"CampusAAOSystemTitle" = "AAO System";
+"CampusAAOSystemSubtitle" = "Score, schedule and courses";
+
+"CampusEcardCenterTitle" = "Ecard Center";
+"CampusEcardCenterSubtitle" = "Balance and consume history";
+
+"CampusLibraryTitle" = "Library";
+"CampusLibrarySubtitle" = "Find books and borrow history";
+
+"CampusNetworkCenterTitle" = "Network Center";
+"CampusNetworkCenterSubtitle" = "Data usage and analytics";
+
+"CampusRestaurantTitle" = "Restaurant";
+"CampusRestaurantSubtitle" = "What to eat for the next meal?";
 
 
 /*

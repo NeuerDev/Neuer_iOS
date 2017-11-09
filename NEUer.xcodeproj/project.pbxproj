@@ -57,6 +57,7 @@
 		5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */; };
 		5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */; };
 		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
+		5C9F75971FB15BBC00729F96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C9F75961FB15BBC00729F96 /* LaunchScreen.storyboard */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -68,7 +69,6 @@
 		5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC232E71F71FEC4005F0A6E /* HomeViewController.m */; };
 		5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC233001F72090F005F0A6E /* SearchLibraryDoorViewController.m */; };
 		5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC233031F72090F005F0A6E /* SearchLibraryViewController.m */; };
-		5CC233061F723BBE005F0A6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233081F723BBE005F0A6E /* LaunchScreen.storyboard */; };
 		5CC2330D1F723C3B005F0A6E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */; };
 		5CC233121F723C40005F0A6E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */; };
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
@@ -218,6 +218,7 @@
 		5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserKeychain.m; sourceTree = "<group>"; };
 		5C9895E11F822A5B00C2F93E /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5C9895E21F822A5B00C2F93E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		5C9F75961FB15BBC00729F96 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -240,9 +241,6 @@
 		5CC233001F72090F005F0A6E /* SearchLibraryDoorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryDoorViewController.m; sourceTree = "<group>"; };
 		5CC233021F72090F005F0A6E /* SearchLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchLibraryViewController.h; sourceTree = "<group>"; };
 		5CC233031F72090F005F0A6E /* SearchLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryViewController.m; sourceTree = "<group>"; };
-		5CC233071F723BBE005F0A6E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		5CC233091F723BCA005F0A6E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
-		5CC2330A1F723BD1005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		5CC2330E1F723C3B005F0A6E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5CC233101F723C3C005F0A6E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		5CC233111F723C3D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -888,7 +886,7 @@
 		5C9107621F6D1C3100FA4270 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
-				5CC233081F723BBE005F0A6E /* LaunchScreen.storyboard */,
+				5C9F75961FB15BBC00729F96 /* LaunchScreen.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -1532,12 +1530,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */,
+				5C9F75971FB15BBC00729F96 /* LaunchScreen.storyboard in Resources */,
 				5C8B62961F7890F900310055 /* Json.bundle in Resources */,
 				5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */,
 				5C507C761F9CBB0B00E857CA /* tessdata in Resources */,
 				5C539D861F7297F500E7BABC /* router.plist in Resources */,
 				5CC2330D1F723C3B005F0A6E /* InfoPlist.strings in Resources */,
-				5CC233061F723BBE005F0A6E /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1753,16 +1751,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5CC233081F723BBE005F0A6E /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5CC233071F723BBE005F0A6E /* en */,
-				5CC233091F723BCA005F0A6E /* zh-Hans */,
-				5CC2330A1F723BD1005F0A6E /* zh-Hant */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1906,7 +1894,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1927,7 +1915,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";

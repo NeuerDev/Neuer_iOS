@@ -162,34 +162,34 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     if (!_cellDataArray) {
         _cellDataArray = @[
                            @{
-                               @"title":@"VR 校园",
+                               @"title":NSLocalizedString(@"HomeAccessARCampus", nil),
                                @"url":@"",
                                @"color":@"#DFC3BB",
                                },
                            @{
-                               @"title":@"一键联网",
+                               @"title":NSLocalizedString(@"HomeAccessScore", nil),
+                               @"url":@"neu://go/aao",
+                               @"color":@"#E7D1B4",
+                               },
+                           @{
+                               @"title":NSLocalizedString(@"HomeAccessIPGateway", nil),
                                @"url":@"neu://handle/ipgw",
                                @"color":@"#E7D1B4",
                                },
                            @{
-                               @"title":@"电视直播",
-                               @"url":@"neu://go/tv",
-                               @"color":@"#A2C9B4",
-                               },
-                           @{
-                               @"title":@"书刊查询",
+                               @"title":NSLocalizedString(@"HomeAccessLibraryBooks", nil),
                                @"url":@"neu://go/lib",
                                @"color":@"#A2C9B4",
                                },
                            @{
-                               @"title":@"校卡中心",
+                               @"title":NSLocalizedString(@"HomeAccessEcard", nil),
                                @"url":@"neu://go/ecard",
                                @"color":@"#92AFC0",
                                },
                            @{
-                               @"title":@"教务系统",
-                               @"url":@"neu://go/aao",
-                               @"color":@"#E7D1B4",
+                               @"title":NSLocalizedString(@"HomeAccessTelevision", nil),
+                               @"url":@"neu://go/tv",
+                               @"color":@"#A2C9B4",
                                },
                            ];
     }

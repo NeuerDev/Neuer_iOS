@@ -19,8 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"HomeNavigationBarTitle", nil);
-    self.title = @"我的";
+    self.title = NSLocalizedString(@"MeNavigationBarTitle", nil);
     
     [self initConstraints];
 }

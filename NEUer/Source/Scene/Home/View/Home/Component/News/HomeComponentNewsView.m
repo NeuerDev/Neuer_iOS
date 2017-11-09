@@ -18,8 +18,8 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.titleLabel.text = @"东大新闻";
-        [self.actionButton setTitle:@"更多" forState:UIControlStateNormal];
+        self.titleLabel.text = NSLocalizedString(@"HomeNewsTitle", nil);
+        [self.actionButton setTitle:NSLocalizedString(@"HomeNewsActionButton", nil) forState:UIControlStateNormal];
         
         [self initConstraints];
     }
