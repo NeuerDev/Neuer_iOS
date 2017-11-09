@@ -61,8 +61,9 @@
                 channel = [[TelevisionWallChannelBean alloc] init];
                 channel.channelName = live[@"name"];
                 channel.videoUrlArray = [live[@"urllist"] componentsSeparatedByString:@"#"];
-                NSString *channelId = [[channel.videoUrlArray.lastObject stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
+                NSString *channelId = [[channel.videoUrlArray.firstObject stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
                 channel.previewImageUrl = [NSString stringWithFormat:@"http://hdtv.neu6.edu.cn/wall/img/%@_s.png", channelId];
+                channel.channelDetailUrl = channelId;
                 channel.quality = live[@"quality"];
                 channel.viewerCount = 0;
                 channel.type = channel.type |

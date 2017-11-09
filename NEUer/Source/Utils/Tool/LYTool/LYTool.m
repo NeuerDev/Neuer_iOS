@@ -107,4 +107,47 @@
     return time;
 }
 
++ (NSString *)dateOfTodayWithFormat:(NSString *)format {
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:format];
+    NSString *time = [dateFormatter stringFromDate:today];
+    return time;
+}
+
++ (NSString *)changeDateFormatterFromDateFormat:(NSString *)fromDateFormat toDateFormat:(NSString *)toDateFormat withDateString:(NSString *)dateString {
+//    先将字符串转化为date
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:fromDateFormat];
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    
+//    再将date转为string形式
+    [dateFormatter setDateFormat:toDateFormat];
+    NSString *newDateString = [dateFormatter stringFromDate:date];
+    
+    return newDateString;
+}
+
++ (NSTimeInterval)timeIntervalWithStartTime:(NSString *)startTime endTime:(NSString *)endTime {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *date = [NSDate date];
+    NSString *today = [formatter stringFromDate:date];
+    NSString *todayDate = [[today componentsSeparatedByString:@" "] firstObject];
+    todayDate = [todayDate stringByAppendingString:@" "];
+    
+    NSString *startTimesDate = [todayDate stringByAppendingString:startTime];
+    NSString *endTimesDate = [todayDate stringByAppendingString:endTime];
+    
+    NSDate *startDate = [formatter dateFromString:startTimesDate];
+    NSDate *endDate = [formatter dateFromString:endTimesDate];
+    
+    NSTimeInterval start = [startDate timeIntervalSince1970];
+    NSTimeInterval end = [endDate timeIntervalSince1970];
+    
+    NSTimeInterval differenceValue = end - start;
+    
+    return differenceValue;
+}
+
 @end

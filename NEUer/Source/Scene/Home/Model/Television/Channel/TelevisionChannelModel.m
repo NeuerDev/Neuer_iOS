@@ -134,6 +134,7 @@
                     if (i % 2 != 0) {
                         if (bean.name && bean.time && bean.videoUrl) {
                             bean.status = @"回看";
+                            bean.sourceUrl = _videoSource;
                             [listArr addObject:bean];
                             bean = [[TelevisionChannelScheduleBean alloc] init];
                         }
@@ -155,6 +156,7 @@
                                     [listArr addObject:playingBean];
                                 }
                                 
+                                bean.sourceUrl = _videoSource;
                                 bean.status = @"预约";
                                 [listArr addObject:bean];
                                 bean = [[TelevisionChannelScheduleBean alloc] init];

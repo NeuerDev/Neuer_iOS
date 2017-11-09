@@ -16,9 +16,6 @@
 
 #import "TouchableCollectionViewCell.h"
 
-//#import <AVKit/AVKit.h>
-//#import <AVFoundation/AVFoundation.h>
-
 #define SCREEN_WIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 
 static NSString * const kChannelCellId = @"kChannelCellId";
@@ -171,6 +168,9 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 @end
 
 @implementation TelevisionWallViewController
+{
+    NSString *_sourceName;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -190,6 +190,16 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     
     [self.wallModel fetchWallData];
     [self.collectionView reloadData];
+}
+
+- (instancetype)initWithUrl:(NSURL *)url params:(NSDictionary *)params {
+    if (self = [super init]) {
+        NSLog(@"%@", url);
+        NSLog(@"%@", params);
+        _sourceName = [params objectForKey:@"sourcename"];
+        
+    }
+    return self;
 }
 
 - (void)initConstraints {
@@ -221,7 +231,20 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 #pragma mark - TelevisionWallDelegate
 
 - (void)fetchWallDataDidSuccess {
+    
+//    跳转到指定节目单
+    TelevisionDetailViewController *detailViewController = [[TelevisionDetailViewController alloc] init];
+    for (TelevisionWallChannelBean *bean in self.wallModel.channelArray) {
+        if ([bean.channelDetailUrl isEqualToString:_sourceName]) {
+            detailViewController.channelBean = bean;
+        }
+    }
+    if (detailViewController.channelBean) {
+        [self.navigationController pushViewController:detailViewController animated:YES];
+    }
+    
     [self.collectionView reloadData];
+    
 }
 
 - (void)fetchWallDataDidFail:(NSString *)message {

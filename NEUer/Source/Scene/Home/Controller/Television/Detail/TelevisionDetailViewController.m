@@ -7,12 +7,16 @@
 //
 
 #import "TelevisionDetailViewController.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
-#import "LYTool.h"
+#import <UserNotifications/UserNotifications.h>
 
-#import "TelevisionChannelModel.h"
 #import "CustomSectionHeaderFooterView.h"
+
+#import "LYTool.h"
+#import "TelevisionChannelModel.h"
+#import "AppDelegate.h"
 
 @interface TelevisionPlayerView : UIView
 
@@ -115,6 +119,8 @@ const CGFloat kTelevisionDetailListCellHeight = 64.0f;
 NSString * const kTelevisionDetailListCellId = @"kTelevisionDetailListCellId";
 NSString * const kTelevisionDetailListHeaderViewId = @"kTelevisionDetailListHeaderViewId";
 NSString * const kTelevisionPlayingCellId = @"kTelevisionPlayingCellId";
+
+NSString * const kOrderShowId = @"kOrderShowId";
 
 @protocol TelevisionPlayerListCellDelegate
 
@@ -312,7 +318,35 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 }
 
 - (void)makeAnAppointmentToTVShow:(TelevisionChannelScheduleBean *)bean {
-    NSLog(@"%@", bean.name);
+    
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.userInfo = @{
+                         @"showname" : bean.name,
+                         @"showsource" : bean.sourceUrl,
+                         @"showtime" : bean.time
+                         };
+    content.title = @"您预约的节目即将开始啦！";
+    content.sound = [UNNotificationSound defaultSound];
+    content.categoryIdentifier = @"tvshowid";
+    content.body = [NSString stringWithFormat:@"您预约于 %@ 的节目%@即将开始播放啦！点击跳转观看", bean.time, bean.name];
+    content.badge = @(1);
+    
+    NSString *nowTime = [[LYTool timeOfNow] stringByAppendingString:@":00"];
+    NSString *showTime = [bean.time stringByAppendingString:@":00"];
+    
+//    提前五分钟提醒
+    NSTimeInterval interval = [LYTool timeIntervalWithStartTime:nowTime endTime:showTime] - 5 * 60;
+    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:interval repeats:NO];
+    
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[NSString stringWithFormat:@"requestId_%@_%@", bean.sourceUrl, bean.time] content:content trigger:trigger];
+
+    [((AppDelegate *)[UIApplication sharedApplication].delegate).center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+        } else {
+            NSLog(@"预约通知成功！");
+        }
+    }];
 }
 
 #pragma mark - TelevisionChannelModelDelegate
