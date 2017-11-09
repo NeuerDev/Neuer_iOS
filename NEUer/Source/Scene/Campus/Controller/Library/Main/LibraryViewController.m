@@ -120,6 +120,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 - (void)autoLogin {
     User *currentUser = [UserCenter defaultCenter].currentUser;
 //    NSString *account = currentUser.number ? : @"";
+//    NSLog(@"account - %@",account);
     NSString *account = @"20154858";
     if (account.length) {
         NSString *password = [account substringFromIndex:2];
@@ -294,7 +295,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         if (!cell) {
             cell = [[LibraryReturnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryResultCellId];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, SCREEN_WIDTH_ACTUAL);
+//            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, SCREEN_WIDTH_ACTUAL);
         }
         [cell setBorrowingBean:self.infoModel.borrowingArr[indexPath.row]];
         
@@ -474,7 +475,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 - (LibraryLoginModel *)loginModel {
     if (!_loginModel) {
-        _loginModel = [[LibraryLoginModel alloc] init];
+        _loginModel = [LibraryCenter defaultCenter].currentModel;
         _loginModel.delegate = self;
     }
     return _loginModel;
@@ -570,13 +571,13 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 - (UIView *)cardView {
     if (!_cardView) {
         _cardView = [[UIView alloc] init];
-        _cardView.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
-        _cardView.layer.cornerRadius = 16;
-        _cardView.layer.shadowColor = [UIColor grayColor].CGColor;
-        _cardView.layer.shadowOffset = CGSizeMake(0, 4);
-        _cardView.layer.shadowOpacity = 0.2;
-        _cardView.layer.shadowRadius = 4;
-        _cardView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL - 32, 128) byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
+        _cardView.backgroundColor = [UIColor whiteColor];
+//        _cardView.layer.cornerRadius = 16;
+//        _cardView.layer.shadowColor = [UIColor grayColor].CGColor;
+//        _cardView.layer.shadowOffset = CGSizeMake(0, 4);
+//        _cardView.layer.shadowOpacity = 0.2;
+//        _cardView.layer.shadowRadius = 4;
+//        _cardView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL - 32, 128) byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
         [self.contentView addSubview:_cardView];
     }
    return _cardView;

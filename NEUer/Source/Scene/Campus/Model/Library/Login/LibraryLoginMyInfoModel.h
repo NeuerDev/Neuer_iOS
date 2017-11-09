@@ -14,7 +14,7 @@
 @class LibraryLoginMyInfoCashBean;
 
 
-@protocol LibraryLoginInfoDelegate
+@protocol LibraryLoginInfoDelegate <NSObject>
 @optional
 - (void)getBorrowingInfoDidSuccess;
 - (void)getBorrowHistoryInfoDidSuccess;

@@ -84,13 +84,25 @@
     switch (_infoType) {
         case 1: {
             _borrowingArr = [self borrowingArrayFromHtmlData:htmlData];
-            [_delegate getBorrowingInfoDidSuccess];
+            if ([_delegate performSelector:@selector(getBorrowingInfoDidSuccess)]) {
+                [_delegate getBorrowingInfoDidSuccess];
+            }
+            
         }
             break;
             
         case 2: {
             _borrowHistoryArr = [self borrowHistoryArrayFromHtmlData:htmlData];
-            [_delegate getBorrowHistoryInfoDidSuccess];
+//            if ([_delegate performSelector:@selector(getBorrowHistoryInfoDidSuccess)]) {
+//                [_delegate getBorrowHistoryInfoDidSuccess];
+//                NSLog(@"model - 线程%@",[NSThread currentThread]);
+//            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_delegate getBorrowHistoryInfoDidSuccess];
+                NSLog(@"model - 线程%@",[NSThread currentThread]);
+            });
+            
+            
         }
             break;
             

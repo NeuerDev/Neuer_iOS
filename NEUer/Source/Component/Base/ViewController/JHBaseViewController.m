@@ -104,6 +104,7 @@
 - (UIView *)placeholderView {
     if (!_placeholderView) {
         _placeholderView = [[UIView alloc] init];
+        _placeholderView.hidden = YES;
         [self.view addSubview:_placeholderView];
     }
    return _placeholderView;
