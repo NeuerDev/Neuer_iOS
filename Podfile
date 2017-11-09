@@ -13,6 +13,7 @@ target 'NEUer' do
   pod 'TesseractOCRiOS', '~> 4.0.0'
   pod 'FMDB'
   pod 'JPFPSStatus', '~> 0.1.1'
+  pod 'GPUImage'
 
 end
 
@@ -20,7 +21,6 @@ target 'NEUerTodayExtension' do
   use_frameworks!
 
   # Pods for NEUer
-  pod 'AFNetworking', '~> 3.0'
   pod 'Masonry'
 
 end

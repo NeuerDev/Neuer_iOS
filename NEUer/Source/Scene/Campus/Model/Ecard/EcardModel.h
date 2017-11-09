@@ -90,4 +90,8 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 - (void)reportLostComplete:(EcardActionCompleteBlock)block;
 
+#pragma mark - Automatic
+
+- (void)autoQueryInfoComplete:(EcardActionCompleteBlock)block;
+
 @end

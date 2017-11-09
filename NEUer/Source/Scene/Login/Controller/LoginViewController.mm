@@ -374,11 +374,14 @@ typedef void(^LoginInputViewActionBlock)(void);
                 G8Tesseract *tesseract = [TesseractCenter defaultCenter].tesseract;
                 tesseract.image = verifyImage;
                 if ([tesseract recognize]) {
+                    NSLog(@"识别成功 ---%@---", tesseract.recognizedText);
                     dispatch_async(dispatch_get_main_queue(), ^{
                         inputView.textField.text = [[tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByReplacingOccurrencesOfString:@" " withString:@""];
                         
                         [self refreshViewState];
                     });
+                } else {
+                    NSLog(@"识别失败");
                 }
             });
         }

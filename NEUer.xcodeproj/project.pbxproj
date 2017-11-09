@@ -69,6 +69,11 @@
 		5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC233171F723E6A005F0A6E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CC233191F723E6A005F0A6E /* Localizable.strings */; };
 		5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
+		5CC83B7E1FB29CAD0097009E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC83B7B1FB29CAC0097009E /* CoreMedia.framework */; };
+		5CC83B7F1FB29CAD0097009E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC83B7C1FB29CAD0097009E /* CoreVideo.framework */; };
+		5CC83B801FB29CAD0097009E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC83B7D1FB29CAD0097009E /* QuartzCore.framework */; };
+		5CC83B821FB29CB30097009E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC83B811FB29CB30097009E /* OpenGLES.framework */; };
+		5CC83B841FB29CBD0097009E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC83B831FB29CBD0097009E /* AVFoundation.framework */; };
 		5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
 		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
 		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
@@ -234,6 +239,11 @@
 		5CC2331B1F723E6D005F0A6E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		5CC744BA1F6D3D94003D2EE2 /* JHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHReachability.h; sourceTree = "<group>"; };
 		5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHReachability.m; sourceTree = "<group>"; };
+		5CC83B7B1FB29CAC0097009E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5CC83B7C1FB29CAD0097009E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		5CC83B7D1FB29CAD0097009E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5CC83B811FB29CB30097009E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		5CC83B831FB29CBD0097009E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5CCC667C1F8DA7D100F8F96C /* EcardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardModel.h; sourceTree = "<group>"; };
 		5CCC667D1F8DA7D100F8F96C /* EcardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardModel.m; sourceTree = "<group>"; };
 		5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JHCategory.h"; sourceTree = "<group>"; };
@@ -282,6 +292,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CC83B841FB29CBD0097009E /* AVFoundation.framework in Frameworks */,
+				5CC83B821FB29CB30097009E /* OpenGLES.framework in Frameworks */,
+				5CC83B7E1FB29CAD0097009E /* CoreMedia.framework in Frameworks */,
+				5CC83B7F1FB29CAD0097009E /* CoreVideo.framework in Frameworks */,
+				5CC83B801FB29CAD0097009E /* QuartzCore.framework in Frameworks */,
 				5C507C721F9CA31200E857CA /* CoreImage.framework in Frameworks */,
 				5C507C701F9CA30D00E857CA /* libstdc++.6.0.9.tbd in Frameworks */,
 				2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */,
@@ -1330,6 +1345,11 @@
 		B5BF3B383854E4DF15FB6AD9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5CC83B831FB29CBD0097009E /* AVFoundation.framework */,
+				5CC83B811FB29CB30097009E /* OpenGLES.framework */,
+				5CC83B7B1FB29CAC0097009E /* CoreMedia.framework */,
+				5CC83B7C1FB29CAD0097009E /* CoreVideo.framework */,
+				5CC83B7D1FB29CAD0097009E /* QuartzCore.framework */,
 				5C507C711F9CA31200E857CA /* CoreImage.framework */,
 				5C507C6F1F9CA30C00E857CA /* libstdc++.6.0.9.tbd */,
 				5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */,
@@ -1477,25 +1497,25 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-NEUer/Pods-NEUer-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DKNightVersion/DKNightVersion.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
 				"${BUILT_PRODUCTS_DIR}/JPFPSStatus/JPFPSStatus.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/TesseractOCRiOS/TesseractOCR.framework",
 				"${BUILT_PRODUCTS_DIR}/hpple/hpple.framework",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKNightVersion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JPFPSStatus.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TesseractOCR.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hpple.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
