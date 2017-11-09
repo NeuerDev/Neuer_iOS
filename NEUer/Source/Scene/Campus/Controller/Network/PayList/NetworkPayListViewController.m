@@ -38,16 +38,13 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     [self.timeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self.contentView).with.offset(16);
         make.width.equalTo(@(80));
-        make.centerY.equalTo(self.contentView);
         make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-16);
     }];
     [self.monthLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.timeView);
-        make.top.equalTo(self.timeView.mas_top).with.offset(8);
+        make.left.and.top.equalTo(self.timeView);
     }];
     [self.yearsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.timeView);
-        make.top.equalTo(self.monthLabel.mas_bottom).with.offset(4);
+        make.left.and.bottom.equalTo(self.timeView);
     }];
     [self.seperatorView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeView.mas_right);
@@ -227,6 +224,13 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     return self.model.financialPayInfoArray.count;
 }
 
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//    if (self.model.financialCheckoutInfoArray.count > 0) {
+//        return 1;
+//    } else {
+//        return 0;
+//    }
+//}
 
 #pragma mark - UITableViewDelegate
 

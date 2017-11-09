@@ -56,13 +56,13 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
     }];
     [self.msgTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.infoView);
-        make.width.equalTo(@110);
+        make.width.equalTo(@90);
         make.left.equalTo(self.infoView);
     }];
     [self.msgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.equalTo(self.infoView);
-        make.left.equalTo(self.msgTypeLabel.mas_right).with.offset(20);
+        make.left.equalTo(self.msgTypeLabel.mas_right).with.offset(10);
     }];
 }
 
@@ -158,6 +158,7 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -180,7 +181,7 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
 
 - (void)initData {
     self.title = @"基本信息";
-//    self.tableView.refreshControl = self.refreshControl;
+    self.tableView.refreshControl = self.refreshControl;
 }
 
 - (void)initConstaints {
@@ -189,16 +190,14 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
 
 #pragma mark - Response Method
 
-//- (void)beginRefreshing {
-//    [self.refreshControl beginRefreshing];
-//    [self.model refreshPayInfoData];
-//    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
-//}
-//
-//- (void)endRefreshing {
-//    [self.refreshControl endRefreshing];
-//    [self.tableView reloadData];
-//}
+- (void)beginRefreshing {
+    [self.refreshControl beginRefreshing];
+    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+}
+
+- (void)endRefreshing {
+    [self.refreshControl endRefreshing];
+}
 
 #pragma mark - UITableViewDataSource
 
@@ -261,23 +260,6 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
     return 64;
 }
 
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.row == self.model.financialPayInfoArray.count - 1) {
-//        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
-//        _indicatorView.center = CGPointMake(SCREEN_WIDTH_ACTUAL * 0.5, footerView.frame.origin.y + 20);
-//        footerView.backgroundColor = [UIColor clearColor];
-//        [footerView addSubview:self.indicatorView];
-//        [self.indicatorView startAnimating];
-//        _tableView.tableFooterView.hidden = NO;
-//        _tableView.tableFooterView = footerView;
-//
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            _tableView.tableFooterView.hidden = YES;
-//            [_indicatorView stopAnimating];
-//        });
-//    }
-//}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     CustomSectionHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kNetworkHeaderFooterViewReuseID];
     if (!headerView) {
@@ -304,20 +286,6 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
     
 }
 
-#pragma mark - UIScrollViewDelegate
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    if (scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height) {
-//        WS(ws);
-//        [self.model queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {
-//            if (success) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [ws.tableView reloadData];
-//                });
-//            }
-//        }];
-//    }
-//}
-
 #pragma mark - Setter
 
 - (void)setInfoBean:(GatewaySelfServiceMenuBasicInfoBean *)infoBean {
@@ -340,13 +308,13 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"kNetworkHeaderFooterViewReu
     return _tableView;
 }
 
-//- (UIRefreshControl *)refreshControl {
-//    if (!_refreshControl) {
-//        _refreshControl = [[UIRefreshControl alloc] init];
-//        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
-//    }
-//    return _refreshControl;
-//}
+- (UIRefreshControl *)refreshControl {
+    if (!_refreshControl) {
+        _refreshControl = [[UIRefreshControl alloc] init];
+        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
+    }
+    return _refreshControl;
+}
 
 - (UIActivityIndicatorView *)indicatorView {
     if (!_indicatorView) {

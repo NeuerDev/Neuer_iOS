@@ -8,6 +8,7 @@
 
 #import "GatewaySelfServiceMenuModel.h"
 #import "LYTool.h"
+#import "AFNetworking.h"
 
 @interface GatewaySelfServiceMenuModel () <NSURLSessionDelegate>
 
@@ -29,6 +30,7 @@
     GatewaySelfServiceMenuLoginBlock _queryOnlineInfoBlock;
     GatewaySelfServiceMenuLoginBlock _queryInternetListBlock;
     GatewaySelfServiceMenuLoginBlock _queryBlock;
+    GatewaySelfServiceMenuQueryBlock _refreshBlock;
     NSInteger _logDetailPage;
     NSInteger _financialPayPage;
     NSInteger _financialCheckoutPage;
@@ -77,20 +79,27 @@
     [self queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {}];
 }
 
-- (void)refreshCheckoutData {
+- (void)refreshCheckoutDataComplete:(GatewaySelfServiceMenuQueryBlock)block {
     _financialCheckoutPage = 1;
+    _refreshBlock = block;
     
-    while (_financialCheckoutInfoArray.count > 0) {
+    while (_financialCheckoutInfoArray.count >= 10) {
         [_financialCheckoutInfoArray removeAllObjects];
     }
     
-    [self queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {}];
+    [self queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
+        if (success) {
+            _refreshBlock(YES, @"刷新成功");
+        } else {
+            _refreshBlock(NO, @"刷新失败");
+        }
+    }];
 }
 
 - (void)refreshPayInfoData {
     _financialPayPage = 1;
     
-    while (_financialPayInfoArray.count > 0) {
+    while (_financialPayInfoArray.count > 10) {
         [_financialPayInfoArray removeAllObjects];
     }
     
@@ -99,6 +108,10 @@
 
 //获取验证码
 - (void)getVerifyImage:(GatewaySelfServiceMenuGetVerifyImageBlock)block {
+    
+    [self getLoginStringFromIPGWComplete:^(BOOL success, NSString *data) {
+        
+    }];
     
     NSArray<NSHTTPCookie *> *cookies = self.session.configuration.HTTPCookieStorage.cookies;
     for (NSHTTPCookie *cookie in cookies) {
@@ -164,6 +177,7 @@
 - (void)loginGatewaySelfServiceMenuWithUser:(NSString *)account password:(NSString *)password verifyCode:(NSString *)verifyCode loginState:(GatewaySelfServiceMenuLoginBlock)block{
 
     _loginBlock = block;
+
     
     NSDictionary *param = @{
                             @"_csrf" : self.csrfStr,
@@ -191,10 +205,11 @@
                             self.csrfCookieStr = [NSString stringWithFormat:@"_csrf=%@;", cookie.value];
                         }
                     }
-                NSMutableString *cookieMutableString = [self.PHPSESSIDStr stringByAppendingString:@"login=1234567;"].mutableCopy;
-                cookieMutableString = [cookieMutableString stringByAppendingString:self.csrfCookieStr].mutableCopy;
+//                NSMutableString *cookieMutableString = [self.PHPSESSIDStr stringByAppendingString:@"login=1234567;"].mutableCopy;
+                NSMutableString *cookieMutableString = [self.PHPSESSIDStr stringByAppendingString:self.csrfCookieStr].mutableCopy;
                 _cookie = cookieMutableString.copy;
 
+                
                 _loginBlock(YES, @"登录成功");
             }
         } else {
@@ -205,6 +220,43 @@
     }];
     
     [task resume];
+    
+}
+
+- (void)getLoginStringFromIPGWComplete:(GatewaySelfServiceMenuQueryBlock)block {
+    _queryBlock = block;
+    
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn/srun_portal_pc.php"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
+//    request.HTTPMethod = @"POST";
+//    NSDictionary *param = @{
+//                            @"url" : @"",
+//                            @"ac_id" : @"1"
+//                            };
+//    request.HTTPBody = [param.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
+//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+////        NSString *setCookies = ((NSHTTPURLResponse *)response).allHeaderFields[@"Cookie"];
+////        for (NSString *strings in [setCookies componentsSeparatedByString:@";"]) {
+////            NSArray *componentsString = [strings componentsSeparatedByString:@"="];
+////            for (int i = 0; i < componentsString.count; ++i) {
+////                if ([componentsString[i] containsString:@"PHPSESSID"]) {
+////                    _PHPSESSIDStr = [NSString stringWithFormat:@"PHPSESSID=%@;", componentsString[++i]];
+////                } else if ([componentsString[i] containsString:@"_csrf"]) {
+////                    _csrfCookieStr= [NSString stringWithFormat:@"_csrf=%@;", componentsString[++i]];
+////                } else {
+////                    continue;
+////                }
+////            }
+////        }
+//        _queryBlock(YES, @"chenggong");
+//        NSArray<NSHTTPCookie *> *cookies = self.session.configuration.HTTPCookieStorage.cookies;
+//
+//        for (NSHTTPCookie *cookie in cookies){
+//            NSLog(@"\n\n-------- %@",cookie);
+//        }
+//    }];
+//
+//    [task resume];
+    
     
 }
 
@@ -444,8 +496,6 @@
         }
     }];
     [task resume];
-    
-//    [self updateCsrfValue];
 }
 
 //缴费信息
@@ -474,6 +524,10 @@
                 
                 [financialMutableArray addObject:financialInfo];
             }
+        }
+        
+        if (self.financialCheckoutInfoArray.count != 0 && _financialPayPage == 1) {
+            [self.financialCheckoutInfoArray removeAllObjects];
         }
         
         if (self.financialPayInfoArray.count == 0) {
@@ -524,6 +578,10 @@
             }
         }
         
+        if (self.financialCheckoutInfoArray.count > 0 && _financialCheckoutPage == 1) {
+            [self.financialCheckoutInfoArray removeAllObjects];
+        }
+        
         if (self.financialCheckoutInfoArray.count == 0) {
             [self.financialCheckoutInfoArray addObjectsFromArray:financialMutableArray.mutableCopy];
             _financialCheckoutPage++;
@@ -545,19 +603,33 @@
 }
 
 - (void)offLineTheIPGWWithDevicesID:(NSInteger)deviceID {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn:8800/home/base/drop"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-    request.HTTPMethod = @"POST";
-    NSDictionary *params = @{
-                             @"id" : [NSString stringWithFormat:@"%ld", deviceID]
-                             };
-    
-    request.HTTPBody = [params.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
-    [request setValue:self.cookie forHTTPHeaderField:@"Cookie"];
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSLog(@"%@", response);
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn:8800/home/base/drop?id=7007497"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
+//    request.HTTPMethod = @"POST";
+//    NSDictionary *params = @{
+//                             @"id" : [NSString stringWithFormat:@"%ld", deviceID]
+//                             };
+//
+//    request.HTTPBody = [params.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
+//    [request setValue:self.cookie forHTTPHeaderField:@"Cookie"];
+//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        NSLog(@"%@", response);
+//    }];
+//
+//    [task resume];
+
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSDictionary *param = @{
+                            @"id" : [NSString stringWithFormat:@"%ld", deviceID]
+                            };
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+
+    [manager POST:@"http://ipgw.neu.edu.cn:8800/home/base/drop" parameters:param progress:nil
+          success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
+              NSString *str =  [[NSString alloc]initWithData:(NSData *)responseObject encoding:NSUTF8StringEncoding];
+              NSLog(@"%@", str);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@", error);
     }];
-    
-    [task resume];
     
     [self updateCsrfValue];
 }

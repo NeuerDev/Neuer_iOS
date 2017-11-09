@@ -168,7 +168,7 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
  */
 - (void)refreshData;
 - (void)refreshInternetRecordsData;
-- (void)refreshCheckoutData;
+- (void)refreshCheckoutDataComplete:(GatewaySelfServiceMenuQueryBlock)block;
 - (void)refreshPayInfoData;
 
 /**

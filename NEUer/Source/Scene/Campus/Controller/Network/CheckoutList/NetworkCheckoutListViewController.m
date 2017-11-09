@@ -184,7 +184,15 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 
 - (void)initData {
     self.title = @"结算清单";
-    [self.model refreshCheckoutData];
+    WS(ws);
+    [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ws.tableView reloadData];
+            });
+            
+        }
+    }];
     self.tableView.refreshControl = self.refreshControl;
 }
 
@@ -196,13 +204,22 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 
 - (void)beginRefreshing {
     [self.refreshControl beginRefreshing];
-    [self.model refreshCheckoutData];
-    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+    WS(ws);
+    [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
+        
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ws performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+                [ws.tableView reloadData];
+            });
+        } else {
+            [ws performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+        }
+    }];
 }
 
 - (void)endRefreshing {
     [self.refreshControl endRefreshing];
-    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
@@ -221,6 +238,13 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
     return self.model.financialCheckoutInfoArray.count;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.model.financialCheckoutInfoArray.count > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 #pragma mark - UITableViewDelegate
 
