@@ -650,7 +650,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 #pragma mark - Setter
 - (void)setBorrowingBean:(LibraryLoginMyInfoBorrowingBean *)bean {
-    self.borrowingBean = bean;
+    _borrowingBean = bean;
     self.titleLabel.text = bean.title;
     self.callNumLabel.text = [NSString stringWithFormat:@"索书号: %@",bean.claimNumber];
     NSString *year = [bean.shouldReturnDate substringToIndex:4];
