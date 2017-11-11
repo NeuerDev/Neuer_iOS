@@ -165,38 +165,38 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
                  }];
     
     __weak LoginViewController *weakSigninVC = signinVC;
-    signinVC.changeVerifyImageBlock = ^{
-        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-            weakSigninVC.verifyImage = verifyImage;
-        }];
-    };
+//    signinVC.changeVerifyImageBlock = ^{
+//        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+//            weakSigninVC.verifyImage = verifyImage;
+//        }];
+//    };
     [self presentViewController:signinVC animated:YES completion:^{
-        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-            weakSigninVC.verifyImage = verifyImage;
-        }];
+//        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
+//            weakSigninVC.verifyImage = verifyImage;
+//        }];
     }];
 }
 
 - (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
     WS(ws);
-    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
-        if (success) {
-            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeECard];
-            
-            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-                if (success) {
-                    NSLog(@"success query info");
-                    ws.infoBean = ws.ecardModel.info;
-                }
-            }];
-            
-            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
-                if (success) {
-                    [ws.consumeHistoryTableView reloadData];
-                }
-            }];
-        }
-    }];
+//    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
+//        if (success) {
+//            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeECard];
+//            
+//            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+//                if (success) {
+//                    NSLog(@"success query info");
+//                    ws.infoBean = ws.ecardModel.info;
+//                }
+//            }];
+//
+//            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+//                if (success) {
+//                    [ws.consumeHistoryTableView reloadData];
+//                }
+//            }];
+//        }
+//    }];
 }
 
 - (void)setMainColor:(UIColor *)color animated:(BOOL)animated {

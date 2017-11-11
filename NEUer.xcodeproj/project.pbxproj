@@ -93,6 +93,11 @@
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
+		5CF377FB1FB5349800BC141E /* EcardHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF377FA1FB5349800BC141E /* EcardHistoryModel.m */; };
+		5CF377FE1FB534AE00BC141E /* EcardServiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF377FD1FB534AE00BC141E /* EcardServiceModel.m */; };
+		5CF378011FB534D600BC141E /* EcardLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF378001FB534D600BC141E /* EcardLoginModel.m */; };
+		5CF378051FB5369C00BC141E /* EcardInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF378041FB5369C00BC141E /* EcardInfoModel.m */; };
+		5CF378091FB5371D00BC141E /* EcardBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF378081FB5371D00BC141E /* EcardBaseModel.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -282,6 +287,16 @@
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
 		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
 		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
+		5CF377F91FB5349800BC141E /* EcardHistoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardHistoryModel.h; sourceTree = "<group>"; };
+		5CF377FA1FB5349800BC141E /* EcardHistoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardHistoryModel.m; sourceTree = "<group>"; };
+		5CF377FC1FB534AE00BC141E /* EcardServiceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardServiceModel.h; sourceTree = "<group>"; };
+		5CF377FD1FB534AE00BC141E /* EcardServiceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardServiceModel.m; sourceTree = "<group>"; };
+		5CF377FF1FB534D600BC141E /* EcardLoginModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardLoginModel.h; sourceTree = "<group>"; };
+		5CF378001FB534D600BC141E /* EcardLoginModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardLoginModel.m; sourceTree = "<group>"; };
+		5CF378031FB5369C00BC141E /* EcardInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardInfoModel.h; sourceTree = "<group>"; };
+		5CF378041FB5369C00BC141E /* EcardInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardInfoModel.m; sourceTree = "<group>"; };
+		5CF378071FB5371D00BC141E /* EcardBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardBaseModel.h; sourceTree = "<group>"; };
+		5CF378081FB5371D00BC141E /* EcardBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardBaseModel.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1137,8 +1152,12 @@
 		5CCC667B1F8DA7BF00F8F96C /* Ecard */ = {
 			isa = PBXGroup;
 			children = (
-				5CCC667C1F8DA7D100F8F96C /* EcardModel.h */,
-				5CCC667D1F8DA7D100F8F96C /* EcardModel.m */,
+				5CF378061FB5370500BC141E /* Base */,
+				5CF378021FB5368D00BC141E /* Info */,
+				5CF377F81FB5348000BC141E /* History */,
+				5CF377F71FB5345800BC141E /* Service */,
+				5CF377F61FB5345100BC141E /* Login */,
+				5CF377F51FB5344300BC141E /* Ecard */,
 			);
 			path = Ecard;
 			sourceTree = "<group>";
@@ -1327,6 +1346,60 @@
 				5CE99C521F7294820062DBF9 /* JHURLRouter.m */,
 			);
 			path = URLRouter;
+			sourceTree = "<group>";
+		};
+		5CF377F51FB5344300BC141E /* Ecard */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC667C1F8DA7D100F8F96C /* EcardModel.h */,
+				5CCC667D1F8DA7D100F8F96C /* EcardModel.m */,
+			);
+			path = Ecard;
+			sourceTree = "<group>";
+		};
+		5CF377F61FB5345100BC141E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5CF377FF1FB534D600BC141E /* EcardLoginModel.h */,
+				5CF378001FB534D600BC141E /* EcardLoginModel.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		5CF377F71FB5345800BC141E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				5CF377FC1FB534AE00BC141E /* EcardServiceModel.h */,
+				5CF377FD1FB534AE00BC141E /* EcardServiceModel.m */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		5CF377F81FB5348000BC141E /* History */ = {
+			isa = PBXGroup;
+			children = (
+				5CF377F91FB5349800BC141E /* EcardHistoryModel.h */,
+				5CF377FA1FB5349800BC141E /* EcardHistoryModel.m */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		5CF378021FB5368D00BC141E /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				5CF378031FB5369C00BC141E /* EcardInfoModel.h */,
+				5CF378041FB5369C00BC141E /* EcardInfoModel.m */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		5CF378061FB5370500BC141E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5CF378071FB5371D00BC141E /* EcardBaseModel.h */,
+				5CF378081FB5371D00BC141E /* EcardBaseModel.m */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		9C23063B159BDC7CF94A2327 /* Pods */ = {
@@ -1605,15 +1678,18 @@
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
+				5CF378091FB5371D00BC141E /* EcardBaseModel.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
+				5CF378011FB534D600BC141E /* EcardLoginModel.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
+				5CF378051FB5369C00BC141E /* EcardInfoModel.m in Sources */,
 				5C7B8ED91F8B41290088FC60 /* GatewayModel.m in Sources */,
 				5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
@@ -1641,8 +1717,10 @@
 				5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
+				5CF377FE1FB534AE00BC141E /* EcardServiceModel.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
+				5CF377FB1FB5349800BC141E /* EcardHistoryModel.m in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,

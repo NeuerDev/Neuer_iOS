@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "EcardLoginModel.h"
+#import "EcardInfoModel.h"
+#import "EcardServiceModel.h"
+#import "EcardHistoryModel.h"
+
 @class User;
 
-typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *message);
-typedef void(^EcardActionCompleteBlock)(BOOL success, NSError *error);
 typedef void(^EcardQueryConsumeCompleteBlock)(BOOL success, BOOL hasMore, NSError *error);
 
 typedef NS_ENUM(NSUInteger, EcardInfoBalanceLevel) {
@@ -67,7 +70,7 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 @end
 
-@interface EcardModel : NSObject
+@interface EcardModel : EcardBaseModel
 
 @property (nonatomic, strong) EcardInfoBean *info;
 @property (nonatomic, strong) NSDictionary *consumeStatisicsDictionary;
@@ -76,22 +79,28 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 - (instancetype)initWithUser:(User *)user;
 
-- (void)getVerifyImage:(EcardGetVerifyImageBlock)block;
+#pragma mark - Login
 
-- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block;
+//- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block;
+
+#pragma mark - Info
 
 - (void)fetchAvatarComplete:(EcardActionCompleteBlock)block;
 
 - (void)queryInfoComplete:(EcardActionCompleteBlock)block;
 
+#pragma mark - History
+
 - (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block;
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block;
+
+#pragma mark - Service
 
 - (void)reportLostComplete:(EcardActionCompleteBlock)block;
 
 #pragma mark - Automatic
 
-- (void)autoQueryInfoComplete:(EcardActionCompleteBlock)block;
+//- (void)autoQueryInfoComplete:(EcardActionCompleteBlock)block;
 
 @end
