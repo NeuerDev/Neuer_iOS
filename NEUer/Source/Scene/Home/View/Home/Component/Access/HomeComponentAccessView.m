@@ -178,7 +178,8 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
                                },
                            @{
                                @"title":NSLocalizedString(@"HomeAccessLibraryBooks", nil),
-                               @"url":@"neu://go/lib",
+                               @"title":@"书刊查询",
+                               @"url":@"neu://go/lib/search",
                                @"color":@"#A2C9B4",
                                },
                            @{

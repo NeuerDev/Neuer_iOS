@@ -38,6 +38,13 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
     return self;
 }
 
+#pragma mark - Private Methods
+- (void)delegateMethodsClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(component:willPerformAction:)]) {
+        [self.delegate component:self willPerformAction:_actionButton.titleLabel.text];
+    }
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -129,6 +136,7 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
         _actionButton = [[UIButton alloc] init];
         [_actionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
         _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
+        [_actionButton addTarget:self action:@selector(delegateMethodsClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _actionButton;
@@ -157,6 +165,8 @@ NSString * const kSearchListCellId = @"kSearchListCellId";
         } completion:^(BOOL finished) {
             [_tableView reloadData];
         }];
+    } else {
+        [_tableView reloadData];
     }
 }
 
