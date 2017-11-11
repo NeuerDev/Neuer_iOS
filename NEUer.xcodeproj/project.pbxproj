@@ -94,6 +94,18 @@
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
+		772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */; };
+		772116E31FB1D871008A305E /* LibraryRecommendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 772116E21FB1D871008A305E /* LibraryRecommendModel.m */; };
+		77643EFF1FAF070D00F37265 /* LibraryCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 77643EFE1FAF070D00F37265 /* LibraryCenter.m */; };
+		776697E11FA975B000BB7544 /* SearchLibraryNewBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E01FA975B000BB7544 /* SearchLibraryNewBookModel.m */; };
+		776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */; };
+		776697E71FA9765400BB7544 /* LibraryLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E61FA9765400BB7544 /* LibraryLoginModel.m */; };
+		776697ED1FA9772100BB7544 /* LibraryBookDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697EC1FA9772100BB7544 /* LibraryBookDetailModel.m */; };
+		776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697F01FA9778F00BB7544 /* LibraryBookListComponent.m */; };
+		776697F81FA9787B00BB7544 /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697F71FA9787B00BB7544 /* LibraryViewController.m */; };
+		776697FC1FA978BB00BB7544 /* LibraryNewBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697FB1FA978BB00BB7544 /* LibraryNewBookViewController.m */; };
+		776698001FA978E000BB7544 /* LibraryMostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697FF1FA978E000BB7544 /* LibraryMostViewController.m */; };
+		77B205491FB45411001F3C18 /* LibraryRecommendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B205481FB45411001F3C18 /* LibraryRecommendViewController.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -290,6 +302,30 @@
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
 		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
 		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
+		772116DD1FB19F58008A305E /* LibraryHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryHistoryViewController.h; sourceTree = "<group>"; };
+		772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryHistoryViewController.m; sourceTree = "<group>"; };
+		772116E11FB1D871008A305E /* LibraryRecommendModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryRecommendModel.h; sourceTree = "<group>"; };
+		772116E21FB1D871008A305E /* LibraryRecommendModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryRecommendModel.m; sourceTree = "<group>"; };
+		77643EFD1FAF070D00F37265 /* LibraryCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryCenter.h; sourceTree = "<group>"; };
+		77643EFE1FAF070D00F37265 /* LibraryCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryCenter.m; sourceTree = "<group>"; };
+		776697DF1FA975B000BB7544 /* SearchLibraryNewBookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryNewBookModel.h; sourceTree = "<group>"; };
+		776697E01FA975B000BB7544 /* SearchLibraryNewBookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryNewBookModel.m; sourceTree = "<group>"; };
+		776697E21FA975F700BB7544 /* SearchLibraryBorrowingModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryBorrowingModel.h; sourceTree = "<group>"; };
+		776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryBorrowingModel.m; sourceTree = "<group>"; };
+		776697E51FA9765400BB7544 /* LibraryLoginModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryLoginModel.h; sourceTree = "<group>"; };
+		776697E61FA9765400BB7544 /* LibraryLoginModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryLoginModel.m; sourceTree = "<group>"; };
+		776697EB1FA9772100BB7544 /* LibraryBookDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryBookDetailModel.h; sourceTree = "<group>"; };
+		776697EC1FA9772100BB7544 /* LibraryBookDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryBookDetailModel.m; sourceTree = "<group>"; };
+		776697EF1FA9778F00BB7544 /* LibraryBookListComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryBookListComponent.h; sourceTree = "<group>"; };
+		776697F01FA9778F00BB7544 /* LibraryBookListComponent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryBookListComponent.m; sourceTree = "<group>"; };
+		776697F61FA9787B00BB7544 /* LibraryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryViewController.h; sourceTree = "<group>"; };
+		776697F71FA9787B00BB7544 /* LibraryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryViewController.m; sourceTree = "<group>"; };
+		776697FA1FA978BB00BB7544 /* LibraryNewBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryNewBookViewController.h; sourceTree = "<group>"; };
+		776697FB1FA978BB00BB7544 /* LibraryNewBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryNewBookViewController.m; sourceTree = "<group>"; };
+		776697FE1FA978E000BB7544 /* LibraryMostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryMostViewController.h; sourceTree = "<group>"; };
+		776697FF1FA978E000BB7544 /* LibraryMostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryMostViewController.m; sourceTree = "<group>"; };
+		77B205471FB45411001F3C18 /* LibraryRecommendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryRecommendViewController.h; sourceTree = "<group>"; };
+		77B205481FB45411001F3C18 /* LibraryRecommendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryRecommendViewController.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -458,6 +494,7 @@
 			isa = PBXGroup;
 			children = (
 				33201F4D1FB71C3000CAFDEA /* BadgeCenter */,
+				77643EFC1FAF069B00F37265 /* Library */,
 				5C507C7B1F9DE5F800E857CA /* DataBase */,
 				5C507C771F9CCC9200E857CA /* Tesseract */,
 				5C5FD4391F975C9F00B1EA2C /* Ecard */,
@@ -519,6 +556,7 @@
 		5C0844C41F7B94BB00C69261 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				776697EE1FA9777900BB7544 /* LibraryBookListComponent */,
 				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
 			);
 			path = View;
@@ -782,6 +820,11 @@
 		5C7548B01F77382A0065E64E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				772116E01FB1D848008A305E /* Recommend */,
+				776697DE1FA9757400BB7544 /* BookDetail */,
+				776697DD1FA9755400BB7544 /* Login */,
+				776697DC1FA9754100BB7544 /* Borrowing */,
+				776697DB1FA9753100BB7544 /* NewBook */,
 				5CA976F01F73CED800B1089A /* Result */,
 				5C4602101F72BB15009AF91A /* Suggest */,
 			);
@@ -1160,6 +1203,11 @@
 		5CC232F11F720776005F0A6E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				77B205461FB453E4001F3C18 /* Recommend */,
+				772116DC1FB19F30008A305E /* History */,
+				776697FD1FA978C700BB7544 /* Most */,
+				776697F91FA978A000BB7544 /* NewBook */,
+				776697F21FA9783D00BB7544 /* Main */,
 				5CA976E41F73AAD500B1089A /* SearchResult */,
 				5CC232FE1F72090F005F0A6E /* SearchDoor */,
 				5CC233011F72090F005F0A6E /* Search */,
@@ -1406,6 +1454,114 @@
 				5CE99C521F7294820062DBF9 /* JHURLRouter.m */,
 			);
 			path = URLRouter;
+			sourceTree = "<group>";
+		};
+		772116DC1FB19F30008A305E /* History */ = {
+			isa = PBXGroup;
+			children = (
+				772116DD1FB19F58008A305E /* LibraryHistoryViewController.h */,
+				772116DE1FB19F58008A305E /* LibraryHistoryViewController.m */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		772116E01FB1D848008A305E /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				772116E11FB1D871008A305E /* LibraryRecommendModel.h */,
+				772116E21FB1D871008A305E /* LibraryRecommendModel.m */,
+			);
+			path = Recommend;
+			sourceTree = "<group>";
+		};
+		77643EFC1FAF069B00F37265 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				77643EFD1FAF070D00F37265 /* LibraryCenter.h */,
+				77643EFE1FAF070D00F37265 /* LibraryCenter.m */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		776697DB1FA9753100BB7544 /* NewBook */ = {
+			isa = PBXGroup;
+			children = (
+				776697DF1FA975B000BB7544 /* SearchLibraryNewBookModel.h */,
+				776697E01FA975B000BB7544 /* SearchLibraryNewBookModel.m */,
+			);
+			path = NewBook;
+			sourceTree = "<group>";
+		};
+		776697DC1FA9754100BB7544 /* Borrowing */ = {
+			isa = PBXGroup;
+			children = (
+				776697E21FA975F700BB7544 /* SearchLibraryBorrowingModel.h */,
+				776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */,
+			);
+			path = Borrowing;
+			sourceTree = "<group>";
+		};
+		776697DD1FA9755400BB7544 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				776697E51FA9765400BB7544 /* LibraryLoginModel.h */,
+				776697E61FA9765400BB7544 /* LibraryLoginModel.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		776697DE1FA9757400BB7544 /* BookDetail */ = {
+			isa = PBXGroup;
+			children = (
+				776697EB1FA9772100BB7544 /* LibraryBookDetailModel.h */,
+				776697EC1FA9772100BB7544 /* LibraryBookDetailModel.m */,
+			);
+			path = BookDetail;
+			sourceTree = "<group>";
+		};
+		776697EE1FA9777900BB7544 /* LibraryBookListComponent */ = {
+			isa = PBXGroup;
+			children = (
+				776697EF1FA9778F00BB7544 /* LibraryBookListComponent.h */,
+				776697F01FA9778F00BB7544 /* LibraryBookListComponent.m */,
+			);
+			path = LibraryBookListComponent;
+			sourceTree = "<group>";
+		};
+		776697F21FA9783D00BB7544 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				776697F61FA9787B00BB7544 /* LibraryViewController.h */,
+				776697F71FA9787B00BB7544 /* LibraryViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		776697F91FA978A000BB7544 /* NewBook */ = {
+			isa = PBXGroup;
+			children = (
+				776697FA1FA978BB00BB7544 /* LibraryNewBookViewController.h */,
+				776697FB1FA978BB00BB7544 /* LibraryNewBookViewController.m */,
+			);
+			path = NewBook;
+			sourceTree = "<group>";
+		};
+		776697FD1FA978C700BB7544 /* Most */ = {
+			isa = PBXGroup;
+			children = (
+				776697FE1FA978E000BB7544 /* LibraryMostViewController.h */,
+				776697FF1FA978E000BB7544 /* LibraryMostViewController.m */,
+			);
+			path = Most;
+			sourceTree = "<group>";
+		};
+		77B205461FB453E4001F3C18 /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				77B205471FB45411001F3C18 /* LibraryRecommendViewController.h */,
+				77B205481FB45411001F3C18 /* LibraryRecommendViewController.m */,
+			);
+			path = Recommend;
 			sourceTree = "<group>";
 		};
 		9C23063B159BDC7CF94A2327 /* Pods */ = {
@@ -1677,6 +1833,9 @@
 				5C9895E31F822A5B00C2F93E /* User.m in Sources */,
 				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
+				776697E71FA9765400BB7544 /* LibraryLoginModel.m in Sources */,
+				776697F81FA9787B00BB7544 /* LibraryViewController.m in Sources */,
+				776697ED1FA9772100BB7544 /* LibraryBookDetailModel.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
 				3339FABD1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */,
@@ -1690,11 +1849,14 @@
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
+				776698001FA978E000BB7544 /* LibraryMostViewController.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
+				776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
 				5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
+				776697E11FA975B000BB7544 /* SearchLibraryNewBookModel.m in Sources */,
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */,
@@ -1709,6 +1871,7 @@
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
+				772116E31FB1D871008A305E /* LibraryRecommendModel.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
@@ -1716,9 +1879,11 @@
 				3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
+				77643EFF1FAF070D00F37265 /* LibraryCenter.m in Sources */,
 				5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
+				776697FC1FA978BB00BB7544 /* LibraryNewBookViewController.m in Sources */,
 				5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
@@ -1729,6 +1894,7 @@
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */,
+				77B205491FB45411001F3C18 /* LibraryRecommendViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
 				3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */,
 				3344EFD21F949B62001ED45E /* LYTool.m in Sources */,
@@ -1738,8 +1904,10 @@
 				5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
 				33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */,
+				772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
+				776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */,
 				5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

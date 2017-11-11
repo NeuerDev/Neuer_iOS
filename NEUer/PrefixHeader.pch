@@ -32,6 +32,7 @@
 #import "GatewayCenter.h"
 #import "EcardCenter.h"
 #import "UserCenter.h"
+#import "LibraryCenter.h"
 
 #pragma mark - Tools
 
