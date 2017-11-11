@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */; };
 		3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAB81FA9C56900AB6D8B /* GatewayModel.m */; };
 		3339FABD1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */; };
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
@@ -125,6 +126,8 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
+		33201F4E1FB71C4B00CAFDEA /* BadgeCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgeCenter.h; sourceTree = "<group>"; };
+		33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeCenter.m; sourceTree = "<group>"; };
 		3339FAB71FA9C56900AB6D8B /* GatewayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
 		3339FAB81FA9C56900AB6D8B /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
 		3339FABB1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewaySelfServiceMenuModel.h; sourceTree = "<group>"; };
@@ -315,6 +318,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		33201F4D1FB71C3000CAFDEA /* BadgeCenter */ = {
+			isa = PBXGroup;
+			children = (
+				33201F4E1FB71C4B00CAFDEA /* BadgeCenter.h */,
+				33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */,
+			);
+			path = BadgeCenter;
+			sourceTree = "<group>";
+		};
 		3339FAB61FA9C53B00AB6D8B /* BasicInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -445,6 +457,7 @@
 		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
 			isa = PBXGroup;
 			children = (
+				33201F4D1FB71C3000CAFDEA /* BadgeCenter */,
 				5C507C7B1F9DE5F800E857CA /* DataBase */,
 				5C507C771F9CCC9200E857CA /* Tesseract */,
 				5C5FD4391F975C9F00B1EA2C /* Ecard */,
@@ -1724,6 +1737,7 @@
 				5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */,
 				5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
+				33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
 				5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */,

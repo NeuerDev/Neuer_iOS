@@ -17,6 +17,7 @@
 #import "LYTool.h"
 #import "TelevisionChannelModel.h"
 #import "AppDelegate.h"
+#import "BadgeCenter.h"
 
 @interface TelevisionPlayerView : UIView
 
@@ -329,22 +330,32 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     content.sound = [UNNotificationSound defaultSound];
     content.categoryIdentifier = @"tvshowid";
     content.body = [NSString stringWithFormat:@"您预约于 %@ 的节目%@即将开始播放啦！点击跳转观看", bean.time, bean.name];
-    content.badge = @(1);
+    [[BadgeCenter defaultCenter] updateBadges];
+    content.badge = [[BadgeCenter defaultCenter] badges];
     
     NSString *nowTime = [[LYTool timeOfNow] stringByAppendingString:@":00"];
     NSString *showTime = [bean.time stringByAppendingString:@":00"];
     
 //    提前五分钟提醒
-    NSTimeInterval interval = [LYTool timeIntervalWithStartTime:nowTime endTime:showTime] - 5 * 60;
-    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:interval repeats:NO];
+    NSTimeInterval interval = [LYTool timeIntervalWithStartTime:nowTime endTime:showTime] - (5*60);
+
+    UNTimeIntervalNotificationTrigger *trigger;
+    if (interval > 0) {
+        trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:interval repeats:NO];
+    } else {
+        trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:[LYTool timeIntervalWithStartTime:nowTime endTime:showTime] repeats:NO];
+    }
     
     UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:[NSString stringWithFormat:@"requestId_%@_%@", bean.sourceUrl, bean.time] content:content trigger:trigger];
 
+    WS(ws);
     [((AppDelegate *)[UIApplication sharedApplication].delegate).center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error);
         } else {
-            NSLog(@"预约通知成功！");
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已预约成功。" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+            [ws presentViewController:alertController animated:YES completion:nil];
         }
     }];
 }

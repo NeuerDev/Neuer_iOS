@@ -12,6 +12,7 @@
 #import "JHURLRouter.h"
 #import "TesseractCenter.h"
 #import "DataBaseCenter.h"
+#import "BadgeCenter.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 @property (nonatomic, strong) JHURLRouter *router;
@@ -42,6 +43,9 @@
     
     // 开始监听网络
     [[GatewayCenter defaultCenter] startMonitoring];
+    
+//    初始化badge值
+    [[BadgeCenter defaultCenter] clearBadges];
     
     // 配置路由表
     [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
@@ -120,6 +124,7 @@
     NSString *sourceName = [response.notification.request.content.userInfo objectForKey:@"showsource"];
     NSString *time = [response.notification.request.content.userInfo objectForKey:@"showtime"];
     if (response.notification.request.content.badge > 0) {
+        [[BadgeCenter defaultCenter] clearBadges];
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     

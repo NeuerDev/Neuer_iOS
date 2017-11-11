@@ -232,6 +232,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 - (void)fetchWallDataDidSuccess {
     
+    [self.collectionView reloadData];
 //    跳转到指定节目单
     TelevisionDetailViewController *detailViewController = [[TelevisionDetailViewController alloc] init];
     for (TelevisionWallChannelBean *bean in self.wallModel.channelArray) {
@@ -243,7 +244,6 @@ static NSString * const kChannelCellId = @"kChannelCellId";
         [self.navigationController pushViewController:detailViewController animated:YES];
     }
     
-    [self.collectionView reloadData];
     
 }
 
