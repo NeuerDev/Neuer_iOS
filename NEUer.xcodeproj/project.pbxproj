@@ -10,7 +10,6 @@
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
 		332A540B1FB0883300F05152 /* NetworkPersonalInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A540A1FB0883300F05152 /* NetworkPersonalInfoViewController.m */; };
 		332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */; };
-		332A54191FB088C600F05152 /* NetworkPayListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A54181FB088C600F05152 /* NetworkPayListViewController.m */; };
 		332A541D1FB08A9400F05152 /* NetworkInternetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A541C1FB08A9400F05152 /* NetworkInternetListViewController.m */; };
 		3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAB81FA9C56900AB6D8B /* GatewayModel.m */; };
 		3339FACB1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */; };
@@ -136,8 +135,6 @@
 		332A540A1FB0883300F05152 /* NetworkPersonalInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkPersonalInfoViewController.m; sourceTree = "<group>"; };
 		332A54141FB088B800F05152 /* NetworkCheckoutListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCheckoutListViewController.h; sourceTree = "<group>"; };
 		332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkCheckoutListViewController.m; sourceTree = "<group>"; };
-		332A54171FB088C600F05152 /* NetworkPayListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkPayListViewController.h; sourceTree = "<group>"; };
-		332A54181FB088C600F05152 /* NetworkPayListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkPayListViewController.m; sourceTree = "<group>"; };
 		332A541B1FB08A9400F05152 /* NetworkInternetListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListViewController.h; sourceTree = "<group>"; };
 		332A541C1FB08A9400F05152 /* NetworkInternetListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListViewController.m; sourceTree = "<group>"; };
 		3339FAB71FA9C56900AB6D8B /* GatewayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
@@ -347,15 +344,6 @@
 			path = PersonalInfo;
 			sourceTree = "<group>";
 		};
-		332A54121FB0889C00F05152 /* PayList */ = {
-			isa = PBXGroup;
-			children = (
-				332A54171FB088C600F05152 /* NetworkPayListViewController.h */,
-				332A54181FB088C600F05152 /* NetworkPayListViewController.m */,
-			);
-			path = PayList;
-			sourceTree = "<group>";
-		};
 		332A54131FB088A900F05152 /* CheckoutList */ = {
 			isa = PBXGroup;
 			children = (
@@ -397,7 +385,6 @@
 			children = (
 				332A541A1FB08A8600F05152 /* InternetList */,
 				332A54131FB088A900F05152 /* CheckoutList */,
-				332A54121FB0889C00F05152 /* PayList */,
 				332A54061FB0876F00F05152 /* PersonalInfo */,
 				3339FACD1FAE08FE00AB6D8B /* Main */,
 			);
@@ -1777,7 +1764,6 @@
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
-				332A54191FB088C600F05152 /* NetworkPayListViewController.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
 				335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */,
 				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,

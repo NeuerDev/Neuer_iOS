@@ -7,7 +7,6 @@
 //
 
 #import "NetworkMainViewController.h"
-#import "NetworkPayListViewController.h"
 #import "NetworkCheckoutListViewController.h"
 #import "NetworkPersonalInfoViewController.h"
 #import "NetworkInternetListViewController.h"
@@ -170,7 +169,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         [self addSubview:modifyPasswordButton];
         
         UIButton *financeListButton = [[UIButton alloc] init];
-        [financeListButton setTitle:@"缴费清单" forState:UIControlStateNormal];
+        [financeListButton setTitle:@"消费清单" forState:UIControlStateNormal];
         financeListButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         [financeListButton addTarget:self action:@selector(didClickedButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
         financeListButton.tag = 0002;
@@ -178,16 +177,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         [financeListButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [self addSubview:financeListButton];
         
-        UIButton *financeCheckoutButton = [[UIButton alloc] init];
-        financeCheckoutButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-        [financeCheckoutButton addTarget:self action:@selector(didClickedButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
-        [financeCheckoutButton setTitle:@"结算清单" forState:UIControlStateNormal];
-        financeCheckoutButton.tag = 0003;
-        financeCheckoutButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-        [financeCheckoutButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [self addSubview:financeCheckoutButton];
-        
-        _restFlowViewButtons = @[personalInfoButton, modifyPasswordButton, financeListButton, financeCheckoutButton];
+        _restFlowViewButtons = @[personalInfoButton, modifyPasswordButton, financeListButton];
     }
     return _restFlowViewButtons;
 }
@@ -198,6 +188,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 @property (nonatomic, strong) NetworkRestFlowView *restFlowView;
 @property (nonatomic, strong) UITableView *tableView;
+//@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIBarButtonItem *pauseAccountItem;
 
@@ -243,12 +234,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                 break;
             case 0002:
             {
-//                缴费清单
-                [ws pushPayListViewController];
-            }
-                break;
-            case 0003:
-            {
 //                结算清单
                 [ws pushCheckoutListViewController];
             }
@@ -256,10 +241,15 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                 break;
         }
     }];
+    
 }
 
 - (void)initConstrains {
     self.tableView.frame = self.view.frame;
+//    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
+//    self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(Self)
+//    }
 }
 
 
@@ -352,6 +342,9 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     
     WS(ws);
     
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"修改状态成功" preferredStyle:UIAlertControllerStyleAlert];
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"警告" message:[NSString stringWithFormat:@"请问您确定要%@该账户吗？", self.model.basicInfo.user_state] preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
@@ -360,6 +353,8 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                 if (success) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [ws.pauseAccountItem setTitle:@"开启"];
+
+                        [ws presentViewController:alertVC animated:YES completion:nil];
                     });
                     [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {}];
                 }
@@ -369,6 +364,8 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                 if (success) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [ws.pauseAccountItem setTitle:@"暂停"];
+                        
+                        [ws presentViewController:alertVC animated:YES completion:nil];
                     });
                     [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {}];
                 }
@@ -386,14 +383,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     if (self.model) {
         personalInfoViewController.infoBean = self.model.basicInfo;
         [self.navigationController pushViewController:personalInfoViewController animated:YES];
-    }
-}
-
-- (void)pushPayListViewController {
-    NetworkPayListViewController *payListViewController = [[NetworkPayListViewController alloc] init];
-    if (self.model) {
-        payListViewController.model = self.model;
-        [self.navigationController pushViewController:payListViewController animated:YES];
     }
 }
 
@@ -448,22 +437,27 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 - (void)logoutUserWithTag:(NSInteger)tag {
     WS(ws);
-    [self.model offLineTheIPGWWithDevicesID:tag];
-    [self.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
-        if (success) {
-            if (ws.model.onlineInfoArray.count > 0) {
-                for (int i = 0; i < ws.model.onlineInfoArray.count; ++i) {
-                    if ([ws.model.onlineInfoArray[i].online_ID isEqualToString:[NSString stringWithFormat:@"%ld", tag]]) {
-                        NSLog(@"下线失败");
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [ws.tableView reloadData];
-                        });
+    [self.model updateCsrfValue];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [ws.model offLineTheIPGWWithDevicesID:tag complete:^(BOOL success, NSString *data) {
+            if (success) {
+                
+                for (GatewaySelfServiceMenuOnlineInfoBean *bean in ws.model.onlineInfoArray) {
+                    if ([bean.online_ID isEqualToString:[NSString stringWithFormat:@"%ld", tag]]) {
+                        [ws.model.onlineInfoArray removeObject:bean];
                     }
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"强制用户下线成功" preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+                    [ws presentViewController:alertController animated:YES completion:nil];
+                    [ws.tableView reloadData];
+                });
             }
-        }
-    }];
+        }];
+
+    });
 }
 
 #pragma mark - UITableViewDataSource
@@ -514,18 +508,10 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.model.onlineInfoArray.count > 0) {
-        if (self.model.internetRecordInfoArray.count > 0) {
-            return 2;
-        } else {
-            return 1;
-        }
+    if (self.model.onlineInfoArray.count > 0 || self.model.todayInternetRecordInfoArray > 0) {
+        return 2;
     } else {
-        if (self.model.internetRecordInfoArray.count > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 0;
     }
 }
 
@@ -632,6 +618,14 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     }
     return _pauseAccountItem;
 }
+
+//- (UIScrollView *)scrollView {
+//    if (!_scrollView) {
+//        _scrollView = [[UIScrollView alloc] init];
+//        [self.view addSubview:_scrollView];
+//    }
+//    return _scrollView;
+//}
 
 - (GatewaySelfServiceMenuModel *)model {
     if (!_model) {

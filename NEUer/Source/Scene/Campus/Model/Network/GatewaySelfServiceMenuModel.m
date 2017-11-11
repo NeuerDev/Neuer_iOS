@@ -8,7 +8,6 @@
 
 #import "GatewaySelfServiceMenuModel.h"
 #import "LYTool.h"
-#import "AFNetworking.h"
 
 @interface GatewaySelfServiceMenuModel () <NSURLSessionDelegate>
 
@@ -30,10 +29,14 @@
     GatewaySelfServiceMenuLoginBlock _queryOnlineInfoBlock;
     GatewaySelfServiceMenuLoginBlock _queryInternetListBlock;
     GatewaySelfServiceMenuLoginBlock _queryBlock;
+    
     GatewaySelfServiceMenuQueryBlock _refreshBlock;
+    GatewaySelfServiceMenuQueryBlock _refreshPayBlock;
+    
     NSInteger _logDetailPage;
     NSInteger _financialPayPage;
     NSInteger _financialCheckoutPage;
+    
 }
 
 #pragma mark - InitMethod
@@ -48,6 +51,12 @@
     _logDetailPage = 1;
     _financialPayPage = 1;
     _financialCheckoutPage = 1;
+    
+    _financialPayInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _financialCheckoutInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _internetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _onlineInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _todayInternetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 
@@ -69,14 +78,24 @@
     [self queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {}];
 }
 
-- (void)refreshInternetRecordsData {
+- (void)refreshInternetRecordsDataComplete:(GatewaySelfServiceMenuQueryBlock)block {
+    
+    _refreshBlock = block;
+    
     _logDetailPage = 1;
     
     while (_internetRecordInfoArray.count > 10) {
         [_internetRecordInfoArray removeLastObject];
     }
     
-    [self queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {}];
+    [self queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
+        
+        if (success) {
+            _refreshBlock(YES, @"成功");
+        } else {
+            _refreshBlock(NO, @"失败");
+        }
+    }];
 }
 
 - (void)refreshCheckoutDataComplete:(GatewaySelfServiceMenuQueryBlock)block {
@@ -96,22 +115,27 @@
     }];
 }
 
-- (void)refreshPayInfoData {
+- (void)refreshPayInfoDataComplete:(GatewaySelfServiceMenuQueryBlock)block {
+    
+    _refreshPayBlock = block;
+    
     _financialPayPage = 1;
     
-    while (_financialPayInfoArray.count > 10) {
+    while (_financialPayInfoArray.count >= 10) {
         [_financialPayInfoArray removeAllObjects];
     }
     
-    [self queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {}];
+    [self queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {
+        if (success) {
+            _refreshPayBlock(YES, @"成功");
+        } else {
+            _refreshPayBlock(NO, @"失败");
+        }
+    }];
 }
 
 //获取验证码
 - (void)getVerifyImage:(GatewaySelfServiceMenuGetVerifyImageBlock)block {
-    
-    [self getLoginStringFromIPGWComplete:^(BOOL success, NSString *data) {
-        
-    }];
     
     NSArray<NSHTTPCookie *> *cookies = self.session.configuration.HTTPCookieStorage.cookies;
     for (NSHTTPCookie *cookie in cookies) {
@@ -119,7 +143,7 @@
             [self.session.configuration.HTTPCookieStorage deleteCookie:cookie];
         }
     }
-//    http://ipgw.neu.edu.cn/srun_portal_pc.php?ac_id=1&
+
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn:8800/"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -196,20 +220,6 @@
         if ([response.URL.absoluteString isEqualToString:@"http://ipgw.neu.edu.cn:8800/home/base/index"]) {
             if (_loginBlock) {
                 
-                NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                    for (NSHTTPCookie *cookie in [cookieStorage cookies]) {
-                        NSLog(@"cookie%@", cookie);
-                        if ([cookie.name isEqualToString:@"PHPSESSID"]) {
-                            self.PHPSESSIDStr = [NSString stringWithFormat:@"PHPSESSID=%@;", cookie.value];
-                        } else if ([cookie.name isEqualToString:@"_csrf"]) {
-                            self.csrfCookieStr = [NSString stringWithFormat:@"_csrf=%@;", cookie.value];
-                        }
-                    }
-//                NSMutableString *cookieMutableString = [self.PHPSESSIDStr stringByAppendingString:@"login=1234567;"].mutableCopy;
-                NSMutableString *cookieMutableString = [self.PHPSESSIDStr stringByAppendingString:self.csrfCookieStr].mutableCopy;
-                _cookie = cookieMutableString.copy;
-
-                
                 _loginBlock(YES, @"登录成功");
             }
         } else {
@@ -220,43 +230,6 @@
     }];
     
     [task resume];
-    
-}
-
-- (void)getLoginStringFromIPGWComplete:(GatewaySelfServiceMenuQueryBlock)block {
-    _queryBlock = block;
-    
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn/srun_portal_pc.php"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-//    request.HTTPMethod = @"POST";
-//    NSDictionary *param = @{
-//                            @"url" : @"",
-//                            @"ac_id" : @"1"
-//                            };
-//    request.HTTPBody = [param.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
-//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-////        NSString *setCookies = ((NSHTTPURLResponse *)response).allHeaderFields[@"Cookie"];
-////        for (NSString *strings in [setCookies componentsSeparatedByString:@";"]) {
-////            NSArray *componentsString = [strings componentsSeparatedByString:@"="];
-////            for (int i = 0; i < componentsString.count; ++i) {
-////                if ([componentsString[i] containsString:@"PHPSESSID"]) {
-////                    _PHPSESSIDStr = [NSString stringWithFormat:@"PHPSESSID=%@;", componentsString[++i]];
-////                } else if ([componentsString[i] containsString:@"_csrf"]) {
-////                    _csrfCookieStr= [NSString stringWithFormat:@"_csrf=%@;", componentsString[++i]];
-////                } else {
-////                    continue;
-////                }
-////            }
-////        }
-//        _queryBlock(YES, @"chenggong");
-//        NSArray<NSHTTPCookie *> *cookies = self.session.configuration.HTTPCookieStorage.cookies;
-//
-//        for (NSHTTPCookie *cookie in cookies){
-//            NSLog(@"\n\n-------- %@",cookie);
-//        }
-//    }];
-//
-//    [task resume];
-    
     
 }
 
@@ -431,7 +404,7 @@
             _queryBlock(YES, @"密码修改成功");
         } else if ([response.URL.absoluteString isEqualToString:@"http://ipgw.neu.edu.cn:8800/user/chgpwd/index"]) {
             _queryBlock(NO, @"密码修改失败");
-//        } else {
+        } else {
             _queryBlock(NO, @"出现错误");
         }
     }];
@@ -526,8 +499,8 @@
             }
         }
         
-        if (self.financialCheckoutInfoArray.count != 0 && _financialPayPage == 1) {
-            [self.financialCheckoutInfoArray removeAllObjects];
+        if (self.financialPayInfoArray.count != 0 && _financialPayPage == 1) {
+            [self.financialPayInfoArray removeAllObjects];
         }
         
         if (self.financialPayInfoArray.count == 0) {
@@ -602,35 +575,38 @@
     
 }
 
-- (void)offLineTheIPGWWithDevicesID:(NSInteger)deviceID {
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn:8800/home/base/drop?id=7007497"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-//    request.HTTPMethod = @"POST";
-//    NSDictionary *params = @{
-//                             @"id" : [NSString stringWithFormat:@"%ld", deviceID]
-//                             };
-//
-//    request.HTTPBody = [params.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
-//    [request setValue:self.cookie forHTTPHeaderField:@"Cookie"];
-//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        NSLog(@"%@", response);
-//    }];
-//
-//    [task resume];
-
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    NSDictionary *param = @{
-                            @"id" : [NSString stringWithFormat:@"%ld", deviceID]
-                            };
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-
-    [manager POST:@"http://ipgw.neu.edu.cn:8800/home/base/drop" parameters:param progress:nil
-          success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
-              NSString *str =  [[NSString alloc]initWithData:(NSData *)responseObject encoding:NSUTF8StringEncoding];
-              NSLog(@"%@", str);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"%@", error);
-    }];
+//强制下线
+- (void)offLineTheIPGWWithDevicesID:(NSInteger)deviceID complete:(GatewaySelfServiceMenuQueryBlock)block {
     
+    _loginBlock = block;
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ipgw.neu.edu.cn:8800/home/base/drop"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
+    request.HTTPMethod = @"POST";
+    NSDictionary *params = @{
+                             @"id" : [NSString stringWithFormat:@"%ld", deviceID]
+                             };
+    
+    request.HTTPBody = [params.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [request setValue:self.csrfStr forHTTPHeaderField:@"X-CSRF-Token"];
+    [request setValue:@"XMLHttpRequest" forHTTPHeaderField:@"X-Requested-With"];
+    [request setValue:@"utf8" forHTTPHeaderField:@"charset"];
+    [request setValue:@"http://ipgw.neu.edu.cn:8800/home/base/index" forHTTPHeaderField:@"Referer"];
+    [request setValue:@"http://ipgw.neu.edu.cn:8800" forHTTPHeaderField:@"Origin"];
+    
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        if ([dic[@"code"] isEqualToString:@"1"]) {
+            _loginBlock(YES, @"成功");
+        } else {
+            _loginBlock(NO, @"失败");
+        }
+        
+    }];
+
+    [task resume];
+
     [self updateCsrfValue];
 }
 
@@ -733,48 +709,14 @@
     if (!_session) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.HTTPAdditionalHeaders = @{
-                                                @"User-Agent":@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38",
+                                                @"User-Agent":@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/11.0.1 Safari/604.3.5",
+//                                                @"User-Agent":@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
                                                 };
+        configuration.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicyAlways;
         _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     }
     return _session;
 }
-
-- (NSMutableArray<GatewaySelfServiceMenuFinancialPayInfoBean *> *)financialPayInfoArray {
-    if (!_financialPayInfoArray) {
-        _financialPayInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    return _financialPayInfoArray;
-}
-
-- (NSMutableArray<GatewaySelfServiceMenuFinancialCheckOutInfoBean *> *)financialCheckoutInfoArray {
-    if (!_financialCheckoutInfoArray) {
-        _financialCheckoutInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    return _financialCheckoutInfoArray;
-}
-
-- (NSMutableArray<GatewaySelfServiceMenuInternetRecordsInfoBean *> *)internetRecordInfoArray {
-    if (!_internetRecordInfoArray) {
-        _internetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    return _internetRecordInfoArray;
-}
-
-- (NSMutableArray<GatewaySelfServiceMenuOnlineInfoBean *> *)onlineInfoArray {
-    if (!_onlineInfoArray) {
-        _onlineInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    return _onlineInfoArray;
-}
-
-- (NSMutableArray<GatewaySelfServiceMenuInternetRecordsInfoBean *> *)todayInternetRecordInfoArray {
-    if (!_todayInternetRecordInfoArray) {
-        _todayInternetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
-    }
-    return _todayInternetRecordInfoArray;
-}
-
 
 @end
 

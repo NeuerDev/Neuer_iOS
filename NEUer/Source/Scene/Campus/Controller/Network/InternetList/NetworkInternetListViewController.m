@@ -15,6 +15,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
 
@@ -37,19 +38,36 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 
 - (void)initData {
     self.title = @"上网明细";
-    [self.model refreshInternetRecordsData];
+    
+    WS(ws);
+    [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ws.tableView reloadData];
+            });
+        }
+    }];
+    
     self.tableView.refreshControl = self.refreshControl;
 }
 
 - (void)initConstaints {
-    self.tableView.frame = self.view.frame;
+    self.scrollView.frame = self.view.frame;
+    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
 }
 
 #pragma mark - Response Method
 
 - (void)beginRefreshing {
     [self.refreshControl beginRefreshing];
-    [self.model refreshInternetRecordsData];
+    WS(ws);
+    [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ws.tableView reloadData];
+            });
+        }
+    }];
     [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
 }
 
@@ -101,19 +119,22 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 }
 
 #pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height) {
         WS(ws);
-        [self.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [ws.tableView reloadData];
-                });
-            }
-        }];
+
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [ws.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [ws.tableView reloadData];
+                    });
+                }
+            }];
+        });
     }
 }
-
 
 #pragma mark - Getter
 
@@ -125,7 +146,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.allowsSelection = NO;
         [self.indicatorView startAnimating];
-        [self.view addSubview:_tableView];
+        [self.scrollView addSubview:_tableView];
     }
     return _tableView;
 }
@@ -146,6 +167,15 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         _indicatorView.transform = transform;
     }
     return _indicatorView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        _scrollView.delegate  = self;
+        [self.view addSubview:_scrollView];
+    }
+    return _scrollView;
 }
 
 @end

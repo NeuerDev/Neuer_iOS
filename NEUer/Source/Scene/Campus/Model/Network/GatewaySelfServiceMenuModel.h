@@ -161,15 +161,15 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 /**
  强制在线设备下线
  */
-- (void)offLineTheIPGWWithDevicesID:(NSInteger)deviceID;
+- (void)offLineTheIPGWWithDevicesID:(NSInteger)deviceID complete:(GatewaySelfServiceMenuQueryBlock)block;
 
 /**
  刷新数据
  */
 - (void)refreshData;
-- (void)refreshInternetRecordsData;
+- (void)refreshInternetRecordsDataComplete:(GatewaySelfServiceMenuQueryBlock)block;
 - (void)refreshCheckoutDataComplete:(GatewaySelfServiceMenuQueryBlock)block;
-- (void)refreshPayInfoData;
+- (void)refreshPayInfoDataComplete:(GatewaySelfServiceMenuQueryBlock)block;
 
 /**
  暂停账户

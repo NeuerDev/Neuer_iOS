@@ -11,6 +11,7 @@
 #import "LYTool.h"
 
 static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewCellCheckoutListReuseID";
+static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPayListReuseID";
 @interface NetworkCheckoutListTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *monthLabel;
@@ -22,6 +23,7 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 @property (nonatomic, strong) UIView *seperatorView;
 
 @property (nonatomic, strong) GatewaySelfServiceMenuFinancialCheckOutInfoBean *infoBean;
+@property (nonatomic, strong) GatewaySelfServiceMenuFinancialPayInfoBean *payBean;
 
 @end
 @implementation NetworkCheckoutListTableViewCell
@@ -43,7 +45,7 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
     }];
     [self.monthLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeView);
-        make.top.equalTo(self.timeView.mas_top).with.offset(8);
+        make.top.equalTo(self.timeView.mas_top);
     }];
     [self.yearsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeView);
@@ -78,9 +80,25 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
     _monthLabel.text = [LYTool changeDateFormatterFromDateFormat:@"yyyy-MM-dd HH:mm:ss" toDateFormat:@"MM-dd" withDateString:infoBean.checkout_creatTime];
     _yearsLabel.text = [NSString stringWithFormat:@"%@年", [LYTool changeDateFormatterFromDateFormat:@"yyyy-MM-dd HH:mm:ss" toDateFormat:@"yyyy" withDateString:infoBean.checkout_creatTime]];
     _usedFlowLabel.text = infoBean.checkout_flow;
-    _sumTimeLabel.text = [NSString stringWithFormat:@"总时长：%@", infoBean.checkout_time];
+    _sumTimeLabel.text = [NSString stringWithFormat:@"%@", infoBean.checkout_time];
     _consumeLabel.text = [NSString stringWithFormat:@"-%@", infoBean.checkout_payAmmount];
     
+}
+
+- (void)setPayBean:(GatewaySelfServiceMenuFinancialPayInfoBean *)payBean {
+    _payBean = payBean;
+    
+    _monthLabel.text = [LYTool changeDateFormatterFromDateFormat:@"yyyy-MM-dd HH:mm:ss" toDateFormat:@"MM-dd" withDateString:payBean.financial_creatTime];
+    _yearsLabel.text = [NSString stringWithFormat:@"%@年", [LYTool changeDateFormatterFromDateFormat:@"yyyy-MM-dd HH:mm:ss" toDateFormat:@"yyyy" withDateString:payBean.financial_creatTime]];
+    
+    if ([payBean.financial_product isEqualToString:@"std"]) {
+        _usedFlowLabel.text = @"25G下行流量";
+    } else {
+        _usedFlowLabel.text = @"50G下行流量";
+    }
+    
+    _sumTimeLabel.text = [NSString stringWithFormat:@"%@", payBean.financial_payWay];
+    _consumeLabel.text = [NSString stringWithFormat:@"+%@", payBean.financial_payAmmount];
 }
 
 #pragma mark - Getter
@@ -162,6 +180,8 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @end
 
@@ -183,21 +203,24 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 #pragma mark - Init
 
 - (void)initData {
-    self.title = @"结算清单";
     WS(ws);
-    [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
+    self.title = @"缴费清单";
+    
+    [self.model refreshPayInfoDataComplete:^(BOOL success, NSString *data) {
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [ws.tableView reloadData];
             });
-            
         }
     }];
     self.tableView.refreshControl = self.refreshControl;
+    self.navigationItem.titleView = self.segmentedControl;
+    
 }
 
 - (void)initConstaints {
-    self.tableView.frame = self.view.frame;
+    self.scrollView.frame = self.view.frame;
+    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
 }
 
 #pragma mark - Response Method
@@ -205,51 +228,155 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 - (void)beginRefreshing {
     [self.refreshControl beginRefreshing];
     WS(ws);
-    [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
-        
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [ws performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
-                [ws.tableView reloadData];
-            });
-        } else {
-            [ws performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+    
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+        {
+            [self.model refreshPayInfoDataComplete:^(BOOL success, NSString *data) {
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [ws.tableView reloadData];
+                    });
+                }
+            }];
         }
-    }];
+            break;
+        case 1:
+        {
+            [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
+                
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [ws.tableView reloadData];
+                    });
+                }
+            }];
+        }
+        default:
+            break;
+    }
 }
 
 - (void)endRefreshing {
     [self.refreshControl endRefreshing];
 }
 
+- (void)didClickedSegmentedControl {
+    WS(ws);
+    
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+        {
+            self.title = @"缴费清单";
+            [self.model refreshPayInfoDataComplete:^(BOOL success, NSString *data) {
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [ws.tableView reloadData];
+                    });
+                }
+            }];
+        }
+            break;
+        case 1:
+        {
+            self.title = @"结算清单";
+            [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [ws.tableView reloadData];
+                    });
+                }
+            }];
+        }
+        default:
+            break;
+    }
+}
+
 #pragma mark - UITableViewDataSource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    NetworkCheckoutListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellCheckoutListReuseID];
-    if (!cell) {
-        cell = [[NetworkCheckoutListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellCheckoutListReuseID];
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+        {
+            NetworkCheckoutListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellCheckoutListReuseID];
+            if (!cell) {
+                cell = [[NetworkCheckoutListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellCheckoutListReuseID];
+            }
+            if (self.model.financialPayInfoArray.count >= indexPath.row && self.model.financialPayInfoArray.count > 0) {
+                cell.payBean = self.model.financialPayInfoArray[indexPath.row];
+            }
+            
+            return cell;
+        }
+            break;
+        case 1:
+        {
+            NetworkCheckoutListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellPayListReuseID];
+            if (!cell) {
+                cell = [[NetworkCheckoutListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellPayListReuseID];
+            }
+            if (self.model.financialCheckoutInfoArray.count >= indexPath.row && self.model.financialCheckoutInfoArray.count > 0) {
+                cell.infoBean = self.model.financialCheckoutInfoArray[indexPath.row];
+            }
+            
+            return cell;
+        }
+        default:
+            break;
     }
-    cell.infoBean = self.model.financialCheckoutInfoArray[indexPath.row];
     
-    return cell;
+    return nil;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.model.financialCheckoutInfoArray.count;
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+        {
+            return self.model.financialPayInfoArray.count;
+        }
+            break;
+        case 1:
+        {
+            return self.model.financialCheckoutInfoArray.count;
+        }
+        default:
+            break;
+    }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.model.financialCheckoutInfoArray.count > 0) {
-        return 1;
-    } else {
-        return 0;
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+        {
+            if (self.model.financialPayInfoArray.count > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+            break;
+        case 1:
+        {
+            if (self.model.financialCheckoutInfoArray.count > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        default:
+            break;
     }
+    
+    return 0;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 84;
+    return 74;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -270,19 +397,42 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
 }
 
 #pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height) {
         WS(ws);
-        [self.model queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [ws.tableView reloadData];
+        
+        switch (self.segmentedControl.selectedSegmentIndex) {
+            case 0:
+            {
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    [ws.model queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {
+                        if (success) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [ws.tableView reloadData];
+                            });
+                        }
+                    }];
                 });
             }
-        }];
+                break;
+            case 1:
+            {
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    [ws.model queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
+                        if (success) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [ws.tableView reloadData];
+                            });
+                        }
+                    }];
+                });
+            }
+            default:
+                break;
+        }
     }
 }
-
 
 #pragma mark - Getter
 
@@ -294,7 +444,7 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.allowsSelection = NO;
         [self.indicatorView startAnimating];
-        [self.view addSubview:_tableView];
+        [self.scrollView addSubview:_tableView];
     }
     return _tableView;
 }
@@ -315,6 +465,24 @@ static NSString *kNetworkTableViewCellCheckoutListReuseID = @"kNetworkTableViewC
         _indicatorView.transform = transform;
     }
     return _indicatorView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        _scrollView.delegate = self;
+        [self.view addSubview:_scrollView];
+    }
+    return _scrollView;
+}
+
+- (UISegmentedControl *)segmentedControl {
+    if (!_segmentedControl) {
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"缴费清单", @"结算清单"]];
+        [_segmentedControl addTarget:self action:@selector(didClickedSegmentedControl) forControlEvents:UIControlEventValueChanged];
+        _segmentedControl.selectedSegmentIndex = 0;
+    }
+    return _segmentedControl;
 }
 
 @end
