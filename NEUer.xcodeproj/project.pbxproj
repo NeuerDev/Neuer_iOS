@@ -98,12 +98,12 @@
 		776697E11FA975B000BB7544 /* SearchLibraryNewBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E01FA975B000BB7544 /* SearchLibraryNewBookModel.m */; };
 		776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */; };
 		776697E71FA9765400BB7544 /* LibraryLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E61FA9765400BB7544 /* LibraryLoginModel.m */; };
-		776697EA1FA976A000BB7544 /* LibraryLoginMyInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697E91FA976A000BB7544 /* LibraryLoginMyInfoModel.m */; };
 		776697ED1FA9772100BB7544 /* LibraryBookDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697EC1FA9772100BB7544 /* LibraryBookDetailModel.m */; };
 		776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697F01FA9778F00BB7544 /* LibraryBookListComponent.m */; };
 		776697F81FA9787B00BB7544 /* LibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697F71FA9787B00BB7544 /* LibraryViewController.m */; };
 		776697FC1FA978BB00BB7544 /* LibraryNewBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697FB1FA978BB00BB7544 /* LibraryNewBookViewController.m */; };
 		776698001FA978E000BB7544 /* LibraryMostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 776697FF1FA978E000BB7544 /* LibraryMostViewController.m */; };
+		77B205491FB45411001F3C18 /* LibraryRecommendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77B205481FB45411001F3C18 /* LibraryRecommendViewController.m */; };
 		BFC22CA0E2BAEC39D39D871F /* Pods_NEUerTodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -310,8 +310,6 @@
 		776697E31FA975F700BB7544 /* SearchLibraryBorrowingModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryBorrowingModel.m; sourceTree = "<group>"; };
 		776697E51FA9765400BB7544 /* LibraryLoginModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryLoginModel.h; sourceTree = "<group>"; };
 		776697E61FA9765400BB7544 /* LibraryLoginModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryLoginModel.m; sourceTree = "<group>"; };
-		776697E81FA976A000BB7544 /* LibraryLoginMyInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryLoginMyInfoModel.h; sourceTree = "<group>"; };
-		776697E91FA976A000BB7544 /* LibraryLoginMyInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryLoginMyInfoModel.m; sourceTree = "<group>"; };
 		776697EB1FA9772100BB7544 /* LibraryBookDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryBookDetailModel.h; sourceTree = "<group>"; };
 		776697EC1FA9772100BB7544 /* LibraryBookDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryBookDetailModel.m; sourceTree = "<group>"; };
 		776697EF1FA9778F00BB7544 /* LibraryBookListComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryBookListComponent.h; sourceTree = "<group>"; };
@@ -322,6 +320,8 @@
 		776697FB1FA978BB00BB7544 /* LibraryNewBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryNewBookViewController.m; sourceTree = "<group>"; };
 		776697FE1FA978E000BB7544 /* LibraryMostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryMostViewController.h; sourceTree = "<group>"; };
 		776697FF1FA978E000BB7544 /* LibraryMostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryMostViewController.m; sourceTree = "<group>"; };
+		77B205471FB45411001F3C18 /* LibraryRecommendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryRecommendViewController.h; sourceTree = "<group>"; };
+		77B205481FB45411001F3C18 /* LibraryRecommendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LibraryRecommendViewController.m; sourceTree = "<group>"; };
 		919A5E6E0568F4D5EB5B6E4F /* Pods-NEUGatewayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A77A08A19684418F80280556 /* Pods_NEUGatewayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUGatewayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14EECB869E3445E4328BBD6 /* Pods_NEUerTodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUerTodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1171,6 +1171,7 @@
 		5CC232F11F720776005F0A6E /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				77B205461FB453E4001F3C18 /* Recommend */,
 				772116DC1FB19F30008A305E /* History */,
 				776697FD1FA978C700BB7544 /* Most */,
 				776697F91FA978A000BB7544 /* NewBook */,
@@ -1473,8 +1474,6 @@
 			children = (
 				776697E51FA9765400BB7544 /* LibraryLoginModel.h */,
 				776697E61FA9765400BB7544 /* LibraryLoginModel.m */,
-				776697E81FA976A000BB7544 /* LibraryLoginMyInfoModel.h */,
-				776697E91FA976A000BB7544 /* LibraryLoginMyInfoModel.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1522,6 +1521,15 @@
 				776697FF1FA978E000BB7544 /* LibraryMostViewController.m */,
 			);
 			path = Most;
+			sourceTree = "<group>";
+		};
+		77B205461FB453E4001F3C18 /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				77B205471FB45411001F3C18 /* LibraryRecommendViewController.h */,
+				77B205481FB45411001F3C18 /* LibraryRecommendViewController.m */,
+			);
+			path = Recommend;
 			sourceTree = "<group>";
 		};
 		9C23063B159BDC7CF94A2327 /* Pods */ = {
@@ -1792,7 +1800,6 @@
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				776697E71FA9765400BB7544 /* LibraryLoginModel.m in Sources */,
 				776697F81FA9787B00BB7544 /* LibraryViewController.m in Sources */,
-				776697EA1FA976A000BB7544 /* LibraryLoginMyInfoModel.m in Sources */,
 				776697ED1FA9772100BB7544 /* LibraryBookDetailModel.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
@@ -1851,6 +1858,7 @@
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
 				3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */,
+				77B205491FB45411001F3C18 /* LibraryRecommendViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
 				3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */,
 				3344EFD21F949B62001ED45E /* LYTool.m in Sources */,

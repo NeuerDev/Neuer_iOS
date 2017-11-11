@@ -13,6 +13,7 @@
 #import "LoginViewController.h"
 #import "SearchLibraryViewController.h"
 #import "LibraryHistoryViewController.h"
+#import "LibraryRecommendViewController.h"
 
 #import "CustomSectionHeaderFooterView.h"
 
@@ -20,7 +21,6 @@
 #import "SearchLibraryNewBookModel.h"
 #import "SearchLibraryBorrowingModel.h"
 #import "LibraryLoginModel.h"
-#import "LibraryLoginMyInfoModel.h"
 
 static NSString * const kLibraryReturnConsumeHistoryHeaderViewId = @"kLibraryReturnConsumeHistoryHeaderViewId";
 static NSString * const kLibraryDefaultCellId = @"kLibraryDefaultCellId";
@@ -41,7 +41,6 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 @property (nonatomic, strong) SearchLibraryNewBookModel *newbookModel;
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
 @property (nonatomic, strong) LibraryLoginModel *loginModel;
-@property (nonatomic, strong) LibraryLoginMyInfoModel *infoModel;
 
 @property (nonatomic, strong) NSArray<NSString *> *bookStrings;
 @property (nonatomic, strong) NSArray<NSString *> *mostStrings;
@@ -161,6 +160,11 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     [self.navigationController pushViewController:historyVC animated:YES];
 }
 
+- (void)recommendBook {
+    LibraryRecommendViewController *recommendVC = [[LibraryRecommendViewController alloc] init];
+    [self.navigationController pushViewController:recommendVC animated:YES];
+}
+
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -256,7 +260,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.infoModel.borrowingArr.count == 0) {
+    if (self.loginModel.borrowingArr.count == 0) {
         if (section == 0) {
             return 0;
         }
@@ -272,7 +276,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section ) {
         case 0:
-            return self.infoModel.borrowingArr.count;
+            return self.loginModel.borrowingArr.count;
             break;
         
         case 1:
@@ -295,10 +299,8 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         if (!cell) {
             cell = [[LibraryReturnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryResultCellId];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, SCREEN_WIDTH_ACTUAL);
         }
-        [cell setBorrowingBean:self.infoModel.borrowingArr[indexPath.row]];
-        
+        [cell setBorrowingBean:self.loginModel.borrowingArr[indexPath.row]];
         return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
@@ -418,7 +420,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         UIButton *reportLostButton = [[UIButton alloc] init];
         [reportLostButton.titleLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         [reportLostButton setTitle:@"荐购新书" forState:UIControlStateNormal];
-//        [reportLostButton addTarget:self action:@selector(reportLost) forControlEvents:UIControlEventTouchUpInside];
+        [reportLostButton addTarget:self action:@selector(recommendBook) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:reportLostButton];
         
         
@@ -481,13 +483,6 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     return _loginModel;
 }
 
-- (LibraryLoginMyInfoModel *)infoModel {
-    if (!_infoModel) {
-        _infoModel = self.loginModel.infoModel;
-    }
-    return _infoModel;
-}
-
 - (NSArray<NSString *> *)bookStrings {
    if (!_bookStrings) {
        _bookStrings = [[NSArray alloc] init];
@@ -520,6 +515,10 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 @end
 
+@interface LibraryReturnCell () <LibraryLoginDelegate>
+
+@end
+
 @implementation LibraryReturnCell
 #pragma mark - Init Methods
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -534,19 +533,10 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(8, 16, 8, 16));
     }];
     
-//    [self.visualEffectView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.cardView);
-//    }];
-    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cardView.mas_left).with.offset(24);
-        make.right.equalTo(self.cardView.mas_right).with.offset(-24);
+        make.left.equalTo(self.cardView.mas_left).with.offset(14);
+        make.right.equalTo(self.cardView.mas_right).with.offset(-14);
         make.top.equalTo(self.cardView.mas_top).with.offset(14);
-    }];
-    
-    [self.callNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.titleLabel);
-        make.top.equalTo(self.titleLabel.mas_bottom);
     }];
     
     [self.returndateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -555,8 +545,13 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     }];
     
     [self.authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.returndateLabel.mas_top).with.offset(-5);
+        make.top.equalTo(self.titleLabel.mas_bottom);
         make.left.equalTo(self.titleLabel);
+    }];
+    
+    [self.callNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.authorLabel.mas_right).with.offset(10);
+        make.top.equalTo(self.titleLabel.mas_bottom);
     }];
     
     [self.refurbishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -567,29 +562,24 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     }];
 }
 
+#pragma mark - Respond Methods
+- (void)partRenewal {
+    [self.loginModel partRenewalWithRenewNumber:self.borrowingBean.renewNumber];
+}
+
+#pragma mark - LibraryLoginDelegate
+- (void)partRenewalDidSuccess {
+    
+}
+
 #pragma mark - Getter
 - (UIView *)cardView {
     if (!_cardView) {
         _cardView = [[UIView alloc] init];
         _cardView.backgroundColor = [UIColor whiteColor];
-//        _cardView.layer.cornerRadius = 16;
-//        _cardView.layer.shadowColor = [UIColor grayColor].CGColor;
-//        _cardView.layer.shadowOffset = CGSizeMake(0, 4);
-//        _cardView.layer.shadowOpacity = 0.2;
-//        _cardView.layer.shadowRadius = 4;
-//        _cardView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL - 32, 128) byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
         [self.contentView addSubview:_cardView];
     }
    return _cardView;
-}
-
-- (UIVisualEffectView *)visualEffectView {
-    if (!_visualEffectView) {
-        _visualEffectView = [[UIVisualEffectView alloc] init];
-        _visualEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-        [self.cardView addSubview:_visualEffectView];
-    }
-   return _visualEffectView;
 }
 
 - (UILabel *)titleLabel {
@@ -644,21 +634,31 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         _refurbishBtn.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [_refurbishBtn setTitle:@"续借" forState:UIControlStateNormal];
         [_refurbishBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        [_refurbishBtn addTarget:self action:@selector(partRenewal) forControlEvents:UIControlEventTouchUpInside];
         [self.cardView addSubview:_refurbishBtn];
     }
    return _refurbishBtn;
 }
 
+- (LibraryLoginModel *)loginModel {
+    if (!_loginModel) {
+        _loginModel = [LibraryCenter defaultCenter].currentModel;
+        _loginModel.delegate = self;
+    }
+    return _loginModel;
+}
+
 #pragma mark - Setter
 - (void)setBorrowingBean:(LibraryLoginMyInfoBorrowingBean *)bean {
+    self.borrowingBean = bean;
     self.titleLabel.text = bean.title;
     self.callNumLabel.text = [NSString stringWithFormat:@"索书号: %@",bean.claimNumber];
     NSString *year = [bean.shouldReturnDate substringToIndex:4];
     NSString *month = [[bean.shouldReturnDate substringFromIndex:4] substringToIndex:2];
     NSString *day = [[bean.shouldReturnDate substringFromIndex:6] substringToIndex:2];
     self.returndateLabel.text = [NSString stringWithFormat:@"归还日期: %@/%@/%@",year,month,day];
-    self.authorLabel.text = [NSString stringWithFormat:@"作者: %@",bean.author];
-    if (bean.returnDateLevel == ReturnDateLevelHigh) {
+    self.authorLabel.text = bean.author;
+    if (bean.returnDateLevel == LibraryInfoReturnDateLevelHigh) {
         [self setMainColor:[UIColor beautyRed]];
     }
 }

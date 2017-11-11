@@ -9,8 +9,10 @@
 #import "SearchLibraryViewController.h"
 #import "SearchLibraryDoorViewController.h"
 #import "SearchLibraryBorrowingModel.h"
+#import "CustomSectionHeaderFooterView.h"
 
-NSString * const kDefaultCellId = @"kDefaultCellId";
+static NSString * const kDefaultCellId = @"kDefaultCellId";
+static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySearchConsumeHistoryHeaderViewId";
 
 @interface SearchLibraryViewController () <UISearchControllerDelegate, UITableViewDelegate,UITableViewDataSource,SearchLibraryBorrowingDelegate>
 
@@ -20,14 +22,7 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
 @property (nonatomic, strong) UIVisualEffectView *maskView;
 @property (nonatomic, strong) UIBarButtonItem *collectionBarButtonItem;
 @property (nonatomic, strong) UITableView *tableView;
-//最近搜索
-@property (nonatomic, strong) UIView *recentView;
-@property (nonatomic, strong) UILabel *recentLabel;
-@property (nonatomic, strong) UIButton *recentBtn;
-//热门搜索
-@property (nonatomic, strong) UIView *mostView;
-@property (nonatomic, strong) UILabel *mostLabel;
-@property (nonatomic, strong) UIButton *mostBtn;
+
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
 
 @property (nonatomic, strong) NSArray<NSString *> *recentStrings;
@@ -80,7 +75,7 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
-        make.height.mas_equalTo(12 * 44 + 100);
+        make.height.mas_equalTo(12 * 44 + 128);
     }];
 
 }
@@ -138,15 +133,29 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return self.recentView;
-    } else {
-        return self.mostView;
+    CustomSectionHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kLibrarySearchConsumeHistoryHeaderViewId];
+    if (!headerView) {
+        headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kLibrarySearchConsumeHistoryHeaderViewId];
+        [headerView.contentView setBackgroundColor:[UIColor whiteColor]];
     }
+    headerView.section = section;
+    if (section == 0) {
+        headerView.titleLabel.text = @"最近搜索";
+        [headerView.actionButton setTitle:@"清空" forState:UIControlStateNormal];
+    } else {
+        headerView.titleLabel.text = @"热门搜索";
+        [headerView.actionButton setTitle:@"清空" forState:UIControlStateNormal];
+    }
+    
+    return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 44.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 64;
 }
 
 #pragma mark - UITableViewDataSource
@@ -242,66 +251,6 @@ NSString * const kDefaultCellId = @"kDefaultCellId";
        [self.contentView addSubview:_tableView];
     }
    return _tableView;
-}
-
-- (UIView *)recentView {
-    if (!_recentView) {
-        _recentView = [[UIView alloc] init];
-        
-        _recentLabel = [[UILabel alloc] init];
-        _recentLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        _recentLabel.text = @"最近搜索";
-        [_recentView addSubview:_recentLabel];
-        [_recentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_recentView).with.offset(16.0f);
-            make.left.equalTo(_recentView.mas_left).with.offset(16.0f);
-            make.height.mas_equalTo(34.0f);
-            make.bottom.equalTo(_recentView.mas_bottom);
-        }];
-        
-        _recentBtn = [[UIButton alloc] init];
-        [_recentBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
-        [_recentBtn setTitle:@"清空" forState:UIControlStateNormal];
-        _recentBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [_recentView addSubview:_recentBtn];
-        [_recentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_recentView).with.offset(16.0f);
-            make.right.equalTo(_recentView.mas_right).with.offset(-16.0f);
-            make.height.mas_equalTo(34.0f);
-            make.bottom.equalTo(_recentView.mas_bottom);
-        }];
-    }
-   return _recentView;
-}
-
-- (UIView *)mostView {
-    if (!_mostView) {
-        _mostView = [[UIView alloc] init];
-        
-        _mostLabel = [[UILabel alloc] init];
-        _mostLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        _mostLabel.text = @"热门搜索";
-        [_mostView addSubview:_mostLabel];
-        [_mostLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_mostView).with.offset(16.0f);
-            make.left.equalTo(_mostView.mas_left).with.offset(16.0f);
-            make.height.mas_equalTo(34.0f);
-            make.bottom.equalTo(_mostView.mas_bottom);
-        }];
-        
-        _mostBtn = [[UIButton alloc] init];
-        [_mostBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
-        [_mostBtn setTitle:@"清空" forState:UIControlStateNormal];
-        _mostBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [_mostView addSubview:_mostBtn];
-        [_mostBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_mostView).with.offset(16.0f);
-            make.right.equalTo(_mostView.mas_right).with.offset(-16.0f);
-            make.height.mas_equalTo(34.0f);
-            make.bottom.equalTo(_mostView.mas_bottom);
-        }];
-    }
-   return _mostView;
 }
 
 - (NSArray<NSString *> *)recentStrings {
