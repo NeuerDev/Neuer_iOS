@@ -8,7 +8,6 @@
 
 #import "NetworkMainViewController.h"
 #import "NetworkCheckoutListViewController.h"
-#import "NetworkPersonalInfoViewController.h"
 #import "NetworkInternetListViewController.h"
 
 #import "CustomSectionHeaderFooterView.h"
@@ -21,12 +20,14 @@
 static NSString *kNetworkHeaderFooterViewReuseID = @"headerFooterViewReuseID";
 static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID";
 static NSString *kNetworkTableViewCellOnlineDevicesReuseID = @"onlineDevicesCellID";
+static NSString *kNetworkPersonalInfoTableViewCellReuseID = @"kNetworkPersonalInfoTableViewCellReuseID";
 
 @interface NetworkRestFlowView : UIView
 typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 @property (nonatomic, strong) UILabel *restFlowLabel;
 @property (nonatomic, strong) UILabel *restFlowLevelLabel;
+@property (nonatomic, strong) UILabel *restLabel;
 @property (nonatomic, strong) NSArray <UIButton *> *restFlowViewButtons;
 
 @property (nonatomic, strong) GatewaySelfServiceMenuBasicInfoBean *basicInfo;
@@ -45,7 +46,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     if (self = [super init]) {
         
         [self initData];
-        [self initConstraints];
     }
     return self;
 }
@@ -59,24 +59,35 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     [self.gestureRecognizers lastObject].enabled = NO;
 }
 
-- (void)initConstraints {
-
+- (void)layoutSubviews {
+    
     [self.restFlowLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).with.offset(32);
-        make.centerX.equalTo(self);
+        make.centerY.equalTo(self.mas_top).with.offset(self.frame.size.height * (1 - 0.618));
+        make.centerX.equalTo(self.mas_centerX).with.offset(5);
     }];
+    
+    [self.restLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.restFlowLabel.mas_left).with.offset(-4);
+        make.bottom.equalTo(self.restFlowLabel.mas_bottom).with.offset(-3);
+    }];
+
     [self.restFlowLevelLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.restFlowLabel.mas_bottom);
-        make.centerX.equalTo(self.restFlowLabel);
+        make.centerX.equalTo(self.mas_centerX);
     }];
-}
-
-- (void)layoutSubviews {
+    
     for (int index = 0; index < self.restFlowViewButtons.count; index++) {
         UIView *view = self.restFlowViewButtons[index];
 
         float xValue = (float)self.frame.size.width / self.restFlowViewButtons.count;
-        view.frame = CGRectMake(xValue * index, self.frame.origin.y + self.frame.size.height - 54 - 15, xValue, 54);
+//        view.frame = CGRectMake(xValue * index, self.frame.size.height + self.frame.origin.y - 54 - 30, xValue, 54);
+        
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@(54));
+            make.width.equalTo(@(xValue));
+            make.left.equalTo(@(xValue * index));
+            make.top.equalTo(self.restFlowLevelLabel.mas_bottom).with.offset(10);
+        }];
     }
 }
 
@@ -90,6 +101,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         self.backgroundColor = [color colorWithAlphaComponent:0.1];
         _restFlowLabel.textColor = color;
         _restFlowLevelLabel.textColor = color;
+        _restLabel.textColor = color;
         for (UIButton *button in _restFlowViewButtons) {
             [button setTitleColor:color forState:UIControlStateNormal];
             [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
@@ -104,7 +116,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     if (basicInfo) {
         dispatch_async(dispatch_get_main_queue(), ^{
             _restFlowLevelLabel.text = [[_basicInfo.restFlowLevelDictionary allValues] lastObject];
-            _restFlowLabel.text = [NSString stringWithFormat:@"%@ G", _basicInfo.product_restFlow];
+            _restFlowLabel.text = [NSString stringWithFormat:@"%@G", _basicInfo.product_restFlow];
             GatewaySelfServiceMenuRestFlowLevel level = [[_basicInfo.restFlowLevelDictionary allKeys] lastObject].integerValue;
             UIColor *mainColor = [UIColor colorWithHexStr:@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"][level]];
             [self setMainColor:mainColor animated:YES];
@@ -137,6 +149,17 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     return _restFlowLabel;
 }
 
+- (UILabel *)restLabel {
+    if (!_restLabel) {
+        _restLabel = [[UILabel alloc] init];
+        _restLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _restLabel.textColor = [UIColor grayColor];
+        _restLabel.text = @"剩余";
+        [self addSubview:_restLabel];
+    }
+    return _restLabel;
+}
+
 - (UILabel *)restFlowLevelLabel {
     if (!_restFlowLevelLabel) {
         _restFlowLevelLabel = [[UILabel alloc] init];
@@ -154,7 +177,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         UIButton *personalInfoButton = [[UIButton alloc] init];
         personalInfoButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         [personalInfoButton addTarget:self action:@selector(didClickedButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
-        [personalInfoButton setTitle:@"基本信息" forState:UIControlStateNormal];
+        [personalInfoButton setTitle:@"修改状态" forState:UIControlStateNormal];
         personalInfoButton.tag = 0000;
         [personalInfoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [self addSubview:personalInfoButton];
@@ -184,11 +207,88 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 @end
 
+@interface NetworkPersonalInfoTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) UILabel *msgTypeLabel;
+@property (nonatomic, strong) UILabel *msgLabel;
+
+@property (nonatomic, strong) GatewayCellBasicInfoBean *cellInfoBean;
+
+@end
+
+@implementation NetworkPersonalInfoTableViewCell
+
+#pragma mark - Init
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.backgroundColor = [UIColor whiteColor];
+        
+        [self initProductConstraints];
+    }
+    return self;
+}
+
+- (void)initProductConstraints {
+
+    [self.msgTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView).with.offset(20);
+        make.centerY.equalTo(self.contentView);
+        make.width.equalTo(@90);
+    }];
+    [self.msgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.contentView);
+        make.left.equalTo(self.msgTypeLabel.mas_right).with.offset(20);
+    }];
+}
+
+#pragma mark - Setter
+
+- (void)setCellInfoBean:(GatewayCellBasicInfoBean *)cellInfoBean {
+    _cellInfoBean = cellInfoBean;
+    
+    _msgTypeLabel.text = cellInfoBean.messageName;
+    _msgLabel.text = cellInfoBean.message;
+    
+    if ([cellInfoBean.message isEqualToString:@"正常"]) {
+        _msgLabel.textColor = [UIColor beautyGreen];
+    } else if ([_msgLabel.text isEqualToString:@"暂停"]) {
+        _msgLabel.textColor = [UIColor beautyRed];
+    } else {
+        _msgLabel.textColor = [UIColor blackColor];
+    }
+}
+
+#pragma mark - Getter
+
+- (UILabel *)msgLabel {
+    if (!_msgLabel) {
+        _msgLabel = [[UILabel alloc] init];
+        _msgLabel.numberOfLines = 0;
+        _msgLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        [self.contentView addSubview:_msgLabel];
+    }
+    return _msgLabel;
+}
+
+- (UILabel *)msgTypeLabel {
+    if (!_msgTypeLabel) {
+        _msgTypeLabel = [[UILabel alloc] init];
+        _msgTypeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _msgTypeLabel.textColor = [UIColor lightGrayColor];
+        [self.contentView addSubview:_msgTypeLabel];
+    }
+    return _msgTypeLabel;
+}
+
+@end
+
+
 @interface NetworkMainViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NetworkRestFlowView *restFlowView;
 @property (nonatomic, strong) UITableView *tableView;
-//@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIBarButtonItem *pauseAccountItem;
 
@@ -223,7 +323,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
             case 0000:
             {
 //                个人信息
-                [ws pushPersonalInfoViewController];
+                [ws didClickedChangeAccountStateButton];
             }
                 break;
             case 0001:
@@ -246,10 +346,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 - (void)initConstrains {
     self.tableView.frame = self.view.frame;
-//    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
-//    self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(Self)
-//    }
 }
 
 
@@ -351,39 +447,37 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         if ([ws.model.basicInfo.user_state isEqualToString:@"暂停"]) {
             [ws.model pauseAccountComplete:^(BOOL success, NSString *data) {
                 if (success) {
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [ws.pauseAccountItem setTitle:@"开启"];
-
+                    dispatch_sync(dispatch_get_main_queue(), ^{
                         [ws presentViewController:alertVC animated:YES completion:nil];
                     });
-                    [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {}];
+                    [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {
+                        if (success) {
+                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                [ws.tableView reloadData];
+                            });
+                        }
+                    }];
                 }
             }];
         } else {
             [ws.model openAccountComplete:^(BOOL success, NSString *data) {
                 if (success) {
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [ws.pauseAccountItem setTitle:@"暂停"];
-                        
+                    dispatch_sync(dispatch_get_main_queue(), ^{
                         [ws presentViewController:alertVC animated:YES completion:nil];
                     });
-                    [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {}];
+                    [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {
+                        if (success) {
+                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                [ws.tableView reloadData];
+                            });
+                        }
+                    }];
                 }
             }];
         }
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-
-
-- (void)pushPersonalInfoViewController {
-    NetworkPersonalInfoViewController *personalInfoViewController = [[NetworkPersonalInfoViewController alloc] init];
-    if (self.model) {
-        personalInfoViewController.infoBean = self.model.basicInfo;
-        [self.navigationController pushViewController:personalInfoViewController animated:YES];
-    }
 }
 
 - (void)pushCheckoutListViewController {
@@ -402,6 +496,9 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     }
 }
 
+- (void)didClickedMoreButton {
+    
+}
 
 #pragma mark - Private Method
 
@@ -464,24 +561,34 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
 
     if (indexPath.section == 0) {
+        NetworkPersonalInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkPersonalInfoTableViewCellReuseID];
+        if (!cell) {
+            cell = [[NetworkPersonalInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkPersonalInfoTableViewCellReuseID];
+        }
+        cell.cellInfoBean = self.model.basicInfo.userInfoBeanArray[indexPath.row];
+        
+        return cell;
+        
+    } else if (indexPath.section == 1) {
         NetworkOnlineDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellOnlineDevicesReuseID];
         if (!cell) {
             cell = [[NetworkOnlineDevicesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellOnlineDevicesReuseID];
-            cell.onlineInfoBean = self.model.onlineInfoArray[indexPath.row];
         }
+        cell.onlineInfoBean = self.model.onlineInfoArray[indexPath.row];
         
         WS(ws);
         [cell setOnlineDevicesActionBlock:^(NSInteger tag) {
             [ws logoutUserWithTag:tag];
         }];
+        
         return cell;
     } else {
         NetworkInternetListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellInternetListReuseID];
         if (!cell) {
             cell = [[NetworkInternetListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellInternetListReuseID];
-            if (self.model.todayInternetRecordInfoArray.count > 0) {
-                cell.infoBean = self.model.todayInternetRecordInfoArray[indexPath.row];
-            }
+        }
+        if (self.model.todayInternetRecordInfoArray.count > 0) {
+            cell.infoBean = self.model.todayInternetRecordInfoArray[indexPath.row];
         }
         
         return cell;
@@ -493,10 +600,15 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     switch (section) {
         case 0:
         {
-            return self.model.onlineInfoArray.count;
+            return self.model.basicInfo.userInfoBeanArray.count;
         }
             break;
         case 1:
+        {
+            return self.model.onlineInfoArray.count;
+        }
+            break;
+        case 2:
         {
             return self.model.todayInternetRecordInfoArray.count;
         }
@@ -508,11 +620,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.model.onlineInfoArray.count > 0 || self.model.todayInternetRecordInfoArray > 0) {
-        return 2;
-    } else {
-        return 0;
-    }
+    return 3;
 }
 
 #pragma mark - UITableViewDelegate
@@ -527,13 +635,19 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     switch (section) {
         case 0:
         {
-            headerView.titleLabel.text = @"当前在线设备";
+            headerView.titleLabel.text = @"基本信息";
             headerView.actionButton.hidden = YES;
         }
             break;
         case 1:
         {
-            headerView.titleLabel.text = @"今日上网明细";
+            headerView.titleLabel.text = @"当前在线";
+            headerView.actionButton.hidden = YES;
+        }
+            break;
+        case 2:
+        {
+            headerView.titleLabel.text = @"今日上网";
             headerView.actionButton.hidden = NO;
             [headerView.actionButton setTitle:@"详情" forState:UIControlStateNormal];
         }
@@ -545,9 +659,10 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     [headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
             case 0:
-                
                 break;
             case 1:
+                break;
+            case 2:
             {
                 [ws pushInternetListViewController];
             }
@@ -562,15 +677,26 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 64;
-    } else {
-        return 74;
+
+    switch (indexPath.section) {
+        case 0:
+            return 44;
+            break;
+        case 1:
+            return 64;
+            break;
+        case 2:
+            return 74;
+            break;
+        default:
+            break;
     }
+    
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 64;
+    return 54;
 }
 
 #pragma mark - GETTER
@@ -579,14 +705,15 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         _tableView = [[UITableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL * 0.5)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL * 0.55)];
         [headerView addSubview:self.restFlowView];
         [self.restFlowView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(headerView);
-            make.width.equalTo(@(SCREEN_WIDTH_ACTUAL - 32));
-            make.height.equalTo(@(SCREEN_WIDTH_ACTUAL * 0.5 - 32));
+            make.width.mas_equalTo(SCREEN_WIDTH_ACTUAL - 32);
+            make.height.mas_equalTo(self.restFlowView.mas_width).multipliedBy(9.0f/16.0f);
         }];
         [headerView layoutIfNeeded];
+        
         _tableView.tableHeaderView = headerView;
         _tableView.tableFooterView = [[UIView alloc] init];
         _tableView.showsVerticalScrollIndicator = NO;
@@ -614,18 +741,10 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 - (UIBarButtonItem *)pauseAccountItem {
     if (!_pauseAccountItem) {
-        _pauseAccountItem = [[UIBarButtonItem alloc] initWithTitle:@"暂停" style:UIBarButtonItemStylePlain target:self action:@selector(didClickedChangeAccountStateButton)];
+        _pauseAccountItem = [[UIBarButtonItem alloc] initWithTitle:@"更多" style:UIBarButtonItemStylePlain target:self action:@selector(didClickedMoreButton)];
     }
     return _pauseAccountItem;
 }
-
-//- (UIScrollView *)scrollView {
-//    if (!_scrollView) {
-//        _scrollView = [[UIScrollView alloc] init];
-//        [self.view addSubview:_scrollView];
-//    }
-//    return _scrollView;
-//}
 
 - (GatewaySelfServiceMenuModel *)model {
     if (!_model) {

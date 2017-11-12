@@ -741,7 +741,7 @@
                                          };
         } else {
             _restFlowLevelDictionary = @{
-                                         @(GatewaySelfServiceMenuRestFlowLevelNotEnough) : @"流量已为负数"
+                                         @(GatewaySelfServiceMenuRestFlowLevelNotEnough) : @"流量已超限"
                                          };
         }
     } else {
@@ -790,40 +790,6 @@
             [infoBeanMutableArray addObject:bean];
             
             bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"电子钱包";
-            bean.message = [NSString stringWithFormat:@"%@元", [self.user_E_walletBalance substringToIndex:1]];
-            bean.messageType = 0;
-            [infoBeanMutableArray addObject:bean];
-        }
-        _userInfoBeanArray = infoBeanMutableArray;
-    }
-    return _userInfoBeanArray;
-}
-
-- (NSArray<GatewayCellBasicInfoBean *> *)productInfoBeanArray {
-    if (!_productInfoBeanArray) {
-        NSMutableArray *infoBeanMutableArray = [[NSMutableArray alloc] initWithCapacity:0];
-        
-        GatewayCellBasicInfoBean *bean = [[GatewayCellBasicInfoBean alloc] init];
-        if (self) {
-            bean.messageName = @"产品ID";
-            bean.message = self.product_ID;
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"产品名称";
-            bean.message = self.product_name;
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"计费策略";
-            bean.message = self.product_accountingStrategy;
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
             bean.messageName = @"已用流量";
             bean.message = self.product_usedFlow;
             bean.messageType = 1;
@@ -836,38 +802,15 @@
             [infoBeanMutableArray addObject:bean];
             
             bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"使用次数";
-            bean.message = self.product_usedTimes;
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"消费金额";
-            bean.message = self.product_usedAmount;
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
             bean.messageName = @"产品余额";
             bean.message = self.product_balance;
             bean.messageType = 1;
             [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"运营商绑定";
-            bean.message = self.product_carrierBundle;
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
-            
-            bean = [[GatewayCellBasicInfoBean alloc] init];
-            bean.messageName = @"结算日期";
-            bean.message = [LYTool changeDateFormatterFromDateFormat:@"yyyy-MM-dd HH:mm:ss" toDateFormat:@"yyyy-MM-dd" withDateString:self.product_closingDate];
-            bean.messageType = 1;
-            [infoBeanMutableArray addObject:bean];
+
         }
-        _productInfoBeanArray = infoBeanMutableArray;
+        _userInfoBeanArray = infoBeanMutableArray;
     }
-    return _productInfoBeanArray;
+    return _userInfoBeanArray;
 }
 
 @end

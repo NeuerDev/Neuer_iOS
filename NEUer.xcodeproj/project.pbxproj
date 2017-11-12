@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
-		332A540B1FB0883300F05152 /* NetworkPersonalInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A540A1FB0883300F05152 /* NetworkPersonalInfoViewController.m */; };
+		33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */; };
 		332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */; };
-		332A541D1FB08A9400F05152 /* NetworkInternetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A541C1FB08A9400F05152 /* NetworkInternetListViewController.m */; };
 		3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAB81FA9C56900AB6D8B /* GatewayModel.m */; };
 		3339FACB1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */; };
 		3339FAD31FAE0AD700AB6D8B /* NetworkMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */; };
@@ -131,12 +130,10 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
-		332A54091FB0883300F05152 /* NetworkPersonalInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkPersonalInfoViewController.h; sourceTree = "<group>"; };
-		332A540A1FB0883300F05152 /* NetworkPersonalInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkPersonalInfoViewController.m; sourceTree = "<group>"; };
+		33201F521FB754E700CAFDEA /* NetworkInternetListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListViewController.h; sourceTree = "<group>"; };
+		33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListViewController.m; sourceTree = "<group>"; };
 		332A54141FB088B800F05152 /* NetworkCheckoutListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCheckoutListViewController.h; sourceTree = "<group>"; };
 		332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkCheckoutListViewController.m; sourceTree = "<group>"; };
-		332A541B1FB08A9400F05152 /* NetworkInternetListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListViewController.h; sourceTree = "<group>"; };
-		332A541C1FB08A9400F05152 /* NetworkInternetListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListViewController.m; sourceTree = "<group>"; };
 		3339FAB71FA9C56900AB6D8B /* GatewayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
 		3339FAB81FA9C56900AB6D8B /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
 		3339FAC91FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewaySelfServiceMenuModel.h; sourceTree = "<group>"; };
@@ -335,13 +332,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		332A54061FB0876F00F05152 /* PersonalInfo */ = {
+		33201F511FB754E700CAFDEA /* InternetList */ = {
 			isa = PBXGroup;
 			children = (
-				332A54091FB0883300F05152 /* NetworkPersonalInfoViewController.h */,
-				332A540A1FB0883300F05152 /* NetworkPersonalInfoViewController.m */,
+				33201F521FB754E700CAFDEA /* NetworkInternetListViewController.h */,
+				33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */,
 			);
-			path = PersonalInfo;
+			path = InternetList;
 			sourceTree = "<group>";
 		};
 		332A54131FB088A900F05152 /* CheckoutList */ = {
@@ -351,15 +348,6 @@
 				332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */,
 			);
 			path = CheckoutList;
-			sourceTree = "<group>";
-		};
-		332A541A1FB08A8600F05152 /* InternetList */ = {
-			isa = PBXGroup;
-			children = (
-				332A541B1FB08A9400F05152 /* NetworkInternetListViewController.h */,
-				332A541C1FB08A9400F05152 /* NetworkInternetListViewController.m */,
-			);
-			path = InternetList;
 			sourceTree = "<group>";
 		};
 		3339FAB61FA9C53B00AB6D8B /* BasicInfo */ = {
@@ -383,9 +371,8 @@
 		3339FACC1FAE08E900AB6D8B /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				332A541A1FB08A8600F05152 /* InternetList */,
+				33201F511FB754E700CAFDEA /* InternetList */,
 				332A54131FB088A900F05152 /* CheckoutList */,
-				332A54061FB0876F00F05152 /* PersonalInfo */,
 				3339FACD1FAE08FE00AB6D8B /* Main */,
 			);
 			path = Network;
@@ -1766,6 +1753,7 @@
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
 				335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */,
+				33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */,
 				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
@@ -1791,9 +1779,7 @@
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
-				332A540B1FB0883300F05152 /* NetworkPersonalInfoViewController.m in Sources */,
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
-				332A541D1FB08A9400F05152 /* NetworkInternetListViewController.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
 				3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */,

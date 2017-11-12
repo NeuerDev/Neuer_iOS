@@ -126,15 +126,17 @@
 - (UIButton *)offLineButton {
     if (!_offLineButton) {
         _offLineButton = [[UIButton alloc] init];
-        _offLineButton.backgroundColor = [UIColor beautyBlue];
         [_offLineButton setTitle:@"下线" forState:UIControlStateNormal];
         [_offLineButton addTarget:self action:@selector(didClickedOffLineButton) forControlEvents:UIControlEventTouchUpInside];
-        [_offLineButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_offLineButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
         _offLineButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         _offLineButton.contentEdgeInsets = UIEdgeInsetsMake(8, 12, 8, 12);
         _offLineButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _offLineButton.layer.cornerRadius = 30.0f/2;
         _offLineButton.alpha = 0.8;
+        _offLineButton.layer.borderColor = [UIColor beautyBlue].CGColor;
+        _offLineButton.backgroundColor = [UIColor groupTableViewBackgroundColor];
+
         [self.infoView addSubview:_offLineButton];
     }
     

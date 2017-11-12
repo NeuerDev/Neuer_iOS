@@ -7,6 +7,20 @@
 //
 
 #import "NetworkInternetListTableViewCell.h"
+#import "LYTool.h"
+
+@interface NetworkInternetListTableViewCell ()
+
+@property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, strong) UIView *infoView;
+@property (nonatomic, strong) UILabel *deviceLabel;
+@property (nonatomic, strong) UILabel *lastActiveLabel;
+@property (nonatomic, strong) UILabel *logoutTimeLabel; // 下线时间
+@property (nonatomic, strong) UILabel *usedFlowLabel;
+@property (nonatomic, strong) UILabel *lastActiveStatusLabel;
+@property (nonatomic, strong) UILabel *logoutTimeStatusLabel;
+
+@end
 
 @implementation NetworkInternetListTableViewCell
 
@@ -40,14 +54,23 @@
         make.top.and.left.equalTo(self.infoView);
     }];
     
-    [self.lastActiveLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.lastActiveStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.deviceLabel.mas_bottom).with.offset(4);
         make.left.equalTo(self.infoView);
     }];
     
-    [self.logoutTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.lastActiveLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.deviceLabel.mas_bottom).with.offset(4);
+        make.left.equalTo(self.lastActiveStatusLabel.mas_right).with.offset(4);
+    }];
+    
+    [self.logoutTimeStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lastActiveLabel.mas_bottom).with.offset(4);
         make.left.and.bottom.equalTo(self.infoView);
+    }];
+    [self.logoutTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.lastActiveLabel.mas_bottom).with.offset(4);
+        make.left.equalTo(self.lastActiveLabel);
     }];
     
     [self.usedFlowLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -65,12 +88,12 @@
         _iconImageView.image = [UIImage imageNamed:@"network_computer"];
     }
     
-    _lastActiveLabel.text = [NSString stringWithFormat:@"上线时间:%@", _infoBean.internet_lastactive];
-    _logoutTimeLabel.text = [NSString stringWithFormat:@"下线时间:%@", _infoBean.internet_logoutTime];
+    _lastActiveLabel.text = [NSString stringWithFormat:@"%@", _infoBean.internet_lastactive];
+    _logoutTimeLabel.text = [NSString stringWithFormat:@"%@", _infoBean.internet_logoutTime];
     _deviceLabel.text = _infoBean.internet_operation;
     _usedFlowLabel.text = _infoBean.internet_usedFlow;
+    
 }
-
 
 #pragma mark - Getter
 
@@ -135,6 +158,34 @@
         [self.infoView addSubview:_usedFlowLabel];
     }
     return _usedFlowLabel;
+}
+
+- (UILabel *)lastActiveStatusLabel {
+    if (!_lastActiveStatusLabel) {
+        _lastActiveStatusLabel = [[UILabel alloc] init];
+        _lastActiveStatusLabel.text = @"上线";
+        [LYTool setBorder:_lastActiveStatusLabel color:[UIColor beautyOrange] cornerRadius:3];
+        [_lastActiveStatusLabel.layer setCornerRadius:2];
+//        [_lastActiveStatusLabel.layer setBorderWidth:0.8];
+        _lastActiveStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _lastActiveStatusLabel.textColor = [UIColor beautyOrange];
+        [self.contentView addSubview:_lastActiveStatusLabel];
+    }
+    return _lastActiveStatusLabel;
+}
+
+- (UILabel *)logoutTimeStatusLabel {
+    if (!_logoutTimeStatusLabel) {
+        _logoutTimeStatusLabel = [[UILabel alloc] init];
+        _logoutTimeStatusLabel.text = @"下线";
+        [LYTool setBorder:_logoutTimeStatusLabel color:[UIColor beautyBlue] cornerRadius:2];
+        [_logoutTimeStatusLabel.layer setCornerRadius:2];
+//        [_logoutTimeStatusLabel.layer setBorderWidth:0.8];
+        _logoutTimeStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _logoutTimeStatusLabel.textColor = [UIColor beautyBlue];
+        [self.contentView addSubview:_logoutTimeStatusLabel];
+    }
+    return _logoutTimeStatusLabel;
 }
 
 @end

@@ -51,7 +51,6 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 @property (nonatomic, strong) NSDictionary <NSNumber *, NSString *> *restFlowLevelDictionary;
 
 @property (nonatomic, strong) NSArray <GatewayCellBasicInfoBean *> *userInfoBeanArray;
-@property (nonatomic, strong) NSArray <GatewayCellBasicInfoBean *> *productInfoBeanArray;
 
 @end
 

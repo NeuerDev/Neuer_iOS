@@ -63,4 +63,8 @@
 
 + (NSString *)changeDateFormatterFromDateFormat:(NSString *)fromDateFormat toDateFormat:(NSString *)toDateFormat withDateString:(NSString *)dateString;
 
+/**
+ 给view添加边框
+ */
++ (void)setBorder:(UIView *)view color:(UIColor *)color cornerRadius:(CGFloat)cornerRadius;
 @end
