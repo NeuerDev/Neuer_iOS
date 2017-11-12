@@ -13,7 +13,6 @@ target 'NEUer' do
   pod 'TesseractOCRiOS', '~> 4.0.0'
   pod 'FMDB'
   pod 'JPFPSStatus', '~> 0.1.1'
-  pod 'GPUImage'
 
 end
 

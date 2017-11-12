@@ -9,11 +9,14 @@
 #import "EcardLoginModel.h"
 #import "TesseractCenter.h"
 
-typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSError *error);
+typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCode, NSError *error);
 
 @interface EcardLoginModel () <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
 @property (nonatomic, strong) NSURLSession *session;
+
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
 
 // 仅用于获取验证码的cookie
 @property (nonatomic, strong) NSString *cookie;
@@ -27,7 +30,9 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSError *error);
 
 @end
 
-@implementation EcardLoginModel
+@implementation EcardLoginModel {
+    EcardActionCompleteBlock _currentActionBlock;
+}
 
 #pragma mark - Init
 
@@ -43,17 +48,25 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSError *error);
 
 - (void)loginWithUser:(NSString *)userName password:(NSString *)password complete:(EcardActionCompleteBlock)block {
     WS(ws);
-    [self getVerifyImage:^(UIImage *verifyImage, NSError *error) {
-        if (verifyImage) {
-            
-            [ws authorUser:userName password:password verifyCode:nil complete:^(BOOL success, NSError *error) {
-                
-            }];
-        }
+    _username = userName;
+    _password = password;
+    _currentActionBlock = block;
+    [self getVerifyImage:^(UIImage *verifyImage, NSString *verifyCode, NSError *error) {
+        [ws authorUser:userName password:password verifyCode:verifyCode complete:nil];
     }];
 }
 
 #pragma mark - Private Methods
+
+- (BOOL)isAvailableCode:(NSString *)code {
+    code = [code stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSRange range = [code rangeOfString:@"^\\d{4}$" options:NSRegularExpressionSearch];
+    if (code.length==4 && range.location!=NSNotFound) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 - (void)getVerifyImage:(EcardGetVerifyImageBlock)block {
     WS(ws);
@@ -95,7 +108,25 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSError *error);
         [downloader setValue:ws.cookie forHTTPHeaderField:@"Cookie"];
         [downloader downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ecard.neu.edu.cn/SelfSearch/validateimage.ashx?%.16lf", rand()/(double)RAND_MAX]] options:SDWebImageDownloaderHighPriority progress:nil completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                block(image, error);
+                if (image && !error) {
+                    NSString *verifyCode = @"";
+                    G8Tesseract *tesseract = [TesseractCenter defaultCenter].tesseract;
+                    tesseract.image = image;
+                    if (tesseract.recognize && [ws isAvailableCode:tesseract.recognizedText]) {
+                        NSLog(@"识别成功 : %@", tesseract.recognizedText);
+                        verifyCode = [tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            block(image, verifyCode, error);
+                        });
+                    } else {
+                        NSLog(@"识别失败 : %@", tesseract.recognizedText);
+                        [ws getVerifyImage:block];
+                    }
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        block(nil, nil, error);
+                    });
+                }
             });
         }];
     }];
@@ -127,11 +158,41 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSError *error);
     }
     urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
+        // 登录失败 密码错误
+        if (_currentActionBlock) {
+            NSError *error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeInvaildAccountPassword userInfo:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _currentActionBlock(NO, error);
+            });
+        }
+        _currentActionBlock = nil;
     }];
     
     [task resume];
 }
+
+#pragma mark - NSURLSessionTaskDelegate
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
+    NSLog(@"登录跳转了 %@", request.URL.absoluteString);
+    if ([request.URL.absoluteString isEqualToString:@"http://ecard.neu.edu.cn/SelfSearch/Index.aspx"]) {
+        // 登录成功 进入首页
+        __strong EcardActionCompleteBlock block = _currentActionBlock;
+        NSURLSessionDataTask *newTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (block) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    block(data && !error, error);
+                });
+            }
+        }];
+        [newTask resume];
+    } else {
+        
+    }
+    
+    _currentActionBlock = nil;
+}
+
 
 #pragma mark - Getter
 

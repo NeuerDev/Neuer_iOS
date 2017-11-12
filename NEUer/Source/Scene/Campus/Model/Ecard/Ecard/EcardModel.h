@@ -81,6 +81,8 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 
 #pragma mark - Login
 
+- (void)loginWithUser:(NSString *)userName password:(NSString *)password complete:(EcardActionCompleteBlock)block;
+
 //- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block;
 
 #pragma mark - Info

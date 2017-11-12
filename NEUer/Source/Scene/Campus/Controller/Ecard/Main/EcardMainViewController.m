@@ -148,7 +148,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     signinVC.modalPresentationStyle = UIModalPresentationCustom;
     signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [signinVC setupWithTitle:@"登录校卡中心"
-                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
+                   inputType:LoginInputTypeAccount|LoginInputTypePassword
                     contents:@{
                                @(LoginInputTypeAccount):account,
                                @(LoginInputTypePassword):password,
@@ -157,46 +157,26 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
                      if (complete) {
                          NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
                          NSString *password = result[@(LoginInputTypePassword)]?:@"";
-                         NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
-                         [ws loginWithUser:userName password:password verifyCode:verifyCode];
+                         [ws loginWithUser:userName password:password];
                      } else {
                          [ws.navigationController popViewControllerAnimated:YES];
                      }
                  }];
     
-    __weak LoginViewController *weakSigninVC = signinVC;
-//    signinVC.changeVerifyImageBlock = ^{
-//        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-//            weakSigninVC.verifyImage = verifyImage;
-//        }];
-//    };
-    [self presentViewController:signinVC animated:YES completion:^{
-//        [ws.ecardModel getVerifyImage:^(UIImage *verifyImage, NSString *message) {
-//            weakSigninVC.verifyImage = verifyImage;
-//        }];
-    }];
+    [self presentViewController:signinVC animated:YES completion:nil];
 }
 
-- (void)loginWithUser:(NSString *)user password:(NSString *)password verifyCode:(NSString *)verifyCode {
+- (void)loginWithUser:(NSString *)user password:(NSString *)password {
     WS(ws);
-//    [self.ecardModel authorUser:user password:password verifyCode:verifyCode complete:^(BOOL success, NSError *error) {
-//        if (success) {
-//            [[UserCenter defaultCenter] setAccount:user password:password forKeyType:UserKeyTypeECard];
-//            
-//            [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-//                if (success) {
-//                    NSLog(@"success query info");
-//                    ws.infoBean = ws.ecardModel.info;
-//                }
-//            }];
-//
-//            [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
-//                if (success) {
-//                    [ws.consumeHistoryTableView reloadData];
-//                }
-//            }];
-//        }
-//    }];
+    [self.ecardModel loginWithUser:user password:password complete:^(BOOL success, NSError *error) {
+        [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+            
+        }];
+        
+        [ws.ecardModel fetchAvatarComplete:^(BOOL success, NSError *error) {
+            
+        }];
+    }];
 }
 
 - (void)setMainColor:(UIColor *)color animated:(BOOL)animated {
@@ -213,8 +193,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         }
     }];
 }
-
-
 
 #pragma mark - Respond Methods
 

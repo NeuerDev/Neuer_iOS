@@ -41,6 +41,16 @@
     return self;
 }
 
+- (void)loginWithUser:(NSString *)userName password:(NSString *)password complete:(EcardActionCompleteBlock)block {
+    [self.loginModel loginWithUser:userName password:password complete:^(BOOL success, NSError *error) {
+        if (success) {
+            [[UserCenter defaultCenter] setAccount:userName password:password forKeyType:UserKeyTypeECard];
+        }
+        
+        block(success, error);
+    }];
+}
+
 //- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block {
 //    WS(ws);
 //    _currentActionBlock = block;
@@ -322,6 +332,14 @@
     }
     
     return _session;
+}
+
+- (EcardLoginModel *)loginModel {
+    if (!_loginModel) {
+        _loginModel = [[EcardLoginModel alloc] init];
+    }
+    
+    return _loginModel;
 }
 
 @end
