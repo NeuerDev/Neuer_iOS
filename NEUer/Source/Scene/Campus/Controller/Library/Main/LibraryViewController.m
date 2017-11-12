@@ -557,13 +557,13 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     }];
     
     [self.authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom);
+        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(10);
         make.left.equalTo(self.titleLabel);
     }];
     
     [self.callNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.authorLabel.mas_right).with.offset(10);
-        make.top.equalTo(self.titleLabel.mas_bottom);
+        make.top.equalTo(self.authorLabel);
     }];
     
     [self.refurbishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
