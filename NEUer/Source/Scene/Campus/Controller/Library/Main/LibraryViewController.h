@@ -26,7 +26,8 @@
 @property (nonatomic, strong) LibraryLoginModel *loginModel;
 @property (nonatomic, strong) LibraryLoginMyInfoBorrowingBean *borrowingBean;
 
-- (void)setBorrowingBean:(LibraryLoginMyInfoBorrowingBean *)bean;
+- (void)setContent:(LibraryLoginMyInfoBorrowingBean *)bean;
 - (void)setMainColor:(UIColor *)color;
+- (void)setButtonUserInteractionEnabled:(BOOL)enabled;
 
 @end

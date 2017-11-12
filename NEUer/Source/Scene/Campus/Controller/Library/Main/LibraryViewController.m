@@ -44,7 +44,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 @property (nonatomic, strong) NSArray<NSString *> *bookStrings;
 @property (nonatomic, strong) NSArray<NSString *> *mostStrings;
-
+@property (nonatomic, assign) BOOL isButtonEnabled;
 
 @end
 
@@ -67,6 +67,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.infoTableView.refreshControl = self.refreshControl;
     self.navigationItem.rightBarButtonItem = self.loginButtonItem;
+    _isButtonEnabled = YES;
     [self autoLogin];
     [self.newbookModel search];
     [self.mostModel search];
@@ -100,7 +101,11 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     LibraryLoginBean *loginBean = self.loginModel.loginBean;
     UIColor *mainColor = [UIColor colorWithHexStr:@[@"#64B74E",@"#FFBA13",@"#FF5100"][loginBean.returnDateLevel]];
     [self setMainColor:mainColor animated:YES];
-    [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
+    if (loginBean.days == 30000000) {
+        [self.bookNumLabel setText:@"未借书"];
+    } else {
+        [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
+    }
     [self.infoView removeGestureRecognizer:_gestureRecognizer];
     [self.infoTableView reloadData];
     
@@ -228,7 +233,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     [headerView setPerformActionBlock:^(NSInteger section) {
         switch (section) {
             case 0: {
-                
+                [self.loginModel allRenewal];
             }
                 break;
                 
@@ -252,7 +257,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     return headerView;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath { 
     if (indexPath.section == 0) {
         return 144;
     }
@@ -274,7 +279,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section ) {
+    switch (section) {
         case 0:
             return self.loginModel.borrowingArr.count;
             break;
@@ -300,7 +305,11 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
             cell = [[LibraryReturnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryResultCellId];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        [cell setBorrowingBean:self.loginModel.borrowingArr[indexPath.row]];
+        [cell setButtonUserInteractionEnabled:_isButtonEnabled];
+        //array != nil && ![array isKindOfClass:[NSNull class]] && array.count != 0
+        if (self.loginModel.borrowingArr.count) {
+            [cell setContent:self.loginModel.borrowingArr[indexPath.row]];
+        }
         return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
@@ -351,6 +360,14 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 #pragma mark - LibraryLoginDelegate
 - (void)loginDidSuccess {
     [self checkLoginState];
+}
+
+- (void)allRenewal:(NSArray *)info {
+    _isButtonEnabled = NO;
+    [self.infoTableView reloadData];
+    for (NSString *str in info) {
+        NSLog(@"%@",str);
+    }
 }
 
 
@@ -564,12 +581,21 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 #pragma mark - Respond Methods
 - (void)partRenewal {
-    [self.loginModel partRenewalWithRenewNumber:self.borrowingBean.renewNumber];
+    [self.loginModel partRenewalWithBean:_borrowingBean];
 }
 
 #pragma mark - LibraryLoginDelegate
 - (void)partRenewalDidSuccess {
-    
+    [self.refurbishBtn setTitle:@"已续借" forState:UIControlStateNormal];
+    [self.refurbishBtn.titleLabel setAlpha:0.5];
+    [self.refurbishBtn setUserInteractionEnabled:NO];
+}
+
+- (void)partRenewalDidFail:(NSString *)errorMessage {
+    [self.refurbishBtn setTitle:@"已续借" forState:UIControlStateNormal];
+    [self.refurbishBtn.titleLabel setAlpha:0.5];
+    [self.refurbishBtn setUserInteractionEnabled:NO];
+    NSLog(@"%@",errorMessage);
 }
 
 #pragma mark - Getter
@@ -649,7 +675,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 #pragma mark - Setter
-- (void)setBorrowingBean:(LibraryLoginMyInfoBorrowingBean *)bean {
+- (void)setContent:(LibraryLoginMyInfoBorrowingBean *)bean {
     _borrowingBean = bean;
     self.titleLabel.text = bean.title;
     self.callNumLabel.text = [NSString stringWithFormat:@"索书号: %@",bean.claimNumber];
@@ -668,6 +694,14 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     self.callNumLabel.textColor = color;
     self.returndateLabel.textColor = color;
     self.authorLabel.textColor = color;
+}
+
+- (void)setButtonUserInteractionEnabled:(BOOL)enabled {
+    if (!enabled) {
+        [self.refurbishBtn setTitle:@"已续借" forState:UIControlStateNormal];
+        [self.refurbishBtn.titleLabel setAlpha:0.5];
+        [self.refurbishBtn setUserInteractionEnabled:NO];
+    }
 }
 
 @end

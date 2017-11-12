@@ -48,7 +48,6 @@
     _infoType = 1;
     
     NSURL *url = [NSURL URLWithString:_borrowingURL];
-    
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
@@ -61,7 +60,6 @@
     _infoType = 2;
     
     NSURL *url = [NSURL URLWithString:_borrowHistoryURL];
-    
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
@@ -73,7 +71,6 @@
     _infoType = 3;
     
     NSURL *url = [NSURL URLWithString:_reservationURL];
-    
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
@@ -85,7 +82,6 @@
     _infoType = 4;
     
     NSURL *url = [NSURL URLWithString:_bookedURL];
-    
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
@@ -97,19 +93,31 @@
     _infoType = 5;
     
     NSURL *url = [NSURL URLWithString:_cashURL];
-    
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
     [request start];
 }
 
-- (void)partRenewalWithRenewNumber:(NSString *)renewNumber {
+- (void)partRenewalWithBean:(LibraryLoginMyInfoBorrowingBean *)bean {
+    _infoType = 6;
     
+    NSString *urlStr = [NSString stringWithFormat:@"%@?func=bor-renew-all&renew_selected=Y&adm_library=NEU50&%@=Y",bean.tempURL,bean.renewNumber];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    JHRequest *request = [[JHRequest alloc] initWithUrl:url];
+    request.delegate = self;
+    request.requestType = JHRequestTypeCancelPrevious;
+    [request start];
 }
 
 - (void)allRenewal {
+    _infoType = 7;
     
+    NSURL *url = [NSURL URLWithString:_renewURL];
+    JHRequest *request = [[JHRequest alloc] initWithUrl:url];
+    request.delegate = self;
+    request.requestType = JHRequestTypeCancelPrevious;
+    [request start];
 }
 
 #pragma mark - JHRequestDelegate
@@ -131,22 +139,23 @@
             break;
             
         case 1: {
-            _borrowingArr = [self borrowingArrayFromHtmlData:htmlData];
+            [self borrowingArrayFromHtmlData:htmlData];
+            NSInteger min = 30000000;
             if (_borrowingArr.count == 0) {
                 _loginBean.returnDateLevel = LibraryInfoReturnDateLevelLow;
+                _loginBean.days = min;
             } else {
-                NSInteger min = 30000000;
                 for (NSInteger i = 0; i < _borrowingArr.count; i++) {
                     if ([_borrowingArr[i].shouldReturnDate intValue] < min) {
-                        min = [_borrowingArr[i].shouldReturnDate intValue];
+                        min = [_borrowingArr[i].shouldReturnDate integerValue];
                     }
                 }
                 [self setReturnDateLevelWithMin:min bean:_loginBean];
-                if ([_delegate respondsToSelector:@selector(loginDidSuccess)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [_delegate loginDidSuccess];
-                    });
-                }
+            }
+            if ([_delegate respondsToSelector:@selector(loginDidSuccess)]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_delegate loginDidSuccess];
+                });
             }
         }
             break;
@@ -170,6 +179,16 @@
             
         case 5:
             break;
+            
+        case 6: {
+            [self partRenewInfoFromHtmlData:htmlData];
+        }
+            break;
+            
+        case 7: {
+            [self allRenewInfoFromHtmlData:htmlData];
+//            [self searchBorrowingInfo];
+        }
             
         default:
             break;
@@ -223,38 +242,55 @@
     
 }
 
-- (NSMutableArray<LibraryLoginMyInfoBorrowingBean *> *)borrowingArrayFromHtmlData:(NSData *)htmlData {
-    NSMutableArray *array = [NSMutableArray array];
+- (void)borrowingArrayFromHtmlData:(NSData *)htmlData {
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray<TFHppleElement *> *tdArr = [xpathParser searchWithXPathQuery:@"//td[@class='td1']"];
     NSArray<TFHppleElement *> *inputArr = [xpathParser searchWithXPathQuery:@"//input[@type='checkbox']"];
-    int num = (int)(tdArr.count - 1) / 11;
-    for (int i = 0; i < num; i++) {
-        LibraryLoginMyInfoBorrowingBean *bean = [[LibraryLoginMyInfoBorrowingBean alloc] init];
-        bean.author = [tdArr[i*11+3] text];
-        bean.yearOfPublication = [tdArr[i*11+5] text];
-        bean.shouldReturnDate = [tdArr[i*11+6] text];
-        bean.branch = [tdArr[i*11+8] text];
-        bean.claimNumber = [tdArr[i*11+9] text];
-        bean.renewNumber = [inputArr[i] objectForKey:@"name"];
-        if ([tdArr[i*11+10] text]) {
-            bean.itemDescription = [tdArr[i*11+10] text];
+    NSArray<TFHppleElement *> *scriptArr = [xpathParser searchWithXPathQuery:@"//a[@title='退出系统']"];
+    NSString *hrefStr = [scriptArr[0] objectForKey:@"href"];
+    NSString *subStr = [hrefStr componentsSeparatedByString:@"-"].lastObject;
+    subStr = [subStr componentsSeparatedByString:@"?"].firstObject;
+    NSInteger length = subStr.length;
+    subStr = [NSString stringWithFormat:@"%ld",[subStr integerValue] - 1];
+    if (length != subStr.length) {
+        NSInteger num = length - subStr.length;
+        for (NSInteger i = 0; i < num; i++) {
+            subStr = [NSString stringWithFormat:@"0%@",subStr];
         }
-        [self setReturnDateLevelWithMin:[bean.shouldReturnDate integerValue] bean:bean];
-        [array addObject:bean];
+    }
+    hrefStr = [hrefStr componentsSeparatedByString:@"-"].firstObject;
+    hrefStr = [NSString stringWithFormat:@"%@-%@",hrefStr,subStr];
+    int num = (int)(tdArr.count - 1) / 11;
+    if (num != 0) {
+        for (int i = 0; i < num; i++) {
+            LibraryLoginMyInfoBorrowingBean *bean = [[LibraryLoginMyInfoBorrowingBean alloc] init];
+            bean.author = [tdArr[i*11+3] text];
+            bean.yearOfPublication = [tdArr[i*11+5] text];
+            bean.shouldReturnDate = [tdArr[i*11+6] text];
+            bean.branch = [tdArr[i*11+8] text];
+            bean.claimNumber = [tdArr[i*11+9] text];
+            bean.renewNumber = [inputArr[i] objectForKey:@"name"];
+            bean.tempURL = hrefStr;
+            if ([tdArr[i*11+10] text]) {
+                bean.itemDescription = [tdArr[i*11+10] text];
+            }
+            [self setReturnDateLevelWithMin:[bean.shouldReturnDate integerValue] bean:bean];
+            [_borrowingArr addObject:bean];
+            
+        }
+        NSArray<TFHppleElement *> *titleArr = [xpathParser searchWithXPathQuery:@"//td/a"];
+        for (int i = 0; i < _borrowingArr.count; i++) {
+            _borrowingArr[i].title = [titleArr[i*3+8] text];
+        }
         
+        NSArray<TFHppleElement *> *renewAllArr = [xpathParser searchWithXPathQuery:@"//a[@title='Renew All']"];
+        _renewURL = [renewAllArr[0] objectForKey:@"href"];
+        _renewURL = [[_renewURL substringToIndex:_renewURL.length - 3] substringFromIndex:24];
     }
-    
-    NSArray<TFHppleElement *> *titleArr = [xpathParser searchWithXPathQuery:@"//td/a"];
-    for (int i = 0; i < num; i++) {
-        ((LibraryLoginMyInfoBorrowingBean *)array[i]).title = [titleArr[i*3+8] text];
-    }
-    
-    return array;
 }
 
 - (NSMutableArray<LibraryLoginMyInfoBorrowHistoryBean *> *)borrowHistoryArrayFromHtmlData:(NSData *)htmlData {
-    NSMutableArray *array = [NSMutableArray array];
+    NSMutableArray<LibraryLoginMyInfoBorrowHistoryBean *> *array = [NSMutableArray array];
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray<TFHppleElement *> *tdArr = [xpathParser searchWithXPathQuery:@"//td[@class='td1']"];
     int num = (int)(tdArr.count - 1) / 10;
@@ -274,10 +310,43 @@
     
     NSArray<TFHppleElement *> *titleArr = [xpathParser searchWithXPathQuery:@"//td/a"];
     for (int i = 0; i < num; i++) {
-        ((LibraryLoginMyInfoBorrowHistoryBean *)array[i]).author = [titleArr[i*3+7] text];
-        ((LibraryLoginMyInfoBorrowHistoryBean *)array[i]).title = [titleArr[i*3+8] text];
+        array[i].author = [titleArr[i*3+7] text];
+        array[i].title = [titleArr[i*3+8] text];
     }
     return array;
+}
+
+- (void)partRenewInfoFromHtmlData:(NSData *)htmlData {
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    NSArray<TFHppleElement *> *tdArr = [xpathParser searchWithXPathQuery:@"//td[@class='td1']"];
+    if ([tdArr[8] text].length) {
+        if ([_delegate respondsToSelector:@selector(partRenewalDidFail:)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_delegate partRenewalDidFail:[tdArr[8] text]];
+            });
+        }
+    } else {
+        if ([_delegate respondsToSelector:@selector(partRenewalDidSuccess)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_delegate partRenewalDidSuccess];
+            });
+        }
+    }
+}
+
+- (void)allRenewInfoFromHtmlData:(NSData *)htmlData {
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    NSArray<TFHppleElement *> *tdArr = [xpathParser searchWithXPathQuery:@"//td[@class='td1']"];
+    NSInteger num = tdArr.count / 9;
+    NSMutableArray *array = [NSMutableArray array];
+    for (NSInteger i = 0; i < num; i++) {
+        [array addObject:[tdArr[i*9 + 8] text]];
+    }
+    if ([_delegate respondsToSelector:@selector(allRenewal:)]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_delegate allRenewal:array];
+        });
+    }
 }
 
 #pragma mark - Setter

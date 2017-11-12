@@ -29,6 +29,8 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 - (void)getBookedInfoDidSuccess;
 - (void)getCashInfoDidSuccess;
 - (void)partRenewalDidSuccess;
+- (void)partRenewalDidFail:(NSString *)errorMessage;
+- (void)allRenewal:(NSArray *)info;
 @end
 
 
@@ -38,6 +40,7 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *tmpURL;
+@property (nonatomic, strong) NSString *renewURL;
 @property (nonatomic, strong) LibraryLoginBean *loginBean;
 //信息
 @property (nonatomic, strong) NSString *borrowingURL;
@@ -79,12 +82,13 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 - (void)searchCashInfo;
 
 
+
 /**
  部分续借
 
- @param renewNumber 续借编号
+ @param bean 需要续借的书bean
  */
-- (void)partRenewalWithRenewNumber:(NSString *)renewNumber;
+- (void)partRenewalWithBean:(LibraryLoginMyInfoBorrowingBean *)bean;
 
 /**
  全部续借
@@ -131,6 +135,7 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @property (nonatomic, strong) NSString *claimNumber;
 @property (nonatomic, strong) NSString *itemDescription;
 @property (nonatomic, strong) NSString *renewNumber;
+@property (nonatomic, strong) NSString *tempURL;
 @property (nonatomic, assign) LibraryInfoReturnDateLevel returnDateLevel;
 
 @end
