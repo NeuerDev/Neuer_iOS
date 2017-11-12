@@ -101,13 +101,42 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeECard] ? : @"";
-    
+
     // 如果用户、密码都存在 则进行登录（查询信息）操作
     if (account.length>0 && password.length>0) {
         [self loginWithUser:account password:password];
     } else {
         [self showLoginBox];
     }
+}
+
+- (void)fetchInfo {
+    WS(ws);
+    // 查询校园卡信息
+    [self.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
+        if (success) {
+            NSLog(@"success query info");
+            ws.infoBean = ws.ecardModel.info;
+            
+            // 查询今天消费信息
+            [self.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                if (success) {
+                    if ([ws.consumeHistoryTableView numberOfSections]==0) {
+                        [ws.consumeHistoryTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    } else {
+                        [ws.consumeHistoryTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    }
+                } else {
+                    [ws handleError:error];
+                }
+                [ws endRefreshing];
+            }];
+        } else {
+            [ws handleError:error];
+            [ws endRefreshing];
+        }
+    }];
+    
 }
 
 - (void)handleError:(NSError *)error {
@@ -157,21 +186,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 - (void)loginWithUser:(NSString *)user password:(NSString *)password {
     WS(ws);
     [self.ecardModel loginWithUser:user password:password complete:^(BOOL success, NSError *error) {
-        [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-            if (success) {
-                NSLog(@"success query info");
-                ws.infoBean = ws.ecardModel.info;
-                
-                // 查询今日消费记录
-                [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
-                    if (success) {
-                        [ws.consumeHistoryTableView reloadData];
-                    }
-                }];
-            } else {
-                [ws handleError:error];
-            }
-        }];
+        [ws fetchInfo];
     }];
 }
 
@@ -208,7 +223,27 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 }
 
 - (void)changePassword {
+    WS(ws);
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    LoginViewController *signinVC = [[LoginViewController alloc] init];
+    signinVC.modalPresentationStyle = UIModalPresentationCustom;
+    signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [signinVC setupWithTitle:@"修改消费密码"
+                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeNewPassword|LoginInputTypeRePassword
+                    contents:@{
+                               @(LoginInputTypeAccount):account,
+                               }
+                 resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+                     if (complete) {
+//                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
+//                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
+                     } else {
+                         [ws.navigationController popViewControllerAnimated:YES];
+                     }
+                 }];
     
+    [self presentViewController:signinVC animated:YES completion:nil];
 }
 
 - (void)reportLost {
@@ -236,7 +271,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 - (void)beginRefreshing {
     NSLog(@"refresh");
     [self.refreshControl beginRefreshing];
-    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:3.0f];
+    [self performSelector:@selector(checkLoginState) withObject:nil afterDelay:0.0f];
 }
 
 - (void)endRefreshing {
@@ -274,6 +309,14 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.ecardModel.todayConsumeArray.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.ecardModel.todayConsumeArray.count > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -439,7 +482,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         [self.balanceView addSubview:reportLostButton];
         
         
-        _balanceViewButtons = @[mycardButton, changePasswordButton, reportLostButton];
+        _balanceViewButtons = @[reportLostButton, changePasswordButton, mycardButton];
     }
     
     return _balanceViewButtons;

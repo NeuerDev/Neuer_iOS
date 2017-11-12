@@ -476,7 +476,7 @@
 
 - (NSString *)desc {
     if (!_desc) {
-        _desc = [NSString stringWithFormat:@"%@ %@", self.window, self.time];
+        _desc = [NSString stringWithFormat:@"%@ %@", self.time, self.window];
     }
     
     return _desc;
