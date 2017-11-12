@@ -67,11 +67,7 @@
             [self.skelentonVC presentViewController:alertController animated:YES completion:nil];
         }
     }];
-    
-//    [self.center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-//        NSLog(@"%@", settings);
-//    }];
-//
+
     return YES;
 }
 
@@ -88,7 +84,8 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
+    [[BadgeCenter defaultCenter] clearBadges];
+    [application setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -101,16 +98,7 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-//    if (application.applicationState == UIApplicationStateActive || application.applicationState == UIApplicationStateBackground) {
-//        [application setApplicationIconBadgeNumber:0];
-    
-//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您预约的节目快要开始了，是否跳转到指定界面观看" preferredStyle:UIAlertControllerStyleAlert];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-//        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self.router handleUrl:[NSURL URLWithString:@"neu://go/tv"]];
-//        }]];
-//        [self.skelentonVC presentViewController:alertController animated:YES completion:nil];
-//    }
+
 }
 
 
@@ -121,21 +109,20 @@
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
     NSLog(@"%@",  response.notification.request.content.userInfo);
-    NSString *sourceName = [response.notification.request.content.userInfo objectForKey:@"showsource"];
-    NSString *time = [response.notification.request.content.userInfo objectForKey:@"showtime"];
-    if (response.notification.request.content.badge > 0) {
-        [[BadgeCenter defaultCenter] clearBadges];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    }
     
-    if ([response.notification.request.content.categoryIdentifier isEqualToString:@"tvshowid"]) {
-        [self.router handleUrl:[NSURL URLWithString:[NSString stringWithFormat:@"neu://go/tv?sourcename=%@", sourceName]]];
+    if ([[response.notification.request.content.userInfo objectForKey:@"contentType"] isEqualToString:@"tvshow"]) {
+        NSString *sourceName = [response.notification.request.content.userInfo objectForKey:@"showsource"];
+        NSString *time = [response.notification.request.content.userInfo objectForKey:@"showtime"];
+        
+        if ([response.notification.request.content.categoryIdentifier isEqualToString:@"tvshowid"]) {
+            [self.router handleUrl:[NSURL URLWithString:[NSString stringWithFormat:@"neu://go/tv?sourcename=%@", sourceName]]];
+        }
+        
+        WS(ws);
+        [_center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
+            [ws.center removeDeliveredNotificationsWithIdentifiers:@[[NSString stringWithFormat:@"requestId_%@_%@", sourceName, time]]];
+        }];
     }
-    
-    WS(ws);
-    [_center getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
-        [ws.center removeDeliveredNotificationsWithIdentifiers:@[[NSString stringWithFormat:@"requestId_%@_%@", sourceName, time]]];
-    }];
     
     completionHandler();
 }

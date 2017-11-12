@@ -244,7 +244,6 @@ static NSString * const kChannelCellId = @"kChannelCellId";
         [self.navigationController pushViewController:detailViewController animated:YES];
     }
     
-    
 }
 
 - (void)fetchWallDataDidFail:(NSString *)message {
