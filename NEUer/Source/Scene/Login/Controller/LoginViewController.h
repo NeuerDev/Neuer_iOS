@@ -7,15 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef NS_OPTIONS(NSUInteger, LoginInputType) {
-    LoginInputTypeAccount         = 1 << 0,
-    LoginInputTypeIdentityNumber  = 1 << 1,
-    LoginInputTypePassword        = 1 << 2,
-    LoginInputTypeNewPassword     = 1 << 3,
-    LoginInputTypeRePassword      = 1 << 4,
-    LoginInputTypeVerifyCode      = 1 << 5,
-};
+#import "NEUInputView.h"
 
 typedef void(^SigninResultBlock)(NSDictionary<NSNumber *, NSString *> *result, BOOL complete);
 typedef void(^SigninChangeVerifyImageBlock)(void);
@@ -25,7 +17,7 @@ typedef void(^SigninChangeVerifyImageBlock)(void);
 @property (nonatomic, strong) UIImage *verifyImage;
 @property (nonatomic, strong) SigninChangeVerifyImageBlock changeVerifyImageBlock;
 
-- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType resultBlock:(SigninResultBlock)resultBlock;
-- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType contents:(NSDictionary<NSNumber *, NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock;
+- (void)setupWithTitle:(NSString *)title inputType:(NEUInputType)inputType resultBlock:(SigninResultBlock)resultBlock;
+- (void)setupWithTitle:(NSString *)title inputType:(NEUInputType)inputType contents:(NSDictionary<NSNumber *, NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock;
 
 @end

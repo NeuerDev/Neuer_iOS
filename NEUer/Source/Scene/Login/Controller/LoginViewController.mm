@@ -9,29 +9,6 @@
 #import "TesseractCenter.h"
 #import "LoginViewController.h"
 
-#pragma mark - LoginInputView
-
-typedef void(^LoginInputViewActionBlock)(void);
-
-@interface LoginInputView : UIView
-
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *infoLabel;
-@property (nonatomic, strong) UIButton *actionButton;
-@property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UIImageView *verifyImageView;
-@property (nonatomic, strong) UIView *seperatorLine;
-@property (nonatomic, strong) LoginInputViewActionBlock actionBlock;
-@property (nonatomic, assign) LoginInputType type;
-
-- (instancetype)initWithInputType:(LoginInputType)type;
-- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content;
-- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content actionBlock:(LoginInputViewActionBlock)actionBlock;
-
-- (BOOL)legal;
-
-@end
-
 #pragma mark - LoginViewController
 
 @interface LoginViewController () <UITextFieldDelegate, G8TesseractDelegate>
@@ -41,7 +18,7 @@ typedef void(^LoginInputViewActionBlock)(void);
 @property (nonatomic, strong) UIVisualEffectView *maskView;
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) NSArray<LoginInputView *> *inputViews;
+@property (nonatomic, strong) NSArray<NEUInputView *> *inputViews;
 @property (nonatomic, strong) UIButton *loginButton;
 @end
 
@@ -115,32 +92,32 @@ typedef void(^LoginInputViewActionBlock)(void);
 
 #pragma mark - Public Methods
 
-- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType resultBlock:(SigninResultBlock)resultBlock {
+- (void)setupWithTitle:(NSString *)title inputType:(NEUInputType)inputType resultBlock:(SigninResultBlock)resultBlock {
     [self setupWithTitle:title inputType:inputType contents:nil resultBlock:resultBlock];
 }
 
-- (void)setupWithTitle:(NSString *)title inputType:(LoginInputType)inputType contents:(NSDictionary<NSNumber *,NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock {
+- (void)setupWithTitle:(NSString *)title inputType:(NEUInputType)inputType contents:(NSDictionary<NSNumber *,NSString *> *)contents resultBlock:(SigninResultBlock)resultBlock {
     WS(ws);
     _resultBlock = resultBlock;
     NSDictionary *dictionary = contents?:@{};
-    NSMutableArray<LoginInputView *> *inputViews = @[].mutableCopy;
-    if (inputType & LoginInputTypeAccount) {
-        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeAccount content:dictionary[@(LoginInputTypeAccount)]]];
+    NSMutableArray<NEUInputView *> *inputViews = @[].mutableCopy;
+    if (inputType & NEUInputTypeAccount) {
+        [inputViews addObject:[[NEUInputView alloc] initWithInputType:NEUInputTypeAccount content:dictionary[@(NEUInputTypeAccount)]]];
     }
-    if (inputType & LoginInputTypeIdentityNumber) {
-        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeIdentityNumber content:dictionary[@(LoginInputTypeIdentityNumber)]]];
+    if (inputType & NEUInputTypeIdentityNumber) {
+        [inputViews addObject:[[NEUInputView alloc] initWithInputType:NEUInputTypeIdentityNumber content:dictionary[@(NEUInputTypeIdentityNumber)]]];
     }
-    if (inputType & LoginInputTypePassword) {
-        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypePassword content:dictionary[@(LoginInputTypePassword)]]];
+    if (inputType & NEUInputTypePassword) {
+        [inputViews addObject:[[NEUInputView alloc] initWithInputType:NEUInputTypePassword content:dictionary[@(NEUInputTypePassword)]]];
     }
-    if (inputType & LoginInputTypeNewPassword) {
-        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeNewPassword content:dictionary[@(LoginInputTypeNewPassword)]]];
+    if (inputType & NEUInputTypeNewPassword) {
+        [inputViews addObject:[[NEUInputView alloc] initWithInputType:NEUInputTypeNewPassword content:dictionary[@(NEUInputTypeNewPassword)]]];
     }
-    if (inputType & LoginInputTypeRePassword) {
-        [inputViews addObject:[[LoginInputView alloc] initWithInputType:LoginInputTypeRePassword content:dictionary[@(LoginInputTypeRePassword)]]];
+    if (inputType & NEUInputTypeRePassword) {
+        [inputViews addObject:[[NEUInputView alloc] initWithInputType:NEUInputTypeRePassword content:dictionary[@(NEUInputTypeRePassword)]]];
     }
-    if (inputType & LoginInputTypeVerifyCode) {
-        LoginInputView *inputView = [[LoginInputView alloc] initWithInputType:LoginInputTypeVerifyCode content:dictionary[@(LoginInputTypeVerifyCode)] actionBlock:^{
+    if (inputType & NEUInputTypeVerifyCode) {
+        NEUInputView *inputView = [[NEUInputView alloc] initWithInputType:NEUInputTypeVerifyCode content:dictionary[@(NEUInputTypeVerifyCode)] actionBlock:^{
             if (ws.changeVerifyImageBlock) {
                 ws.changeVerifyImageBlock();
             }
@@ -213,7 +190,7 @@ typedef void(^LoginInputViewActionBlock)(void);
                 // 点击登录
                 if (_resultBlock) {
                     NSMutableDictionary<NSNumber *, NSString *> *result = @{}.mutableCopy;
-                    for (LoginInputView *inputView in _inputViews) {
+                    for (NEUInputView *inputView in _inputViews) {
                         [result setObject:inputView.textField.text?:@"" forKey:@(inputView.type)];
                     }
                     _resultBlock(result.copy, YES);
@@ -263,7 +240,7 @@ typedef void(^LoginInputViewActionBlock)(void);
 
 - (void)clear {
     if (_inputViews) {
-        for (LoginInputView *view in _inputViews) {
+        for (NEUInputView *view in _inputViews) {
             [view removeFromSuperview];
         }
     }
@@ -271,7 +248,7 @@ typedef void(^LoginInputViewActionBlock)(void);
 
 - (void)refreshViewState {
     BOOL isLegal = YES;
-    for (LoginInputView *inputView in _inputViews) {
+    for (NEUInputView *inputView in _inputViews) {
         if (inputView.legal) {
             continue;
         } else {
@@ -288,7 +265,7 @@ typedef void(^LoginInputViewActionBlock)(void);
         _loginButton.backgroundColor = [[UIColor beautyBlue] colorWithAlphaComponent:0.5];
     }
     
-    for (LoginInputView *inputView in _inputViews) {
+    for (NEUInputView *inputView in _inputViews) {
         if ([inputView.textField isFirstResponder]) {
             inputView.textField.textColor = [UIColor blackColor];
             inputView.seperatorLine.backgroundColor = [UIColor blackColor];
@@ -342,9 +319,9 @@ typedef void(^LoginInputViewActionBlock)(void);
 
 #pragma mark - Setter
 
-- (void)setInputViews:(NSArray<LoginInputView *> *)inputViews {
+- (void)setInputViews:(NSArray<NEUInputView *> *)inputViews {
     _inputViews = inputViews;
-    for (LoginInputView *inputView in inputViews) {
+    for (NEUInputView *inputView in inputViews) {
         inputView.textField.delegate = self;
         if ([inputView isEqual:inputViews.lastObject]) {
             inputView.textField.returnKeyType = UIReturnKeyDone;
@@ -356,8 +333,8 @@ typedef void(^LoginInputViewActionBlock)(void);
 
 - (void)setVerifyImage:(UIImage *)verifyImage {
     _verifyImage = verifyImage;
-    for (LoginInputView *inputView in _inputViews) {
-        if (inputView.type&LoginInputTypeVerifyCode) {
+    for (NEUInputView *inputView in _inputViews) {
+        if (inputView.type&NEUInputTypeVerifyCode) {
             inputView.verifyImageView.image = verifyImage;
             // try to use ocr
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -416,245 +393,6 @@ typedef void(^LoginInputViewActionBlock)(void);
     }
     
     return _loginButton;
-}
-
-@end
-
-@implementation LoginInputView
-
-#pragma mark - Init Methods
-
-- (instancetype)initWithInputType:(LoginInputType)type {
-    return [self initWithInputType:type content:nil actionBlock:nil];
-}
-
-- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content {
-    return [self initWithInputType:type content:content actionBlock:nil];
-}
-
-- (instancetype)initWithInputType:(LoginInputType)type content:(NSString *)content actionBlock:(LoginInputViewActionBlock)actionBlock {
-    if (self = [super init]) {
-        _type = type;
-        _actionBlock = actionBlock;
-        self.textField.text = content;
-        if (type==LoginInputTypeAccount && content.length>0) {
-            self.textField.enabled = NO;
-        }
-        [self initViews];
-        [self initConstraints];
-    }
-    
-    return self;
-}
-
-- (void)initViews {
-    switch (_type) {
-        case LoginInputTypeAccount:
-        {
-            self.titleLabel.text = @"学号";
-            self.textField.keyboardType = UIKeyboardTypeAlphabet;
-        }
-            break;
-        case LoginInputTypeIdentityNumber:
-        {
-            self.titleLabel.text = @"身份证";
-            self.textField.keyboardType = UIKeyboardTypeAlphabet;
-        }
-            break;
-        case LoginInputTypePassword:
-        {
-            self.titleLabel.text = @"密码";
-            self.textField.secureTextEntry = YES;
-            self.textField.keyboardType = UIKeyboardTypeAlphabet;
-            [self.actionButton setTitle:@"显示" forState:UIControlStateNormal];
-            [self.actionButton setTitle:@"隐藏" forState:UIControlStateSelected];
-            //            self.textField.placeholder = @"请输入学号";
-        }
-            break;
-        case LoginInputTypeNewPassword:
-        {
-            self.titleLabel.text = @"新密码";
-            self.textField.keyboardType = UIKeyboardTypeAlphabet;
-            self.textField.secureTextEntry = YES;
-            [self.actionButton setTitle:@"显示" forState:UIControlStateNormal];
-            [self.actionButton setTitle:@"隐藏" forState:UIControlStateSelected];
-            //            self.textField.placeholder = @"请输入新密码";
-        }
-            break;
-        case LoginInputTypeRePassword:
-        {
-            self.titleLabel.text = @"确认密码";
-            self.textField.keyboardType = UIKeyboardTypeAlphabet;
-            self.textField.secureTextEntry = YES;
-            [self.actionButton setTitle:@"显示" forState:UIControlStateNormal];
-            [self.actionButton setTitle:@"隐藏" forState:UIControlStateSelected];
-        }
-            break;
-        case LoginInputTypeVerifyCode:
-        {
-            self.titleLabel.text = @"验证码";
-            self.infoLabel.text = @"尽力识别了_(:з」∠)_";
-            self.textField.keyboardType = UIKeyboardTypeAlphabet;
-            [self.actionButton setTitle:@"换一张" forState:UIControlStateNormal];
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
-
-- (void)initConstraints {
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self);
-    }];
-    
-    [self.infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.titleLabel.mas_right).with.offset(8);
-        make.lastBaseline.equalTo(self.titleLabel.mas_lastBaseline);
-    }];
-    
-    if (_type&LoginInputTypePassword
-        || _type&LoginInputTypeRePassword
-        || _type&LoginInputTypeVerifyCode) {
-        [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.lastBaseline.equalTo(self.titleLabel.mas_lastBaseline);
-            make.right.equalTo(self.mas_right);
-        }];
-    }
-    
-    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
-        make.left.equalTo(self);
-        if (_type&LoginInputTypeVerifyCode) {
-            make.right.equalTo(self.verifyImageView.mas_left).with.offset(-8);
-        } else {
-            make.right.equalTo(self);
-        }
-    }];
-    
-    if (_type&LoginInputTypeVerifyCode) {
-        [self.verifyImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.textField).with.offset(-4);
-            make.bottom.equalTo(self.textField.mas_bottom).with.offset(8);
-            make.right.equalTo(self);
-            make.width.mas_equalTo(@(96));
-        }];
-        [self.seperatorLine mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.textField.mas_bottom).with.offset(4);
-            make.left.equalTo(self);
-            make.right.equalTo(self.verifyImageView.mas_left).with.offset(-8);
-            make.bottom.equalTo(self);
-            make.height.mas_equalTo(@(1));
-        }];
-    } else {
-        [self.seperatorLine mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.textField.mas_bottom).with.offset(4);
-            make.left.right.equalTo(self);
-            make.bottom.equalTo(self);
-            make.height.mas_equalTo(@(1));
-        }];
-    }
-}
-
-#pragma mark - Public Methods
-
-- (BOOL)legal {
-    BOOL legal = NO;
-    
-    if (_textField.text.length>0) {
-        legal = YES;
-    }
-    
-    return legal;
-}
-
-#pragma mark - Response Methods
-
-- (void)onActionButtonClicked:(id)sender {
-    if (_type&LoginInputTypePassword
-        || _type&LoginInputTypeRePassword
-        || _type&LoginInputTypeNewPassword) {
-        _textField.secureTextEntry = !_textField.secureTextEntry;
-        _actionButton.selected = !_actionButton.selected;
-    }
-    
-    if (_type&LoginInputTypeVerifyCode) {
-        if (_actionBlock) {
-            _actionBlock();
-        }
-    }
-}
-
-#pragma mark - Getter
-
-- (UILabel *)titleLabel {
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _titleLabel.textColor = [UIColor colorWithHexStr:@"#4C4C4C"];
-        [self addSubview:_titleLabel];
-    }
-    
-    return _titleLabel;
-}
-
-- (UILabel *)infoLabel {
-    if (!_infoLabel) {
-        _infoLabel = [[UILabel alloc] init];
-        _infoLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-        _infoLabel.textColor = [UIColor colorWithHexStr:@"#5C5C5C"];
-        [self addSubview:_infoLabel];
-    }
-    
-    return _infoLabel;
-}
-
-- (UIButton *)actionButton {
-    if (!_actionButton) {
-        _actionButton = [[UIButton alloc] init];
-        _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        [_actionButton addTarget:self action:@selector(onActionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [_actionButton setTitleColor:[UIColor colorWithHexStr:@"#4C4C4C"] forState:UIControlStateNormal];
-        [self addSubview:_actionButton];
-    }
-    
-    return _actionButton;
-}
-
-- (UITextField *)textField {
-    if (!_textField) {
-        _textField = [[UITextField alloc] init];
-        _textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-        _textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _textField.smartDashesType = UITextSmartDashesTypeNo;
-        _textField.smartQuotesType = UITextSmartQuotesTypeNo;
-        _textField.smartInsertDeleteType = UITextSmartInsertDeleteTypeNo;
-        [self addSubview:_textField];
-    }
-    
-    return _textField;
-}
-
-- (UIImageView *)verifyImageView {
-    if (!_verifyImageView) {
-        _verifyImageView = [[UIImageView alloc] init];
-        _verifyImageView.contentMode = UIViewContentModeScaleAspectFit;
-        [self addSubview:_verifyImageView];
-    }
-    
-    return _verifyImageView;
-}
-
-- (UIView *)seperatorLine {
-    if (!_seperatorLine) {
-        _seperatorLine = [[UIView alloc] init];
-        _seperatorLine.backgroundColor = [UIColor colorWithHexStr:@"#EDECED"];
-        [self addSubview:_seperatorLine];
-    }
-    
-    return _seperatorLine;
 }
 
 @end

@@ -18,6 +18,7 @@
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
+		5C19C4FD1FB826C8005DFADB /* NEUInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C19C4FC1FB826C8005DFADB /* NEUInputView.m */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
 		5C449A681F6E12F00002A755 /* JHServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A671F6E12F00002A755 /* JHServer.m */; };
@@ -158,6 +159,8 @@
 		5C0742661F8C7410006116A4 /* GatewayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayViewController.m; sourceTree = "<group>"; };
 		5C0844C21F7B94BB00C69261 /* CampusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusViewController.h; sourceTree = "<group>"; };
 		5C0844C31F7B94BB00C69261 /* CampusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusViewController.m; sourceTree = "<group>"; };
+		5C19C4FB1FB826C8005DFADB /* NEUInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NEUInputView.h; sourceTree = "<group>"; };
+		5C19C4FC1FB826C8005DFADB /* NEUInputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEUInputView.m; sourceTree = "<group>"; };
 		5C21B9921F6D1A9100BC2961 /* NEUer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEUer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C21B9981F6D1A9200BC2961 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5C21B9991F6D1A9200BC2961 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -433,6 +436,7 @@
 		33F88B801F8295620054B123 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5C19C4FA1FB826AD005DFADB /* InputView */,
 				3344EFD31F94B860001ED45E /* Component */,
 				3354DAA71F9074E600ACBDF3 /* Transition */,
 			);
@@ -555,6 +559,15 @@
 				5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		5C19C4FA1FB826AD005DFADB /* InputView */ = {
+			isa = PBXGroup;
+			children = (
+				5C19C4FB1FB826C8005DFADB /* NEUInputView.h */,
+				5C19C4FC1FB826C8005DFADB /* NEUInputView.m */,
+			);
+			path = InputView;
 			sourceTree = "<group>";
 		};
 		5C21B9891F6D1A9100BC2961 = {
@@ -1733,7 +1746,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		73B63F65AB209B1E13CD0A83 /* [CP] Copy Pods Resources */ = {
@@ -1781,7 +1794,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1806,6 +1819,7 @@
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
+				5C19C4FD1FB826C8005DFADB /* NEUInputView.m in Sources */,
 				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,

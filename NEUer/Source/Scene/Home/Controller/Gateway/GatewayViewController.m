@@ -317,7 +317,7 @@
 
 - (void)presentLoginVC {
     LoginViewController *authorizationViewController = [[LoginViewController alloc] init];
-    [authorizationViewController setupWithTitle:@"IP网关" inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode contents:@{@(LoginInputTypeAccount):@"20144786"} resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+    [authorizationViewController setupWithTitle:@"IP网关" inputType:NEUInputTypeAccount|NEUInputTypePassword|NEUInputTypeVerifyCode contents:@{@(NEUInputTypeAccount):@"20144786"} resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
         NSLog(@"%@", result);
     }];
     authorizationViewController.modalPresentationStyle = UIModalPresentationCustom;

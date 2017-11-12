@@ -138,10 +138,10 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     loginVC.modalPresentationStyle = UIModalPresentationCustom;
     loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [loginVC setupWithTitle:@"登录图书馆" inputType:LoginInputTypeAccount|LoginInputTypePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+    [loginVC setupWithTitle:@"登录图书馆" inputType:NEUInputTypeAccount|NEUInputTypePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
         if (complete) {
-            NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
-            NSString *password = result[@(LoginInputTypePassword)]?:@"";
+            NSString *userName = result[@(NEUInputTypeAccount)]?:@"";
+            NSString *password = result[@(NEUInputTypePassword)]?:@"";
             self.loginModel.username = userName;
             self.loginModel.password = password;
             [self.loginModel gotoLogin];

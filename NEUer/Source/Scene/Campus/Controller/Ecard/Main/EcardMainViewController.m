@@ -148,16 +148,16 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     signinVC.modalPresentationStyle = UIModalPresentationCustom;
     signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [signinVC setupWithTitle:@"登录校卡中心"
-                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
+                   inputType:NEUInputTypeAccount|NEUInputTypePassword|NEUInputTypeVerifyCode
                     contents:@{
-                               @(LoginInputTypeAccount):account,
-                               @(LoginInputTypePassword):password,
+                               @(NEUInputTypeAccount):account,
+                               @(NEUInputTypePassword):password,
                                }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
                      if (complete) {
-                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
-                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
-                         NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
+                         NSString *userName = result[@(NEUInputTypeAccount)]?:@"";
+                         NSString *password = result[@(NEUInputTypePassword)]?:@"";
+                         NSString *verifyCode = result[@(NEUInputTypeVerifyCode)]?:@"";
                          [ws loginWithUser:userName password:password verifyCode:verifyCode];
                      } else {
                          [ws.navigationController popViewControllerAnimated:YES];
