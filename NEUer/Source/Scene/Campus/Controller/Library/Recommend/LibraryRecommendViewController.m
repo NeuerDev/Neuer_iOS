@@ -10,14 +10,14 @@
 #import "LoginViewController.h"
 
 @interface LibraryRecommendViewController ()
-//@property (nonatomic, strong) LoginInputView *titleTF;
-//@property (nonatomic, strong) LoginInputView *authorTF;
-//@property (nonatomic, strong) LoginInputView *pressTF;
-//@property (nonatomic, strong) LoginInputView *yearOfPubTF;
-//@property (nonatomic, strong) LoginInputView *ISBNTF;
-//@property (nonatomic, strong) LoginInputView *priceTF;
-//@property (nonatomic, strong) LoginInputView *numberTF;
-//@property (nonatomic, strong) LoginInputView *reasonTF;
+//@property (nonatomic, strong) LoginInputView *titleView;
+//@property (nonatomic, strong) LoginInputView *authorView;
+//@property (nonatomic, strong) LoginInputView *pressView;
+//@property (nonatomic, strong) LoginInputView *yearOfPubView;
+//@property (nonatomic, strong) LoginInputView *ISBNView;
+//@property (nonatomic, strong) LoginInputView *priceView;
+//@property (nonatomic, strong) LoginInputView *numberView;
+//@property (nonatomic, strong) LoginInputView *reasonView;
 
 @end
 
@@ -33,6 +33,19 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 }
 
+- (void)initConstraints {
+//    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+//
+//    }];
+}
+
 #pragma mark - Getter
+//- (LoginInputView *)titleView {
+//    if (!_titleView) {
+//        _titleView = [[LoginInputView alloc] initWithInputType:LoginInputTypeAccount];
+//        [self.view addSubview:_titleView];
+//    }
+//   return _titleView;
+//}
 
 @end

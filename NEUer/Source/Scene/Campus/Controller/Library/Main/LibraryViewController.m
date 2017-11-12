@@ -122,7 +122,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 - (void)autoLogin {
-    User *currentUser = [UserCenter defaultCenter].currentUser;
+//    User *currentUser = [UserCenter defaultCenter].currentUser;
 //    NSString *account = currentUser.number ? : @"";
 //    NSLog(@"account - %@",account);
     NSString *account = @"20154858";
@@ -306,7 +306,6 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         [cell setButtonUserInteractionEnabled:_isButtonEnabled];
-        //array != nil && ![array isKindOfClass:[NSNull class]] && array.count != 0
         if (self.loginModel.borrowingArr.count) {
             [cell setContent:self.loginModel.borrowingArr[indexPath.row]];
         }
@@ -326,10 +325,6 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         
         return cell;
     }
-    
-    
-    
-    
 }
 
 #pragma mark - SearchLibraryBorrowingDelegate
