@@ -223,7 +223,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 }
 
 - (void)changePassword {
-    WS(ws);
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     LoginViewController *signinVC = [[LoginViewController alloc] init];
@@ -238,8 +237,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
                      if (complete) {
 //                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
 //                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
-                     } else {
-                         [ws.navigationController popViewControllerAnimated:YES];
                      }
                  }];
     
