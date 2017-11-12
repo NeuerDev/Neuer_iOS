@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
 		33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */; };
+		33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */; };
+		332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */; };
 		3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAB81FA9C56900AB6D8B /* GatewayModel.m */; };
-		3339FABD1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */; };
+		3339FACB1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */; };
+		3339FAD31FAE0AD700AB6D8B /* NetworkMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */; };
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
 		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
@@ -18,6 +21,8 @@
 		3344EFDB1F94B922001ED45E /* LYTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD91F94B922001ED45E /* LYTextField.m */; };
 		3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */; };
 		3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */; };
+		335833861FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */; };
+		335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
@@ -140,10 +145,16 @@
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
 		33201F4E1FB71C4B00CAFDEA /* BadgeCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgeCenter.h; sourceTree = "<group>"; };
 		33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeCenter.m; sourceTree = "<group>"; };
+		33201F521FB754E700CAFDEA /* NetworkInternetListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListViewController.h; sourceTree = "<group>"; };
+		33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListViewController.m; sourceTree = "<group>"; };
+		332A54141FB088B800F05152 /* NetworkCheckoutListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCheckoutListViewController.h; sourceTree = "<group>"; };
+		332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkCheckoutListViewController.m; sourceTree = "<group>"; };
 		3339FAB71FA9C56900AB6D8B /* GatewayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewayModel.h; sourceTree = "<group>"; };
 		3339FAB81FA9C56900AB6D8B /* GatewayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewayModel.m; sourceTree = "<group>"; };
-		3339FABB1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewaySelfServiceMenuModel.h; sourceTree = "<group>"; };
-		3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewaySelfServiceMenuModel.m; sourceTree = "<group>"; };
+		3339FAC91FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GatewaySelfServiceMenuModel.h; sourceTree = "<group>"; };
+		3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewaySelfServiceMenuModel.m; sourceTree = "<group>"; };
+		3339FAD11FAE0AD700AB6D8B /* NetworkMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkMainViewController.h; sourceTree = "<group>"; };
+		3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkMainViewController.m; sourceTree = "<group>"; };
 		3344EFC01F93A241001ED45E /* LYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTool.h; sourceTree = "<group>"; };
 		3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoLb.h; sourceTree = "<group>"; };
 		3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoLb.m; sourceTree = "<group>"; };
@@ -158,6 +169,10 @@
 		3354DAA91F90751C00ACBDF3 /* LYInteractiveTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYInteractiveTransition.m; sourceTree = "<group>"; };
 		3354DAAB1F90756400ACBDF3 /* LYAnimatedTransitioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYAnimatedTransitioning.h; sourceTree = "<group>"; };
 		3354DAAC1F90756400ACBDF3 /* LYAnimatedTransitioning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYAnimatedTransitioning.m; sourceTree = "<group>"; };
+		335833841FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkOnlineDevicesTableViewCell.h; sourceTree = "<group>"; };
+		335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkOnlineDevicesTableViewCell.m; sourceTree = "<group>"; };
+		335833871FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListTableViewCell.h; sourceTree = "<group>"; };
+		335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListTableViewCell.m; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -361,6 +376,24 @@
 				33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */,
 			);
 			path = BadgeCenter;
+            sourceTree = "<group>";
+        };
+		33201F511FB754E700CAFDEA /* InternetList */ = {
+			isa = PBXGroup;
+			children = (
+				33201F521FB754E700CAFDEA /* NetworkInternetListViewController.h */,
+				33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */,
+			);
+			path = InternetList;
+			sourceTree = "<group>";
+		};
+		332A54131FB088A900F05152 /* CheckoutList */ = {
+			isa = PBXGroup;
+			children = (
+				332A54141FB088B800F05152 /* NetworkCheckoutListViewController.h */,
+				332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */,
+			);
+			path = CheckoutList;
 			sourceTree = "<group>";
 		};
 		3339FAB61FA9C53B00AB6D8B /* BasicInfo */ = {
@@ -372,13 +405,32 @@
 			path = BasicInfo;
 			sourceTree = "<group>";
 		};
-		3339FABA1FA9C96A00AB6D8B /* UserHomePageInfo */ = {
+		3339FAC81FAE08D900AB6D8B /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				3339FABB1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.h */,
-				3339FABC1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m */,
+				3339FAC91FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.h */,
+				3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */,
 			);
-			path = UserHomePageInfo;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		3339FACC1FAE08E900AB6D8B /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				33201F511FB754E700CAFDEA /* InternetList */,
+				332A54131FB088A900F05152 /* CheckoutList */,
+				3339FACD1FAE08FE00AB6D8B /* Main */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		3339FACD1FAE08FE00AB6D8B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				3339FAD11FAE0AD700AB6D8B /* NetworkMainViewController.h */,
+				3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		3344EFBA1F939B22001ED45E /* Gateway */ = {
@@ -463,6 +515,33 @@
 			path = Transition;
 			sourceTree = "<group>";
 		};
+		335833811FAF5A2300DBE418 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				335833831FAF5A7300DBE418 /* NetworkInternetListTableViewCell */,
+				335833821FAF5A5400DBE418 /* NetworkOnlineDevicesTableViewCell */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		335833821FAF5A5400DBE418 /* NetworkOnlineDevicesTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				335833841FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.h */,
+				335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */,
+			);
+			path = NetworkOnlineDevicesTableViewCell;
+			sourceTree = "<group>";
+		};
+		335833831FAF5A7300DBE418 /* NetworkInternetListTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				335833871FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.h */,
+				335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */,
+			);
+			path = NetworkInternetListTableViewCell;
+			sourceTree = "<group>";
+		};
 		33F88B801F8295620054B123 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,6 +605,7 @@
 		5C0844BF1F7B94BB00C69261 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3339FAC81FAE08D900AB6D8B /* Network */,
 				5C7548B01F77382A0065E64E /* Library */,
 				5CCC66871F8F529800F8F96C /* Aao */,
 				5CCC667B1F8DA7BF00F8F96C /* Ecard */,
@@ -536,6 +616,7 @@
 		5C0844C01F7B94BB00C69261 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				3339FACC1FAE08E900AB6D8B /* Network */,
 				5CC232F11F720776005F0A6E /* Library */,
 				5CCC66831F8F521900F8F96C /* Aao */,
 				5CCC66721F8D221100F8F96C /* Ecard */,
@@ -557,6 +638,7 @@
 			isa = PBXGroup;
 			children = (
 				776697EE1FA9777900BB7544 /* LibraryBookListComponent */,
+				335833811FAF5A2300DBE418 /* Network */,
 				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
 			);
 			path = View;
@@ -852,7 +934,6 @@
 		5C7B8ED61F8B41160088FC60 /* Gateway */ = {
 			isa = PBXGroup;
 			children = (
-				3339FABA1FA9C96A00AB6D8B /* UserHomePageInfo */,
 				3339FAB61FA9C53B00AB6D8B /* BasicInfo */,
 			);
 			path = Gateway;
@@ -1838,12 +1919,14 @@
 				776697ED1FA9772100BB7544 /* LibraryBookDetailModel.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
-				3339FABD1FA9C9C200AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */,
+				3339FACB1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
+				335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */,
+				33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */,
 				3354DAAA1F90751C00ACBDF3 /* LYInteractiveTransition.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
@@ -1890,6 +1973,7 @@
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				3354DAAD1F90756400ACBDF3 /* LYAnimatedTransitioning.m in Sources */,
 				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
+				332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
@@ -1897,6 +1981,7 @@
 				77B205491FB45411001F3C18 /* LibraryRecommendViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,
 				3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */,
+				335833861FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m in Sources */,
 				3344EFD21F949B62001ED45E /* LYTool.m in Sources */,
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
@@ -1905,6 +1990,7 @@
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
 				33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */,
 				772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */,
+				3339FAD31FAE0AD700AB6D8B /* NetworkMainViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
 				776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */,

@@ -69,4 +69,10 @@
  @prama endTime 结束时间 格式 HH:mm:ss
  */
 + (NSTimeInterval)timeIntervalWithStartTime:(NSString *)startTime endTime:(NSString *)endTime;
+
+/**
+ 给view添加边框
+ */
++ (void)setBorder:(UIView *)view color:(UIColor *)color cornerRadius:(CGFloat)cornerRadius;
+
 @end
