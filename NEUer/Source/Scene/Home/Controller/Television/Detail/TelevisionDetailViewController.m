@@ -322,14 +322,17 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     
     UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
     content.userInfo = @{
+                         @"contentType" : @"tvshow",
                          @"showname" : bean.name,
                          @"showsource" : bean.sourceUrl,
                          @"showtime" : bean.time
                          };
+    NSLog(@"%@", bean.sourceUrl);
     content.title = @"您预约的节目即将开始啦！";
     content.sound = [UNNotificationSound defaultSound];
     content.categoryIdentifier = @"tvshowid";
     content.body = [NSString stringWithFormat:@"您预约于 %@ 的节目%@即将开始播放啦！点击跳转观看", bean.time, bean.name];
+    
     [[BadgeCenter defaultCenter] updateBadges];
     content.badge = [[BadgeCenter defaultCenter] badges];
     
