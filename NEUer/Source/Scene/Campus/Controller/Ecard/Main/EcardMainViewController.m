@@ -98,30 +98,15 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 #pragma mark - Private Methods
 
 - (void)checkLoginState {
-    WS(ws);
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeECard] ? : @"";
     
     // 如果用户、密码都存在 则进行登录（查询信息）操作
     if (account.length>0 && password.length>0) {
-        [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-            if (success) {
-                NSLog(@"success query info");
-                ws.infoBean = ws.ecardModel.info;
-                
-                // 查询今日消费记录
-                [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
-                    if (success) {
-                        [ws.consumeHistoryTableView reloadData];
-                    }
-                }];
-            } else {
-                [ws handleError:error];
-            }
-        }];
+        [self loginWithUser:account password:password];
     } else {
-        [ws showLoginBox];
+        [self showLoginBox];
     }
 }
 
@@ -132,6 +117,9 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
             break;
         case JHErrorTypeRequireLogin:
             [self showLoginBox];
+            break;
+        case JHErrorTypeInvaildVerifyCode:
+            
             break;
             
         default:
@@ -170,11 +158,19 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     WS(ws);
     [self.ecardModel loginWithUser:user password:password complete:^(BOOL success, NSError *error) {
         [ws.ecardModel queryInfoComplete:^(BOOL success, NSError *error) {
-            
-        }];
-        
-        [ws.ecardModel fetchAvatarComplete:^(BOOL success, NSError *error) {
-            
+            if (success) {
+                NSLog(@"success query info");
+                ws.infoBean = ws.ecardModel.info;
+                
+                // 查询今日消费记录
+                [ws.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
+                    if (success) {
+                        [ws.consumeHistoryTableView reloadData];
+                    }
+                }];
+            } else {
+                [ws handleError:error];
+            }
         }];
     }];
 }

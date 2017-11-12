@@ -113,7 +113,7 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCo
                     G8Tesseract *tesseract = [TesseractCenter defaultCenter].tesseract;
                     tesseract.image = image;
                     if (tesseract.recognize && [ws isAvailableCode:tesseract.recognizedText]) {
-                        NSLog(@"识别成功 : %@", tesseract.recognizedText);
+                        NSLog(@"识别成功 : %@", [tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]);
                         verifyCode = [tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             block(image, verifyCode, error);
@@ -158,14 +158,21 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCo
     }
     urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // 登录失败 密码错误
-        if (_currentActionBlock) {
-            NSError *error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeInvaildAccountPassword userInfo:nil];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _currentActionBlock(NO, error);
-            });
+        NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        if ([html containsString:@"验证码错误"]) {
+            // 登录失败 验证码错误
+            NSLog(@"登录失败 验证码错误");
+            error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeInvaildVerifyCode userInfo:nil];
+            [ws loginWithUser:ws.username password:ws.password complete:_currentActionBlock];
+        } else if ([html containsString:@"账户或密码错误"]) {
+            // 登录失败 密码错误
+            error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeInvaildAccountPassword userInfo:nil];
+            if (_currentActionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _currentActionBlock(NO, error);
+                });
+            }
         }
-        _currentActionBlock = nil;
     }];
     
     [task resume];
@@ -188,10 +195,7 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCo
         [newTask resume];
     } else {
         
-    }
-    
-    _currentActionBlock = nil;
-}
+    }}
 
 
 #pragma mark - Getter

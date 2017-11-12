@@ -18,6 +18,7 @@ typedef NS_ENUM(NSUInteger, JHErrorType) {
     JHErrorTypeNotInsideCampus,
     JHErrorTypeNoResponse,
     JHErrorTypeInvaildAccountPassword,
+    JHErrorTypeInvaildVerifyCode,
     JHErrorTypeRequireLogin,
 };
 
