@@ -122,11 +122,19 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
             // 查询今天消费信息
             [self.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
                 if (success) {
-                    if ([ws.consumeHistoryTableView numberOfSections]==0) {
-                        [ws.consumeHistoryTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-                    } else {
-                        [ws.consumeHistoryTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-                    }
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        // 如果之前没有这个section 强行reload会崩
+                        if ([ws.consumeHistoryTableView numberOfSections]==0) {
+                            [ws.consumeHistoryTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                        } else {
+                            // 如果新数据源行数没有变化 那么直接reload就好 否则就直接reloadSection 避免无谓的跳动
+                            if ([ws.consumeHistoryTableView numberOfRowsInSection:0]==self.ecardModel.todayConsumeArray.count) {
+                                [ws.consumeHistoryTableView reloadData];
+                            } else {
+                                [ws.consumeHistoryTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                            }
+                        }
+                    });
                 } else {
                     [ws handleError:error];
                 }
