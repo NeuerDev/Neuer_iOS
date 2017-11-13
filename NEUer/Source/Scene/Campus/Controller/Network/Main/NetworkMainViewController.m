@@ -727,26 +727,26 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    CGFloat rowHeight = 44;
     switch (indexPath.section) {
         case 0:
-            return 44;
+            rowHeight = 44;
             break;
         case 1:
-            return 64;
+            rowHeight = 64;
             break;
         case 2:
-            return 74;
+            rowHeight = 74;
             break;
         default:
             break;
     }
     
-    return 0;
+    return rowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 54;
+    return 44;
 }
 
 #pragma mark - GETTER

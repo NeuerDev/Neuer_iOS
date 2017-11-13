@@ -50,6 +50,8 @@
     
     [self.offLineButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.and.right.equalTo(self.infoView);
+        make.height.mas_equalTo(@(30.0f));
+        make.width.mas_equalTo(@(64.0f));
     }];
 }
 

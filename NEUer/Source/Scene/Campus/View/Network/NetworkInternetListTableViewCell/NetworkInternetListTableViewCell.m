@@ -54,9 +54,18 @@
         make.top.and.left.equalTo(self.infoView);
     }];
     
+    CGSize loginoutSize = [self.lastActiveStatusLabel.text sizeWithAttributes:@{NSFontAttributeName:self.lastActiveStatusLabel.font}];
+//    NSDictionary *attributes = @{NSFontAttributeName:self.lastActiveStatusLabel.font};
+//    CGSize loginoutSize = [self.logoutTimeLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT)
+//                                                                  options:NSStringDrawingUsesLineFragmentOrigin
+//                                                               attributes:attributes
+//                                                                  context:nil].size;
+    
     [self.lastActiveStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.deviceLabel.mas_bottom).with.offset(4);
-        make.left.equalTo(self.infoView);
+        make.centerY.equalTo(self.lastActiveLabel);
+        make.left.equalTo(self.infoView.mas_left);
+        make.width.mas_equalTo(@(loginoutSize.width+4));
+        make.height.mas_equalTo(@(loginoutSize.height+2));
     }];
     
     [self.lastActiveLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -65,9 +74,13 @@
     }];
     
     [self.logoutTimeStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lastActiveLabel.mas_bottom).with.offset(4);
-        make.left.and.bottom.equalTo(self.infoView);
+        make.centerY.equalTo(self.logoutTimeLabel);
+        make.left.equalTo(self.infoView.mas_left);
+        make.width.mas_equalTo(@(loginoutSize.width+4));
+        make.height.mas_equalTo(@(loginoutSize.height+2));
+        make.bottom.equalTo(self.infoView.mas_bottom);
     }];
+    
     [self.logoutTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lastActiveLabel.mas_bottom).with.offset(4);
         make.left.equalTo(self.lastActiveLabel);
@@ -166,8 +179,9 @@
         _lastActiveStatusLabel.text = @"上线";
         [LYTool setBorder:_lastActiveStatusLabel color:[UIColor beautyOrange] cornerRadius:3];
         [_lastActiveStatusLabel.layer setCornerRadius:2];
+        _lastActiveStatusLabel.textAlignment = NSTextAlignmentCenter;
 //        [_lastActiveStatusLabel.layer setBorderWidth:0.8];
-        _lastActiveStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _lastActiveStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         _lastActiveStatusLabel.textColor = [UIColor beautyOrange];
         [self.contentView addSubview:_lastActiveStatusLabel];
     }
@@ -178,10 +192,11 @@
     if (!_logoutTimeStatusLabel) {
         _logoutTimeStatusLabel = [[UILabel alloc] init];
         _logoutTimeStatusLabel.text = @"下线";
+        _logoutTimeStatusLabel.textAlignment = NSTextAlignmentCenter;
         [LYTool setBorder:_logoutTimeStatusLabel color:[UIColor beautyBlue] cornerRadius:2];
         [_logoutTimeStatusLabel.layer setCornerRadius:2];
 //        [_logoutTimeStatusLabel.layer setBorderWidth:0.8];
-        _logoutTimeStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _logoutTimeStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         _logoutTimeStatusLabel.textColor = [UIColor beautyBlue];
         [self.contentView addSubview:_logoutTimeStatusLabel];
     }
