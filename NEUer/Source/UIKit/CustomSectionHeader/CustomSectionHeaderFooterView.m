@@ -8,10 +8,6 @@
 
 #import "CustomSectionHeaderFooterView.h"
 
-@interface CustomSectionHeaderFooterView ()
-@property (nonatomic, strong) CustomSectionHeaderFooterPerformActionBlock performActionBlock;
-@end
-
 @implementation CustomSectionHeaderFooterView
 
 #pragma mark - Init Methods
@@ -31,13 +27,29 @@
     }];
     
     [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.titleLabel);
+        make.centerY.equalTo(self.titleLabel);
         make.left.equalTo(self.titleLabel.mas_right);
-        make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-8);
     }];
     
     [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).with.offset(-16); make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-8);
+    }];
+}
+
+#pragma mark - Public Methods
+
+- (void)startAnimating {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.indicatorView.alpha = 1;
+    }];
+    [self.indicatorView startAnimating];
+}
+
+- (void)stopAnimating {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.indicatorView.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.indicatorView startAnimating];
     }];
 }
 

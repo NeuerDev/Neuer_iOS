@@ -15,7 +15,9 @@ typedef void(^CustomSectionHeaderFooterPerformActionBlock)(NSInteger section);
 @property (nonatomic, strong) UIButton *actionButton;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @property (nonatomic, assign) NSInteger section;
+@property (nonatomic, strong) CustomSectionHeaderFooterPerformActionBlock performActionBlock;
 
-- (void)setPerformActionBlock:(CustomSectionHeaderFooterPerformActionBlock)performActionBlock;
+- (void)startAnimating;
+- (void)stopAnimating;
 
 @end

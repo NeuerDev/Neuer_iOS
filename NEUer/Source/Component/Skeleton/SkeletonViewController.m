@@ -74,6 +74,25 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
         viewController.hidesBottomBarWhenPushed = YES;
     }
     [super pushViewController:viewController animated:animated];
+    
+    // 修正push控制器tabbar上移问题
+    if (@available(iOS 11.0, *)){
+        // 修改tabBra的frame
+        CGRect frame = self.tabBarController.tabBar.frame;
+        frame.origin.y = [UIScreen mainScreen].bounds.size.height - frame.size.height;
+        self.tabBarController.tabBar.frame = frame;
+    }
+}
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    UIViewController *viewController = [super popViewControllerAnimated:animated];
+    if (@available(iOS 11.0, *)){
+        // 修改tabBra的frame
+        CGRect frame = self.tabBarController.tabBar.frame;
+        frame.origin.y = [UIScreen mainScreen].bounds.size.height - frame.size.height;
+        self.tabBarController.tabBar.frame = frame;
+    }
+    return viewController;
 }
 
 @end

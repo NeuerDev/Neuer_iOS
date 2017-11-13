@@ -27,6 +27,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 // 余额 view
 @property (nonatomic, strong) UIView *balanceView;
 @property (nonatomic, strong) UILabel *balanceValueLabel;
+@property (nonatomic, strong) UIActivityIndicatorView *balanceIndicatorView;
 @property (nonatomic, strong) UILabel *balanceInfoLabel;
 @property (nonatomic, strong) NSArray<UIButton *> *balanceViewButtons;
 
@@ -63,10 +64,6 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [self checkLoginState];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
 - (void)initConstraints {
     self.consumeHistoryTableView.frame = self.view.frame;
     
@@ -78,6 +75,10 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     [self.balanceInfoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.balanceValueLabel.mas_bottom);
         make.centerX.equalTo(self.balanceValueLabel);
+    }];
+    
+    [self.balanceIndicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.balanceValueLabel);
     }];
     
     for (int index = 0; index < self.balanceViewButtons.count; index++) {
@@ -135,6 +136,10 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
             [ws handleError:error];
             [ws endRefreshing];
         }
+        [ws.balanceIndicatorView stopAnimating];
+        [UIView animateWithDuration:0.1 animations:^{
+            ws.balanceValueLabel.alpha = 1;
+        }];
     }];
     
 }
@@ -185,8 +190,21 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 - (void)loginWithUser:(NSString *)user password:(NSString *)password {
     WS(ws);
+    [self.balanceIndicatorView startAnimating];
+    [UIView animateWithDuration:0.1 animations:^{
+        self.balanceValueLabel.alpha = 0;
+        CustomSectionHeaderFooterView *headerView = (CustomSectionHeaderFooterView *)[self.consumeHistoryTableView headerViewForSection:0];
+        [headerView startAnimating];
+    }];
     [self.ecardModel loginWithUser:user password:password complete:^(BOOL success, NSError *error) {
-        [ws fetchInfo];
+        if (success) {
+            [ws fetchInfo];
+        } else {
+            [ws.balanceIndicatorView stopAnimating];
+            [UIView animateWithDuration:0.1 animations:^{
+                ws.balanceValueLabel.alpha = 0;
+            }];
+        }
     }];
 }
 
@@ -354,7 +372,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     
     if (infoBean) {
         [_balanceView.gestureRecognizers lastObject].enabled = YES;
-        _balanceValueLabel.text = infoBean.balance;
+        _balanceValueLabel.text = infoBean.balance.length>0 ? infoBean.balance : @"0.00";
         
         if (infoBean.enable) {
             _balanceInfoLabel.text = [NSString stringWithFormat:@"%@ %@", @[@"",@"余额充足",@"余额偏低",@"尽快充值"][infoBean.balanceLevel], infoBean.lastUpdate];
@@ -413,6 +431,15 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     }
     
     return _balanceInfoLabel;
+}
+
+- (UIActivityIndicatorView *)balanceIndicatorView {
+    if (!_balanceIndicatorView) {
+        _balanceIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.balanceView addSubview:_balanceIndicatorView];
+    }
+    
+    return _balanceIndicatorView;
 }
 
 - (UITableView *)consumeHistoryTableView {
