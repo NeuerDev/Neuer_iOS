@@ -33,7 +33,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 
 // 下拉刷新 充值 以及 tableView
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) UIBarButtonItem *rechargeButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *rightBarButtonItem;
 @property (nonatomic, strong) UITableView *consumeHistoryTableView;
 
 @end
@@ -57,7 +57,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     
     self.title = @"校卡中心";
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.rightBarButtonItem = self.rechargeButtonItem;
+    self.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
     self.consumeHistoryTableView.refreshControl = self.refreshControl;
     [self initConstraints];
     [self setInfoBean:[EcardInfoBean infoWithUser:[UserCenter defaultCenter].currentUser]];
@@ -485,12 +485,41 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     return _refreshControl;
 }
 
-- (UIBarButtonItem *)rechargeButtonItem {
-    if (!_rechargeButtonItem) {
-        _rechargeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"打开建行" style:UIBarButtonItemStylePlain target:self action:@selector(recharge)];
+- (UIBarButtonItem *)rightBarButtonItem {
+    if (!_rightBarButtonItem) {
+        UIView *container = [[UIView alloc] init];
+        UIButton *bankButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        bankButton.tintColor = [UIColor beautyBlue];
+        [bankButton setImage:[UIImage imageNamed:@"ecard_bank"] forState:UIControlStateNormal];
+        [bankButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        helpButton.tintColor = [UIColor beautyBlue];
+        [helpButton setImage:[UIImage imageNamed:@"toolbar_help"] forState:UIControlStateNormal];
+        [helpButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
+        
+        [container addSubview:bankButton];
+        [container addSubview:helpButton];
+        
+        [bankButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.and.top.and.bottom.equalTo(container);
+            make.width.mas_equalTo(@38);
+        }];
+        
+        [helpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.and.top.and.bottom.equalTo(container);
+            make.left.equalTo(bankButton.mas_right);
+            make.width.mas_equalTo(@38);
+        }];
+        
+        [container mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(@44);
+        }];
+        
+        _rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:container];
     }
     
-    return _rechargeButtonItem;
+    return _rightBarButtonItem;
 }
 
 - (NSArray<UIButton *> *)balanceViewButtons {
