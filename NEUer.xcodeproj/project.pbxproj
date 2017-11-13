@@ -57,6 +57,8 @@
 		5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */; };
 		5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */; };
 		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
+		5CA72EE31FB9388D0067AAC5 /* ARCampusMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */; };
+		5CA72EE71FB946990067AAC5 /* UIDevice+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -219,6 +221,10 @@
 		5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserKeychain.m; sourceTree = "<group>"; };
 		5C9895E11F822A5B00C2F93E /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5C9895E21F822A5B00C2F93E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		5CA72EE11FB9388D0067AAC5 /* ARCampusMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCampusMenuViewController.h; sourceTree = "<group>"; };
+		5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCampusMenuViewController.m; sourceTree = "<group>"; };
+		5CA72EE51FB946990067AAC5 /* UIDevice+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIDevice+JHCategory.h"; sourceTree = "<group>"; };
+		5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+JHCategory.m"; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -941,6 +947,7 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				5CA72EE41FB9466F0067AAC5 /* UIDevice+JHCategory */,
 				5C64D8A31F999643001CDB89 /* NSDictionary+JHCategory */,
 				5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */,
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
@@ -1028,6 +1035,24 @@
 				5C9895E21F822A5B00C2F93E /* User.m */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		5CA72EE01FB938160067AAC5 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EE11FB9388D0067AAC5 /* ARCampusMenuViewController.h */,
+				5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		5CA72EE41FB9466F0067AAC5 /* UIDevice+JHCategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EE51FB946990067AAC5 /* UIDevice+JHCategory.h */,
+				5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */,
+			);
+			path = "UIDevice+JHCategory";
 			sourceTree = "<group>";
 		};
 		5CA976E41F73AAD500B1089A /* SearchResult */ = {
@@ -1407,6 +1432,7 @@
 		5CEEB53E1FAC577700CE5F93 /* ARCampus */ = {
 			isa = PBXGroup;
 			children = (
+				5CA72EE01FB938160067AAC5 /* Menu */,
 				5CEEB53F1FAC579100CE5F93 /* Home */,
 			);
 			path = ARCampus;
@@ -1722,6 +1748,8 @@
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
+				5CA72EE31FB9388D0067AAC5 /* ARCampusMenuViewController.m in Sources */,
+				5CA72EE71FB946990067AAC5 /* UIDevice+JHCategory.m in Sources */,
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
