@@ -48,6 +48,7 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @property (nonatomic, strong) NSString *reservationURL;
 @property (nonatomic, strong) NSString *bookedURL;
 @property (nonatomic, strong) NSString *cashURL;
+@property (nonatomic, strong) NSString *recommendURL;
 @property (nonatomic, strong) NSMutableArray<LibraryLoginMyInfoBorrowingBean *> *borrowingArr;
 @property (nonatomic, strong) NSMutableArray<LibraryLoginMyInfoBorrowHistoryBean *> *borrowHistoryArr;
 @property (nonatomic, strong) NSMutableArray<LibraryLoginMyInfoReservationBean *> *reservationArr;

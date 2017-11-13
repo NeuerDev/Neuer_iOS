@@ -19,10 +19,11 @@
 @property (nonatomic, strong) NEUInputView *priceView;
 @property (nonatomic, strong) NEUInputView *numberView;
 @property (nonatomic, strong) NEUInputView *reasonView;
+@property (nonatomic, strong) UIButton *submitBtn;
 @property (nonatomic, strong) NSMutableArray<NEUInputView *> *inputViewArr;
-@property (nonatomic, strong) UIBarButtonItem *rightButtonItem;
 
 @property (nonatomic, strong) LibraryRecommendModel *recommendModel;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 @end
 
@@ -39,7 +40,10 @@
 - (void)initData {
     [self setTitle:@"荐购新书"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self.navigationItem setRightBarButtonItem:self.rightButtonItem];
+    [self.recommendModel getREC_key];
+    _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exitEditing)];
+    _tapGesture.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:_tapGesture];
 }
 
 - (void)initConstraints {
@@ -64,24 +68,51 @@
         }];
         firstView = view;
     }
+    
+    [self.view addSubview:self.submitBtn];
+    [self.submitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(firstView.mas_bottom).offset(48);
+        make.left.right.equalTo(firstView);
+        make.height.mas_equalTo(44);
+    }];
 }
 
 #pragma mark - Respond Methods
-- (void)confirm {
-//    if (self.titleView.textField.text.length == 0) {
-//        return;
-//    } else if (self.authorView.textField.text.length == 0) {
-//        return;
-//    } else if (self.pressView.textField.text.length == 0) {
-//        return;
-//    } else if (self.ISBNView.textField.text.length == 0) {
-//        return;
-//    } else if (self.reasonView.textField.text.length == 0) {
-//        return;
-//    } else {
-        [self.recommendModel recommend];
-//    }
+- (void)submit {
+    if (self.titleView.textField.text.length == 0) {
+        return;
+    } else if (self.authorView.textField.text.length == 0) {
+        return;
+    } else if (self.pressView.textField.text.length == 0) {
+        return;
+    } else if (self.ISBNView.textField.text.length == 0) {
+        return;
+    } else if (self.reasonView.textField.text.length == 0) {
+        return;
+    } else {
+        [self.recommendModel recommendWithTitle:self.titleView.textField.text author:self.authorView.textField.text press:self.pressView.textField.text ISBN:self.ISBNView.textField.text reason:self.reasonView.textField.text];
+    }
     
+}
+
+- (void)refreshViewState {
+    BOOL isLegal = YES;
+    for (NEUInputView *inputView in self.inputViewArr) {
+        if (inputView.legal) {
+            continue;
+        } else {
+            isLegal = NO;
+            break;
+        }
+    }
+    
+    if (isLegal) {
+        self.submitBtn.enabled = YES;
+        self.submitBtn.backgroundColor = [UIColor beautyBlue];
+    } else {
+        self.submitBtn.enabled = NO;
+        self.submitBtn.backgroundColor = [[UIColor beautyBlue] colorWithAlphaComponent:0.5];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -91,24 +122,30 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    CGRect frame = [textField convertRect:textField.frame toView:nil];
-    NSInteger textFieldHeight = frame.origin.y;
+    NSInteger textFieldHeight = [textField superview].frame.origin.y + 58;
     NSInteger viewHeight = SCREEN_HEIGHT_ACTUAL - 216 - 64;
     if (textFieldHeight > viewHeight) {
         [UIView animateWithDuration:0 animations:^{
             self.view.frame = CGRectMake(0, -216, self.view.frame.size.width, self.view.frame.size.height);
         }];
     }
+    [self refreshViewState];
 
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self refreshViewState];
+}
+
+- (void)exitEditing {
+    [self.view endEditing:YES];
 }
 
 #pragma mark - LibraryRecommedDelegate
-- (void)recommendDidSuccess {
-    
+- (void)recommendDidSuccess:(NSString *)message {
+    NSLog(@"%@",message);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)recommendDidFail:(NSString *)errorMessage {
@@ -123,7 +160,6 @@
         _titleView = [[NEUInputView alloc] initWithInputType:NEUInputTypeDefault];
         _titleView.titleLabel.text = @"题名";
         _titleView.textField.delegate = self;
-        _titleView.textField.tag = 101;
         [_inputViewArr addObject:_titleView];
         [self.view addSubview:_titleView];
 
@@ -152,11 +188,16 @@
    return _inputViewArr;
 }
 
-- (UIBarButtonItem *)rightButtonItem {
-    if (!_rightButtonItem) {
-        _rightButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(confirm)];
+- (UIButton *)submitBtn {
+    if (!_submitBtn) {
+        _submitBtn = [[UIButton alloc] init];
+        [_submitBtn setTitle:@"提交" forState:UIControlStateNormal];
+        [_submitBtn setBackgroundColor:[[UIColor beautyBlue] colorWithAlphaComponent:0.5]];
+        _submitBtn.enabled = NO;
+        [_submitBtn addTarget:self action:@selector(submit) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_submitBtn];
     }
-   return _rightButtonItem;
+   return _submitBtn;
 }
 
 - (LibraryRecommendModel *)recommendModel {

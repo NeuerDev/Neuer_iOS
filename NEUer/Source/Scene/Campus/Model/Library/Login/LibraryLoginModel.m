@@ -240,6 +240,10 @@
     _bookedURL = [array objectAtIndex:3];
     _cashURL = [array objectAtIndex:4];
     
+    NSArray<TFHppleElement *> *recommendArr = [xpathParser searchWithXPathQuery:@"//a[@id='head_jg']"];
+    _recommendURL = [recommendArr[0] objectForKey:@"href"];
+    _recommendURL = [[_recommendURL substringToIndex:_recommendURL.length - 3] substringFromIndex:22];
+    NSLog(@"href - %@",_recommendURL);
 }
 
 - (void)borrowingArrayFromHtmlData:(NSData *)htmlData {

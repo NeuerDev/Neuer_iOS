@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol LibraryRecommedDelegate <NSObject>
-- (void)recommendDidSuccess;
+- (void)recommendDidSuccess:(NSString *)message;
 - (void)recommendDidFail:(NSString *)errorMessage;
 @end
 
@@ -27,6 +27,7 @@
 
 @property (nonatomic, weak) id <LibraryRecommedDelegate> delegate;
 
-- (void)recommend;
+- (void)getREC_key;
+- (void)recommendWithTitle:(NSString *)title author:(NSString *)author press:(NSString *)press ISBN:(NSString *)ISBN reason:(NSString *)reason;
 
 @end
