@@ -178,6 +178,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
 @interface NetworkCheckoutListViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UILabel *footerLabel;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -186,6 +187,9 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
 @end
 
 @implementation NetworkCheckoutListViewController
+{
+    NSInteger _maxLineNumber;
+}
 
 #pragma mark - Life Circle
 
@@ -216,6 +220,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     self.tableView.refreshControl = self.refreshControl;
     self.navigationItem.titleView = self.segmentedControl;
     
+    _maxLineNumber = 0;
 }
 
 - (void)initConstaints {
@@ -235,6 +240,8 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
         {
             [self.model refreshPayInfoDataComplete:^(BOOL success, NSString *data) {
                 if (success) {
+                    _maxLineNumber = 0;
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [ws.tableView reloadData];
                     });
@@ -245,8 +252,9 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
         case 1:
         {
             [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
-                
                 if (success) {
+                    _maxLineNumber = 0;
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [ws.tableView reloadData];
                     });
@@ -268,6 +276,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:
         {
+            _maxLineNumber = 0;
             self.title = @"缴费清单";
             [self.model refreshPayInfoDataComplete:^(BOOL success, NSString *data) {
                 if (success) {
@@ -280,6 +289,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
             break;
         case 1:
         {
+            _maxLineNumber = 0;
             self.title = @"结算清单";
             [self.model refreshCheckoutDataComplete:^(BOOL success, NSString *data) {
                 if (success) {
@@ -380,9 +390,10 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == self.model.internetRecordInfoArray.count - 1) {
+    
+    if (!_maxLineNumber) {
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
-        _indicatorView.center = CGPointMake(SCREEN_WIDTH_ACTUAL * 0.5, footerView.frame.origin.y + 20);
+        _indicatorView.center = CGPointMake(SCREEN_WIDTH_ACTUAL * 0.5, footerView.frame.origin.y + 5);
         footerView.backgroundColor = [UIColor clearColor];
         [footerView addSubview:self.indicatorView];
         [self.indicatorView startAnimating];
@@ -390,9 +401,14 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
         _tableView.tableFooterView = footerView;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _tableView.tableFooterView.hidden = YES;
             [_indicatorView stopAnimating];
         });
+    } else {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
+        self.footerLabel.frame = CGRectMake(0, footerView.frame.origin.y, SCREEN_WIDTH_ACTUAL, 20);
+        [footerView addSubview:_footerLabel];
+        _tableView.tableFooterView.hidden = NO;
+        _tableView.tableFooterView = footerView;
     }
 }
 
@@ -407,10 +423,13 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
             {
                 dispatch_async(dispatch_get_global_queue(0, 0), ^{
                     [ws.model queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {
+                        
                         if (success) {
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [ws.tableView reloadData];
                             });
+                        } else {
+                            _maxLineNumber = ws.model.financialPayInfoArray.count;
                         }
                     }];
                 });
@@ -424,6 +443,8 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [ws.tableView reloadData];
                             });
+                        } else {
+                            _maxLineNumber = ws.model.financialCheckoutInfoArray.count;
                         }
                     }];
                 });
@@ -483,6 +504,17 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
         _segmentedControl.selectedSegmentIndex = 0;
     }
     return _segmentedControl;
+}
+
+- (UILabel *)footerLabel {
+    if (!_footerLabel) {
+        _footerLabel = [[UILabel alloc] init];
+        _footerLabel.text = @"已经没有更多消息了~";
+        _footerLabel.textAlignment = NSTextAlignmentCenter;
+        _footerLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _footerLabel.textColor = [UIColor lightGrayColor];
+    }
+    return _footerLabel;
 }
 
 @end

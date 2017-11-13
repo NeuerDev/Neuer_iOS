@@ -16,10 +16,14 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UILabel *footerLabel;
 
 @end
 
 @implementation NetworkInternetListViewController
+{
+    NSInteger _maxLineNumber;
+}
 
 #pragma mark - Life Circle
 
@@ -48,6 +52,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         }
     }];
     
+    _maxLineNumber = 0;
     self.tableView.refreshControl = self.refreshControl;
 }
 
@@ -63,6 +68,8 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     WS(ws);
     [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
         if (success) {
+            
+            _maxLineNumber = 0;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [ws.tableView reloadData];
             });
@@ -100,21 +107,25 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == self.model.internetRecordInfoArray.count - 1) {
+    
+    if (!_maxLineNumber) {
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
-        _indicatorView.center = CGPointMake(SCREEN_WIDTH_ACTUAL * 0.5, footerView.frame.origin.y + 20);
+        _indicatorView.center = CGPointMake(SCREEN_WIDTH_ACTUAL * 0.5, footerView.frame.origin.y + 5);
         footerView.backgroundColor = [UIColor clearColor];
         [footerView addSubview:self.indicatorView];
         [self.indicatorView startAnimating];
         _tableView.tableFooterView.hidden = NO;
         _tableView.tableFooterView = footerView;
         
-//        WS(ws);
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _tableView.tableFooterView.hidden = YES;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [_indicatorView stopAnimating];
-//            [ws.tableView reloadData];
         });
+    } else {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
+        self.footerLabel.frame = CGRectMake(0, footerView.frame.origin.y, SCREEN_WIDTH_ACTUAL, 20);
+        [footerView addSubview:_footerLabel];
+        _tableView.tableFooterView.hidden = NO;
+        _tableView.tableFooterView = footerView;
     }
 }
 
@@ -130,6 +141,8 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [ws.tableView reloadData];
                     });
+                } else {
+                    _maxLineNumber = ws.model.internetRecordInfoArray.count;
                 }
             }];
         });
@@ -176,6 +189,17 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         [self.view addSubview:_scrollView];
     }
     return _scrollView;
+}
+
+- (UILabel *)footerLabel {
+    if (!_footerLabel) {
+        _footerLabel = [[UILabel alloc] init];
+        _footerLabel.text = @"已经没有更多消息了~";
+        _footerLabel.textAlignment = NSTextAlignmentCenter;
+        _footerLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _footerLabel.textColor = [UIColor lightGrayColor];
+    }
+    return _footerLabel;
 }
 
 @end

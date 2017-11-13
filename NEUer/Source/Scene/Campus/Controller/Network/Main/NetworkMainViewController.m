@@ -21,6 +21,7 @@ static NSString *kNetworkHeaderFooterViewReuseID = @"headerFooterViewReuseID";
 static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID";
 static NSString *kNetworkTableViewCellOnlineDevicesReuseID = @"onlineDevicesCellID";
 static NSString *kNetworkPersonalInfoTableViewCellReuseID = @"kNetworkPersonalInfoTableViewCellReuseID";
+static NSString *kNetworkDefaultCell = @"kNetworkDefaultCell";
 
 @interface NetworkRestFlowView : UIView
 typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
@@ -68,7 +69,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     
     [self.restLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.restFlowLabel.mas_left).with.offset(-4);
-        make.bottom.equalTo(self.restFlowLabel.mas_bottom).with.offset(-3);
+        make.bottom.equalTo(self.restFlowLabel.mas_bottom).with.offset(-8);
     }];
 
     [self.restFlowLevelLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,7 +117,11 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     if (basicInfo) {
         dispatch_async(dispatch_get_main_queue(), ^{
             _restFlowLevelLabel.text = [[_basicInfo.restFlowLevelDictionary allValues] lastObject];
-            _restFlowLabel.text = [NSString stringWithFormat:@"%@G", _basicInfo.product_restFlow];
+            if (basicInfo.product_restFlow.integerValue > 1) {
+                _restFlowLabel.text = [NSString stringWithFormat:@"%@G", _basicInfo.product_restFlow];
+            } else {
+                _restFlowLabel.text = [NSString stringWithFormat:@"%ldM", _basicInfo.product_restFlow.integerValue * 1024];
+            }
             GatewaySelfServiceMenuRestFlowLevel level = [[_basicInfo.restFlowLevelDictionary allKeys] lastObject].integerValue;
             UIColor *mainColor = [UIColor colorWithHexStr:@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"][level]];
             [self setMainColor:mainColor animated:YES];
@@ -234,13 +239,17 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     [self.msgTypeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).with.offset(20);
         make.centerY.equalTo(self.contentView);
-        make.width.equalTo(@90);
     }];
+    [self.msgTypeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.msgTypeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    
+    
     [self.msgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.right.equalTo(self.contentView);
-        make.left.equalTo(self.msgTypeLabel.mas_right).with.offset(20);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-20);
     }];
+    [self.msgLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [self.msgLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 #pragma mark - Setter
@@ -373,8 +382,8 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     [loginVC setupWithTitle:@"登录校卡中心"
                    inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
                     contents:@{
-                               @(LoginInputTypeAccount):@"20154883",
-                               @(LoginInputTypePassword):@"123456",
+                               @(LoginInputTypeAccount):@"",
+                               @(LoginInputTypePassword):@"",
                                }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
                      if (complete) {
@@ -559,40 +568,73 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 #pragma mark - UITableViewDataSource
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-
-    if (indexPath.section == 0) {
-        NetworkPersonalInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkPersonalInfoTableViewCellReuseID];
-        if (!cell) {
-            cell = [[NetworkPersonalInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkPersonalInfoTableViewCellReuseID];
+    
+    switch (indexPath.section) {
+        case 0:
+        {
+            if (self.model.basicInfo.userInfoBeanArray.count) {
+                NetworkPersonalInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkPersonalInfoTableViewCellReuseID];
+                if (!cell) {
+                    cell = [[NetworkPersonalInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkPersonalInfoTableViewCellReuseID];
+                }
+                
+                cell.cellInfoBean = self.model.basicInfo.userInfoBeanArray[indexPath.row];
+                
+                return cell;
+            }
         }
-        cell.cellInfoBean = self.model.basicInfo.userInfoBeanArray[indexPath.row];
-        
-        return cell;
-        
-    } else if (indexPath.section == 1) {
-        NetworkOnlineDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellOnlineDevicesReuseID];
-        if (!cell) {
-            cell = [[NetworkOnlineDevicesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellOnlineDevicesReuseID];
+            break;
+        case 1:
+        {
+            if (self.model.onlineInfoArray.count) {
+                NetworkOnlineDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellOnlineDevicesReuseID];
+                if (!cell) {
+                    cell = [[NetworkOnlineDevicesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellOnlineDevicesReuseID];
+                }
+                cell.onlineInfoBean = self.model.onlineInfoArray[indexPath.row];
+                
+                WS(ws);
+                [cell setOnlineDevicesActionBlock:^(NSInteger tag) {
+                    [ws logoutUserWithTag:tag];
+                }];
+                
+                return cell;
+            } else {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkDefaultCell];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkDefaultCell];
+                }
+                cell.textLabel.text = @"暂无信息";
+                return cell;
+            }
         }
-        cell.onlineInfoBean = self.model.onlineInfoArray[indexPath.row];
-        
-        WS(ws);
-        [cell setOnlineDevicesActionBlock:^(NSInteger tag) {
-            [ws logoutUserWithTag:tag];
-        }];
-        
-        return cell;
-    } else {
-        NetworkInternetListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellInternetListReuseID];
-        if (!cell) {
-            cell = [[NetworkInternetListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellInternetListReuseID];
+            break;
+        case 2:
+        {
+            if (self.model.todayInternetRecordInfoArray.count) {
+                NetworkInternetListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkTableViewCellInternetListReuseID];
+                if (!cell) {
+                    cell = [[NetworkInternetListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellInternetListReuseID];
+                }
+                if (self.model.todayInternetRecordInfoArray.count > 0) {
+                    cell.infoBean = self.model.todayInternetRecordInfoArray[indexPath.row];
+                }
+                
+                return cell;
+            }   else {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNetworkDefaultCell];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkDefaultCell];
+                }
+                cell.textLabel.text = @"暂无信息";
+                return cell;
+            }
         }
-        if (self.model.todayInternetRecordInfoArray.count > 0) {
-            cell.infoBean = self.model.todayInternetRecordInfoArray[indexPath.row];
-        }
-        
-        return cell;
+            break;
+        default:
+            break;
     }
+    
     return nil;
 }
 
@@ -605,12 +647,20 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
             break;
         case 1:
         {
-            return self.model.onlineInfoArray.count;
+            if (self.model.onlineInfoArray.count) {
+                return self.model.onlineInfoArray.count;
+            } else {
+                return 1;
+            }
         }
             break;
         case 2:
         {
-            return self.model.todayInternetRecordInfoArray.count;
+            if (self.model.todayInternetRecordInfoArray.count) {
+                return self.model.todayInternetRecordInfoArray.count;
+            } else {
+                return 1;
+            }
         }
             break;
         default:
