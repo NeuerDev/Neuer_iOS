@@ -7,10 +7,11 @@
 //
 
 #import "ARCampusHomeViewController.h"
+#import "ARCampusMenuViewController.h"
 #import <SceneKit/SceneKit.h>
 #import <ARKit/ARKit.h>
 
-@interface ARCampusHomeViewController () <ARSCNViewDelegate>
+@interface ARCampusHomeViewController () <ARSCNViewDelegate, ARSessionDelegate, ARSessionObserver>
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARSession *arSession;
@@ -19,10 +20,15 @@
 
 @property (nonatomic, strong) UIView *panelView;
 @property (nonatomic, strong) UIVisualEffectView *panelMaskView;
-
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *hintLabel;
 @end
 
-@implementation ARCampusHomeViewController
+@implementation ARCampusHomeViewController {
+    BOOL _didSceneAppeared;
+    BOOL _didNavigationBarHidden;
+}
 
 #pragma mark - Life Circle
 
@@ -30,7 +36,7 @@
     [super viewDidLoad];
     
     self.title = @"AR 校园";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     [self initConstraints];
 }
 
@@ -41,26 +47,60 @@
     [UIApplication.sharedApplication setIdleTimerDisabled:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [UIView animateWithDuration:0.3 delay:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.navigationController.navigationBar.alpha = 0;
+    } completion:^(BOOL finished) {
+        _didNavigationBarHidden = YES;
+    }];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.navigationController.navigationBar.alpha = 1;
+    } completion:^(BOOL finished) {
+        _didNavigationBarHidden = NO;
+    }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     [self.sceneView.session pause];
     [UIApplication.sharedApplication setIdleTimerDisabled:NO];
 }
 
 - (void)initConstraints {
-    JHDeviceType deviceType = [UIDevice currentDevice].deviceType;
     self.sceneView.frame = self.view.frame;
     
+    [self.hintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).with.offset(-64-8);
+        make.centerX.equalTo(self.view);
+    }];
+    
     [self.panelView mas_makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat offset = 0;
-        if (deviceType == Chinese_iPhone_X || deviceType == Global_iPhone_X) {
-            offset = 10;
-        }
-        make.bottom.equalTo(self.view.mas_bottom).with.offset(-offset);
-        make.right.equalTo(self.view.mas_right).with.offset(-offset);
-        make.left.equalTo(self.view.mas_left).with.offset(offset);
-        make.height.mas_equalTo(@96);
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideBottom).with.offset(-64);
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.right.equalTo(self.view.mas_right);
+        make.left.equalTo(self.view.mas_left);
+    }];
+    
+    [self.panelMaskView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.panelView);
+    }];
+    
+    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.panelView.mas_left).with.offset(16);
+        make.height.and.width.mas_equalTo(@44);
+        make.centerY.equalTo(self.panelView.mas_top).with.offset(64/2);
+    }];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.panelView.mas_left).with.offset(16+44+12);
+        make.right.equalTo(self.panelView.mas_right).with.offset(-16);
+        make.centerY.equalTo(self.panelView.mas_top).with.offset(64/2);
     }];
 }
 
@@ -124,6 +164,29 @@
     NSLog(@"节点移除");
 }
 
+- (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time {
+    // 首次渲染的时候才显示场景
+    if (!_didSceneAppeared) {
+        _didSceneAppeared = YES;
+        [UIView animateWithDuration:0.5 delay:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.sceneView.alpha = 1;
+        } completion:nil];
+    }
+    
+    // 更新光源亮度
+    ARLightEstimate *estimate = self.sceneView.session.currentFrame.lightEstimate;
+    if (!estimate) {
+        return;
+    } else {
+//        estimate.ambientIntensity
+//        NSLog(@"estimate %f", estimate.ambientIntensity);
+    }
+}
+
+#pragma mark - ARSessionDelegate
+
+
+
 #pragma mark - Private Methods
 
 - (void)showBuilding {
@@ -131,6 +194,23 @@
     SCNNode *mainBuidingNode = scene.rootNode.childNodes[0];
     mainBuidingNode.position = SCNVector3Make(0, -0.1, -0.1);
     [self.sceneView.scene.rootNode addChildNode:mainBuidingNode];
+}
+
+#pragma mark - Response Methods
+
+- (void)onSceneViewTapped:(UITapGestureRecognizer *)tap {
+    [self.navigationController.navigationBar.layer removeAllAnimations];
+    CGFloat alpha = _didNavigationBarHidden ? 1 : 0;
+    _didNavigationBarHidden = !_didNavigationBarHidden;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.navigationController.navigationBar.alpha = alpha;
+    }];
+}
+
+- (void)onPanelViewSwipped:(UISwipeGestureRecognizer *)swipped {
+    ARCampusMenuViewController *menuViewController = [[ARCampusMenuViewController alloc] init];
+    menuViewController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:menuViewController animated:NO completion:nil];
 }
 
 #pragma mark - Getter
@@ -149,6 +229,7 @@
 - (ARSession *)arSession {
     if(!_arSession) {
         _arSession = [[ARSession alloc] init];
+        _arSession.delegate = self;
         self.sceneView.session = _arSession;
     }
     
@@ -163,6 +244,10 @@
         _sceneView.automaticallyUpdatesLighting = YES;
         _sceneView.autoenablesDefaultLighting = YES;
         _sceneView.antialiasingMode = SCNAntialiasingModeMultisampling4X;
+        _sceneView.alpha = 0;
+        _sceneView.debugOptions = ARSCNDebugOptionShowFeaturePoints;
+        _sceneView.userInteractionEnabled = YES;
+        [_sceneView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSceneViewTapped:)]];
         [self.view addSubview:_sceneView];
     }
     
@@ -172,11 +257,10 @@
 - (UIView *)panelView {
     if (!_panelView) {
         _panelView = [[UIView alloc] init];
-        _panelView.layer.shadowColor = [UIColor blackColor].CGColor;
-        _panelView.layer.shadowRadius = 2;
-        _panelView.layer.shadowOffset = CGSizeMake(0, 0);
-        _panelView.layer.shadowOpacity = 0.2;
-        _panelView.backgroundColor = [UIColor redColor];
+        _panelView.userInteractionEnabled = YES;
+        UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onPanelViewSwipped:)];
+        recognizer.direction = UISwipeGestureRecognizerDirectionUp;
+        [_panelView addGestureRecognizer:recognizer];
         [self.view addSubview:_panelView];
     }
     
@@ -190,6 +274,45 @@
     }
     
     return _panelMaskView;
+}
+
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] init];
+        _imageView.backgroundColor = [UIColor redColor];
+        [self.panelView addSubview:_imageView];
+    }
+    
+    return _imageView;
+}
+
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.text = @"移动手机，找到一个平面来放置模型";
+        _titleLabel.numberOfLines = 0;
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        [self.panelView addSubview:_titleLabel];
+    }
+    
+    return _titleLabel;
+}
+
+- (UILabel *)hintLabel {
+    if (!_hintLabel) {
+        _hintLabel = [[UILabel alloc] init];
+        _hintLabel.text = @"正在探索你的环境";
+        _hintLabel.numberOfLines = 0;
+        _hintLabel.textColor = [UIColor whiteColor];
+        _hintLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+        _hintLabel.layer.shadowOpacity = 0.5;
+        _hintLabel.layer.shadowRadius = 1;
+        _hintLabel.layer.shadowOffset = CGSizeMake(0, 0);
+        _hintLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
+        [self.view addSubview:_hintLabel];
+    }
+    
+    return _hintLabel;
 }
 
 @end
