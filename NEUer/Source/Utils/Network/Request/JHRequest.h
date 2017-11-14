@@ -20,6 +20,7 @@ typedef NS_ENUM(NSUInteger, JHErrorType) {
     JHErrorTypeInvaildAccountPassword,
     JHErrorTypeInvaildVerifyCode,
     JHErrorTypeRequireLogin,
+    JHErrorTypeRequireLoginCampusNet,
 };
 
 typedef void(^JHRequestCompleteBlock)(JHRequest *request);

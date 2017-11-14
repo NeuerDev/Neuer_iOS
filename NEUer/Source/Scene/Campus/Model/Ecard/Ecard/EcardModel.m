@@ -47,41 +47,11 @@
             [[UserCenter defaultCenter] setAccount:userName password:password forKeyType:UserKeyTypeECard];
         }
         
-        block(success, error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(success, error);
+        });
     }];
 }
-
-//- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block {
-//    WS(ws);
-//    _currentActionBlock = block;
-//    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-//    urlRequest.HTTPMethod = @"POST";
-//    NSDictionary *params = @{
-//                             @"__VIEWSTATE":ws.viewStateStr,
-//                             @"__EVENTTARGET":ws.eventTargetStr,
-//                             @"__EVENTARGUMENT":ws.eventArgumentStr,
-//                             @"__EVENTVALIDATION":ws.eventValidationStr,
-//                             @"__LASTFOCUS":ws.lastFocusStr,
-//                             @"txtUserName":userName,
-//                             @"txtPassword":password,
-//                             @"txtVaildateCode":verifyCode,
-//                             @"hfIsManager":@"0",
-//                             };
-//    NSMutableString *bodyStr = [[NSMutableString alloc] init];
-//    for (NSString *key in params) {
-//        if (bodyStr.length==0) {
-//            [bodyStr appendFormat:@"%@=%@", key, params[key]?:@""];
-//        } else {
-//            [bodyStr appendFormat:@"&%@=%@", key, params[key]?:@""];
-//        }
-//    }
-//    urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
-//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-//        
-//    }];
-//    
-//    [task resume];
-//}
 
 - (void)fetchAvatarComplete:(EcardActionCompleteBlock)block {
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/Photo.ashx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];

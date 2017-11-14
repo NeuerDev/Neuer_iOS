@@ -163,6 +163,9 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         case JHErrorTypeInvaildVerifyCode:
             
             break;
+        case JHErrorTypeRequireLoginCampusNet:
+            
+            break;
             
         default:
             break;
@@ -210,8 +213,9 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         } else {
             [ws.balanceIndicatorView stopAnimating];
             [UIView animateWithDuration:0.1 animations:^{
-                ws.balanceValueLabel.alpha = 0;
+                ws.balanceValueLabel.alpha = 1;
             }];
+            [ws handleError:error];
         }
     }];
 }
@@ -278,7 +282,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     });
 }
 
-- (void)recharge {
+- (void)openBank {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"wx2654d9155d70a468://"] options:@{} completionHandler:^(BOOL success) {
         if (!success) {
             NSLog(@"assssddd");
@@ -491,12 +495,12 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
         UIButton *bankButton = [UIButton buttonWithType:UIButtonTypeSystem];
         bankButton.tintColor = [UIColor beautyBlue];
         [bankButton setImage:[UIImage imageNamed:@"ecard_bank"] forState:UIControlStateNormal];
-        [bankButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
+        [bankButton addTarget:self action:@selector(openBank) forControlEvents:UIControlEventTouchUpInside];
         
         UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeSystem];
         helpButton.tintColor = [UIColor beautyBlue];
         [helpButton setImage:[UIImage imageNamed:@"toolbar_help"] forState:UIControlStateNormal];
-        [helpButton addTarget:self action:@selector(recharge) forControlEvents:UIControlEventTouchUpInside];
+        [helpButton addTarget:self action:@selector(openBank) forControlEvents:UIControlEventTouchUpInside];
         
         [container addSubview:bankButton];
         [container addSubview:helpButton];

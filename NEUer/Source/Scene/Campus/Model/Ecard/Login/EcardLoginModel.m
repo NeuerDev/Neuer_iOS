@@ -52,7 +52,13 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCo
     _password = password;
     _currentActionBlock = block;
     [self getVerifyImage:^(UIImage *verifyImage, NSString *verifyCode, NSError *error) {
-        [ws authorUser:userName password:password verifyCode:verifyCode complete:nil];
+        if (error) {
+            if (_currentActionBlock) {
+                _currentActionBlock(NO, error);
+            }
+        } else {
+            [ws authorUser:userName password:password verifyCode:verifyCode complete:nil];
+        }
     }];
 }
 
@@ -80,7 +86,12 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCo
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
+        NSString *htmlStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeRequireLoginCampusNet userInfo:nil];
+        if ([htmlStr containsString:@"ipgw.neu.edu.cn"]) {
+            block(nil, nil, error);
+            return;
+        }
         // 提取当前cookie 仅用于获取验证码
         NSString *setCookies = ((NSHTTPURLResponse *)response).allHeaderFields[@"Set-Cookie"];
         for (NSString *string in [setCookies componentsSeparatedByString:@";"]) {
