@@ -19,4 +19,18 @@
     self.layer.mask = maskLayer;
 }
 
+- (void)setBorderWithColor:(UIColor *)color cornerRadius:(CGFloat)cornerRadius {
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGFloat width = scale > 0.0 ? 1.0 / scale : 1.0;
+    
+    self.layer.borderWidth = width;
+    if (!color) {
+        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    } else {
+        self.layer.borderColor = color.CGColor;
+    }
+    
+    self.layer.cornerRadius = cornerRadius;
+}
+
 @end

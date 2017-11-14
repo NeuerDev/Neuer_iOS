@@ -70,9 +70,4 @@
  */
 + (NSTimeInterval)timeIntervalWithStartTime:(NSString *)startTime endTime:(NSString *)endTime;
 
-/**
- 给view添加边框
- */
-+ (void)setBorder:(UIView *)view color:(UIColor *)color cornerRadius:(CGFloat)cornerRadius;
-
 @end

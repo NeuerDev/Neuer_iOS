@@ -8,15 +8,16 @@
 
 #import "NetworkInternetListViewController.h"
 #import "NetworkInternetListTableViewCell.h"
+#import "NetworkReuseFooterView.h"
 
 static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID";
 @interface NetworkInternetListViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
+//@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UILabel *footerLabel;
+@property (nonatomic, strong) NetworkReuseFooterView *footerView;
 
 @end
 
@@ -42,46 +43,51 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 
 - (void)initData {
     self.title = @"上网明细";
-    
-    WS(ws);
-    [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [ws.tableView reloadData];
-            });
-        }
-    }];
-    
+
+    [self beginRefreshing];
     _maxLineNumber = 0;
-    self.tableView.refreshControl = self.refreshControl;
+//    self.tableView.refreshControl = self.refreshControl;
 }
 
 - (void)initConstaints {
     self.scrollView.frame = self.view.frame;
-    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
+//    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
+    
+    self.tableView.frame = self.scrollView.frame;
+    [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.view);
+    }];
 }
 
 #pragma mark - Response Method
 
 - (void)beginRefreshing {
-    [self.refreshControl beginRefreshing];
+//    [self.refreshControl beginRefreshing];
+    [self.indicatorView startAnimating];
     WS(ws);
+    
     [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
         if (success) {
             
             _maxLineNumber = 0;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [ws.tableView reloadData];
+                [ws.indicatorView stopAnimating];
+                if ([ws.tableView numberOfSections] == 0) {
+                    [ws.tableView reloadData];
+                } else {
+                    if ([ws.tableView numberOfRowsInSection:0] == ws.model.internetRecordInfoArray.count) {
+                        [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                }
             });
         }
     }];
-    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+//    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
 }
-
-- (void)endRefreshing {
-    [self.refreshControl endRefreshing];
-    [self.tableView reloadData];
-}
+//
+//- (void)endRefreshing {
+//    [self.refreshControl endRefreshing];
+//}
 
 #pragma mark - UITableViewDataSource
 
@@ -92,11 +98,40 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     }
     cell.infoBean = self.model.internetRecordInfoArray[indexPath.row];
     
+    if (self.model.internetRecordInfoArray.count - indexPath.row < 5) {
+        [self loadMore];
+    }
+    
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.model.internetRecordInfoArray.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.model.internetRecordInfoArray.count) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    
+    NetworkReuseFooterView *footerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kNetworkFooterViewReuseID];
+    
+    if (!footerView) {
+        footerView = [[NetworkReuseFooterView alloc] init];
+    }
+    if (!_maxLineNumber) {
+        [footerView setAnimated:YES];
+    } else {
+        [footerView setAnimated:NO];
+    }
+    footerView.contentView.backgroundColor = [UIColor whiteColor];
+    
+    return footerView;
 }
 
 
@@ -106,81 +141,68 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     return 74;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)loadMore {
+    WS(ws);
     
-    if (!_maxLineNumber) {
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
-        _indicatorView.center = CGPointMake(SCREEN_WIDTH_ACTUAL * 0.5, footerView.frame.origin.y + 5);
-        footerView.backgroundColor = [UIColor clearColor];
-        [footerView addSubview:self.indicatorView];
-        [self.indicatorView startAnimating];
-        _tableView.tableFooterView.hidden = NO;
-        _tableView.tableFooterView = footerView;
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [_indicatorView stopAnimating];
-        });
-    } else {
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 50)];
-        self.footerLabel.frame = CGRectMake(0, footerView.frame.origin.y, SCREEN_WIDTH_ACTUAL, 20);
-        [footerView addSubview:_footerLabel];
-        _tableView.tableFooterView.hidden = NO;
-        _tableView.tableFooterView = footerView;
-    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [ws.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.model.appendingInternetRecordInfoArray.count > 0) {
+                        [ws appendingDataWithArray:self.model.appendingInternetRecordInfoArray];
+                    }
+                });
+            } else {
+                _maxLineNumber = ws.model.internetRecordInfoArray.count;
+            }
+        }];
+    });
 }
 
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height) {
-        WS(ws);
-
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [ws.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
-                if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [ws.tableView reloadData];
-                    });
-                } else {
-                    _maxLineNumber = ws.model.internetRecordInfoArray.count;
-                }
-            }];
-        });
+- (void)appendingDataWithArray:(NSArray *)array {
+    NSMutableArray<NSIndexPath *> *indexPaths = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    for (GatewaySelfServiceMenuInternetRecordsInfoBean *bean in array) {
+        if ([self.model.internetRecordInfoArray containsObject:bean]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.model.internetRecordInfoArray indexOfObject:bean] inSection:0];
+            [indexPaths addObject:indexPath];
+        } else {
+            continue;
+        }
     }
+    
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
+
 
 #pragma mark - Getter
 
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] init];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.allowsSelection = NO;
-        [self.indicatorView startAnimating];
+        //        去掉groupTableView最上面的空白
+        _tableView.tableHeaderView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+        _tableView.estimatedRowHeight = 0;
+        _tableView.estimatedSectionHeaderHeight = 0;
+        _tableView.estimatedSectionFooterHeight = 0;
+        
         [self.scrollView addSubview:_tableView];
     }
     return _tableView;
 }
-
-- (UIRefreshControl *)refreshControl {
-    if (!_refreshControl) {
-        _refreshControl = [[UIRefreshControl alloc] init];
-        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
-    }
-    return _refreshControl;
-}
-
-- (UIActivityIndicatorView *)indicatorView {
-    if (!_indicatorView) {
-        _indicatorView = [[UIActivityIndicatorView alloc] init];
-        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        CGAffineTransform transform = CGAffineTransformMakeScale(1.3f, 1.3f);
-        _indicatorView.transform = transform;
-    }
-    return _indicatorView;
-}
+//
+//- (UIRefreshControl *)refreshControl {
+//    if (!_refreshControl) {
+//        _refreshControl = [[UIRefreshControl alloc] init];
+//        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
+//    }
+//    return _refreshControl;
+//}
 
 - (UIScrollView *)scrollView {
     if (!_scrollView) {
@@ -191,15 +213,19 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     return _scrollView;
 }
 
-- (UILabel *)footerLabel {
-    if (!_footerLabel) {
-        _footerLabel = [[UILabel alloc] init];
-        _footerLabel.text = @"已经没有更多消息了~";
-        _footerLabel.textAlignment = NSTextAlignmentCenter;
-        _footerLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _footerLabel.textColor = [UIColor lightGrayColor];
+- (NetworkReuseFooterView *)footerView {
+    if (!_footerView) {
+        _footerView = [[NetworkReuseFooterView alloc] init];
     }
-    return _footerLabel;
+    return _footerView;
+}
+
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView = [[UIActivityIndicatorView alloc] init];
+        [self.view addSubview:_indicatorView];
+    }
+    return _indicatorView;
 }
 
 @end

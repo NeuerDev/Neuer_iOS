@@ -114,8 +114,13 @@ typedef void(^GatewaySelfServiceMenuQueryBlock)(BOOL success, NSString *data);
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuOnlineInfoBean *> *onlineInfoArray;
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuInternetRecordsInfoBean *> *internetRecordInfoArray;
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuInternetRecordsInfoBean *> *todayInternetRecordInfoArray;
+@property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuInternetRecordsInfoBean *> *appendingInternetRecordInfoArray;
+
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuFinancialPayInfoBean *> *financialPayInfoArray;
+@property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuFinancialPayInfoBean *> *appendingFinancePayInfoArray;
+
 @property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuFinancialCheckOutInfoBean *> *financialCheckoutInfoArray;
+@property (nonatomic, copy) NSMutableArray <GatewaySelfServiceMenuFinancialCheckOutInfoBean *> *appendingFinanceCheckoutInfoArray;
 
 /**
  获取验证码

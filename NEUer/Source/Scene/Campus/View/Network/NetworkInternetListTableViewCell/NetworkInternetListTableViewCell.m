@@ -7,7 +7,7 @@
 //
 
 #import "NetworkInternetListTableViewCell.h"
-#import "LYTool.h"
+#import "UIView+JHCategory.h"
 
 @interface NetworkInternetListTableViewCell ()
 
@@ -177,11 +177,9 @@
     if (!_lastActiveStatusLabel) {
         _lastActiveStatusLabel = [[UILabel alloc] init];
         _lastActiveStatusLabel.text = @"上线";
-        [LYTool setBorder:_lastActiveStatusLabel color:[UIColor beautyOrange] cornerRadius:3];
-        [_lastActiveStatusLabel.layer setCornerRadius:2];
         _lastActiveStatusLabel.textAlignment = NSTextAlignmentCenter;
-//        [_lastActiveStatusLabel.layer setBorderWidth:0.8];
         _lastActiveStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        [_lastActiveStatusLabel setBorderWithColor:[UIColor beautyOrange] cornerRadius:2];
         _lastActiveStatusLabel.textColor = [UIColor beautyOrange];
         [self.contentView addSubview:_lastActiveStatusLabel];
     }
@@ -193,10 +191,8 @@
         _logoutTimeStatusLabel = [[UILabel alloc] init];
         _logoutTimeStatusLabel.text = @"下线";
         _logoutTimeStatusLabel.textAlignment = NSTextAlignmentCenter;
-        [LYTool setBorder:_logoutTimeStatusLabel color:[UIColor beautyBlue] cornerRadius:2];
-        [_logoutTimeStatusLabel.layer setCornerRadius:2];
-//        [_logoutTimeStatusLabel.layer setBorderWidth:0.8];
         _logoutTimeStatusLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        [_logoutTimeStatusLabel setBorderWithColor:[UIColor beautyBlue] cornerRadius:2];
         _logoutTimeStatusLabel.textColor = [UIColor beautyBlue];
         [self.contentView addSubview:_logoutTimeStatusLabel];
     }

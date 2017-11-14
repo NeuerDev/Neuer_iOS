@@ -11,5 +11,6 @@
 @interface UIView (JHCategory)
 
 - (void)roundCorners:(UIRectCorner)corner radii:(CGSize)radii;
+- (void)setBorderWithColor:(UIColor *)color cornerRadius:(CGFloat)cornerRadius;
 
 @end

@@ -150,19 +150,4 @@
     return differenceValue;
 }
 
-+ (void)setBorder:(UIView *)view color:(UIColor *)color cornerRadius:(CGFloat)cornerRadius {
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    CGFloat width = scale > 0.0 ? 1.0 / scale : 1.0;
-    
-    view.layer.borderWidth = width;
-    if (!color) {
-        view.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    } else {
-        view.layer.borderColor = color.CGColor;
-    }
-    
-    view.layer.cornerRadius = 5;
-
-}
-
 @end

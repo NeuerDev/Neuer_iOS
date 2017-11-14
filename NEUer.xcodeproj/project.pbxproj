@@ -24,6 +24,7 @@
 		335833861FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */; };
 		335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
+		33FFEA761FBAE80C002632B9 /* NetworkReuseFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
@@ -175,6 +176,8 @@
 		335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListTableViewCell.m; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
+		33FFEA741FBAE80C002632B9 /* NetworkReuseFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReuseFooterView.h; sourceTree = "<group>"; };
+		33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkReuseFooterView.m; sourceTree = "<group>"; };
 		4EE1975CF0ED4F53C85F54F5 /* Pods-NEUGatewayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUGatewayExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUGatewayExtension/Pods-NEUGatewayExtension.release.xcconfig"; sourceTree = "<group>"; };
 		565994165BDBB6721C7545F6 /* Pods_NEUer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEUer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C0742651F8C7410006116A4 /* GatewayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayViewController.h; sourceTree = "<group>"; };
@@ -376,8 +379,8 @@
 				33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */,
 			);
 			path = BadgeCenter;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		33201F511FB754E700CAFDEA /* InternetList */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +521,7 @@
 		335833811FAF5A2300DBE418 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				33FFEA731FBAE7FA002632B9 /* NetworkReuseFooterView */,
 				335833831FAF5A7300DBE418 /* NetworkInternetListTableViewCell */,
 				335833821FAF5A5400DBE418 /* NetworkOnlineDevicesTableViewCell */,
 			);
@@ -567,6 +571,15 @@
 				33F88B801F8295620054B123 /* View */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		33FFEA731FBAE7FA002632B9 /* NetworkReuseFooterView */ = {
+			isa = PBXGroup;
+			children = (
+				33FFEA741FBAE80C002632B9 /* NetworkReuseFooterView.h */,
+				33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */,
+			);
+			path = NetworkReuseFooterView;
 			sourceTree = "<group>";
 		};
 		5C01A2F61F8B22FB001D7FD6 /* NEUCener */ = {
@@ -1986,6 +1999,7 @@
 				5CBA6E961F77462F00DFF055 /* TouchableCollectionViewCell.m in Sources */,
 				5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */,
 				5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */,
+				33FFEA761FBAE80C002632B9 /* NetworkReuseFooterView.m in Sources */,
 				5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */,
 				5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */,
 				33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */,

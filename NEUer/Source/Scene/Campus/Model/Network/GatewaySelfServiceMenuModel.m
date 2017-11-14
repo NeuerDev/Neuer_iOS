@@ -57,6 +57,9 @@
     _internetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
     _onlineInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
     _todayInternetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _appendingFinanceCheckoutInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _appendingFinancePayInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
+    _appendingInternetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 
@@ -284,6 +287,7 @@
             _basicInfo.product_balance = infoArray[11];
             _basicInfo.product_carrierBundle = infoArray[12];
             _basicInfo.product_closingDate = infoArray[14];
+
             if ([_basicInfo.product_usedFlow containsString:@"M"]) {
                 if ([_basicInfo.product_name isEqualToString:@"std"]) {
                     _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 25 - _basicInfo.product_usedFlow.floatValue / 1000];
@@ -292,15 +296,15 @@
                 }
             } else if ([_basicInfo.product_usedFlow containsString:@"byte"]) {
                 if ([_basicInfo.product_name isEqualToString:@"std"]) {
-                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 25 - _basicInfo.product_usedFlow.floatValue / 1000000];
+                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 25 - _basicInfo.product_usedFlow.floatValue / 1000000000];
                 } else {
-                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 35 - _basicInfo.product_usedFlow.floatValue / 1000000];
+                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 35 - _basicInfo.product_usedFlow.floatValue / 1000000000];
                 }
             } else if ([_basicInfo.product_usedFlow containsString:@"K"]) {
                 if ([_basicInfo.product_name isEqualToString:@"std"]) {
-                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 25 - _basicInfo.product_usedFlow.floatValue];
+                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 25 - _basicInfo.product_usedFlow.floatValue / 1000000];
                 } else {
-                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 35 - _basicInfo.product_usedFlow.floatValue];
+                    _basicInfo.product_restFlow = [NSString stringWithFormat:@"%.2f", 35 - _basicInfo.product_usedFlow.floatValue / 1000000];
                 }
             } else {
                 if ([_basicInfo.product_name isEqualToString:@"std"]) {
@@ -441,12 +445,34 @@
             }
         }
         
+//        每次查询都需要先把之前追加的上网明细清除
+        [_appendingInternetRecordInfoArray removeAllObjects];
+        if (_todayInternetRecordInfoArray.count > 0 && _logDetailPage == 1) {
+            [_todayInternetRecordInfoArray removeAllObjects];
+        }
+        
 //        获取今日上网明细
+        BOOL flag = YES;
+        
         for (GatewaySelfServiceMenuInternetRecordsInfoBean *bean in internetMutableArray) {
             NSString *logoutDate = [LYTool changeDateFormatterFromDateFormat:@"MM-dd HH:mm:ss" toDateFormat:@"MM-dd" withDateString:bean.internet_logoutTime];
+            
             if (!logoutDate) {
-                [self.todayInternetRecordInfoArray addObject:bean];
+                if (_todayInternetRecordInfoArray.count > 0) {
+                    for (GatewaySelfServiceMenuInternetRecordsInfoBean *todayBean in _todayInternetRecordInfoArray) {
+                        if ([todayBean.internet_logoutTime isEqualToString:bean.internet_logoutTime]) {
+                            flag = NO;
+                        }
+                    }
+                    
+                    if (flag) {
+                        [_todayInternetRecordInfoArray addObject:bean];
+                    }
+                } else {
+                    [_todayInternetRecordInfoArray addObject:bean];
+                }
             }
+            
         }
         
         if (self.internetRecordInfoArray.count != 0 && _logDetailPage == 1) {
@@ -461,6 +487,7 @@
         } else {
             if (![[self.internetRecordInfoArray lastObject].internet_lastactive isEqualToString:[internetMutableArray lastObject].internet_lastactive]) {
                 [self.internetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
+                [self.appendingInternetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
                 _logDetailPage++;
                 _queryInternetListBlock(YES, @"查询成功");
             } else {
@@ -499,6 +526,8 @@
             }
         }
         
+        [self.appendingFinancePayInfoArray removeAllObjects];
+        
         if (self.financialPayInfoArray.count != 0 && _financialPayPage == 1) {
             [self.financialPayInfoArray removeAllObjects];
         }
@@ -510,6 +539,7 @@
             return;
         } else {
             if (![[self.financialPayInfoArray lastObject].financial_creatTime isEqualToString:[financialMutableArray lastObject].financial_creatTime]) {
+                [self.appendingFinancePayInfoArray addObjectsFromArray:financialMutableArray.mutableCopy];
                 [self.financialPayInfoArray addObjectsFromArray:financialMutableArray.mutableCopy];
                 _financialPayPage++;
                 _queryBlock(YES, @"查询成功");
@@ -551,6 +581,8 @@
             }
         }
         
+        [_appendingFinanceCheckoutInfoArray removeAllObjects];
+        
         if (self.financialCheckoutInfoArray.count > 0 && _financialCheckoutPage == 1) {
             [self.financialCheckoutInfoArray removeAllObjects];
         }
@@ -562,6 +594,7 @@
             return;
         } else {
             if (![[self.financialCheckoutInfoArray lastObject].checkout_creatTime isEqualToString:[financialMutableArray lastObject].checkout_creatTime]) {
+                [self.appendingFinanceCheckoutInfoArray addObjectsFromArray:financialMutableArray.mutableCopy];
                 [self.financialCheckoutInfoArray addObjectsFromArray:financialMutableArray.mutableCopy];
                 _financialCheckoutPage++;
                 _queryBlock(YES, @"查询成功");
@@ -733,15 +766,15 @@
         
         if (restValue >= 10) {
             _restFlowLevelDictionary = @{
-                                         @(GatewaySelfServiceMenuRestFlowLevelEnough) : @"流量充足"
+                                         @(GatewaySelfServiceMenuRestFlowLevelEnough) : @"剩余流量充足"
                                          };
         } else if (restValue < 10 && restValue > 0) {
             _restFlowLevelDictionary = @{
-                                         @(GatewaySelfServiceMenuRestFlowLevelNotEnough) : @"流量不足"
+                                         @(GatewaySelfServiceMenuRestFlowLevelNotEnough) : @"剩余流量不足"
                                          };
         } else {
             _restFlowLevelDictionary = @{
-                                         @(GatewaySelfServiceMenuRestFlowLevelNotEnough) : @"流量已超限"
+                                         @(GatewaySelfServiceMenuRestFlowLevelNotEnough) : @"使用流量已超额"
                                          };
         }
     } else {

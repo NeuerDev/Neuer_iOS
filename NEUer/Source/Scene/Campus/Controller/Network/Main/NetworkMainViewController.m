@@ -28,12 +28,14 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 
 @property (nonatomic, strong) UILabel *restFlowLabel;
 @property (nonatomic, strong) UILabel *restFlowLevelLabel;
-@property (nonatomic, strong) UILabel *restLabel;
 @property (nonatomic, strong) NSArray <UIButton *> *restFlowViewButtons;
+@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) UIButton *personalInfoButton;
 
 @property (nonatomic, strong) GatewaySelfServiceMenuBasicInfoBean *basicInfo;
 
 - (void)setActionBlock:(NetwerkRestFlowViewSetActionBlock)block;
+- (void)setAnimated:(BOOL)animated;
 
 @end
 
@@ -64,31 +66,60 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     
     [self.restFlowLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_top).with.offset(self.frame.size.height * (1 - 0.618));
-        make.centerX.equalTo(self.mas_centerX).with.offset(5);
+        make.centerX.equalTo(self.mas_centerX);
     }];
     
-    [self.restLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.restFlowLabel.mas_left).with.offset(-4);
-        make.bottom.equalTo(self.restFlowLabel.mas_bottom).with.offset(-8);
-    }];
-
     [self.restFlowLevelLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.restFlowLabel.mas_bottom);
         make.centerX.equalTo(self.mas_centerX);
     }];
     
+    [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self);
+    }];
+    
     for (int index = 0; index < self.restFlowViewButtons.count; index++) {
         UIView *view = self.restFlowViewButtons[index];
 
-        float xValue = (float)self.frame.size.width / self.restFlowViewButtons.count;
-//        view.frame = CGRectMake(xValue * index, self.frame.size.height + self.frame.origin.y - 54 - 30, xValue, 54);
+        float whiteValue = self.frame.size.width * 0.25;
+        float xValue = (float)(self.frame.size.width - whiteValue) / self.restFlowViewButtons.count;
         
         [view mas_makeConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@(54));
             make.width.equalTo(@(xValue));
-            make.left.equalTo(@(xValue * index));
+            if (index == 0) {
+                make.left.equalTo(self).with.offset(whiteValue * 0.5);
+            } else {
+                make.left.equalTo(@(xValue * index + whiteValue * 0.5));
+            }
             make.top.equalTo(self.restFlowLevelLabel.mas_bottom).with.offset(10);
         }];
+    }
+}
+
+#pragma mark - Public Method
+- (void)setAnimated:(BOOL)animated {
+    if (animated) {
+        [self.indicatorView startAnimating];
+        self.indicatorView.hidden = NO;
+        self.restFlowLabel.hidden = YES;
+        for (UIButton *button in _restFlowViewButtons) {
+            button.hidden = YES;
+        }
+        self.restFlowLevelLabel.hidden = YES;
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
+    } else {
+        [self.indicatorView stopAnimating];
+        self.indicatorView.hidden = YES;
+        self.restFlowLabel.hidden = NO;
+        for (UIButton *button in _restFlowViewButtons) {
+            button.hidden = NO;
+        }
+        self.restFlowLevelLabel.hidden = NO;
+        
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
     }
 }
 
@@ -102,7 +133,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         self.backgroundColor = [color colorWithAlphaComponent:0.1];
         _restFlowLabel.textColor = color;
         _restFlowLevelLabel.textColor = color;
-        _restLabel.textColor = color;
         for (UIButton *button in _restFlowViewButtons) {
             [button setTitleColor:color forState:UIControlStateNormal];
             [button setTitleColor:[color colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
@@ -122,8 +152,15 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
             } else {
                 _restFlowLabel.text = [NSString stringWithFormat:@"%ldM", _basicInfo.product_restFlow.integerValue * 1024];
             }
+            if ([basicInfo.user_state isEqualToString:@"暂停"]) {
+                [_personalInfoButton setTitle:@"暂停使用" forState:UIControlStateNormal];
+            } else {
+                [_personalInfoButton setTitle:@"恢复使用" forState:UIControlStateNormal];
+            }
+            
             GatewaySelfServiceMenuRestFlowLevel level = [[_basicInfo.restFlowLevelDictionary allKeys] lastObject].integerValue;
             UIColor *mainColor = [UIColor colorWithHexStr:@[@"#9C9C9C",@"#64B74E",@"#FFBA13",@"#FF5100"][level]];
+            
             [self setMainColor:mainColor animated:YES];
         });
     }
@@ -154,17 +191,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     return _restFlowLabel;
 }
 
-- (UILabel *)restLabel {
-    if (!_restLabel) {
-        _restLabel = [[UILabel alloc] init];
-        _restLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _restLabel.textColor = [UIColor grayColor];
-        _restLabel.text = @"剩余";
-        [self addSubview:_restLabel];
-    }
-    return _restLabel;
-}
-
 - (UILabel *)restFlowLevelLabel {
     if (!_restFlowLevelLabel) {
         _restFlowLevelLabel = [[UILabel alloc] init];
@@ -179,13 +205,13 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 - (NSArray<UIButton *> *)restFlowViewButtons {
     if (!_restFlowViewButtons) {
         
-        UIButton *personalInfoButton = [[UIButton alloc] init];
-        personalInfoButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-        [personalInfoButton addTarget:self action:@selector(didClickedButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
-        [personalInfoButton setTitle:@"修改状态" forState:UIControlStateNormal];
-        personalInfoButton.tag = 0000;
-        [personalInfoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [self addSubview:personalInfoButton];
+        _personalInfoButton = [[UIButton alloc] init];
+        _personalInfoButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        [_personalInfoButton addTarget:self action:@selector(didClickedButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
+        _personalInfoButton.tag = 0000;
+        [_personalInfoButton setTitle:@"暂停使用" forState:UIControlStateNormal];
+        [_personalInfoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [self addSubview:_personalInfoButton];
         
         UIButton *modifyPasswordButton = [[UIButton alloc] init];
         modifyPasswordButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -205,9 +231,18 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
         [financeListButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [self addSubview:financeListButton];
         
-        _restFlowViewButtons = @[personalInfoButton, modifyPasswordButton, financeListButton];
+        _restFlowViewButtons = @[self.personalInfoButton, modifyPasswordButton, financeListButton];
     }
     return _restFlowViewButtons;
+}
+
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView = [[UIActivityIndicatorView alloc] init];
+        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        [self addSubview:_indicatorView];
+    }
+    return _indicatorView;
 }
 
 @end
@@ -350,7 +385,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                 break;
         }
     }];
-    
 }
 
 - (void)initConstrains {
@@ -363,7 +397,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 - (void)beginRefreshing {
     [self.refreshControl beginRefreshing];
     [self.model refreshData];
-    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2];
+    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:1];
 }
 
 - (void)endRefreshing {
@@ -371,25 +405,44 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     [self.tableView reloadData];
 }
 
+- (void)checkLoginState {
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeIPGW]  ? : @"";
+    
+    if (account.length > 0 && password.length > 0) {
+        [self loginWithUser:account password:password];
+    } else {
+        [self showLoginBox];
+    }
+}
+
+- (void)loginWithUser:(NSString *)account password:(NSString *)password {
+    [self showLoginBox];
+}
+
 - (void)showLoginBox {
     WS(ws);
-//    User *currentUser = [UserCenter defaultCenter].currentUser;
-//    NSString *account = currentUser.number ? : @"20155057";
-//    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeIPGW]  ? : @"009974";
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeIPGW]  ? : @"";
+    
+    
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     loginVC.modalPresentationStyle = UIModalPresentationCustom;
     loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [loginVC setupWithTitle:@"登录校卡中心"
+    [loginVC setupWithTitle:@"登录网络中心"
                    inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
                     contents:@{
-                               @(LoginInputTypeAccount):@"",
-                               @(LoginInputTypePassword):@"",
+                               @(LoginInputTypeAccount):account,
+                               @(LoginInputTypePassword):password,
                                }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
                      if (complete) {
                          NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
                          NSString *password = result[@(LoginInputTypePassword)]?:@"";
                          NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
+                         [ws.restFlowView setAnimated:YES];
                          [ws loginWithUser:userName password:password verifyCode:verifyCode];
                      } else {
                          [ws.navigationController popViewControllerAnimated:YES];
@@ -418,19 +471,37 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
             [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {
                 if (success) {
                     [_restFlowView setBasicInfo:ws.model.basicInfo];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [ws.restFlowView setAnimated:NO];
+                        
+                        if ([ws.tableView numberOfRowsInSection:0] == ws.model.onlineInfoArray.count) {
+                            [ws.tableView reloadData];
+                        } else {
+                            [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        }
+                    });
                 }
             }];
             [ws.model queryUserOnlineInformationListComplete:^(BOOL success, NSString *data) {
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [ws.tableView reloadData];
+                        if ([ws.tableView numberOfRowsInSection:1] == ws.model.onlineInfoArray.count) {
+                            [ws.tableView reloadData];
+                        } else {
+                            [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        }
                     });
                 }
             }];
             [ws.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [ws.tableView reloadData];
+                        if ([ws.tableView numberOfRowsInSection:2] == ws.model.todayInternetRecordInfoArray.count) {
+                            [ws.tableView reloadData];
+                        } else {
+                            [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        }
                     });
                 }
             }];
@@ -462,7 +533,8 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                     [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {
                         if (success) {
                             dispatch_sync(dispatch_get_main_queue(), ^{
-                                [ws.tableView reloadData];
+                                [self.restFlowView.personalInfoButton setTitle:@"恢复使用" forState:UIControlStateNormal];
+                                [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                             });
                         }
                     }];
@@ -477,7 +549,8 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                     [ws.model queryUserBasicInformationListComplete:^(BOOL success, NSString *data) {
                         if (success) {
                             dispatch_sync(dispatch_get_main_queue(), ^{
-                                [ws.tableView reloadData];
+                                [self.restFlowView.personalInfoButton setTitle:@"暂停使用" forState:UIControlStateNormal];
+                                [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
                             });
                         }
                     }];
@@ -524,7 +597,6 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
             NSString *oldPassword = result[@(LoginInputTypePassword)];
             NSString *newPassword = result[@(LoginInputTypeNewPassword)];
             NSString *rePassword = result[@(LoginInputTypeRePassword)];
-//            NSLog(@"%@-----%@", oldPassword, newPassword);
             [ws modifyPasswordWithOldPassword:oldPassword newPassword:newPassword rePassword:rePassword];
         }
     }];
@@ -558,7 +630,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"强制用户下线成功" preferredStyle:UIAlertControllerStyleAlert];
                     [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
                     [ws presentViewController:alertController animated:YES completion:nil];
-                    [ws.tableView reloadData];
+                    [ws.tableView reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
                 });
             }
         }];
