@@ -68,7 +68,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     self.infoTableView.refreshControl = self.refreshControl;
     self.navigationItem.rightBarButtonItem = self.loginButtonItem;
     _isButtonEnabled = YES;
-    [self autoLogin];
+//    [self autoLogin];
     [self.newbookModel search];
     [self.mostModel search];
 }
@@ -107,7 +107,15 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
     }
     [self.infoView removeGestureRecognizer:_gestureRecognizer];
-    [self.infoTableView reloadData];
+    if (self.infoTableView.numberOfSections == 2) {
+        [self.infoTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        if ([self.infoTableView numberOfRowsInSection:0] == self.loginModel.borrowingArr.count) {
+            [self.infoTableView reloadData];
+        } else {
+            [self.infoTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
     
 }
 
@@ -173,31 +181,55 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    switch (indexPath.section) {
-        case 0: {
-            
+    if (self.loginModel.borrowingArr.count) {
+        switch (indexPath.section) {
+            case 0: {
+                
+            }
+                break;
+                
+            case 1: {
+                SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+                [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+                [resultVC searchWithKeyword:self.bookStrings[indexPath.row] scope:0];
+                [self.navigationController pushViewController:resultVC animated:YES];
+            }
+                break;
+                
+            case 2: {
+                SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+                [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+                [resultVC searchWithKeyword:self.mostStrings[indexPath.row] scope:0];
+                [self.navigationController pushViewController:resultVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
         }
-            break;
-            
-        case 1: {
-            SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
-            [resultVC.view setBackgroundColor:[UIColor whiteColor]];
-            [resultVC searchWithKeyword:self.bookStrings[indexPath.row] scope:0];
-            [self.navigationController pushViewController:resultVC animated:YES];
+    } else {
+        switch (indexPath.section) {
+            case 0: {
+                SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+                [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+                [resultVC searchWithKeyword:self.bookStrings[indexPath.row] scope:0];
+                [self.navigationController pushViewController:resultVC animated:YES];
+            }
+                break;
+                
+            case 1: {
+                SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
+                [resultVC.view setBackgroundColor:[UIColor whiteColor]];
+                [resultVC searchWithKeyword:self.mostStrings[indexPath.row] scope:0];
+                [self.navigationController pushViewController:resultVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
         }
-            break;
-            
-        case 2: {
-            SearchLibraryResultViewController *resultVC = [[SearchLibraryResultViewController alloc] init];
-            [resultVC.view setBackgroundColor:[UIColor whiteColor]];
-            [resultVC searchWithKeyword:self.mostStrings[indexPath.row] scope:0];
-            [self.navigationController pushViewController:resultVC animated:YES];
-        }
-            break;
-            
-        default:
-            break;
     }
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -207,109 +239,186 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         headerView.contentView.backgroundColor = [UIColor whiteColor];
     }
     headerView.section = section;
-    switch (section) {
-        case 0: {
-            headerView.titleLabel.text = @"当前借阅";
-            [headerView.actionButton setTitle:@"全部续借" forState:UIControlStateNormal];
-        }
-            break;
-            
-        case 1: {
-            headerView.titleLabel.text = @"新书通报";
-            [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
-        }
-            break;
-        
-        case 2: {
-            headerView.titleLabel.text = @"热门排行";
-            [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
-        }
-            break;
-            
-        default:
-            break;
-    }
-    
-    [headerView setPerformActionBlock:^(NSInteger section) {
+    if (self.loginModel.borrowingArr.count) {
         switch (section) {
             case 0: {
-                [self.loginModel allRenewal];
+                headerView.titleLabel.text = @"当前借阅";
+                [headerView.actionButton setTitle:@"全部续借" forState:UIControlStateNormal];
             }
                 break;
                 
             case 1: {
-                LibraryNewBookViewController *newbookVC = [[LibraryNewBookViewController alloc] init];
-                [self.navigationController pushViewController:newbookVC animated:YES];
+                headerView.titleLabel.text = @"新书通报";
+                [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
             }
                 break;
-            
+                
             case 2: {
-                LibraryMostViewController *mostVC =[[LibraryMostViewController alloc] init];
-                [self.navigationController pushViewController:mostVC animated:YES];
+                headerView.titleLabel.text = @"热门排行";
+                [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
             }
                 break;
                 
             default:
                 break;
         }
-    }];
+        
+        [headerView setPerformActionBlock:^(NSInteger section) {
+            switch (section) {
+                case 0: {
+                    [self.loginModel allRenewal];
+                }
+                    break;
+                    
+                case 1: {
+                    LibraryNewBookViewController *newbookVC = [[LibraryNewBookViewController alloc] init];
+                    [self.navigationController pushViewController:newbookVC animated:YES];
+                }
+                    break;
+                    
+                case 2: {
+                    LibraryMostViewController *mostVC =[[LibraryMostViewController alloc] init];
+                    [self.navigationController pushViewController:mostVC animated:YES];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }];
+    } else {
+        switch (section) {
+            case 0: {
+                headerView.titleLabel.text = @"新书通报";
+                [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
+            }
+                break;
+                
+            case 1: {
+                headerView.titleLabel.text = @"热门排行";
+                [headerView.actionButton setTitle:@"查看全部" forState:UIControlStateNormal];
+            }
+                break;
+                
+            default:
+                break;
+        }
+        
+        [headerView setPerformActionBlock:^(NSInteger section) {
+            switch (section) {
+                case 0: {
+                    LibraryNewBookViewController *newbookVC = [[LibraryNewBookViewController alloc] init];
+                    [self.navigationController pushViewController:newbookVC animated:YES];
+                }
+                    break;
+                    
+                case 1: {
+                    LibraryMostViewController *mostVC =[[LibraryMostViewController alloc] init];
+                    [self.navigationController pushViewController:mostVC animated:YES];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }];
+    }
+    
     
     return headerView;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath { 
-    if (indexPath.section == 0) {
-        return 144;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.loginModel.borrowingArr.count) {
+        if (indexPath.section == 0) {
+            return 144;
+        } else {
+            return 44;
+        }
+    } else {
+        return 44;
     }
-    return 44;
+    
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.loginModel.borrowingArr.count == 0) {
-        if (section == 0) {
-            return 0;
-        }
-    }
     return 64;
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    if (self.loginModel.borrowingArr.count) {
+        return 3;
+    } else {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case 0:
-            return self.loginModel.borrowingArr.count;
-            break;
-        
-        case 1:
-            return self.bookStrings.count;
-            break;
-            
-        case 2:
-            return self.mostStrings.count;
-            break;
-            
-        default:
-            break;
+    if (self.loginModel.borrowingArr.count) {
+        switch (section) {
+            case 0:
+                return self.loginModel.borrowingArr.count;
+                break;
+                
+            case 1:
+                return self.bookStrings.count;
+                break;
+                
+            case 2:
+                return self.mostStrings.count;
+                break;
+                
+            default:
+                break;
+        }
+    } else {
+        switch (section) {
+            case 0:
+                return self.bookStrings.count;
+                break;
+                
+            case 1:
+                return self.mostStrings.count;
+                break;
+                
+            default:
+                break;
+        }
     }
+    
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        LibraryReturnCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryResultCellId];
-        if (!cell) {
-            cell = [[LibraryReturnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryResultCellId];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self.loginModel.borrowingArr.count) {
+        if (indexPath.section == 0) {
+            LibraryReturnCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryResultCellId];
+            if (!cell) {
+                cell = [[LibraryReturnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryResultCellId];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            [cell setButtonUserInteractionEnabled:_isButtonEnabled];
+            if (self.loginModel.borrowingArr.count) {
+                [cell setContent:self.loginModel.borrowingArr[indexPath.row]];
+            }
+            return cell;
+        } else {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryDefaultCellId];
+                cell.textLabel.textColor = [UIColor beautyBlue];
+                cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
+            }
+            if (indexPath.section == 1) {
+                cell.textLabel.text = self.bookStrings[indexPath.row];
+            } else {
+                cell.textLabel.text = self.mostStrings[indexPath.row];
+            }
+            
+            return cell;
         }
-        [cell setButtonUserInteractionEnabled:_isButtonEnabled];
-        if (self.loginModel.borrowingArr.count) {
-            [cell setContent:self.loginModel.borrowingArr[indexPath.row]];
-        }
-        return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLibraryDefaultCellId];
         if (!cell) {
