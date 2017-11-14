@@ -68,7 +68,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     self.infoTableView.refreshControl = self.refreshControl;
     self.navigationItem.rightBarButtonItem = self.loginButtonItem;
     _isButtonEnabled = YES;
-//    [self autoLogin];
+    [self autoLogin];
     [self.newbookModel search];
     [self.mostModel search];
 }
@@ -107,15 +107,17 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
     }
     [self.infoView removeGestureRecognizer:_gestureRecognizer];
-    if (self.infoTableView.numberOfSections == 2) {
-        [self.infoTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-    } else {
-        if ([self.infoTableView numberOfRowsInSection:0] == self.loginModel.borrowingArr.count) {
-            [self.infoTableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.infoTableView.numberOfSections == 2) {
+            [self.infoTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         } else {
-            [self.infoTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            if ([self.infoTableView numberOfRowsInSection:0] == self.loginModel.borrowingArr.count) {
+                [self.infoTableView reloadData];
+            } else {
+                [self.infoTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
         }
-    }
+    });
     
 }
 
