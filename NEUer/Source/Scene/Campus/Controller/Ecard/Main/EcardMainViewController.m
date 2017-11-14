@@ -18,6 +18,7 @@
 
 static NSString * const kEcardTodayConsumeHistoryHeaderViewId = @"kEcardTodayConsumeHistoryHeaderViewId";
 static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHistoryCellId";
+static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayConsumeHistoryEmptyCellId";
 
 @interface EcardMainViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -102,7 +103,7 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeECard] ? : @"";
-
+    
     // 如果用户、密码都存在 则进行登录（查询信息）操作
     if (account.length>0 && password.length>0) {
         [self loginWithUser:account password:password];
@@ -123,8 +124,10 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
             [self.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, BOOL hasMore, NSError *error) {
                 if (success) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        // 如果之前没有这个section 强行reload会崩
-                        if ([ws.consumeHistoryTableView numberOfSections]==0) {
+                        if (ws.ecardModel.todayConsumeArray.count==0) {
+                            [ws.consumeHistoryTableView reloadData];
+                        } else if ([ws.consumeHistoryTableView numberOfSections]==0) {
+                            // 如果之前没有这个section 强行reload会崩
                             [ws.consumeHistoryTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                         } else {
                             // 如果新数据源行数没有变化 那么直接reload就好 否则就直接reloadSection 避免无谓的跳动
@@ -265,8 +268,8 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
                                }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
                      if (complete) {
-//                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
-//                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
+                         //                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
+                         //                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
                      }
                  }];
     
@@ -322,28 +325,32 @@ static NSString * const kEcardTodayConsumeHistoryCellId = @"kEcardTodayConsumeHi
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EcardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kEcardTodayConsumeHistoryCellId];
-    if (!cell) {
-        cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardTodayConsumeHistoryCellId];
+    UITableViewCell *tableViewCell = nil;
+    if (self.ecardModel.todayConsumeArray.count==0) {
+        tableViewCell = [tableView dequeueReusableCellWithIdentifier:kEcardTodayConsumeHistoryEmptyCellId];
+        if (!tableViewCell) {
+            tableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardTodayConsumeHistoryEmptyCellId];
+        }
+        tableViewCell.textLabel.text = @"无";
+        tableViewCell.textLabel.textColor = [UIColor lightGrayColor];
+        tableViewCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    } else {
+        EcardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kEcardTodayConsumeHistoryCellId];
+        if (!cell) {
+            cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardTodayConsumeHistoryCellId];
+        }
+        
+        EcardConsumeBean *consumeBean = self.ecardModel.todayConsumeArray[indexPath.row];
+        
+        cell.consumeBean = consumeBean;
+        tableViewCell = cell;
     }
     
-    EcardConsumeBean *consumeBean = self.ecardModel.todayConsumeArray[indexPath.row];
-    
-    cell.consumeBean = consumeBean;
-    
-    return cell;
+    return tableViewCell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.ecardModel.todayConsumeArray.count;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.ecardModel.todayConsumeArray.count > 0) {
-        return 1;
-    } else {
-        return 0;
-    }
+    return self.ecardModel.todayConsumeArray.count != 0 ? : 1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

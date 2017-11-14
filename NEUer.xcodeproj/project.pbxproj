@@ -52,7 +52,6 @@
 		5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C945B641F7A951C001D9DC1 /* TelevisionChannelModel.m */; };
 		5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */; };
 		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
-		5C9F75971FB15BBC00729F96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C9F75961FB15BBC00729F96 /* LaunchScreen.storyboard */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -213,7 +212,6 @@
 		5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserKeychain.m; sourceTree = "<group>"; };
 		5C9895E11F822A5B00C2F93E /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5C9895E21F822A5B00C2F93E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		5C9F75961FB15BBC00729F96 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -822,7 +820,6 @@
 			isa = PBXGroup;
 			children = (
 				5C9107611F6D1C3100FA4270 /* Assets.xcassets */,
-				5C9107621F6D1C3100FA4270 /* Storyboard */,
 				5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */,
 				5CC233191F723E6A005F0A6E /* Localizable.strings */,
 				5C507C751F9CBB0B00E857CA /* tessdata */,
@@ -830,14 +827,6 @@
 				5C8B62951F7890F900310055 /* Json.bundle */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		5C9107621F6D1C3100FA4270 /* Storyboard */ = {
-			isa = PBXGroup;
-			children = (
-				5C9F75961FB15BBC00729F96 /* LaunchScreen.storyboard */,
-			);
-			path = Storyboard;
 			sourceTree = "<group>";
 		};
 		5C9107641F6D1C3100FA4270 /* Source */ = {
@@ -1539,7 +1528,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */,
-				5C9F75971FB15BBC00729F96 /* LaunchScreen.storyboard in Resources */,
 				5C8B62961F7890F900310055 /* Json.bundle in Resources */,
 				5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */,
 				5C507C761F9CBB0B00E857CA /* tessdata in Resources */,
@@ -1892,6 +1880,7 @@
 			baseConfigurationReference = 29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -1914,6 +1903,7 @@
 			baseConfigurationReference = 30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = NEUer/NEUer.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
