@@ -50,6 +50,7 @@
         _footerLabel.textAlignment = NSTextAlignmentCenter;
         _footerLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
         _footerLabel.textColor = [UIColor lightGrayColor];
+        _footerLabel.text = @"";
         
         [self addSubview:_footerLabel];
     }
@@ -59,6 +60,7 @@
 - (UIActivityIndicatorView *)indicatorView {
     if (!_indicatorView) {
         _indicatorView = [[UIActivityIndicatorView alloc] init];
+        [_indicatorView startAnimating];
         _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
         CGAffineTransform transform = CGAffineTransformMakeScale(1.3f, 1.3f);
         _indicatorView.transform = transform;

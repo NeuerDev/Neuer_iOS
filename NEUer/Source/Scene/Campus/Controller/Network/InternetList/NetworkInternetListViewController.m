@@ -14,17 +14,11 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 @interface NetworkInternetListViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-//@property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) NetworkReuseFooterView *footerView;
 
 @end
 
 @implementation NetworkInternetListViewController
-{
-    NSInteger _maxLineNumber;
-}
 
 #pragma mark - Life Circle
 
@@ -45,33 +39,26 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     self.title = @"上网明细";
 
     [self beginRefreshing];
-    _maxLineNumber = 0;
-//    self.tableView.refreshControl = self.refreshControl;
 }
 
 - (void)initConstaints {
-    self.scrollView.frame = self.view.frame;
-//    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL - self.navigationController.navigationBar.frame.size.height);
     
-    self.tableView.frame = self.scrollView.frame;
-    [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-    }];
+    self.tableView.frame = self.view.frame;
+
 }
 
 #pragma mark - Response Method
 
 - (void)beginRefreshing {
-//    [self.refreshControl beginRefreshing];
-    [self.indicatorView startAnimating];
+    self.activityIndicatorView.hidden = NO;
+    [self.activityIndicatorView startAnimating];
     WS(ws);
     
     [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
         if (success) {
             
-            _maxLineNumber = 0;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [ws.indicatorView stopAnimating];
+                [ws.activityIndicatorView stopAnimating];
                 if ([ws.tableView numberOfSections] == 0) {
                     [ws.tableView reloadData];
                 } else {
@@ -82,12 +69,8 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
             });
         }
     }];
-//    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:2.0f];
+
 }
-//
-//- (void)endRefreshing {
-//    [self.refreshControl endRefreshing];
-//}
 
 #pragma mark - UITableViewDataSource
 
@@ -98,7 +81,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     }
     cell.infoBean = self.model.internetRecordInfoArray[indexPath.row];
     
-    if (self.model.internetRecordInfoArray.count - indexPath.row < 5) {
+    if (self.model.internetRecordInfoArray.count - indexPath.row < 3) {
         [self loadMore];
     }
     
@@ -117,23 +100,6 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    
-    NetworkReuseFooterView *footerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kNetworkFooterViewReuseID];
-    
-    if (!footerView) {
-        footerView = [[NetworkReuseFooterView alloc] init];
-    }
-    if (!_maxLineNumber) {
-        [footerView setAnimated:YES];
-    } else {
-        [footerView setAnimated:NO];
-    }
-    footerView.contentView.backgroundColor = [UIColor whiteColor];
-    
-    return footerView;
-}
-
 
 #pragma mark - UITableViewDelegate
 
@@ -148,12 +114,13 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         [ws.model queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self.model.appendingInternetRecordInfoArray.count > 0) {
+                    [ws.footerView setAnimated:YES];
+                    if (ws.model.appendingInternetRecordInfoArray.count > 0) {
                         [ws appendingDataWithArray:self.model.appendingInternetRecordInfoArray];
+                    } else {
+                        [ws.footerView setAnimated:NO];
                     }
                 });
-            } else {
-                _maxLineNumber = ws.model.internetRecordInfoArray.count;
             }
         }];
     });
@@ -179,38 +146,24 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.allowsSelection = NO;
-        //        去掉groupTableView最上面的空白
-        _tableView.tableHeaderView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
-        _tableView.estimatedRowHeight = 0;
-        _tableView.estimatedSectionHeaderHeight = 0;
-        _tableView.estimatedSectionFooterHeight = 0;
         
-        [self.scrollView addSubview:_tableView];
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 64)];
+        [footerView addSubview:self.footerView];
+        [self.footerView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(footerView);
+        }];
+        [footerView layoutIfNeeded];
+        
+        _tableView.tableFooterView = footerView;
+        [self.view addSubview:_tableView];
     }
     return _tableView;
-}
-//
-//- (UIRefreshControl *)refreshControl {
-//    if (!_refreshControl) {
-//        _refreshControl = [[UIRefreshControl alloc] init];
-//        [_refreshControl addTarget:self action:@selector(beginRefreshing) forControlEvents:UIControlEventValueChanged];
-//    }
-//    return _refreshControl;
-//}
-
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        _scrollView.delegate  = self;
-        [self.view addSubview:_scrollView];
-    }
-    return _scrollView;
 }
 
 - (NetworkReuseFooterView *)footerView {
@@ -218,14 +171,6 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         _footerView = [[NetworkReuseFooterView alloc] init];
     }
     return _footerView;
-}
-
-- (UIActivityIndicatorView *)indicatorView {
-    if (!_indicatorView) {
-        _indicatorView = [[UIActivityIndicatorView alloc] init];
-        [self.view addSubview:_indicatorView];
-    }
-    return _indicatorView;
 }
 
 @end

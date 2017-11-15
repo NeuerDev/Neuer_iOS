@@ -485,7 +485,7 @@
             _queryInternetListBlock(YES, @"查询成功");
             return;
         } else {
-            if (![[self.internetRecordInfoArray lastObject].internet_lastactive isEqualToString:[internetMutableArray lastObject].internet_lastactive]) {
+            if (![[self.internetRecordInfoArray lastObject].internet_logoutTime isEqualToString:[internetMutableArray lastObject].internet_logoutTime]) {
                 [self.internetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
                 [self.appendingInternetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
                 _logDetailPage++;

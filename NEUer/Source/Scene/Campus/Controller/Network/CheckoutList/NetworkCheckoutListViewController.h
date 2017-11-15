@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class GatewaySelfServiceMenuModel;
 
-@interface NetworkCheckoutListViewController : UIViewController
+@interface NetworkCheckoutListViewController : JHBaseViewController
 
 @property (nonatomic, strong) GatewaySelfServiceMenuModel *model;
 
