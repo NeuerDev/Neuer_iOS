@@ -87,9 +87,7 @@
     
     _logDetailPage = 1;
     
-    while (_internetRecordInfoArray.count > 10) {
-        [_internetRecordInfoArray removeLastObject];
-    }
+    [_internetRecordInfoArray removeAllObjects];
     
     [self queryUserOnlineLogDetailListComplete:^(BOOL success, NSString *data) {
         
@@ -105,9 +103,7 @@
     _financialCheckoutPage = 1;
     _refreshBlock = block;
     
-    while (_financialCheckoutInfoArray.count >= 10) {
-        [_financialCheckoutInfoArray removeAllObjects];
-    }
+    [_financialCheckoutInfoArray removeAllObjects];
     
     [self queryUserFinancialCheckOutListComlete:^(BOOL success, NSString *data) {
         if (success) {
@@ -124,9 +120,7 @@
     
     _financialPayPage = 1;
     
-    while (_financialPayInfoArray.count >= 10) {
-        [_financialPayInfoArray removeAllObjects];
-    }
+    [_financialPayInfoArray removeAllObjects];
     
     [self queryUserOnlineFinancialPayListComplete:^(BOOL success, NSString *data) {
         if (success) {
@@ -485,7 +479,7 @@
             _queryInternetListBlock(YES, @"查询成功");
             return;
         } else {
-            if (![[self.internetRecordInfoArray lastObject].internet_logoutTime isEqualToString:[internetMutableArray lastObject].internet_logoutTime]) {
+            if (!([[self.internetRecordInfoArray lastObject].internet_logoutTime isEqualToString:[internetMutableArray lastObject].internet_logoutTime] && [[self.internetRecordInfoArray lastObject].internet_lastactive isEqualToString:[internetMutableArray lastObject].internet_lastactive])) {
                 [self.internetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
                 [self.appendingInternetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
                 _logDetailPage++;

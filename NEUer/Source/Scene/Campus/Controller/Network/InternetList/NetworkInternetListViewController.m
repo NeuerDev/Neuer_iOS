@@ -67,6 +67,8 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
                     }
                 }
             });
+        } else {
+            NSLog(@"加载失败");
         }
     }];
 
