@@ -28,6 +28,7 @@
     CGFloat _touchBeginY;
     CGFloat _contentHeight;
     BOOL _complete;
+    BOOL _firstTimeShow;
 }
 
 #pragma mark - Life Circle
@@ -37,6 +38,7 @@
     self.view.backgroundColor = [UIColor clearColor];
     _contentHeight = SCREEN_HEIGHT_ACTUAL*0.9;
     _originY = SCREEN_HEIGHT_ACTUAL - _contentHeight;
+    _firstTimeShow = YES;
     self.maskView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
     self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
     self.titleLabel.text = self.title;
@@ -63,7 +65,7 @@
             UIView *view = _inputViews[index];
             [self.contentView addSubview:view];
             [view mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(lastView.mas_bottom).with.offset(24);
+                make.top.equalTo(lastView.mas_bottom).with.offset(16);
                 make.left.right.equalTo(lastView);
             }];
             lastView = view;
@@ -176,7 +178,21 @@
         self.maskView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         self.maskView.alpha = 1;
         self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL-_contentHeight, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        if (_firstTimeShow) {
+            NEUInputView *firstResponser = nil;
+            for (NEUInputView *inputView in self.inputViews) {
+                if (inputView.textField.text.length == 0) {
+                    firstResponser = inputView;
+                    break;
+                } else if (inputView.textField.enabled) {
+                    firstResponser = inputView;
+                }
+            }
+            [firstResponser.textField becomeFirstResponder];
+            _firstTimeShow = NO;
+        }
+    }];
 }
 
 - (void)hideContentView {
@@ -209,7 +225,7 @@
     UIView *lastView = [_inputViews firstObject];
     if (lastView) {
         [lastView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView.mas_top).with.offset(24);
+            make.top.equalTo(self.contentView.mas_top).with.offset(36);
         }];
     }
     [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -341,10 +357,14 @@
                 G8Tesseract *tesseract = [TesseractCenter defaultCenter].tesseract;
                 tesseract.image = verifyImage;
                 if ([tesseract recognize]) {
+                    NSLog(@"识别成功 ---%@---", tesseract.recognizedText);
                     dispatch_async(dispatch_get_main_queue(), ^{
                         inputView.textField.text = [[tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByReplacingOccurrencesOfString:@" " withString:@""];
+                        
                         [self refreshViewState];
                     });
+                } else {
+                    NSLog(@"识别失败");
                 }
             });
         }
@@ -357,7 +377,7 @@
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor whiteColor];
-        _contentView.layer.cornerRadius = 8;
+        _contentView.layer.cornerRadius = 16;
         [self.view addSubview:_contentView];
     }
     
@@ -377,7 +397,11 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle];
+        if (@available(iOS 11.0, *)) {
+            _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle];
+        } else {
+            _titleLabel.font = [UIFont systemFontOfSize:34.0f];
+        }
         [self.contentView addSubview:_titleLabel];
     }
     
@@ -387,6 +411,8 @@
 - (UIButton *)loginButton {
     if (!_loginButton) {
         _loginButton = [[UIButton alloc] init];
+        _loginButton.layer.cornerRadius = 44.0f/2.0f;
+        _loginButton.layer.masksToBounds = YES;
         [_loginButton setTitle:@"确认" forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(didLoginButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_loginButton];

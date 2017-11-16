@@ -134,3 +134,19 @@
 
 "MeTabBarItemTitle" = "Me";
 "MeNavigationBarTitle" = "Me";
+
+
+/*
+ Login
+ */
+
+"LoginAccountHint" = "Account";
+"LoginIdentityNumberHint" = "Identity Number";
+"LoginPasswordHint" = "Password";
+"LoginNewPasswordHint" = "New Password";
+"LoginRePasswordHint" = "Confirm Password";
+"LoginVerifyCodeHint" = "Verify Code";
+
+"LoginActionTitleShow" = "Show";
+"LoginActionTitleHide" = "Hide";
+"LoginActionTitleRefresh" = "Refresh";

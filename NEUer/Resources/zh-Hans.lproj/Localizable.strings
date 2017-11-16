@@ -133,3 +133,19 @@
 
 "MeTabBarItemTitle" = "我的";
 "MeNavigationBarTitle" = "我的";
+
+
+/*
+ Login
+ */
+
+"LoginAccountHint" = "学号";
+"LoginIdentityNumberHint" = "身份证";
+"LoginPasswordHint" = "密码";
+"LoginNewPasswordHint" = "新密码";
+"LoginRePasswordHint" = "确认新密码";
+"LoginVerifyCodeHint" = "验证码";
+
+"LoginActionTitleShow" = "显示";
+"LoginActionTitleHide" = "隐藏";
+"LoginActionTitleRefresh" = "换一张";

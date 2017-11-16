@@ -8,7 +8,6 @@
 
 #import "GatewayModel.h"
 #import "JHRequest.h"
-#import "AFNetworking.h"
 #import "LYTool.h"
 
 @implementation GatewayBean
@@ -154,17 +153,17 @@
                             @"username":[userDefault valueForKey:@"account"]
                             };
 
-    AFNetworkReachabilityManager *reachManager = [AFNetworkReachabilityManager manager];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [reachManager startMonitoring];
+//    AFNetworkReachabilityManager *reachManager = [AFNetworkReachabilityManager manager];
+//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    [reachManager startMonitoring];
     
 //    NSLog(@"%@", [LYTool getDeviceIPAddressesOnWifi]);
-    [manager POST:@"https://ipgw.neu.edu.cn/srun_portal_pc.php?" parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"退出成功！");
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"退出失败");
-    }];
+//    [manager POST:@"https://ipgw.neu.edu.cn/srun_portal_pc.php?" parameters:param progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"退出成功！");
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"退出失败");
+//    }];
 }
 
 - (GatewayBean *)gatewayInfo {

@@ -13,7 +13,7 @@
 typedef NS_ENUM(NSInteger, UserKeyType) {
     UserKeyTypeAAO,
     UserKeyTypeIPGW,
-    UserKeyTypeCard,
+    UserKeyTypeECard,
     UserKeyTypeLib,
 };
 

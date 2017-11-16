@@ -64,7 +64,7 @@ static DataBaseCenter *_singletonCenter;
     // user table
     NSString *sql = @"create table if not exists t_user (number text primary key, realName text, nickName text, sex integer, campus text, major text, imageData blob, avatarUrl text, wechatId text, qqId text, weiboId text, enrollDate integer, token text, lastLoginTime integer);"
     @"create table if not exists t_key (number text, keyType integer, password text);"
-    @"create table if not exists t_ecard (number text primary key, state text, balance text, status text, lastUpdateTime integer);";
+    @"create table if not exists t_ecard (number text primary key, state text, balance text, allowance text, status text, lastUpdateTime integer);";
     
     if ([_db executeStatements:sql]) {
         NSLog(@"数据库初始化成功");

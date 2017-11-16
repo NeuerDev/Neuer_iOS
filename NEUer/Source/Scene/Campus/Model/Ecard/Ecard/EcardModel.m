@@ -21,6 +21,11 @@
 
 @property (nonatomic, strong) NSURLSession *session;
 
+@property (nonatomic, strong) EcardLoginModel *loginModel;
+@property (nonatomic, strong) EcardInfoModel *infoModel;
+@property (nonatomic, strong) EcardServiceModel *serviceModel;
+@property (nonatomic, strong) EcardHistoryModel *historyModel;
+
 @end
 
 @implementation EcardModel {
@@ -36,81 +41,16 @@
     return self;
 }
 
-- (void)getVerifyImage:(EcardGetVerifyImageBlock)block {
-    WS(ws);
-    
-    NSArray<NSHTTPCookie *> *cookies = self.session.configuration.HTTPCookieStorage.cookies;
-    for (NSHTTPCookie *cookie in cookies) {
-        if ([cookie.domain isEqualToString:@"ecard.neu.edu.cn"]) {
-            [self.session.configuration.HTTPCookieStorage deleteCookie:cookie];
-        }
-    }
-    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-    
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSString *setCookies = ((NSHTTPURLResponse *)response).allHeaderFields[@"Set-Cookie"];
-        for (NSString *string in [setCookies componentsSeparatedByString:@";"]) {
-            NSArray *components = [string componentsSeparatedByString:@"="];
-            if (components.count==2&&[components[0] isEqualToString:@"ASP.NET_SessionId"]) {
-                ws.cookie = [NSString stringWithFormat:@".NECEID=1; .NEWCAPEC1=$newcapec$:zh-CN_CAMPUS; ASP.NET_SessionId=%@", components[1]];
-                break;
-            } else {
-                continue;
-            }
+- (void)loginWithUser:(NSString *)userName password:(NSString *)password complete:(EcardActionCompleteBlock)block {
+    [self.loginModel loginWithUser:userName password:password complete:^(BOOL success, NSError *error) {
+        if (success) {
+            [[UserCenter defaultCenter] setAccount:userName password:password forKeyType:UserKeyTypeECard];
         }
         
-        TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
-        
-        NSArray<TFHppleElement *> *viewStateArray = [xpathParser searchWithXPathQuery:@"//*[@id='__VIEWSTATE']"];
-        ws.viewStateStr = [[viewStateArray firstObject] objectForKey:@"value"] ? : @"";
-        ws.eventTargetStr = @"btnLogin";
-        ws.eventArgumentStr = @"";
-        NSArray<TFHppleElement *> *eventValidationArray = [xpathParser searchWithXPathQuery:@"//*[@id='__EVENTVALIDATION']"];
-        ws.eventValidationStr = [[eventValidationArray firstObject] objectForKey:@"value"] ? : @"";
-        NSArray<TFHppleElement *> *lastFocusArray = [xpathParser searchWithXPathQuery:@"//*[@id='__LASTFOCUS']"];
-        ws.lastFocusStr = [[lastFocusArray firstObject] objectForKey:@"value"] ? : @"";
-        
-        SDWebImageDownloader *downloader = [SDWebImageManager sharedManager].imageDownloader;
-        [downloader setValue:ws.cookie forHTTPHeaderField:@"Cookie"];
-        [downloader downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ecard.neu.edu.cn/SelfSearch/validateimage.ashx?%.16lf", rand()/(double)RAND_MAX]] options:SDWebImageDownloaderHighPriority progress:nil completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                block(image, @"");
-            });
-        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(success, error);
+        });
     }];
-    [task resume];
-}
-
-- (void)authorUser:(NSString *)userName password:(NSString *)password verifyCode:(NSString *)verifyCode complete:(EcardActionCompleteBlock)block {
-    WS(ws);
-    _currentActionBlock = block;
-    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/Login.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-    urlRequest.HTTPMethod = @"POST";
-    NSDictionary *params = @{
-                             @"__VIEWSTATE":ws.viewStateStr,
-                             @"__EVENTTARGET":ws.eventTargetStr,
-                             @"__EVENTARGUMENT":ws.eventArgumentStr,
-                             @"__EVENTVALIDATION":ws.eventValidationStr,
-                             @"__LASTFOCUS":ws.lastFocusStr,
-                             @"txtUserName":userName,
-                             @"txtPassword":password,
-                             @"txtVaildateCode":verifyCode,
-                             @"hfIsManager":@"0",
-                             };
-    NSMutableString *bodyStr = [[NSMutableString alloc] init];
-    for (NSString *key in params) {
-        if (bodyStr.length==0) {
-            [bodyStr appendFormat:@"%@=%@", key, params[key]?:@""];
-        } else {
-            [bodyStr appendFormat:@"&%@=%@", key, params[key]?:@""];
-        }
-    }
-    urlRequest.HTTPBody = [bodyStr.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-    }];
-    
-    [task resume];
 }
 
 - (void)fetchAvatarComplete:(EcardActionCompleteBlock)block {
@@ -128,12 +68,12 @@
                 if (!currentUser.imageData) {
                     currentUser.imageData = data;
                 }
-                [currentUser commitUpdates];                
+                [currentUser commitUpdates];
             }
         }
         if (block) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                    block(data && !error, error);
+                block(data && !error, error);
             });
         }
     }];
@@ -364,6 +304,14 @@
     return _session;
 }
 
+- (EcardLoginModel *)loginModel {
+    if (!_loginModel) {
+        _loginModel = [[EcardLoginModel alloc] init];
+    }
+    
+    return _loginModel;
+}
+
 @end
 
 @implementation EcardInfoBean
@@ -384,7 +332,7 @@
         info.balance = [result stringForColumn:@"balance"];
         info.allowance = [result stringForColumn:@"allowance"];
         info.status = [result stringForColumn:@"status"];
-        info.image = [UIImage imageWithData:[result dataForColumn:@"imageData"]];
+        info.image = [UIImage imageWithData:UserCenter.defaultCenter.currentUser.imageData];
         info.lastUpdateTime = [result intForColumn:@"lastUpdateTime"];
     }
     return info;
@@ -432,7 +380,7 @@
     [currentUser commitUpdates];
     
     FMDatabase *db = [DataBaseCenter defaultCenter].database;
-    [db executeUpdate:@"replace into t_ecard (number, state, balance, status, lastUpdateTime) values (?, ?, ?, ?, ?)", _number, _state, _balance, _status, @(_lastUpdateTime)];
+    [db executeUpdate:@"replace into t_ecard (number, state, balance, allowance, status, lastUpdateTime) values (?, ?, ?, ?, ?, ?)", _number, _state, _balance, _allowance, _status, @(_lastUpdateTime)];
 }
 
 @end;
@@ -498,7 +446,7 @@
 
 - (NSString *)desc {
     if (!_desc) {
-        _desc = [NSString stringWithFormat:@"%@ %@", self.window, self.time];
+        _desc = [NSString stringWithFormat:@"%@ %@", self.time, self.window];
     }
     
     return _desc;
@@ -522,32 +470,40 @@
             if (hour>5 && hour<10) {
                 // 早餐
                 _detail = @{
-                  @"浑南一楼1#":@"豆浆",
-                  @"浑南一楼2#":@"豆浆",
-                  @"浑南一楼5#":@"面包糕点",
-                  @"浑南一楼17#":@"油条",
-                  @"浑南一楼38#":@"早餐馄饨",
-                  @"浑南三楼123#":@"饮料粥品",
-                  }[_device] ? : _device;
+                            @"浑南一楼1#":@"豆浆",
+                            @"浑南一楼2#":@"豆浆",
+                            @"浑南一楼5#":@"面包糕点",
+                            @"浑南一楼17#":@"油条",
+                            @"浑南一楼38#":@"早餐馄饨",
+                            @"浑南三楼123#":@"饮料粥品",
+                            }[_device] ? : _device;
             } else if (hour>=10 && hour<15) {
                 // 午餐
                 _detail = @{
-                  @"浑南一楼1#":@"豆浆",
-                  @"浑南一楼2#":@"豆浆",
-                  @"浑南一楼5#":@"一楼面",
-                  @"浑南一楼38#":@"蒸笼",
-                  @"浑南一楼40#":@"水饺",
-                  @"浑南二楼74#":@"锅贴炖汤",
-                  @"浑南二楼91#":@"米饭",
-                  @"浑南二楼103#":@"煎蛋饭",
-                  @"浑南三楼123#":@"饮料粥品",
-                  }[_device] ? : _device;
+                            @"浑南一楼1#":@"豆浆",
+                            @"浑南一楼2#":@"豆浆",
+                            @"浑南一楼5#":@"面食",
+                            @"浑南一楼7#":@"拉面、干拌面",
+                            @"浑南一楼24#":@"自选菜品",
+                            @"浑南一楼26#":@"煎蛋饭",
+                            @"浑南一楼27#":@"米饭",
+                            @"浑南一楼38#":@"蒸笼",
+                            @"浑南一楼40#":@"水饺",
+                            @"浑南二楼74#":@"锅贴炖汤",
+                            @"浑南二楼91#":@"米饭",
+                            @"浑南二楼103#":@"煎蛋饭",
+                            @"浑南三楼123#":@"饮料粥品",
+                            }[_device] ? : _device;
             } else if (hour>=15 && hour<23) {
                 // 晚餐
                 _detail = @{
                             @"浑南一楼1#":@"豆浆",
                             @"浑南一楼2#":@"豆浆",
-                            @"浑南一楼5#":@"一楼面",
+                            @"浑南一楼5#":@"面食",
+                            @"浑南一楼7#":@"拉面、干拌面",
+                            @"浑南一楼24#":@"自选菜品",
+                            @"浑南一楼26#":@"煎蛋饭",
+                            @"浑南一楼27#":@"米饭",
                             @"浑南一楼38#":@"蒸笼",
                             @"浑南一楼40#":@"水饺",
                             @"浑南二楼74#":@"锅贴炖汤",
@@ -577,7 +533,7 @@
                                                      @"一楼超市":@"一楼超市",
                                                      @"二楼超市":@"二楼超市",
                                                      @"水果":@"水果店",
-                                                  };
+                                                     };
             
             for (NSString *regex in specificWindowRegexMap) {
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
@@ -594,13 +550,17 @@
                             @"浑南一楼1#":@"原磨豆浆窗口",
                             @"浑南一楼2#":@"原磨豆浆窗口",
                             @"浑南一楼5#":@"早餐西点窗口",
-                            @"浑南一楼17#":@"早餐油条窗口",
-                            @"浑南一楼38#":@"蒸笼窗口",
-                            @"浑南一楼40#":@"水饺窗口",
-                            @"浑南二楼74#":@"锅贴炖汤窗口",
-                            @"浑南二楼91#":@"米饭窗口",
-                            @"浑南二楼103#":@"煎蛋饭窗口",
-                            @"浑南三楼123#":@"粥品窗口",
+                            @"浑南一楼7#":@"一楼兰州拉面窗口",
+                            @"浑南一楼17#":@"一楼早餐油条窗口",
+                            @"浑南一楼24#":@"一楼自选菜品窗口",
+                            @"浑南一楼26#":@"一楼煎蛋饭窗口",
+                            @"浑南一楼27#":@"一楼米饭窗口",
+                            @"浑南一楼38#":@"一楼蒸笼窗口",
+                            @"浑南一楼40#":@"一楼水饺窗口",
+                            @"浑南二楼74#":@"二楼锅贴炖汤窗口",
+                            @"浑南二楼91#":@"二楼米饭窗口",
+                            @"浑南二楼103#":@"二楼煎蛋饭窗口",
+                            @"浑南三楼123#":@"三楼粥品窗口",
                             }[_device] ? : _device;
                 
             }
