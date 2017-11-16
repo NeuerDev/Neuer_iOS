@@ -13,15 +13,13 @@
 @interface JHBaseViewController : UIViewController <JHURLRouterViewControllerProtocol>
 @property (nonatomic, strong) UIView *placeholderView;
 @property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) UILabel *detailLaebl;
+@property (nonatomic, strong) UILabel *detailLabel;
 @property (nonatomic, strong) UIButton *retryBtn;
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
-
 - (void)showPlaceHolder;
 - (void)hidePlaceHolder;
 - (void)retry:(UIButton *)sender;
-
 
 @end

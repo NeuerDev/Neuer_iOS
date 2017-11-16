@@ -346,7 +346,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initData];
-    [self initConstrains];
+    [self initConstraints];
     [self showLoginBox];
 }
 
@@ -387,7 +387,7 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     }];
 }
 
-- (void)initConstrains {
+- (void)initConstraints {
     self.tableView.frame = self.view.frame;
 }
 

@@ -192,7 +192,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initData];
-    [self initConstaints];
+    [self initConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -209,7 +209,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
     [self beginRefreshing];
 }
 
-- (void)initConstaints {
+- (void)initConstraints {
     self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
 }
 

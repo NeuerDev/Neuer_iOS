@@ -29,6 +29,10 @@
 }
 
 - (void)initConstraints {
+    
+}
+
+- (void)initBaseConstraints {
     [self.placeholderView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.width.mas_equalTo(SCREEN_WIDTH_ACTUAL);
@@ -41,7 +45,7 @@
         make.height.mas_equalTo(30);
     }];
 
-    [self.detailLaebl mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.label.mas_bottom).with.offset(10);
         make.left.equalTo(self.placeholderView.mas_left).with.offset(50);
         make.right.equalTo(self.placeholderView.mas_right).with.offset(-50);
@@ -49,9 +53,9 @@
     }];
 
     [self.retryBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.detailLaebl.mas_bottom).with.offset(30);
+        make.top.equalTo(self.detailLabel.mas_bottom).with.offset(30);
         make.height.mas_equalTo(50);
-        make.width.equalTo(self.detailLaebl.mas_width).with.multipliedBy(0.5);
+        make.width.equalTo(self.detailLabel.mas_width).with.multipliedBy(0.5);
         make.centerX.equalTo(self.placeholderView);
         make.bottom.equalTo(self.placeholderView.mas_bottom);
     }];
@@ -63,6 +67,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initConstraints];
+    [self initBaseConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -149,20 +154,20 @@
    return _label;
 }
 
-- (UILabel *)detailLaebl {
-    if (!_detailLaebl) {
-        _detailLaebl = [[UILabel alloc] init];
-        _detailLaebl.numberOfLines = 0;
-        _detailLaebl.text = @"The page you are looking for doesn't seem to exist...";
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_detailLaebl.text];
+- (UILabel *)detailLabel {
+    if (!_detailLabel) {
+        _detailLabel = [[UILabel alloc] init];
+        _detailLabel.numberOfLines = 0;
+        _detailLabel.text = @"The page you are looking for doesn't seem to exist...";
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_detailLabel.text];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:8.0];
-        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, _detailLaebl.text.length)];
-        _detailLaebl.attributedText = attributedString;
-        _detailLaebl.textAlignment = NSTextAlignmentCenter;
-        [self.placeholderView addSubview:_detailLaebl];
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, _detailLabel.text.length)];
+        _detailLabel.attributedText = attributedString;
+        _detailLabel.textAlignment = NSTextAlignmentCenter;
+        [self.placeholderView addSubview:_detailLabel];
     }
-   return _detailLaebl;
+   return _detailLabel;
 }
 
 - (UIButton *)retryBtn {
