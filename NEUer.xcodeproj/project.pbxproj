@@ -43,7 +43,7 @@
 		5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4331F97468300B1EA2C /* CustomSectionHeaderFooterView.m */; };
 		5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD4371F974CAC00B1EA2C /* SpringCollectionViewLayout.m */; };
 		5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */; };
-		5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */; };
+		5C62BFBB1F9AEF19005EBDCE /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C62BFBA1F9AEF19005EBDCE /* LoginViewController.m */; };
 		5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */; };
 		5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
@@ -227,7 +227,7 @@
 		5C5FD43A1F975CBF00B1EA2C /* EcardCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardCenter.h; sourceTree = "<group>"; };
 		5C5FD43B1F975CBF00B1EA2C /* EcardCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardCenter.m; sourceTree = "<group>"; };
 		5C62BFB91F9AEF19005EBDCE /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LoginViewController.mm; sourceTree = "<group>"; };
+		5C62BFBA1F9AEF19005EBDCE /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		5C64D8A01F98F7FD001CDB89 /* EcardTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardTableViewCell.h; sourceTree = "<group>"; };
 		5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardTableViewCell.m; sourceTree = "<group>"; };
 		5C64D8A41F999663001CDB89 /* NSDictionary+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JHCategory.h"; sourceTree = "<group>"; };
@@ -1386,7 +1386,7 @@
 			isa = PBXGroup;
 			children = (
 				5C62BFB91F9AEF19005EBDCE /* LoginViewController.h */,
-				5C62BFBA1F9AEF19005EBDCE /* LoginViewController.mm */,
+				5C62BFBA1F9AEF19005EBDCE /* LoginViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2126,7 +2126,7 @@
 				5CF377FE1FB534AE00BC141E /* EcardServiceModel.m in Sources */,
 				5CDA535E1FAEB4E000BC9E99 /* ARBuilding.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
-				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
+				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.m in Sources */,
 				332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */,
 				5CF377FB1FB5349800BC141E /* EcardHistoryModel.m in Sources */,
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
@@ -2319,7 +2319,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2341,7 +2341,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NEUer/PrefixHeader.pch;
 				INFOPLIST_FILE = NEUer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jiahong.NEUer;
 				PRODUCT_NAME = "$(TARGET_NAME)";

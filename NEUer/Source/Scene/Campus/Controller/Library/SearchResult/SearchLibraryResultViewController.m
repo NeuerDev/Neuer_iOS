@@ -520,6 +520,11 @@ const NSInteger kPreloadThreshold = 3;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        _collectionView.contentInset = ({
+            CGFloat topMargin = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) + 99;
+            UIEdgeInsetsMake(topMargin, 0, 0, 0);
+        });
         [_collectionView registerClass:[LibraryResultCell class] forCellWithReuseIdentifier:kCellId];
         [_collectionView registerClass:[SearchLibraryResultReuseView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kHeaderId];
         [_collectionView registerClass:[SearchLibraryResultReuseView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kFooterId];

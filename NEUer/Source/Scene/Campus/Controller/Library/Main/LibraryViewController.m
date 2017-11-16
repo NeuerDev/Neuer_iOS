@@ -77,7 +77,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     self.infoTableView.frame = self.view.frame;
     
     [self.bookNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.infoView.mas_top).with.offset(32);
+        make.centerY.equalTo(self.infoView.mas_bottom).multipliedBy(1-0.618);
         make.centerX.equalTo(self.infoView);
     }];
     
@@ -102,7 +102,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     UIColor *mainColor = [UIColor colorWithHexStr:@[@"#64B74E",@"#FFBA13",@"#FF5100"][loginBean.returnDateLevel]];
     [self setMainColor:mainColor animated:YES];
     if (loginBean.days == 30000000) {
-        [self.bookNumLabel setText:@"未借书"];
+        [self.bookNumLabel setText:@"当前无借阅"];
     } else {
         [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
     }
@@ -345,7 +345,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 64;
+    return 44;
 }
 
 #pragma mark - UITableViewDataSource
@@ -558,13 +558,14 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         _infoTableView.dataSource = self;
         _infoTableView.delegate = self;
         _infoView.backgroundColor = [UIColor clearColor];
+        _infoTableView.showsVerticalScrollIndicator = NO;
         
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*0.5)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*9.0f/16.0f)];
         [headerView addSubview:self.infoView];
         [self.infoView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(headerView);
             make.width.mas_equalTo(@(SCREEN_WIDTH_ACTUAL-32));
-            make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*0.5));
+            make.height.mas_equalTo(@((SCREEN_WIDTH_ACTUAL-32)*9.0f/16.0f));
         }];
         [headerView layoutIfNeeded];
         
@@ -652,35 +653,27 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 - (void)initConstraints {
-    [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(8, 16, 8, 16));
-    }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cardView.mas_left).with.offset(14);
-        make.right.equalTo(self.cardView.mas_right).with.offset(-14);
-        make.top.equalTo(self.cardView.mas_top).with.offset(14);
+        make.left.equalTo(self.contentView.mas_left).with.offset(16);
+        make.right.equalTo(self.contentView.mas_right);
+        make.top.equalTo(self.contentView.mas_top).with.offset(16);
     }];
     
     [self.returndateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.cardView).with.offset(-14);
+        make.bottom.equalTo(self.contentView).with.offset(-14);
         make.left.equalTo(self.titleLabel);
     }];
     
-    [self.authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).with.offset(10);
         make.left.equalTo(self.titleLabel);
     }];
     
-    [self.callNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.authorLabel.mas_right).with.offset(10);
-        make.top.equalTo(self.authorLabel);
-    }];
-    
     [self.refurbishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(30);
-        make.width.mas_equalTo(80);
-        make.right.equalTo(self.cardView).with.offset(-24);
+        make.width.mas_equalTo(72);
+        make.right.equalTo(self.contentView).with.offset(-16);
         make.bottom.equalTo(self.returndateLabel);
     }];
 }
@@ -705,45 +698,26 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 #pragma mark - Getter
-- (UIView *)cardView {
-    if (!_cardView) {
-        _cardView = [[UIView alloc] init];
-        _cardView.backgroundColor = [UIColor whiteColor];
-        [self.contentView addSubview:_cardView];
-    }
-   return _cardView;
-}
 
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
        _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         _titleLabel.numberOfLines = 2;
-       [self.cardView addSubview:_titleLabel];
+       [self.contentView addSubview:_titleLabel];
     }
    return _titleLabel;
 }
 
-- (UILabel *)callNumLabel {
-    if (!_callNumLabel) {
-        _callNumLabel = [[UILabel alloc] init];
-        _callNumLabel.textColor = [UIColor grayColor];
-        _callNumLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _callNumLabel.numberOfLines = 1;
-        [self.cardView addSubview:_callNumLabel];
+- (UILabel *)infoLabel {
+    if (!_infoLabel) {
+        _infoLabel = [[UILabel alloc] init];
+        _infoLabel.textColor = [UIColor grayColor];
+        _infoLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        _infoLabel.numberOfLines = 1;
+        [self.contentView addSubview:_infoLabel];
     }
-   return _callNumLabel;
-}
-
-- (UILabel *)authorLabel {
-    if (!_authorLabel) {
-        _authorLabel = [[UILabel alloc] init];
-        _authorLabel.textColor = [UIColor grayColor];
-        _authorLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _authorLabel.numberOfLines = 1;
-        [self.cardView addSubview:_authorLabel];
-    }
-   return _authorLabel;
+   return _infoLabel;
 }
 
 - (UILabel *)returndateLabel {
@@ -752,7 +726,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         _returndateLabel.textColor = [UIColor grayColor];
         _returndateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _returndateLabel.numberOfLines = 1;
-        [self.cardView addSubview:_returndateLabel];
+        [self.contentView addSubview:_returndateLabel];
     }
    return _returndateLabel;
 }
@@ -767,7 +741,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
         [_refurbishBtn setTitle:@"续借" forState:UIControlStateNormal];
         [_refurbishBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
         [_refurbishBtn addTarget:self action:@selector(partRenewal) forControlEvents:UIControlEventTouchUpInside];
-        [self.cardView addSubview:_refurbishBtn];
+        [self.contentView addSubview:_refurbishBtn];
     }
    return _refurbishBtn;
 }
@@ -784,12 +758,19 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 - (void)setContent:(LibraryLoginMyInfoBorrowingBean *)bean {
     _borrowingBean = bean;
     self.titleLabel.text = bean.title;
-    self.callNumLabel.text = [NSString stringWithFormat:@"索书号: %@",bean.claimNumber];
     NSString *year = [bean.shouldReturnDate substringToIndex:4];
     NSString *month = [[bean.shouldReturnDate substringFromIndex:4] substringToIndex:2];
     NSString *day = [[bean.shouldReturnDate substringFromIndex:6] substringToIndex:2];
-    self.returndateLabel.text = [NSString stringWithFormat:@"归还日期: %@/%@/%@",year,month,day];
-    self.authorLabel.text = bean.author;
+    self.returndateLabel.text = [NSString stringWithFormat:@"%@/%@/%@前归还",year,month,day];
+    self.infoLabel.text = ({
+        NSString *info = @"";
+        if (bean.author.length>0&&bean.claimNumber.length>0) {
+            info = [NSString stringWithFormat:@"%@ %@", bean.author, bean.claimNumber];
+        } else {
+            info = [NSString stringWithFormat:@"%@%@", bean.author, bean.claimNumber];
+        }
+        info;
+    });
     if (bean.returnDateLevel == LibraryInfoReturnDateLevelHigh) {
         [self setMainColor:[UIColor beautyRed]];
     }
@@ -797,9 +778,8 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 - (void)setMainColor:(UIColor *)color {
     self.titleLabel.textColor = color;
-    self.callNumLabel.textColor = color;
     self.returndateLabel.textColor = color;
-    self.authorLabel.textColor = color;
+    self.infoLabel.textColor = color;
 }
 
 - (void)setButtonUserInteractionEnabled:(BOOL)enabled {

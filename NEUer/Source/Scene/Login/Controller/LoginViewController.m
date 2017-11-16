@@ -6,17 +6,17 @@
 //  Copyright © 2017年 Jiahong Xu. All rights reserved.
 //
 
-#import "TesseractCenter.h"
 #import "LoginViewController.h"
 
 #pragma mark - LoginViewController
 
-@interface LoginViewController () <UITextFieldDelegate, G8TesseractDelegate>
+@interface LoginViewController () <UITextFieldDelegate>
 @property (nonatomic, strong) SigninResultBlock resultBlock;
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIVisualEffectView *maskView;
 
+@property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) NSArray<NEUInputView *> *inputViews;
 @property (nonatomic, strong) UIButton *loginButton;
@@ -27,6 +27,8 @@
     CGFloat _viewBeginY;
     CGFloat _touchBeginY;
     CGFloat _contentHeight;
+    CGFloat _bottomMargin;
+    CGFloat _topMargin;
     BOOL _complete;
     BOOL _firstTimeShow;
 }
@@ -36,13 +38,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor clearColor];
-    _contentHeight = SCREEN_HEIGHT_ACTUAL*0.9;
-    _originY = SCREEN_HEIGHT_ACTUAL - _contentHeight;
-    _firstTimeShow = YES;
-    self.maskView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
-    self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
-    self.titleLabel.text = self.title;
     
+    [self initData];
     [self initConstraints];
     [self refreshViewState];
 }
@@ -51,12 +48,27 @@
     [self showContentView];
 }
 
+- (void)initData {
+    _firstTimeShow = YES;
+    if ([UIDevice currentDevice].deviceType == Global_iPhone_X || [UIDevice currentDevice].deviceType == Chinese_iPhone_X) {
+        _bottomMargin = 34.0f;
+    } else {
+        _bottomMargin = 0.0f;
+    }
+    _topMargin = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) + 32;
+    _contentHeight = SCREEN_HEIGHT_ACTUAL - _topMargin;
+}
+
 - (void)initConstraints {
+    self.maskView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
+    self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
+    self.backgroundImageView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentView.frame), CGRectGetWidth(self.contentView.frame)/2);
+    self.titleLabel.text = self.title;
     UIView *lastView = [_inputViews firstObject];
     [self.contentView addSubview:lastView];
     if (lastView) {
         [lastView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView.mas_top).with.offset(128);
+            make.top.equalTo(self.contentView.mas_top).with.offset(168);
             make.left.equalTo(self.contentView.mas_left).with.offset(24);
             make.right.equalTo(self.contentView.mas_right).with.offset(-24);
         }];
@@ -74,7 +86,7 @@
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(24);
-        make.top.equalTo(self.contentView.mas_top).with.offset(64);
+        make.top.equalTo(self.contentView.mas_top).with.offset(102);
     }];
     
     lastView = lastView ? : self.titleLabel;
@@ -174,7 +186,7 @@
 #pragma mark - Private Methods
 
 - (void)showContentView {
-    [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.7 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.7 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
         self.maskView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         self.maskView.alpha = 1;
         self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL-_contentHeight, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
@@ -235,6 +247,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         [self.view layoutIfNeeded];
         self.titleLabel.alpha = 0;
+        self.backgroundImageView.alpha = 0;
     } completion:nil];
 }
 
@@ -242,15 +255,16 @@
     UIView *lastView = [_inputViews firstObject];
     if (lastView) {
         [lastView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView.mas_top).with.offset(128);
+            make.top.equalTo(self.contentView.mas_top).with.offset(168);
         }];
     }
     [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).with.offset(64);
+        make.top.equalTo(self.contentView.mas_top).with.offset(102);
     }];
     [UIView animateWithDuration:0.3 animations:^{
         [self.view layoutIfNeeded];
         self.titleLabel.alpha = 1;
+        self.backgroundImageView.alpha = 1;
     } completion:nil];
 }
 
@@ -278,7 +292,7 @@
         _loginButton.backgroundColor = [UIColor beautyBlue];
     } else {
         _loginButton.enabled = NO;
-        _loginButton.backgroundColor = [[UIColor beautyBlue] colorWithAlphaComponent:0.5];
+        _loginButton.backgroundColor = [[UIColor beautyBlue] colorWithAlphaComponent:0.3];
     }
     
     for (NEUInputView *inputView in _inputViews) {
@@ -352,21 +366,6 @@
     for (NEUInputView *inputView in _inputViews) {
         if (inputView.type&NEUInputTypeVerifyCode) {
             inputView.verifyImageView.image = verifyImage;
-            // try to use ocr
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                G8Tesseract *tesseract = [TesseractCenter defaultCenter].tesseract;
-                tesseract.image = verifyImage;
-                if ([tesseract recognize]) {
-                    NSLog(@"识别成功 ---%@---", tesseract.recognizedText);
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        inputView.textField.text = [[tesseract.recognizedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByReplacingOccurrencesOfString:@" " withString:@""];
-                        
-                        [self refreshViewState];
-                    });
-                } else {
-                    NSLog(@"识别失败");
-                }
-            });
         }
     }
 }
@@ -378,6 +377,7 @@
         _contentView = [[UIView alloc] init];
         _contentView.backgroundColor = [UIColor whiteColor];
         _contentView.layer.cornerRadius = 16;
+        _contentView.layer.masksToBounds = YES;
         [self.view addSubview:_contentView];
     }
     
@@ -392,6 +392,15 @@
     }
     
     return _maskView;
+}
+
+- (UIImageView *)backgroundImageView {
+    if (!_backgroundImageView) {
+        _backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_background"]];
+        [self.contentView addSubview:_backgroundImageView];
+    }
+    
+    return _backgroundImageView;
 }
 
 - (UILabel *)titleLabel {
@@ -412,7 +421,10 @@
     if (!_loginButton) {
         _loginButton = [[UIButton alloc] init];
         _loginButton.layer.cornerRadius = 44.0f/2.0f;
-        _loginButton.layer.masksToBounds = YES;
+        _loginButton.layer.shadowColor = [UIColor beautyBlue].CGColor;
+        _loginButton.layer.shadowOffset = CGSizeMake(0, 2);
+        _loginButton.layer.shadowRadius = 2;
+        _loginButton.layer.shadowOpacity = 0.5;
         [_loginButton setTitle:@"确认" forState:UIControlStateNormal];
         [_loginButton addTarget:self action:@selector(didLoginButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_loginButton];

@@ -17,8 +17,6 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
 @interface SearchLibraryViewController () <UISearchControllerDelegate, UITableViewDelegate,UITableViewDataSource,SearchLibraryBorrowingDelegate>
 
 @property (nonatomic, strong) SearchLibraryDoorViewController *searchDoorViewController;
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIVisualEffectView *maskView;
 @property (nonatomic, strong) UIBarButtonItem *collectionBarButtonItem;
 @property (nonatomic, strong) UITableView *tableView;
@@ -26,7 +24,7 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
 
 @property (nonatomic, strong) NSArray<NSString *> *recentStrings;
-@property (nonatomic, strong) NSArray<NSString *> *mosetStrings;
+@property (nonatomic, strong) NSArray<NSString *> *mostStrings;
 
 @end
 
@@ -58,26 +56,8 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
 }
 
 - (void)initConstraints {
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.and.right.equalTo(self.view);
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.bottom.equalTo(self.mas_bottomLayoutGuide);
-    }];
-    
-    [self.maskView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.scrollView);
-    }];
-    
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.scrollView);
-        make.width.equalTo(self.scrollView);
-    }];
-    
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
-        make.height.mas_equalTo(12 * 44 + 128);
-    }];
-
+    self.tableView.frame = self.view.frame;
+    self.maskView.frame = self.view.frame;
 }
 
 #pragma mark - Response Methods
@@ -91,11 +71,8 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
 - (void)willPresentSearchController:(UISearchController *)searchController {
     if ([searchController isKindOfClass:[SearchLibraryDoorViewController class]]) {
         UIView *suggestView = ((SearchLibraryDoorViewController *)searchController).resultView;
+        suggestView.frame = self.view.frame;
         [self.view addSubview:suggestView];
-        [suggestView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.scrollView);
-        }];
-        [self.view layoutIfNeeded];
         _maskView.effect = nil;
         _maskView.alpha = 1;
         _maskView.hidden = NO;
@@ -127,7 +104,7 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
     if (indexPath.section == 0) {
         [self.searchDoorViewController searchKeyword:self.recentStrings[indexPath.row]];
     } else {
-        [self.searchDoorViewController searchKeyword:self.mosetStrings[indexPath.row]];
+        [self.searchDoorViewController searchKeyword:self.mostStrings[indexPath.row]];
     }
     
 }
@@ -155,10 +132,11 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 64;
+    return 44;
 }
 
 #pragma mark - UITableViewDataSource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
@@ -174,7 +152,7 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
     if (indexPath.section == 0) {
         cell.textLabel.text = self.recentStrings[indexPath.row];
     } else {
-        cell.textLabel.text = self.mosetStrings[indexPath.row];
+        cell.textLabel.text = self.mostStrings[indexPath.row];
     }
     return cell;
 }
@@ -185,7 +163,7 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
     for (SearchLibraryBorrowingBean *bean in self.mostModel.resultArray) {
         [array addObject:bean.title];
     }
-    self.mosetStrings = array;
+    self.mostStrings = array;
     [self.tableView reloadData];
 }
 
@@ -211,24 +189,6 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
     return _collectionBarButtonItem;
 }
 
-
-
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        [self.view addSubview:_scrollView];
-    }
-    return _scrollView;
-}
-
-- (UIView *)contentView {
-    if (!_contentView) {
-        _contentView = [[UIView alloc] init];
-        [self.scrollView addSubview:_contentView];
-    }
-    return _contentView;
-}
-
 - (UIVisualEffectView *)maskView {
     if (!_maskView) {
         _maskView = [[UIVisualEffectView alloc] init];
@@ -243,12 +203,13 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
        _tableView.dataSource = self;
        _tableView.delegate =self;
-       _tableView.scrollEnabled = NO;
+       _tableView.alwaysBounceVertical = YES;
        _tableView.showsVerticalScrollIndicator = NO;
        _tableView.backgroundColor = [UIColor clearColor];
+       _tableView.tableFooterView = [[UIView alloc] init];
        _tableView.separatorInset = UIEdgeInsetsMake(0, 16.0f, 0, 16.0f);
        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kDefaultCellId];
-       [self.contentView addSubview:_tableView];
+       [self.view addSubview:_tableView];
     }
    return _tableView;
 }
@@ -260,11 +221,11 @@ static NSString * const kLibrarySearchConsumeHistoryHeaderViewId = @"kLibrarySea
    return _recentStrings;
 }
 
-- (NSArray<NSString *> *)mosetStrings {
-    if (!_mosetStrings) {
-        _mosetStrings = @[@"马克思原理", @"软件工程", @"公共事业管理基础", @"人工智能与神经网络", @"机械与自动化", @"工程原理"];
+- (NSArray<NSString *> *)mostStrings {
+    if (!_mostStrings) {
+        _mostStrings = @[@"马克思原理", @"软件工程", @"公共事业管理基础", @"人工智能与神经网络", @"机械与自动化", @"工程原理"];
     }
-   return _mosetStrings;
+   return _mostStrings;
 }
 
 - (SearchLibraryBorrowingModel *)mostModel {

@@ -17,10 +17,8 @@
 @class SearchLibraryBorrowingBean;
 @class LibraryLoginModel;
 @interface LibraryReturnCell : UITableViewCell
-@property (nonatomic, strong) UIView *cardView;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *callNumLabel;
-@property (nonatomic, strong) UILabel *authorLabel;
+@property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UILabel *returndateLabel;
 @property (nonatomic, strong) UIButton *refurbishBtn;
 @property (nonatomic, strong) LibraryLoginModel *loginModel;

@@ -236,6 +236,11 @@ NSString * const kSearchSuggestListCellId = @"kSearchSuggestListCellId";
 - (UITableView *)suggestTableView {
     if (!_suggestTableView) {
         _suggestTableView = [[UITableView alloc] init];
+        _suggestTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        _suggestTableView.contentInset = ({
+            CGFloat topMargin = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) + 99;
+            UIEdgeInsetsMake(topMargin, 0, 0, 0);
+        });
         _suggestTableView.backgroundColor = [UIColor clearColor];
         _suggestTableView.tableFooterView = [[UIView alloc] init];
         _suggestTableView.delegate = self;

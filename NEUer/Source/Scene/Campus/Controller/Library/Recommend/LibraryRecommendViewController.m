@@ -159,28 +159,33 @@
 
         _titleView = [[NEUInputView alloc] initWithInputType:NEUInputTypeDefault];
         _titleView.titleLabel.text = @"题名";
+        _titleView.textField.placeholder = @"题名";
         _titleView.textField.delegate = self;
         [_inputViewArr addObject:_titleView];
         [self.view addSubview:_titleView];
 
         _authorView = [[NEUInputView alloc] initWithInputType:NEUInputTypeDefault];
         _authorView.titleLabel.text = @"作者";
+        _titleView.textField.placeholder = @"作者";
         _authorView.textField.delegate = self;
         [_inputViewArr addObject:_authorView];
         [self.view addSubview:_authorView];
 
         _pressView = [[NEUInputView alloc] initWithInputType:NEUInputTypeDefault];
         _pressView.titleLabel.text = @"出版社";
+        _titleView.textField.placeholder = @"出版社";
         _pressView.textField.delegate = self;
         [_inputViewArr addObject:_pressView];
 
         _ISBNView = [[NEUInputView alloc] initWithInputType:NEUInputTypeDefault];
         _ISBNView.titleLabel.text = @"ISBN/ISSN";
+        _titleView.textField.placeholder = @"ISBN/ISSN";
         _ISBNView.textField.delegate = self;
         [_inputViewArr addObject:_ISBNView];
 
         _reasonView = [[NEUInputView alloc] initWithInputType:NEUInputTypeDefault];
         _reasonView.titleLabel.text = @"荐购理由";
+        _titleView.textField.placeholder = @"荐购理由";
         _reasonView.textField.delegate = self;
         [_inputViewArr addObject:_reasonView];
 

@@ -36,7 +36,7 @@ typedef NS_OPTIONS(NSUInteger, NEUInputType) {
 - (instancetype)initWithInputType:(NEUInputType)type;
 - (instancetype)initWithInputType:(NEUInputType)type content:(NSString *)content;
 - (instancetype)initWithInputType:(NEUInputType)type content:(NSString *)content actionBlock:(NEUInputViewActionBlock)actionBlock;
-
+- (void)refreshViewState;
 - (BOOL)legal;
 
 @end

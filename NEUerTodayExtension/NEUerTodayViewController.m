@@ -326,7 +326,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
     NSArray *buttonArray = @[
                              self.gatewayButton,
                              self.dataButton,
-//                             self.libraryButton,
+                             self.libraryButton,
                              self.walletButton,
 //                             self.scoreButton,
                              ];
@@ -460,7 +460,7 @@ NSString * const kPreferenceCompactBoolKey = @"kPreferenceCompactBoolKey";
 
 
 - (void)queryLibraryBook {
-    [self.extensionContext openURL:[NSURL URLWithString:@"neu://go/lib"] completionHandler:nil];
+    [self.extensionContext openURL:[NSURL URLWithString:@"neu://go/lib/search"] completionHandler:nil];
 }
 
 

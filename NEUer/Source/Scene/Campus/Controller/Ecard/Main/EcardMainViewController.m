@@ -181,8 +181,8 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
     LoginViewController *signinVC = [[LoginViewController alloc] init];
     signinVC.modalPresentationStyle = UIModalPresentationCustom;
     signinVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [signinVC setupWithTitle:@"登录校卡中心"
-                   inputType:NEUInputTypeAccount|NEUInputTypePassword|NEUInputTypeVerifyCode
+    [signinVC setupWithTitle:@"校园卡"
+                   inputType:NEUInputTypeAccount|NEUInputTypePassword
                     contents:@{
                                @(NEUInputTypeAccount):account,
                                @(NEUInputTypePassword):password,
