@@ -19,8 +19,8 @@ static NSString * const kFooterId = @"kFooterId";
 const CGFloat kCellHeight = 128.0f;
 const CGFloat kHeaderHeight = 44.0f;
 const CGFloat kFooterHeight = 44.0f;
-const CGFloat kButtonWidth = 80.0f;
-const CGFloat kButtonHeight = 30.0f;
+const CGFloat kButtonWidth = 72.0f;
+const CGFloat kButtonHeight = 28.0f;
 const NSInteger kPreloadThreshold = 3;
 
 @interface SearchLibraryResultReuseView : UICollectionReusableView

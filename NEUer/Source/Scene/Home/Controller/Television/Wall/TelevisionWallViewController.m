@@ -16,9 +16,6 @@
 
 #import "TouchableCollectionViewCell.h"
 
-#import <AVKit/AVKit.h>
-#import <AVFoundation/AVFoundation.h>
-
 #define SCREEN_WIDTH CGRectGetWidth([UIScreen mainScreen].bounds)
 
 static NSString * const kChannelCellId = @"kChannelCellId";
@@ -40,13 +37,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.backgroundColor = [UIColor blackColor];
-        self.contentView.layer.cornerRadius = 16;
+        self.contentView.layer.cornerRadius = 8;
         self.contentView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
         self.contentView.layer.shadowOpacity = 0.5;
         self.contentView.layer.shadowRadius = 4;
-        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(16, 16)].CGPath;
+        self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)].CGPath;
         
         [self.contentView addSubview:self.imageView];
         [self.contentView addSubview:self.titleLabel];
@@ -90,6 +86,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
             return;
         }
         
+        if (image.size.height / image.size.width - 9.0f / 16.0f < 0.1) {
+            weakSelf.imageView.backgroundColor = [UIColor clearColor];
+        } else {
+            weakSelf.imageView.backgroundColor = [UIColor blackColor];
+        }
+        
         if (cacheType==SDImageCacheTypeNone || !weakSelf.channelBean.mainColor) {
             weakSelf.channelBean.mainColor = [image mainColor].compressRangeColor;
             weakSelf.contentView.layer.shadowColor = weakSelf.channelBean.mainColor.CGColor;
@@ -109,8 +111,8 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     self.titleLabel.attributedText = titleString;
     self.viewerCountLabel.attributedText = viewerCountString;
     
-    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(16, 16)];
     [self layoutIfNeeded];
+    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
 }
 
 #pragma mark - Getter
@@ -155,7 +157,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 @end
 
-@interface TelevisionWallViewController () <TelevisionWallDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface TelevisionWallViewController () <TelevisionWallDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 @property (nonatomic, strong) TelevisionChannelSearchViewController *searchViewController;
 
 @property (nonatomic, strong) TelevisionWallModel *wallModel;
@@ -166,6 +168,9 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 @end
 
 @implementation TelevisionWallViewController
+{
+    NSString *_sourceName;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -185,6 +190,16 @@ static NSString * const kChannelCellId = @"kChannelCellId";
     
     [self.wallModel fetchWallData];
     [self.collectionView reloadData];
+}
+
+- (instancetype)initWithUrl:(NSURL *)url params:(NSDictionary *)params {
+    if (self = [super init]) {
+        NSLog(@"%@", url);
+        NSLog(@"%@", params);
+        _sourceName = [params objectForKey:@"sourcename"];
+        
+    }
+    return self;
 }
 
 - (void)initConstraints {
@@ -216,39 +231,87 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 #pragma mark - TelevisionWallDelegate
 
 - (void)fetchWallDataDidSuccess {
+    
     [self.collectionView reloadData];
+//    跳转到指定节目单
+    TelevisionDetailViewController *detailViewController = [[TelevisionDetailViewController alloc] init];
+    for (TelevisionWallChannelBean *bean in self.wallModel.channelArray) {
+        if ([bean.channelDetailUrl isEqualToString:_sourceName]) {
+            detailViewController.channelBean = bean;
+        }
+    }
+    if (detailViewController.channelBean) {
+        [self.navigationController pushViewController:detailViewController animated:YES];
+    }
+    
 }
 
 - (void)fetchWallDataDidFail:(NSString *)message {
     
 }
 
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(nonnull UISearchController *)searchController {
+    NSString *searchString = [self.searchViewController.searchBar text];
+    [self.wallModel queryWallWithKeyword:searchString];
+    
+    [self.collectionView reloadData];
+}
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [self.collectionView reloadData];
+    self.searchViewController.searchBar.text = searchBar.text;
+    [self.searchViewController.searchBar resignFirstResponder];
+    self.searchViewController.active = YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self.collectionView reloadData];
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    self.searchViewController.active = NO;
-//    TelevisionDetailViewController *detailVC = [[TelevisionDetailViewController alloc] init];
-//    detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
-//    [self.navigationController pushViewController:detailVC animated:YES];
-    AVPlayerViewController *playerVC = [[AVPlayerViewController alloc] init];
-    playerVC.updatesNowPlayingInfoCenter = NO;
-    playerVC.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:self.wallModel.channelArray[indexPath.item].videoUrlArray[0]]];
-    [playerVC.player play];
-    playerVC.videoGravity = AVLayerVideoGravityResizeAspect;
     
-    [self presentViewController:playerVC animated:YES completion:nil];
+    TelevisionDetailViewController *detailVC = [[TelevisionDetailViewController alloc] init];
+
+    if (self.searchViewController.active) {
+        detailVC.channelBean = self.wallModel.resultArray[indexPath.item];
+    } else {
+        detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
+    }
+    
+    self.searchViewController.active = NO;
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     TelevisionWallChannelCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelCellId forIndexPath:indexPath];
-    cell.channelBean = self.wallModel.channelArray[indexPath.item];
+    
+    if (self.searchViewController.active) {
+
+        if (self.wallModel.resultArray.count != 0) {
+            cell.channelBean = self.wallModel.resultArray[indexPath.item];
+        }
+    }
+    else{
+        cell.channelBean = self.wallModel.channelArray[indexPath.item];
+    }
+    
     return cell;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.wallModel.channelArray.count;
+    
+    if (self.searchViewController.isActive) {
+        return self.wallModel.resultArray.count;
+    } else {
+        return self.wallModel.channelArray.count;
+    }
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -259,7 +322,12 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 
 - (TelevisionChannelSearchViewController *)searchViewController {
     if (!_searchViewController) {
-        _searchViewController = [[TelevisionChannelSearchViewController alloc] init];
+        _searchViewController = [[TelevisionChannelSearchViewController alloc] initWithSearchResultsController:nil];
+        _searchViewController.delegate = self;
+        _searchViewController.dimsBackgroundDuringPresentation = YES;
+        _searchViewController.searchResultsUpdater = self;
+        _searchViewController.searchBar.delegate = self;
+        _searchViewController.obscuresBackgroundDuringPresentation = NO;
     }
     
     return _searchViewController;

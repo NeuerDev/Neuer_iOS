@@ -27,17 +27,17 @@
 - (void)initConstraints {
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(16);
-        make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-8);
+        make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-4);
     }];
     
     [self.indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.titleLabel);
+        make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-4);
         make.left.equalTo(self.titleLabel.mas_right);
-        make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-8);
     }];
     
     [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).with.offset(-16); make.bottom.equalTo(self.contentView.mas_bottom).with.offset(-8);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-16);
+        make.lastBaseline.equalTo(self.titleLabel.mas_lastBaseline);
     }];
 }
 

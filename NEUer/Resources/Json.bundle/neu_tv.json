@@ -818,66 +818,82 @@
         {
             "num": 53001,
             "itemid": "uid3",
-            "name": "辽宁卫视高清",
+            "name": "湖南卫视高清",
             "epgid": "cntv-zhejiang",
             "quality": "HD",
-            "urllist": "http://media2.neu6.edu.cn/hls/lnhd.m3u8#http://media2.neu6.edu.cn/hls/hls74a1.m3u8#http://media2.neu6.edu.cn/hls/lntv.m3u8"
+            "urllist": "http://media2.neu6.edu.cn/hls/hunanhd.m3u8#http://media2.neu6.edu.cn/hls/jlu_hnhd.m3u8#http://media2.neu6.edu.cn/hls/hls71a15.m3u8"
         },
         {
             "num": 53002,
             "itemid": "uid3",
-            "name": "辽宁体育",
+            "name": "东方卫视高清",
             "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/hls3.m3u8"
+            "quality": "HD",
+            "urllist": "http://media2.neu6.edu.cn/hls/dfhd.m3u8#http://media2.neu6.edu.cn/hls/hls69a24.m3u8#http://media2.neu6.edu.cn/hls/jlu_dfhd.m3u8"
         },
         {
             "num": 53003,
             "itemid": "uid3",
-            "name": "辽宁生活",
+            "name": "江苏卫视高清",
             "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/hls96.m3u8"
+            "quality": "HD",
+            "urllist": "http://media2.neu6.edu.cn/hls/jshd.m3u8#http://media2.neu6.edu.cn/hls/hls68a52.m3u8"
         },
         {
             "num": 53004,
             "itemid": "uid3",
-            "name": "辽宁影视剧",
+            "name": "浙江卫视高清",
             "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/hls97.m3u8"
+            "quality": "HD",
+            "urllist": "http://media2.neu6.edu.cn/hls/zjhd.m3u8#http://media2.neu6.edu.cn/hls/jlu_zjhd.m3u8#http://media2.neu6.edu.cn/hls/hls68a51.m3u8"
         },
         {
             "num": 53005,
             "itemid": "uid3",
-            "name": "辽宁教育青少",
+            "name": "深圳卫视高清",
             "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/hls99.m3u8"
+            "quality": "HD",
+            "urllist": "http://media2.neu6.edu.cn/hls/szhd.m3u8#http://media2.neu6.edu.cn/hls/hls70a20.m3u8"
         },
         {
-            "num": 54001,
-            "itemid": "uid4",
+            "num": 53006,
+            "itemid": "uid3",
+            "name": "湖北卫视高清",
+            "epgid": "cntv-zhejiang",
+            "quality": "HD",
+            "urllist": "http://media2.neu6.edu.cn/hls/hbhd.m3u8#http://media2.neu6.edu.cn/hls/hls70a17.m3u8"
+        },
+        {
+            "num": 53007,
+            "itemid": "uid3",
             "name": "北京卫视高清",
             "epgid": "cntv-zhejiang",
             "quality": "HD",
             "urllist": "http://media2.neu6.edu.cn/hls/btv1hd.m3u8#http://media2.neu6.edu.cn/hls/hls69a21.m3u8#http://media2.neu6.edu.cn/hls/btv1.m3u8"
         },
         {
-            "num": 54002,
+            "num": 54001,
             "itemid": "uid4",
-            "name": "北京文艺高清",
+            "name": "CCTV-5高清",
             "epgid": "cntv-zhejiang",
             "quality": "HD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv2hd.m3u8#http://media2.neu6.edu.cn/hls/btv2.m3u8"
+            "urllist": "http://media2.neu6.edu.cn/hls/cctv5hd.m3u8#http://media2.neu6.edu.cn/hls/hls73a5.m3u8#http://media2.neu6.edu.cn/hls/jlu_cctv5hd.m3u8#http://media2.neu6.edu.cn/hls/cctv5.m3u8"
+        },
+        {
+            "num": 54002,
+            "itemid": "uid4",
+            "name": "CCTV-5+高清",
+            "epgid": "cntv-zhejiang",
+            "quality": "HD",
+            "urllist": "http://media2.neu6.edu.cn/hls/cctv5phd.m3u8#http://media2.neu6.edu.cn/hls/jlu_cctv5p.m3u8#http://media2.neu6.edu.cn/hls/hls73a6.m3u8"
         },
         {
             "num": 54003,
             "itemid": "uid4",
-            "name": "北京影视高清",
+            "name": "辽宁体育",
             "epgid": "cntv-zhejiang",
-            "quality": "HD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv4hd.m3u8#http://media2.neu6.edu.cn/hls/btv4.m3u8"
+            "quality": "SD",
+            "urllist": "http://media2.neu6.edu.cn/hls/hls3.m3u8"
         },
         {
             "num": 54004,
@@ -890,58 +906,10 @@
         {
             "num": 54005,
             "itemid": "uid4",
-            "name": "北京新闻高清",
-            "epgid": "cntv-zhejiang",
-            "quality": "HD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv9hd.m3u8#http://media2.neu6.edu.cn/hls/btv9.m3u8"
-        },
-        {
-            "num": 54006,
-            "itemid": "uid4",
-            "name": "北京纪实高清",
-            "epgid": "cntv-zhejiang",
-            "quality": "HD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv11hd.m3u8#http://media2.neu6.edu.cn/hls/hls69a25.m3u8"
-        },
-        {
-            "num": 54007,
-            "itemid": "uid4",
-            "name": "北京科教",
+            "name": "风云足球",
             "epgid": "cntv-zhejiang",
             "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv3.m3u8"
-        },
-        {
-            "num": 54008,
-            "itemid": "uid4",
-            "name": "北京财经",
-            "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv5.m3u8"
-        },
-        {
-            "num": 54009,
-            "itemid": "uid4",
-            "name": "北京生活",
-            "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv7.m3u8"
-        },
-        {
-            "num": 54010,
-            "itemid": "uid4",
-            "name": "北京青年",
-            "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv8.m3u8"
-        },
-        {
-            "num": 54011,
-            "itemid": "uid4",
-            "name": "北京卡酷少儿",
-            "epgid": "cntv-zhejiang",
-            "quality": "SD",
-            "urllist": "http://media2.neu6.edu.cn/hls/btv10.m3u8"
+            "urllist": "http://media2.neu6.edu.cn/hls/fyzqtv.m3u8"
         },
         {
             "num": 55001,
@@ -1910,36 +1878,32 @@
         }
     ],
     "type": [{
-            "id": "uidall",
-            "name": "全部频道"
-        },
-        {
-            "id": "uid0",
-            "name": "高清频道"
-        },
-        {
-            "id": "uid1",
-            "name": "中央频道"
-        },
-        {
-            "id": "uid2",
-            "name": "卫视频道"
-        },
-        {
-            "id": "uid3",
-            "name": "辽宁地区"
-        },
-        {
-            "id": "uid4",
-            "name": "北京地区"
-        },
-        {
-            "id": "uid5",
-            "name": "少儿频道"
-        },
-        {
-            "id": "uid6",
-            "name": "其他频道"
-        }
-    ]
+             "id": "uidall",
+             "name": "全部频道"
+             },
+             {
+             "id": "uid1",
+             "name": "中央频道"
+             },
+             {
+             "id": "uid2",
+             "name": "卫视频道"
+             },
+             {
+             "id": "uid3",
+             "name": "热门综艺"
+             },
+             {
+             "id": "uid4",
+             "name": "体育频道"
+             },
+             {
+             "id": "uid5",
+             "name": "少儿频道"
+             },
+             {
+             "id": "uid6",
+             "name": "其他频道"
+             }
+     ]
 }

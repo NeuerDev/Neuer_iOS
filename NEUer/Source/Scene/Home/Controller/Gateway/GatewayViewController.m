@@ -13,6 +13,7 @@
 #import "LYTool.h"
 
 #import "GatewayComponentInfoView.h"
+#import "GatewaySelfServiceMenuModel.h"
 
 @interface GatewayViewController () <GatewayModelDelegate>
 @property (nonatomic, strong) UIVisualEffectView *blurView;
@@ -22,11 +23,11 @@
 @property (nonatomic, strong) UILabel *gatewayStatusLb;
 @property (nonatomic, strong) GatewayComponentInfoView *infoView;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
-@property (nonatomic, strong) LoginViewController *loginVC;
 
 @property (nonatomic, strong) GatewayCenter *center;
 
 @property (nonatomic, strong) GatewayModel *model;
+@property (nonatomic, strong) GatewaySelfServiceMenuModel *serviceModel;
 @property (nonatomic, strong) GatewayBean *gatewayBean;
 
 @end
@@ -78,7 +79,7 @@
     [self initNetworkStatus];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGatewayNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
-    
+
 }
 
 - (void)initNetworkStatus {
@@ -215,12 +216,16 @@
     [self initNetworkStatus];
 }
 
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
-//        NSLog(@"%@", [LYTool getPresentedViewController]);
-//        [self.loginVC dismissViewControllerAnimated:YES completion:nil];
-//    }
-//}
+#pragma mark - GatewaySelfServiceModelDelegate
+- (void)fetchSelfServiceMenuFailureWithMessage:(NSString *)msg {
+    
+}
+
+- (void)fetchSelfServiceMenuSuccess {
+    
+}
+
+
 
 #pragma mark - GatewayModel delegate
 - (void)fetchGatewayDataFailureWithMsg:(NSString *)msg {
@@ -239,7 +244,7 @@
             self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
             self.loginBtn.enabled = YES;
             [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
-            
+
         } else if (_center.campusStatus == YES && _center.reachableStatus == YES){
             [self.loginBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.centerX.equalTo(self.gatewayStatusLb);
@@ -249,7 +254,7 @@
             self.loginBtn.enabled = YES;
             self.gatewayStatusLb.text = @"校园网密码认证失败\n请确保账号密码正确";
             [self.loginBtn setTitle:@"登陆校园网" forState:UIControlStateNormal];
-            
+
             CGSize size = [LYTool sizeWithString:self.gatewayStatusLb.text font:_gatewayStatusLb.font];
             _gatewayStatusLb.bounds = CGRectMake(0, 0, size.width, size.height);
             CGSize loginBtnSize = [LYTool sizeWithString:self.loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
@@ -268,19 +273,19 @@
 }
 
 - (void)fetchGatewayDataSuccess {
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+
         if ([[LYTool getPresentedViewController] isKindOfClass:[LoginViewController class]]) {
 //            [self.loginVC stopVerifyWithSuccess:YES];
         }
 //        NSLog(@"%@", [LYTool getPresentedViewController]);
-        
+
         //    在这个方法中处理登录成功信息
         _gatewayBean = [self.model gatewayInfo];
-        
+
         [self.infoView setUpWithGatewayBean:self.gatewayBean];
-        
+
         [self.infoView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(self.view).multipliedBy(0.25);
             make.width.equalTo(self.view);
@@ -291,16 +296,16 @@
             make.centerX.equalTo(self.gatewayStatusLb);
             make.top.equalTo(self.infoView.mas_bottom).with.offset(20);
         }];
-        
+
         //                通知不会及时更新文字，手动更新gatewayStatusLb和loginBtn的文字
         self.gatewayStatusLb.text = @"正在使用校园网 Wi-Fi\n可访问外网";
         [self.loginBtn setTitle:@"切换校园网账号" forState: UIControlStateNormal];
         self.loginBtn.enabled = YES;
-        
-        
+
+
         CGSize loginBtnSize = [LYTool sizeWithString:_loginBtn.titleLabel.text font:_loginBtn.titleLabel.font];
         self.loginBtn.bounds = CGRectMake(0, 0, loginBtnSize.width, loginBtnSize.height);
-        
+
         [self.indicatorView stopAnimating];
         [self.view layoutIfNeeded];
 //        [UIView animateWithDuration:5 animations:^{
@@ -319,12 +324,31 @@
     LoginViewController *authorizationViewController = [[LoginViewController alloc] init];
     [authorizationViewController setupWithTitle:@"IP网关" inputType:NEUInputTypeAccount|NEUInputTypePassword|NEUInputTypeVerifyCode contents:@{@(NEUInputTypeAccount):@"20144786"} resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
         NSLog(@"%@", result);
+//    WS(ws);
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+    NSString *password = [currentUser.keychain passwordForKeyType:UserKeyTypeIPGW] ? : @"";
+    
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.modalPresentationStyle = UIModalPresentationCustom;
+    loginViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    
+    [loginViewController setupWithTitle:@"IP网关" inputType:LoginInputTypeAccount|LoginInputTypePassword
+                        contents:@{
+                                   @(LoginInputTypeAccount):@"20154883",
+                                   @(LoginInputTypePassword):@"123456"
+                                   }
+                     resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+                         if (complete) {
+                             NSString *account = result[@(LoginInputTypeAccount)] ? : @"";
+                             NSString *password = result[@(LoginInputTypePassword)] ? : @"";
+//                              [ws loginWithAccount:account password:password verifyCode:verifycode];
+                         }
     }];
-    authorizationViewController.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:authorizationViewController animated:NO completion:nil];
-//    [_loginVC setModalPresentationStyle:UIModalPresentationCustom];
-//
-//    [self presentViewController:self.loginVC animated:YES completion:nil];
+    [self presentViewController:loginViewController animated:NO completion:^{
+
+    }];
+
 }
 
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion {
@@ -428,11 +452,4 @@
     return _indicatorView;
 }
 
-- (LoginViewController *)loginVC {
-    if (!_loginVC) {
-//        _loginVC = [LoginViewController shareLoginViewController];
-//        [_loginVC setUpWithLoginInfoViewType:LoginComponentInfoViewTypeDefault];
-    }
-    return _loginVC;
-}
 @end

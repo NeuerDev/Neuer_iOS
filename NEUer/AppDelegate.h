@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UserNotifications/UserNotifications.h>
+
 #import "SkeletonViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) SkeletonViewController *skelentonVC;
+@property (nonatomic, strong) UNUserNotificationCenter *center;
 
 @end
 

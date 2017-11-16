@@ -18,6 +18,8 @@
 @interface TelevisionWallModel () <JHRequestDelegate>
 @property (nonatomic, strong) NSMutableDictionary<NSString *, NSMutableArray<TelevisionWallChannelBean *> *> *channelArrayDictionary;
 @property (nonatomic, strong) NSMutableDictionary *name2TypeDic;
+@property (nonatomic, strong) NSString *keyword;
+
 @end
 
 @implementation TelevisionWallModel
@@ -43,11 +45,10 @@
         NSArray *liveArray = neuTVDic[@"live"];
         NSDictionary *typeMap = @{
                                   @"uidall"  :   @(0),
-                                  @"uid0"    :   @(TelevisionChannelTypeHD),
                                   @"uid1"    :   @(TelevisionChannelTypeZhongyang),
                                   @"uid2"    :   @(TelevisionChannelTypeWeishi),
-                                  @"uid3"    :   @(TelevisionChannelTypeLiaoning),
-                                  @"uid4"    :   @(TelevisionChannelTypeBeijing),
+                                  @"uid3"    :   @(TelevisionChannelTypeVariety),
+                                  @"uid4"    :   @(TelevisionChannelTypeSports),
                                   @"uid5"    :   @(TelevisionChannelTypeShaoer),
                                   @"uid6"    :   @(TelevisionChannelTypeOther),
                                   };
@@ -60,8 +61,9 @@
                 channel = [[TelevisionWallChannelBean alloc] init];
                 channel.channelName = live[@"name"];
                 channel.videoUrlArray = [live[@"urllist"] componentsSeparatedByString:@"#"];
-                NSString *channelId = [[channel.videoUrlArray.lastObject stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
+                NSString *channelId = [[channel.videoUrlArray.firstObject stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
                 channel.previewImageUrl = [NSString stringWithFormat:@"http://hdtv.neu6.edu.cn/wall/img/%@_s.png", channelId];
+                channel.channelDetailUrl = channelId;
                 channel.quality = live[@"quality"];
                 channel.viewerCount = 0;
                 channel.type = channel.type |
@@ -86,6 +88,22 @@
     request.delegate = self;
     request.requestType = JHRequestTypeCancelPrevious;
     [request start];
+}
+
+- (void)queryWallWithKeyword:(NSString *)keyword {
+    
+    _keyword = keyword;
+    NSMutableArray *queryArray = [NSMutableArray arrayWithCapacity:0];
+    NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", keyword];
+    for (TelevisionWallChannelBean *bean in self.channelArray) {
+        if ([preicate evaluateWithObject:bean.channelName]) {
+            [queryArray addObject:bean];
+        }
+    }
+    if (self.resultArray.count != 0) {
+        [_resultArray removeAllObjects];
+    }
+    [_resultArray addObjectsFromArray:queryArray];
 }
 
 #pragma mark - JHRequestDelegate
@@ -141,11 +159,10 @@
 - (void)setCurrentTypeWithName:(NSString *)typeName {
     _currentType = [@{
                       @"uidall"  :   @(0),
-                      @"uid0"    :   @(TelevisionChannelTypeHD),
                       @"uid1"    :   @(TelevisionChannelTypeZhongyang),
                       @"uid2"    :   @(TelevisionChannelTypeWeishi),
-                      @"uid3"    :   @(TelevisionChannelTypeLiaoning),
-                      @"uid4"    :   @(TelevisionChannelTypeBeijing),
+                      @"uid3"    :   @(TelevisionChannelTypeVariety),
+                      @"uid4"    :   @(TelevisionChannelTypeSports),
                       @"uid5"    :   @(TelevisionChannelTypeShaoer),
                       @"uid6"    :   @(TelevisionChannelTypeOther),
                       }[_name2TypeDic[typeName]] integerValue];
@@ -182,18 +199,73 @@
 - (NSArray<NSString *> *)channelTypeArray {
     return @[
              @"全部频道",
-             @"高清频道",
              @"中央频道",
              @"卫视频道",
-             @"辽宁地区",
-             @"北京地区",
+             @"热门综艺",
+             @"体育频道",
              @"少儿频道",
              @"其他频道",
              ];
 }
 
+- (NSMutableArray<TelevisionWallChannelBean *> *)resultArray {
+    if (!_resultArray) {
+        _resultArray = [NSMutableArray arrayWithArray:self.channelArray];
+    }
+    return _resultArray;
+}
+
 @end
 
 @implementation TelevisionWallChannelBean
+
+- (NSArray<NSDictionary *> *)sourceArray {
+    if (!_sourceArray) {
+        NSMutableArray *sourceArray = @[].mutableCopy;
+        int i = 1;
+        NSDictionary *tempDic = [[NSDictionary alloc] init];
+        for (NSString *urlStr in _videoUrlArray) {
+            NSString *sourceStr = [[urlStr stringByReplacingOccurrencesOfString:@"http://media2.neu6.edu.cn/hls/" withString:@""] stringByReplacingOccurrencesOfString:@".m3u8" withString:@""];
+            if ([sourceStr rangeOfString:@"hls"].location != NSNotFound) {
+                tempDic = @{
+                            [NSString stringWithFormat:@"测试%d", i] : sourceStr
+                            };
+                i++;
+                    
+            } else if ([sourceStr rangeOfString:@"jlu_"].location != NSNotFound) {
+                tempDic = @{
+                            @"吉林大学" : sourceStr
+                            };
+            } else {
+                tempDic = @{
+                            @"清华大学" : sourceStr
+                            };
+            }
+                
+            [sourceArray addObject:tempDic];
+        }
+        
+        _sourceArray = sourceArray.copy;
+    }
+    
+    return _sourceArray;
+}
+
+//当用户没有设置choosenSource时，默认选中第一个
+- (NSDictionary *)choosenSource {
+    if (!_choosenSource) {
+        _choosenSource = self.sourceArray[0];
+    }
+    return _choosenSource;
+}
+
+- (NSString *)choosenDate {
+    if (!_choosenDate) {
+        _choosenDate = @"今天";
+    }
+    return _choosenDate;
+}
+
+
 
 @end
