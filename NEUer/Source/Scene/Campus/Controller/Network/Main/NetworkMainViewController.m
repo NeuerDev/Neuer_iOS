@@ -432,16 +432,16 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     loginVC.modalPresentationStyle = UIModalPresentationCustom;
     loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [loginVC setupWithTitle:@"登录网络中心"
-                   inputType:LoginInputTypeAccount|LoginInputTypePassword|LoginInputTypeVerifyCode
+                   inputType:NEUInputTypeAccount|NEUInputTypePassword|NEUInputTypeVerifyCode
                     contents:@{
-                               @(LoginInputTypeAccount):account,
-                               @(LoginInputTypePassword):password,
+                               @(NEUInputTypeAccount):account,
+                               @(NEUInputTypePassword):password,
                                }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
                      if (complete) {
-                         NSString *userName = result[@(LoginInputTypeAccount)]?:@"";
-                         NSString *password = result[@(LoginInputTypePassword)]?:@"";
-                         NSString *verifyCode = result[@(LoginInputTypeVerifyCode)]?:@"";
+                         NSString *userName = result[@(NEUInputTypeAccount)]?:@"";
+                         NSString *password = result[@(NEUInputTypePassword)]?:@"";
+                         NSString *verifyCode = result[@(NEUInputTypeVerifyCode)]?:@"";
                          [ws.restFlowView setAnimated:YES];
                          [ws loginWithUser:userName password:password verifyCode:verifyCode];
                      } else {
@@ -591,12 +591,12 @@ typedef void(^NetwerkRestFlowViewSetActionBlock)(NSInteger tag);
     modifyVC.modalPresentationStyle = UIModalPresentationCustom;
     modifyVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [modifyVC setupWithTitle:@"修改密码" inputType:LoginInputTypePassword | LoginInputTypeNewPassword | LoginInputTypeRePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+    [modifyVC setupWithTitle:@"修改密码" inputType:NEUInputTypePassword | NEUInputTypeNewPassword | NEUInputTypeRePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
         
         if (complete) {
-            NSString *oldPassword = result[@(LoginInputTypePassword)];
-            NSString *newPassword = result[@(LoginInputTypeNewPassword)];
-            NSString *rePassword = result[@(LoginInputTypeRePassword)];
+            NSString *oldPassword = result[@(NEUInputTypePassword)];
+            NSString *newPassword = result[@(NEUInputTypeNewPassword)];
+            NSString *rePassword = result[@(NEUInputTypeRePassword)];
             [ws modifyPasswordWithOldPassword:oldPassword newPassword:newPassword rePassword:rePassword];
         }
     }];
