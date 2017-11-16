@@ -7,15 +7,23 @@
 //
 
 #import "ARCampusMenuViewController.h"
+#import "ARCampusTask.h"
 
 static NSString * const kARCampusCollectionViewCellId = @"kCellId";
 static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
 
 @interface ARCampusMenuViewController ()
 
+// 主视图
 @property (nonatomic, strong) UIView *maskView;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIVisualEffectView *blurView;
 
+// 用于动画的视图
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UILabel *titleLabel;
+
+// 内容视图
 //@property (nonatomic, strong) UISegmentedControl *segmentedControl;
 //@property (nonatomic, strong) UICollectionView *collectionView;
 //@property (nonatomic, strong) NSArray<NSDictionary *> *cellDataArray;
@@ -28,35 +36,57 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     CGFloat _touchBeginY;
     CGFloat _contentHeight;
     CGFloat _maxAlpha;
+    CGFloat _bottomMargin;
+    CGFloat _topMargin;
 }
 
 #pragma mark - Life Circle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _contentHeight = SCREEN_HEIGHT_ACTUAL*0.9;
-    _maxAlpha = 0.5;
-//    self.maskView.frame = CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
-//    _originY = SCREEN_HEIGHT_ACTUAL - _contentHeight;
-//    self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
-    
+    [self initData];
     [self initConstraints];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.delegate menuWillShow];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [self showContentView];
 }
 
+- (void)initData {
+    if ([UIDevice currentDevice].deviceType == Global_iPhone_X || [UIDevice currentDevice].deviceType == Chinese_iPhone_X) {
+        _bottomMargin = 34.0f;
+    } else {
+        _bottomMargin = 0.0f;
+    }
+    _topMargin = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) + 32;
+    _contentHeight = SCREEN_HEIGHT_ACTUAL - _topMargin;
+    _maxAlpha = 0.5;
+}
+
 - (void)initConstraints {
-    [self.maskView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+    self.maskView.frame = self.view.frame;
+    self.contentView.frame = CGRectMake(0, SCREEN_HEIGHT_ACTUAL-_bottomMargin-64, SCREEN_WIDTH_ACTUAL, _contentHeight);
+    
+    [self.blurView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.contentView);
     }];
     
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_safeAreaLayoutGuideBottom).with.offset(-64);
-        make.bottom.equalTo(self.view.mas_bottom);
-        make.right.equalTo(self.view.mas_right);
-        make.left.equalTo(self.view.mas_left);
+    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).with.offset(16);
+        make.height.and.width.mas_equalTo(@44);
+        make.centerY.equalTo(self.contentView.mas_top).with.offset(64/2);
+    }];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).with.offset(16+44+12);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-16);
+        make.centerY.equalTo(self.contentView.mas_top).with.offset(64/2);
     }];
 }
 
@@ -101,19 +131,33 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
 #pragma mark - Private Methods
 
 - (void)showContentView {
-    [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.7 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
+    [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.contentView);
+        make.width.and.height.equalTo(self.contentView.mas_width).multipliedBy(0.5);
+        make.top.equalTo(self.contentView.mas_top).with.offset(32);
+    }];
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.75 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
         self.maskView.alpha = 0.5;
-        self.contentView.frame = CGRectMake(0, SCREEN_HEIGHT_ACTUAL-_contentHeight, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
+        self.titleLabel.alpha = 0;
+        self.contentView.frame = CGRectMake(0, _topMargin, SCREEN_WIDTH_ACTUAL, _contentHeight);
+        [self.contentView layoutIfNeeded];
     } completion:nil];
 }
 
 - (void)hideContentView {
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.6 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).with.offset(16);
+        make.height.and.width.mas_equalTo(@44);
+        make.centerY.equalTo(self.contentView.mas_top).with.offset(64/2);
+    }];
+    [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:0.75 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.maskView.alpha = 0;
-        self.contentView.frame = CGRectMake(0, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL, SCREEN_HEIGHT_ACTUAL);
+        self.titleLabel.alpha = 1;
+        self.contentView.frame = CGRectMake(0, SCREEN_HEIGHT_ACTUAL-_bottomMargin-64, SCREEN_WIDTH_ACTUAL, _contentHeight);
+        [self.contentView layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self dismissViewControllerAnimated:NO completion:^{
-            
+            [self.delegate menuDidHide];
         }];
     }];
 }
@@ -123,17 +167,31 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Setter
+
+- (void)setTask:(ARCampusTask *)task {
+    _task = task;
+    
+}
+
 #pragma mark - Getter
 
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
-        _contentView.backgroundColor = [UIColor whiteColor];
-        _contentView.layer.cornerRadius = 16;
         [self.view addSubview:_contentView];
     }
     
     return _contentView;
+}
+
+- (UIVisualEffectView *)blurView {
+    if (!_blurView) {
+        _blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent]];
+        [self.contentView addSubview:_blurView];
+    }
+    
+    return _blurView;
 }
 
 - (UIView *)maskView {
@@ -145,6 +203,28 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     }
     
     return _maskView;
+}
+
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] initWithImage:_task.image];
+        _imageView.backgroundColor = [UIColor redColor];
+        [self.contentView addSubview:_imageView];
+    }
+    
+    return _imageView;
+}
+
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.text = _task.title;
+        _titleLabel.numberOfLines = 0;
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        [self.contentView addSubview:_titleLabel];
+    }
+    
+    return _titleLabel;
 }
 
 //- (UICollectionView *)collectionView {

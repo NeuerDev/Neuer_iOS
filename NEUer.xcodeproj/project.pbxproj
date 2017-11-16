@@ -59,6 +59,7 @@
 		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
 		5CA72EE31FB9388D0067AAC5 /* ARCampusMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */; };
 		5CA72EE71FB946990067AAC5 /* UIDevice+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */; };
+		5CA72EED1FBD2ECD0067AAC5 /* ARCampusTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -225,6 +226,8 @@
 		5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCampusMenuViewController.m; sourceTree = "<group>"; };
 		5CA72EE51FB946990067AAC5 /* UIDevice+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIDevice+JHCategory.h"; sourceTree = "<group>"; };
 		5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+JHCategory.m"; sourceTree = "<group>"; };
+		5CA72EEB1FBD2ECD0067AAC5 /* ARCampusTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCampusTask.h; sourceTree = "<group>"; };
+		5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCampusTask.m; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -1055,6 +1058,15 @@
 			path = "UIDevice+JHCategory";
 			sourceTree = "<group>";
 		};
+		5CA72EEA1FBD2EAB0067AAC5 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EEB1FBD2ECD0067AAC5 /* ARCampusTask.h */,
+				5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
 		5CA976E41F73AAD500B1089A /* SearchResult */ = {
 			isa = PBXGroup;
 			children = (
@@ -1318,6 +1330,7 @@
 		5CDA535A1FAEB4B100BC9E99 /* ARCampus */ = {
 			isa = PBXGroup;
 			children = (
+				5CA72EEA1FBD2EAB0067AAC5 /* Task */,
 				5CDA535B1FAEB4B900BC9E99 /* ARBuilding */,
 			);
 			path = ARCampus;
@@ -1757,6 +1770,7 @@
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
+				5CA72EED1FBD2ECD0067AAC5 /* ARCampusTask.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
