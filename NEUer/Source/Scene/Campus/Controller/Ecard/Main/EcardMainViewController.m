@@ -350,7 +350,7 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.ecardModel.todayConsumeArray.count != 0 ? : 1;
+    return self.ecardModel.todayConsumeArray.count != 0 ? self.ecardModel.todayConsumeArray.count : 1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
