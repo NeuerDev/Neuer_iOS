@@ -23,6 +23,7 @@
 		33FFEA761FBAE80C002632B9 /* NetworkReuseFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
+		5C1761B01FAC66560042C0E9 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1761AF1FAC66560042C0E9 /* Models.scnassets */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
 		5C449A681F6E12F00002A755 /* JHServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A671F6E12F00002A755 /* JHServer.m */; };
@@ -61,6 +62,9 @@
 		5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895DE1F81E6AF00C2F93E /* UserKeychain.m */; };
 		5C9895E31F822A5B00C2F93E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9895E21F822A5B00C2F93E /* User.m */; };
 		5C9F45531FBD8A5000BAAE72 /* NEUInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9F45521FBD8A5000BAAE72 /* NEUInputView.m */; };
+		5CA72EE31FB9388D0067AAC5 /* ARCampusMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */; };
+		5CA72EE71FB946990067AAC5 /* UIDevice+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */; };
+		5CA72EED1FBD2ECD0067AAC5 /* ARCampusTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */; };
 		5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */; };
 		5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EA1F73ABBA00B1089A /* SearchCollectionComponent.m */; };
 		5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA976EE1F73B22200B1089A /* NSString+JHCategory.m */; };
@@ -94,6 +98,7 @@
 		5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BA1F8092D900252E4D /* HomeComponentScheduleView.m */; };
 		5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */; };
 		5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098C21F80DB8A00252E4D /* UserCenter.m */; };
+		5CDA535E1FAEB4E000BC9E99 /* ARBuilding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA535D1FAEB4E000BC9E99 /* ARBuilding.m */; };
 		5CE4E1831F6FDD39008780AC /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE4E1601F6ED476008780AC /* NotificationCenter.framework */; };
 		5CE4E1871F6FDD39008780AC /* NEUerTodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E1861F6FDD39008780AC /* NEUerTodayViewController.m */; };
 		5CE4E18E1F6FDD39008780AC /* NEUerTodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5CE4E1821F6FDD39008780AC /* NEUerTodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -101,6 +106,7 @@
 		5CE8AF9A1F702743008594F6 /* UIColor+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4E19E1F6FE6D0008780AC /* UIColor+JHCategory.m */; };
 		5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */; };
 		5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE99C521F7294820062DBF9 /* JHURLRouter.m */; };
+		5CEEB5421FAC57A700CE5F93 /* ARCampusHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CEEB5411FAC57A700CE5F93 /* ARCampusHomeViewController.m */; };
 		5CF377FB1FB5349800BC141E /* EcardHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF377FA1FB5349800BC141E /* EcardHistoryModel.m */; };
 		5CF377FE1FB534AE00BC141E /* EcardServiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF377FD1FB534AE00BC141E /* EcardServiceModel.m */; };
 		5CF378011FB534D600BC141E /* EcardLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF378001FB534D600BC141E /* EcardLoginModel.m */; };
@@ -182,6 +188,7 @@
 		5C0742661F8C7410006116A4 /* GatewayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayViewController.m; sourceTree = "<group>"; };
 		5C0844C21F7B94BB00C69261 /* CampusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusViewController.h; sourceTree = "<group>"; };
 		5C0844C31F7B94BB00C69261 /* CampusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusViewController.m; sourceTree = "<group>"; };
+		5C1761AF1FAC66560042C0E9 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		5C19C4FC1FB826C8005DFADB /* NEUInputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEUInputView.m; sourceTree = "<group>"; };
 		5C21B9921F6D1A9100BC2961 /* NEUer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEUer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C21B9981F6D1A9200BC2961 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -252,6 +259,12 @@
 		5C9895E21F822A5B00C2F93E /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5C9F45511FBD8A5000BAAE72 /* NEUInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NEUInputView.h; sourceTree = "<group>"; };
 		5C9F45521FBD8A5000BAAE72 /* NEUInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NEUInputView.m; sourceTree = "<group>"; };
+		5CA72EE11FB9388D0067AAC5 /* ARCampusMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCampusMenuViewController.h; sourceTree = "<group>"; };
+		5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCampusMenuViewController.m; sourceTree = "<group>"; };
+		5CA72EE51FB946990067AAC5 /* UIDevice+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIDevice+JHCategory.h"; sourceTree = "<group>"; };
+		5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+JHCategory.m"; sourceTree = "<group>"; };
+		5CA72EEB1FBD2ECD0067AAC5 /* ARCampusTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCampusTask.h; sourceTree = "<group>"; };
+		5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCampusTask.m; sourceTree = "<group>"; };
 		5CA976E51F73AB0500B1089A /* SearchLibraryResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchLibraryResultViewController.h; sourceTree = "<group>"; };
 		5CA976E61F73AB0500B1089A /* SearchLibraryResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchLibraryResultViewController.m; sourceTree = "<group>"; };
 		5CA976E91F73ABBA00B1089A /* SearchCollectionComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchCollectionComponent.h; sourceTree = "<group>"; };
@@ -309,6 +322,8 @@
 		5CD098BD1F809B9800252E4D /* HomeComponentNewsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentNewsView.m; sourceTree = "<group>"; };
 		5CD098C11F80DB8A00252E4D /* UserCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCenter.h; sourceTree = "<group>"; };
 		5CD098C21F80DB8A00252E4D /* UserCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCenter.m; sourceTree = "<group>"; };
+		5CDA535C1FAEB4E000BC9E99 /* ARBuilding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARBuilding.h; sourceTree = "<group>"; };
+		5CDA535D1FAEB4E000BC9E99 /* ARBuilding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARBuilding.m; sourceTree = "<group>"; };
 		5CE4E1601F6ED476008780AC /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		5CE4E1711F6F619C008780AC /* NEUer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEUer.entitlements; sourceTree = "<group>"; };
 		5CE4E17A1F6FB936008780AC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -325,6 +340,8 @@
 		5CE99C4C1F728CEC0062DBF9 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeViewController.m; sourceTree = "<group>"; };
 		5CE99C511F7294820062DBF9 /* JHURLRouter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHURLRouter.h; sourceTree = "<group>"; };
 		5CE99C521F7294820062DBF9 /* JHURLRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHURLRouter.m; sourceTree = "<group>"; };
+		5CEEB5401FAC57A700CE5F93 /* ARCampusHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCampusHomeViewController.h; sourceTree = "<group>"; };
+		5CEEB5411FAC57A700CE5F93 /* ARCampusHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARCampusHomeViewController.m; sourceTree = "<group>"; };
 		5CF377F91FB5349800BC141E /* EcardHistoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardHistoryModel.h; sourceTree = "<group>"; };
 		5CF377FA1FB5349800BC141E /* EcardHistoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardHistoryModel.m; sourceTree = "<group>"; };
 		5CF377FC1FB534AE00BC141E /* EcardServiceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardServiceModel.h; sourceTree = "<group>"; };
@@ -996,6 +1013,7 @@
 		5C9107601F6D1C3100FA4270 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5C1761AF1FAC66560042C0E9 /* Models.scnassets */,
 				5C9107611F6D1C3100FA4270 /* Assets.xcassets */,
 				5CC2330F1F723C3B005F0A6E /* InfoPlist.strings */,
 				5CC233191F723E6A005F0A6E /* Localizable.strings */,
@@ -1066,6 +1084,7 @@
 		5C91076D1F6D3B2F00FA4270 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				5CA72EE41FB9466F0067AAC5 /* UIDevice+JHCategory */,
 				5C64D8A31F999643001CDB89 /* NSDictionary+JHCategory */,
 				5CCC667F1F8E5AD700F8F96C /* UIView+JHCategory */,
 				5C5DC7CB1F85DD0200BBFC28 /* NSURL+JHCategory */,
@@ -1178,6 +1197,33 @@
 				5C9F45521FBD8A5000BAAE72 /* NEUInputView.m */,
 			);
 			path = InputView;
+			sourceTree = "<group>";
+		};
+		5CA72EE01FB938160067AAC5 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EE11FB9388D0067AAC5 /* ARCampusMenuViewController.h */,
+				5CA72EE21FB9388D0067AAC5 /* ARCampusMenuViewController.m */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		5CA72EE41FB9466F0067AAC5 /* UIDevice+JHCategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EE51FB946990067AAC5 /* UIDevice+JHCategory.h */,
+				5CA72EE61FB946990067AAC5 /* UIDevice+JHCategory.m */,
+			);
+			path = "UIDevice+JHCategory";
+			sourceTree = "<group>";
+		};
+		5CA72EEA1FBD2EAB0067AAC5 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EEB1FBD2ECD0067AAC5 /* ARCampusTask.h */,
+				5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */,
+			);
+			path = Task;
 			sourceTree = "<group>";
 		};
 		5CA976E41F73AAD500B1089A /* SearchResult */ = {
@@ -1449,6 +1495,24 @@
 			path = Center;
 			sourceTree = "<group>";
 		};
+		5CDA535A1FAEB4B100BC9E99 /* ARCampus */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EEA1FBD2EAB0067AAC5 /* Task */,
+				5CDA535B1FAEB4B900BC9E99 /* ARBuilding */,
+			);
+			path = ARCampus;
+			sourceTree = "<group>";
+		};
+		5CDA535B1FAEB4B900BC9E99 /* ARBuilding */ = {
+			isa = PBXGroup;
+			children = (
+				5CDA535C1FAEB4E000BC9E99 /* ARBuilding.h */,
+				5CDA535D1FAEB4E000BC9E99 /* ARBuilding.m */,
+			);
+			path = ARBuilding;
+			sourceTree = "<group>";
+		};
 		5CDBA67C1F794D45005377A2 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1461,6 +1525,7 @@
 		5CE4E14F1F6ECB89008780AC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5CEEB53E1FAC577700CE5F93 /* ARCampus */,
 				5C0742641F8C73E4006116A4 /* Gateway */,
 				5C902CBB1F769C8B00E988AB /* Television */,
 				5CC232E51F71FEC4005F0A6E /* Home */,
@@ -1471,6 +1536,7 @@
 		5CE4E1591F6ECB99008780AC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5CDA535A1FAEB4B100BC9E99 /* ARCampus */,
 				5C7B8ED61F8B41160088FC60 /* Gateway */,
 				5C7548B11F7738890065E64E /* Television */,
 				5C4B0B6D1F71F026000B1EF0 /* ChickenSoup */,
@@ -1542,6 +1608,24 @@
 				5CE99C521F7294820062DBF9 /* JHURLRouter.m */,
 			);
 			path = URLRouter;
+			sourceTree = "<group>";
+		};
+		5CEEB53E1FAC577700CE5F93 /* ARCampus */ = {
+			isa = PBXGroup;
+			children = (
+				5CA72EE01FB938160067AAC5 /* Menu */,
+				5CEEB53F1FAC579100CE5F93 /* Home */,
+			);
+			path = ARCampus;
+			sourceTree = "<group>";
+		};
+		5CEEB53F1FAC579100CE5F93 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5CEEB5401FAC57A700CE5F93 /* ARCampusHomeViewController.h */,
+				5CEEB5411FAC57A700CE5F93 /* ARCampusHomeViewController.m */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		5CF377F51FB5344300BC141E /* Ecard */ = {
@@ -1846,6 +1930,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */,
+				5C1761B01FAC66560042C0E9 /* Models.scnassets in Resources */,
 				5C8B62961F7890F900310055 /* Json.bundle in Resources */,
 				5CC233161F723E6A005F0A6E /* Localizable.strings in Resources */,
 				5C507C761F9CBB0B00E857CA /* tessdata in Resources */,
@@ -1994,6 +2079,7 @@
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5CF378011FB534D600BC141E /* EcardLoginModel.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
+				5CEEB5421FAC57A700CE5F93 /* ARCampusHomeViewController.m in Sources */,
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				776698001FA978E000BB7544 /* LibraryMostViewController.m in Sources */,
@@ -2020,6 +2106,8 @@
 				5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */,
 				772116E31FB1D871008A305E /* LibraryRecommendModel.m in Sources */,
 				5CD098B51F8089E100252E4D /* HomeComponentAccessView.m in Sources */,
+				5CA72EE31FB9388D0067AAC5 /* ARCampusMenuViewController.m in Sources */,
+				5CA72EE71FB946990067AAC5 /* UIDevice+JHCategory.m in Sources */,
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
@@ -2029,12 +2117,14 @@
 				77643EFF1FAF070D00F37265 /* LibraryCenter.m in Sources */,
 				5C5FD4341F97468300B1EA2C /* CustomSectionHeaderFooterView.m in Sources */,
 				5CA976F31F73CEF500B1089A /* SearchLibraryResultModel.m in Sources */,
+				5CA72EED1FBD2ECD0067AAC5 /* ARCampusTask.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				776697FC1FA978BB00BB7544 /* LibraryNewBookViewController.m in Sources */,
 				5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
 				5CF377FE1FB534AE00BC141E /* EcardServiceModel.m in Sources */,
+				5CDA535E1FAEB4E000BC9E99 /* ARBuilding.m in Sources */,
 				5C4602131F72BBD7009AF91A /* SearchLibrarySuggestModel.m in Sources */,
 				5C62BFBB1F9AEF19005EBDCE /* LoginViewController.mm in Sources */,
 				332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */,

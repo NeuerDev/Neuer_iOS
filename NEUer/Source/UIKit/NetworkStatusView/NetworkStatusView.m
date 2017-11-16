@@ -74,6 +74,8 @@ const CGFloat kNetworkViewHeight = 80.0f;
     return self;
 }
 
+#pragma mark - Touches Methods
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismiss) object:nil];
     _touchBeginY = [[touches anyObject] locationInView:self.superview].y;

@@ -62,6 +62,14 @@
 			<key>regex</key>
 			<string>/network</string>
 		</dict>
+		<dict>
+			<key>host</key>
+			<string>go</string>
+			<key>class</key>
+			<string>ARCampusHomeViewController</string>
+			<key>regex</key>
+			<string>/ar</string>
+		</dict>
 	</array>
 </dict>
 </plist>
