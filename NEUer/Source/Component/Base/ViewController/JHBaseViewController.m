@@ -180,7 +180,7 @@
 - (UIView *)navigationBarBackgroundView {
     if (!_navigationBarBackgroundView) {
         _navigationBarBackgroundView = [[UIView alloc] init];
-        _navigationBarBackgroundView.backgroundColor = [UIColor clearColor];
+        _navigationBarBackgroundView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_navigationBarBackgroundView];
     }
     

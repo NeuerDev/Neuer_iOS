@@ -54,6 +54,7 @@
     .largeTitleTextAttributes = @{
                                   NSForegroundColorAttributeName:UIColor.clearColor,
                                   };
+    [self setNavigationBarBackgroundColor:UIColor.clearColor];
 }
 
 - (void)initConstraints {
@@ -84,11 +85,19 @@
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // 控制导航栏底色
     CGFloat minAlphaOffset = SCREEN_WIDTH_ACTUAL * 9.0f / 16.0f;
     CGFloat maxAlphaOffset = _headerHeight;
     CGFloat offset = scrollView.contentOffset.y;
     CGFloat alpha = (offset - minAlphaOffset) / (maxAlphaOffset - minAlphaOffset);
     [self setNavigationBarBackgroundColor:[UIColor.whiteColor colorWithAlphaComponent:alpha]];
+    
+    // 控制header透明度
+    minAlphaOffset = 0;
+    maxAlphaOffset = SCREEN_WIDTH_ACTUAL * 9.0f / 16.0f;
+    offset = scrollView.contentOffset.y;
+    alpha = (offset - minAlphaOffset) / (maxAlphaOffset - minAlphaOffset);
+    self.headerImageView.alpha = 1 - alpha;
     
     CGFloat diff = -self.scrollView.contentOffset.y;
     
@@ -147,7 +156,7 @@
                                                                                      NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleTitle1],
                                                                                      NSForegroundColorAttributeName:UIColor.whiteColor,
                                                                                      NSShadowAttributeName:shadow}];
-        [self.scrollView addSubview:_memorialLabel];
+        [self.headerImageView addSubview:_memorialLabel];
     }
     
     return _memorialLabel;
