@@ -461,6 +461,7 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
         _consumeHistoryTableView.showsVerticalScrollIndicator = NO;
         _consumeHistoryTableView.allowsSelection = NO;
         _consumeHistoryTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        _consumeHistoryTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _consumeHistoryTableView.backgroundColor = [UIColor clearColor];
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL*9.0f/16.0f)];

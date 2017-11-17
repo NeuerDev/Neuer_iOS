@@ -9,7 +9,7 @@
 #import "JHBaseViewController.h"
 
 @interface JHBaseViewController ()
-
+@property (nonatomic, strong) UIView *navigationBarBackgroundView;
 @end
 
 @implementation JHBaseViewController
@@ -59,6 +59,11 @@
         make.centerX.equalTo(self.placeholderView);
         make.bottom.equalTo(self.placeholderView.mas_bottom);
     }];
+    
+    [self.navigationBarBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+    }];
 }
 
 
@@ -77,30 +82,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self fixShadowImageInView:UIApplication.sharedApplication.keyWindow];
-}
-
-#pragma mark - Private Methods
-
-- (void)fixShadowImageInView:(UIView *)view {
-    if ([view isKindOfClass:UIImageView.class]) {
-        CGFloat height = view.bounds.size.height;
-        if (height < 1 && height > 0 && view.subviews.count == 0) {
-            NSLog(@"removed");
-            UIView *maskView = [[UIView alloc] init];
-            maskView.backgroundColor = UIColor.whiteColor;
-            [view addSubview:maskView];
-            [maskView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(view);
-            }];
-            [maskView layoutIfNeeded];
-        }
-    }
-    
-    for (UIView *subview in view.subviews) {
-        [self fixShadowImageInView:subview];
-    }
 }
 
 #pragma mark - Override Methods
@@ -118,6 +99,11 @@
 }
 
 #pragma mark - Public Methods
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)color {
+    _navigationBarBackgroundView.backgroundColor = color;
+}
+
 - (void)showPlaceHolder {
     self.placeholderView.hidden = NO;
     self.activityIndicatorView.hidden = YES;
@@ -129,6 +115,7 @@
 }
 
 #pragma mark - Respond Methods
+
 - (void)retry:(UIButton *)sender {
  
 }
@@ -188,5 +175,15 @@
         [self.view addSubview:_activityIndicatorView];
     }
    return _activityIndicatorView;
+}
+
+- (UIView *)navigationBarBackgroundView {
+    if (!_navigationBarBackgroundView) {
+        _navigationBarBackgroundView = [[UIView alloc] init];
+        _navigationBarBackgroundView.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:_navigationBarBackgroundView];
+    }
+    
+    return _navigationBarBackgroundView;
 }
 @end

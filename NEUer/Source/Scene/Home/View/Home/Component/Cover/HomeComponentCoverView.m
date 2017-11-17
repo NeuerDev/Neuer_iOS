@@ -23,8 +23,8 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.layer.cornerRadius = 8;
-        self.contentView.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
+//        self.contentView.layer.cornerRadius = 8;
+//        self.contentView.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
         [self initConstraints];
     }
     
@@ -36,8 +36,8 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
         make.edges.equalTo(self.contentView);
     }];
     
-    [self layoutIfNeeded];
-    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
+//    [self layoutIfNeeded];
+//    [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
 }
 
 - (UIImageView *)imageView {
@@ -139,18 +139,23 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 
 - (void)initConstraints {
     
-    [self.bodyView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
-        make.left.and.right.equalTo(self);
-        make.bottom.equalTo(self.mas_bottom).with.offset(-8);
-    }];
-    
-    CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
+//    CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
+    CGFloat cellWidth = SCREEN_WIDTH_ACTUAL;
     CGFloat cellHeight = cellWidth * 10.0f / 16.0f;
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
         make.height.mas_equalTo(cellHeight);
+    }];
+}
+
+#pragma mark - Override
+
+- (void)initBaseConstraints {
+    
+    [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(self);
+        make.bottom.equalTo(self.mas_bottom);
     }];
 }
 
@@ -196,21 +201,25 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
-        HomeComponentCoverLayout *flowLayout = [[HomeComponentCoverLayout alloc] init];
-        CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
+//        HomeComponentCoverLayout *flowLayout = [[HomeComponentCoverLayout alloc] init];
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+//        CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
+        CGFloat cellWidth = SCREEN_WIDTH_ACTUAL;
         CGFloat cellHeight = cellWidth * 10.0f / 16.0f;
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
+        flowLayout.minimumLineSpacing = 0;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.layer.masksToBounds = NO;
         [_collectionView registerClass:[HomeComponentCoverCell class] forCellWithReuseIdentifier:kHomeComponentCoverCellId];
         _collectionView.delegate = self;
-        _collectionView.contentInset = UIEdgeInsetsMake(0, 16, 0, 16);
+//        _collectionView.contentInset = UIEdgeInsetsMake(0, 16, 0, 16);
         _collectionView.dataSource = self;
         _collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.scrollsToTop = NO;
+        _collectionView.pagingEnabled = YES;
         [self.contentView addSubview:_collectionView];
     }
     

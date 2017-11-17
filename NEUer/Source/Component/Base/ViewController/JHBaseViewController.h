@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "JHURLRouter.h"
 
+typedef NS_ENUM(NSUInteger, JHBaseViewControllerState) {
+    JHBaseViewControllerStateNormal,
+    JHBaseViewControllerStateEmptyContent,
+    JHBaseViewControllerStateLoadingContent,
+    JHBaseViewControllerStateNetworkUnavailable,
+};
 
 @interface JHBaseViewController : UIViewController <JHURLRouterViewControllerProtocol>
+@property (nonatomic, assign) JHBaseViewControllerState state;
 @property (nonatomic, strong) UIView *placeholderView;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UILabel *detailLabel;
@@ -21,5 +28,8 @@
 - (void)showPlaceHolder;
 - (void)hidePlaceHolder;
 - (void)retry:(UIButton *)sender;
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)color;
+- (void)setPlaceholderViewHidden:(BOOL)hidden;
 
 @end

@@ -24,12 +24,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.layer.cornerRadius = 8;
-//        self.layer.shadowColor = [UIColor grayColor].CGColor;
-//        self.layer.shadowOffset = CGSizeMake(0, 4);
-//        self.layer.shadowOpacity = 0.2;
-//        self.layer.shadowRadius = 4;
-        
+        self.contentView.layer.cornerRadius = 8;        
         [self initConstraints];
     }
     
@@ -71,8 +66,8 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
 - (instancetype)init {
     if (self = [super init]) {
-//        self.titleLabel.text = @"快速链接";
-//        [self.actionButton setTitle:@"更多" forState:UIControlStateNormal];
+        self.titleLabel.text = @"在东大的987天";
+        [self.actionButton setTitle:@"更多作品" forState:UIControlStateNormal];
         
         [self initConstraints];
     }
@@ -81,6 +76,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 }
 
 - (void)initConstraints {
+    MASAttachKeys(self, self.collectionView, self.contentView);
     CGFloat cellHeight = 54;
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
@@ -91,8 +87,22 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 #pragma mark - Override
 
 - (void)initBaseConstraints {
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_top).with.offset(16);
+        make.left.equalTo(self.mas_left).with.offset(16);
+        make.right.equalTo(self.mas_right).with.offset(-16);
+    }];
+    
+    [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).with.offset(-16);
+        make.lastBaseline.equalTo(self.titleLabel);
+    }];
+    
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).with.insets(UIEdgeInsetsMake(0, 16, 0, 16));
+        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
+        make.left.equalTo(self.mas_left).with.offset(16);
+        make.right.equalTo(self.mas_right).with.offset(-16);
+        make.bottom.equalTo(self.mas_bottom);
     }];
 }
 
