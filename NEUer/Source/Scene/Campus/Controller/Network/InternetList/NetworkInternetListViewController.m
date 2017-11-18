@@ -50,15 +50,15 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 #pragma mark - Response Method
 
 - (void)beginRefreshing {
-    self.activityIndicatorView.hidden = NO;
-    [self.activityIndicatorView startAnimating];
+    self.baseActivityIndicatorView.hidden = NO;
+    [self.baseActivityIndicatorView startAnimating];
     WS(ws);
     
     [self.model refreshInternetRecordsDataComplete:^(BOOL success, NSString *data) {
         if (success) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [ws.activityIndicatorView stopAnimating];
+                [ws.baseActivityIndicatorView stopAnimating];
                 if ([ws.tableView numberOfSections] == 0) {
                     if (self.model.internetRecordInfoArray.count==0) {
                         [ws.tableView reloadData];

@@ -13,7 +13,18 @@
 #import <SceneKit/SceneKit.h>
 #import <ARKit/ARKit.h>
 
+typedef NS_ENUM(NSUInteger, ARCampusViewState) {
+    ARCampusViewStateNotSupportARKit,
+    ARCampusViewStateCameraDisable,
+    ARCampusViewStateInitializing,
+    ARCampusViewStateSearchingPlane,
+    ARCampusViewStateReadyToPlaceObject,
+    ARCampusViewStateObjectPlaced,
+};
+
 @interface ARCampusHomeViewController () <ARSCNViewDelegate, ARSessionDelegate, ARSessionObserver, ARCampusMenuViewControllerDelegate>
+
+@property (nonatomic, assign) ARCampusViewState viewState;
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARSession *arSession;
@@ -32,7 +43,6 @@
 @implementation ARCampusHomeViewController {
     BOOL _didSceneAppeared;
     BOOL _didNavigationBarHidden;
-    
     BOOL _didFoundPlane;
 }
 
@@ -43,6 +53,7 @@
     
     self.title = @"AR 校园";
     self.view.backgroundColor = [UIColor blackColor];
+    self.baseViewState = JHBaseViewStateRequireCameraAccess;
     [self initConstraints];
 }
 
@@ -209,6 +220,14 @@
 
 #pragma mark - Private Methods
 
+- (void)showAllowCameraUsageGuide {
+    
+}
+
+- (void)showARKitUnsupportView {
+    
+}
+
 - (void)showBuilding {
     SCNScene *scene = [SCNScene sceneNamed:@"Models.scnassets/nanhu/main_building/nanhu_main_building.scn"];
     SCNNode *mainBuidingNode = scene.rootNode.childNodes[0];
@@ -241,6 +260,47 @@
 
 - (void)onPanelViewTapped:(UITapGestureRecognizer *)tap {
     [self showMenu];
+}
+
+#pragma mark - Setter
+
+- (void)setViewState:(ARCampusViewState)viewState {
+    _viewState = viewState;
+    switch (viewState) {
+        case ARCampusViewStateNotSupportARKit:
+        {
+            
+        }
+            break;
+        case ARCampusViewStateCameraDisable:
+        {
+            
+        }
+            break;
+        case ARCampusViewStateInitializing:
+        {
+            
+        }
+            break;
+        case ARCampusViewStateSearchingPlane:
+        {
+            
+        }
+            break;
+        case ARCampusViewStateReadyToPlaceObject:
+        {
+            
+        }
+            break;
+        case ARCampusViewStateObjectPlaced:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Getter

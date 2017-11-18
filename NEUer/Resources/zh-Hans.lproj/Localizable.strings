@@ -7,8 +7,21 @@
 */
 
 /*
+ JHBaseViewController
+ */
+
+"JHBaseViewControllerBack" = "返回";
+"JHBaseViewControllerRetry" = "重试";
+"JHBaseViewControllerEnable" = "开启";
+
+"JHBaseViewControllerRequireCameraAccessTitle" = "启动摄像头失败";
+"JHBaseViewControllerRequireCameraAccessDetail" = "需要您手动开启相机权限";
+"JHBaseViewControllerRequireLocationAccessTitle" = "获取不到您的位置";
+"JHBaseViewControllerRequireLocationAccessDetail" = "需要您允许我使用您的位置信息";
+
+/*
  Today Extension
-*/
+ */
 
 "TodayExtensionGatewayTitle" = "校园网";
 "TodayExtensionDataLeftTitle" = "查流量";

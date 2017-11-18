@@ -216,8 +216,8 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
 #pragma mark - Response Method
 
 - (void)beginRefreshing {
-    self.activityIndicatorView.hidden = NO;
-    [self.activityIndicatorView startAnimating];
+    self.baseActivityIndicatorView.hidden = NO;
+    [self.baseActivityIndicatorView startAnimating];
     WS(ws);
     
     switch (self.segmentedControl.selectedSegmentIndex) {
@@ -227,7 +227,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
                 if (success) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [ws.activityIndicatorView stopAnimating];
+                        [ws.baseActivityIndicatorView stopAnimating];
                         
                         if (0 == ws.tableView.numberOfSections) {
                             [ws.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -249,7 +249,7 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
                 if (success) {
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [ws.activityIndicatorView stopAnimating];
+                        [ws.baseActivityIndicatorView stopAnimating];
                         
                         if (0 == ws.tableView.numberOfSections) {
                             [ws.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];

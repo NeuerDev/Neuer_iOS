@@ -7,6 +7,19 @@
 */
 
 /*
+ JHBaseViewController
+ */
+
+"JHBaseViewControllerBack" = "Back";
+"JHBaseViewControllerRetry" = "Retry";
+"JHBaseViewControllerEnable" = "Enable";
+
+"JHBaseViewControllerRequireCameraAccessTitle" = "Camera Access";
+"JHBaseViewControllerRequireCameraAccessDetail" = "Please allow to access your camera";
+"JHBaseViewControllerRequireLocationAccessTitle" = "Location Access";
+"JHBaseViewControllerRequireLocationAccessDetail" = "Please allow to access your location infomation";
+
+/*
  Today Extension
  */
 

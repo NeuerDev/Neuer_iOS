@@ -8,6 +8,11 @@
 
 #import "JHBaseViewController.h"
 
+@interface JHBaseViewController ()
+@property (nonatomic, strong) UIImageView *baseImageView;
+@property (nonatomic, strong) UIView *baseContentView;
+@end
+
 @implementation JHBaseViewController
 
 #pragma mark - Init Methods
@@ -29,31 +34,36 @@
 }
 
 - (void)initBaseConstraints {
-    [self.placeholderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.width.mas_equalTo(SCREEN_WIDTH_ACTUAL);
-        make.top.equalTo(self.view.mas_centerY);
+    [self.baseContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
     }];
     
-    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.placeholderView.mas_top);
-        make.width.mas_equalTo(self.placeholderView);
-        make.height.mas_equalTo(30);
+    [self.basePlaceholderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.baseContentView);
     }];
-
-    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.label.mas_bottom).with.offset(10);
-        make.left.equalTo(self.placeholderView.mas_left).with.offset(50);
-        make.right.equalTo(self.placeholderView.mas_right).with.offset(-50);
-        make.height.mas_equalTo(60);
+    
+    [self.baseImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(self.basePlaceholderView);
+        make.width.and.height.mas_equalTo(@(CGRectGetWidth(UIScreen.mainScreen.bounds)));
     }];
-
-    [self.retryBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.detailLabel.mas_bottom).with.offset(30);
-        make.height.mas_equalTo(50);
-        make.width.equalTo(self.detailLabel.mas_width).with.multipliedBy(0.5);
-        make.centerX.equalTo(self.placeholderView);
-        make.bottom.equalTo(self.placeholderView.mas_bottom);
+    
+    [self.baseStateTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.baseImageView.mas_bottom).with.offset(32);
+        make.left.and.right.equalTo(self.basePlaceholderView);
+    }];
+    
+    [self.baseStateDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.baseStateTitleLabel.mas_bottom).with.offset(16);
+        make.centerX.equalTo(self.basePlaceholderView);
+        make.width.equalTo(self.basePlaceholderView).multipliedBy(3.0f/4.0f);
+    }];
+    
+    [self.baseRetryButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.baseStateDetailLabel.mas_bottom).with.offset(32);
+        make.height.mas_equalTo(@44);
+        make.width.mas_equalTo(@90);
+        make.centerX.equalTo(self.basePlaceholderView);
+        make.bottom.equalTo(self.basePlaceholderView.mas_bottom);
     }];
 }
 
@@ -92,76 +102,169 @@
 #pragma mark - Public Methods
 
 - (void)showPlaceHolder {
-    self.placeholderView.hidden = NO;
-    self.activityIndicatorView.hidden = YES;
+    [self.view bringSubviewToFront:self.baseContentView];
+    self.baseContentView.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.baseContentView.alpha = 1;
+    }];
 }
 
 - (void)hidePlaceHolder {
-    self.placeholderView.hidden = YES;
-    self.activityIndicatorView.hidden = NO;
+    [self.view bringSubviewToFront:self.baseContentView];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.baseContentView.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.baseContentView.hidden = YES;
+    }];
 }
 
 #pragma mark - Respond Methods
 
-- (void)retry:(UIButton *)sender {
- 
+- (void)onBaseRetryButtonClicked:(UIButton *)sender {
+    
+}
+
+#pragma mark - Setter
+
+- (void)setBaseViewState:(JHBaseViewState)baseViewState {
+    _baseViewState = baseViewState;
+    switch (baseViewState) {
+        case JHBaseViewStateNormal:
+        {
+            [self hidePlaceHolder];
+        }
+            break;
+        case JHBaseViewStateEmptyContent:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_empty"];
+            [self showPlaceHolder];
+        }
+            break;
+        case JHBaseViewStateLoadingContent:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_empty"];
+            [self showPlaceHolder];
+        }
+            break;
+        case JHBaseViewStateConnectionLost:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_empty"];
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerRetry", nil) forState:UIControlStateNormal];
+            [self showPlaceHolder];
+        }
+            break;
+        case JHBaseViewStateNetworkUnavailable:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_empty"];
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerRetry", nil) forState:UIControlStateNormal];
+            [self showPlaceHolder];
+        }
+            break;
+        case JHBaseViewStateRequireCameraAccess:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_camera"];
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerEnable", nil) forState:UIControlStateNormal];
+            self.baseStateTitleLabel.text = NSLocalizedString(@"JHBaseViewControllerRequireCameraAccessTitle", nil);
+            self.baseStateDetailLabel.text = NSLocalizedString(@"JHBaseViewControllerRequireCameraAccessDetail", nil);
+            [self showPlaceHolder];
+        }
+            break;
+        case JHBaseViewStateRequireLocationAccess:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_location"];
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerEnable", nil) forState:UIControlStateNormal];
+            self.baseStateTitleLabel.text = NSLocalizedString(@"JHBaseViewControllerRequireLocationAccessTitle", nil);
+            self.baseStateDetailLabel.text = NSLocalizedString(@"JHBaseViewControllerRequireLocationAccessDetail", nil);
+            [self showPlaceHolder];
+        }
+            break;
+        case JHBaseViewStateError:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_error"];
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerBack", nil) forState:UIControlStateNormal];
+            [self showPlaceHolder];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Getter
-- (UIView *)placeholderView {
-    if (!_placeholderView) {
-        _placeholderView = [[UIView alloc] init];
-        _placeholderView.hidden = YES;
-        [self.view addSubview:_placeholderView];
+
+- (UIView *)baseContentView {
+    if (!_baseContentView) {
+        _baseContentView = [[UIView alloc] init];
+        _baseContentView.hidden = YES;
+        _baseContentView.backgroundColor = [UIColor colorWithHexStr:@"#EFF1F3"];
+        [self.view addSubview:_baseContentView];
     }
-   return _placeholderView;
+    return _baseContentView;
 }
 
-- (UILabel *)label {
-    if (!_label) {
-        _label = [[UILabel alloc] init];
-        _label.textAlignment = NSTextAlignmentCenter;
-        _label.font = [UIFont systemFontOfSize:24.0 weight:UIFontWeightRegular];
-        _label.text = @"Page Not Found";
-        [self.placeholderView addSubview:_label];
+- (UIView *)basePlaceholderView {
+    if (!_basePlaceholderView) {
+        _basePlaceholderView = [[UIView alloc] init];
+        [self.baseContentView addSubview:_basePlaceholderView];
     }
-   return _label;
+    return _basePlaceholderView;
 }
 
-- (UILabel *)detailLabel {
-    if (!_detailLabel) {
-        _detailLabel = [[UILabel alloc] init];
-        _detailLabel.numberOfLines = 0;
-        _detailLabel.text = @"The page you are looking for doesn't seem to exist...";
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_detailLabel.text];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineSpacing:8.0];
-        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, _detailLabel.text.length)];
-        _detailLabel.attributedText = attributedString;
-        _detailLabel.textAlignment = NSTextAlignmentCenter;
-        [self.placeholderView addSubview:_detailLabel];
+- (UIImageView *)baseImageView {
+    if (!_baseImageView) {
+        _baseImageView = [[UIImageView alloc] init];
+        [self.basePlaceholderView addSubview:_baseImageView];
     }
-   return _detailLabel;
+    
+    return _baseImageView;
 }
 
-- (UIButton *)retryBtn {
-    if (!_retryBtn) {
-        _retryBtn = [[UIButton alloc] init];
-        [_retryBtn setTitle:@"重    试" forState:UIControlStateNormal];
-        [_retryBtn setBackgroundColor:[UIColor colorWithRed:0.45 green:0.58 blue:0.92 alpha:1.0]];
-        _retryBtn.layer.cornerRadius = 25.0;
-        [self.placeholderView addSubview:_retryBtn];
+- (UILabel *)baseStateTitleLabel {
+    if (!_baseStateTitleLabel) {
+        _baseStateTitleLabel = [[UILabel alloc] init];
+        _baseStateTitleLabel.textAlignment = NSTextAlignmentCenter;
+        _baseStateTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
+        [self.basePlaceholderView addSubview:_baseStateTitleLabel];
     }
-   return _retryBtn;
+    return _baseStateTitleLabel;
 }
 
-- (UIActivityIndicatorView *)activityIndicatorView {
-    if (!_activityIndicatorView) {
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] init];
-        _activityIndicatorView.hidden = YES;
-        [self.view addSubview:_activityIndicatorView];
+- (UILabel *)baseStateDetailLabel {
+    if (!_baseStateDetailLabel) {
+        _baseStateDetailLabel = [[UILabel alloc] init];
+        _baseStateDetailLabel.numberOfLines = 0;
+        _baseStateDetailLabel.textAlignment = NSTextAlignmentCenter;
+        _baseStateDetailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        _baseStateDetailLabel.textColor = UIColor.grayColor;
+        [self.basePlaceholderView addSubview:_baseStateDetailLabel];
     }
-   return _activityIndicatorView;
+    return _baseStateDetailLabel;
+}
+
+- (UIButton *)baseRetryButton {
+    if (!_baseRetryButton) {
+        _baseRetryButton = [[UIButton alloc] init];
+        _baseRetryButton.backgroundColor = UIColor.beautyBlue;
+        _baseRetryButton.layer.cornerRadius = 22;
+        _baseRetryButton.layer.shadowColor = [UIColor beautyBlue].CGColor;
+        _baseRetryButton.layer.shadowOffset = CGSizeMake(0, 2);
+        _baseRetryButton.layer.shadowRadius = 2;
+        _baseRetryButton.layer.shadowOpacity = 0.5;
+        [_baseRetryButton addTarget:self action:@selector(onBaseRetryButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.basePlaceholderView addSubview:_baseRetryButton];
+    }
+    
+    return _baseRetryButton;
+}
+
+- (UIActivityIndicatorView *)baseActivityIndicatorView {
+    if (!_baseActivityIndicatorView) {
+        _baseActivityIndicatorView = [[UIActivityIndicatorView alloc] init];
+        _baseActivityIndicatorView.hidden = YES;
+        [self.view addSubview:_baseActivityIndicatorView];
+    }
+    return _baseActivityIndicatorView;
 }
 
 @end
