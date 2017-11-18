@@ -36,7 +36,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
         self.layer.shadowOpacity = 0.5;
         self.layer.shadowRadius = 4;
         self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)].CGPath;
-        self.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
+//        self.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
         
         [self initConstraints];
     }
@@ -70,7 +70,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     _detailLabel.text = dictionary[@"detail"];
     CGColorRef mainColor = [[UIImage imageNamed:dictionary[@"image"]].mainColor colorWithAlphaComponent:0.8].CGColor;
     self.layer.shadowColor = mainColor;
-    self.layer.borderColor = mainColor;
+//    self.layer.borderColor = mainColor;
     [self layoutIfNeeded];
     [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
 }
@@ -140,8 +140,6 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"CampusNavigationBarTitle", nil);
-    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F4F5FB"];
-    [self setNavigationBarBackgroundColor:[UIColor colorWithHexStr:@"#F4F5FB"]];
     [self initConstraints];
 }
 

@@ -29,7 +29,6 @@ typedef NS_ENUM(NSUInteger, JHBaseViewControllerState) {
 - (void)hidePlaceHolder;
 - (void)retry:(UIButton *)sender;
 
-- (void)setNavigationBarBackgroundColor:(UIColor *)color;
 - (void)setPlaceholderViewHidden:(BOOL)hidden;
 
 @end

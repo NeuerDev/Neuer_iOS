@@ -35,7 +35,6 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"HomeNavigationBarTitle", nil);
-    [self setNavigationBarBackgroundColor:UIColor.whiteColor];
     [self initConstraints];
 }
 

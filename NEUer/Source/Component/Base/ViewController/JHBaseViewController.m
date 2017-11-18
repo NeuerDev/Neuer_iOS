@@ -8,10 +8,6 @@
 
 #import "JHBaseViewController.h"
 
-@interface JHBaseViewController ()
-@property (nonatomic, strong) UIView *navigationBarBackgroundView;
-@end
-
 @implementation JHBaseViewController
 
 #pragma mark - Init Methods
@@ -59,11 +55,6 @@
         make.centerX.equalTo(self.placeholderView);
         make.bottom.equalTo(self.placeholderView.mas_bottom);
     }];
-    
-    [self.navigationBarBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.and.left.and.right.equalTo(self.view);
-        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-    }];
 }
 
 
@@ -99,10 +90,6 @@
 }
 
 #pragma mark - Public Methods
-
-- (void)setNavigationBarBackgroundColor:(UIColor *)color {
-    _navigationBarBackgroundView.backgroundColor = color;
-}
 
 - (void)showPlaceHolder {
     self.placeholderView.hidden = NO;
@@ -177,13 +164,4 @@
    return _activityIndicatorView;
 }
 
-- (UIView *)navigationBarBackgroundView {
-    if (!_navigationBarBackgroundView) {
-        _navigationBarBackgroundView = [[UIView alloc] init];
-        _navigationBarBackgroundView.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:_navigationBarBackgroundView];
-    }
-    
-    return _navigationBarBackgroundView;
-}
 @end
