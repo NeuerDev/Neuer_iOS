@@ -49,6 +49,7 @@
     NSLog(@"%f %f", _headerHeight, SCREEN_WIDTH_ACTUAL);
     _headerWidth = SCREEN_WIDTH_ACTUAL;
     
+    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F4F5FB"];
     self.navigationController
     .navigationBar
     .largeTitleTextAttributes = @{
@@ -90,7 +91,7 @@
     CGFloat maxAlphaOffset = _headerHeight;
     CGFloat offset = scrollView.contentOffset.y;
     CGFloat alpha = (offset - minAlphaOffset) / (maxAlphaOffset - minAlphaOffset);
-    [self setNavigationBarBackgroundColor:[UIColor.whiteColor colorWithAlphaComponent:alpha]];
+    [self setNavigationBarBackgroundColor:[[UIColor colorWithHexStr:@"#F4F5FB"] colorWithAlphaComponent:alpha]];
     
     // 控制header透明度
     minAlphaOffset = 0;

@@ -140,7 +140,8 @@ static NSString * const kCampusCellId = @"kCampusCellId";
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"CampusNavigationBarTitle", nil);
-    
+    self.view.backgroundColor = [UIColor colorWithHexStr:@"#F4F5FB"];
+    [self setNavigationBarBackgroundColor:[UIColor colorWithHexStr:@"#F4F5FB"]];
     [self initConstraints];
 }
 
