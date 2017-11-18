@@ -51,6 +51,23 @@
 
 
 /*
+ Today Activity
+ */
+
+"HomeActivityTitle" = "WHAT'S MORE";
+"HomeActivityActionButton" = "";
+
+"HomeActivityARCampusTitle" = "AR Campus";
+"HomeActivityARCampusSubtitle" = "Try our cool AR";
+
+"HomeActivityTelevisionTitle" = "Television";
+"HomeActivityTelevisionSubtitle" = "Watch TV in campus";
+
+"HomeActivityShareTitle" = "Sharing Knowledge";
+"HomeActivityShareSubtitle" = "Share platform of NEUers";
+
+
+/*
  Today Schedule
  */
 

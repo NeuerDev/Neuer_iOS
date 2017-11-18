@@ -50,10 +50,27 @@
 
 
 /*
+ Today Activity
+ */
+
+"HomeActivityTitle" = "干点啥子嘛";
+"HomeActivityActionButton" = "";
+
+"HomeActivityARCampusTitle" = "AR 校园";
+"HomeActivityARCampusSubtitle" = "玩转校园 体验最酷AR";
+
+"HomeActivityTelevisionTitle" = "电视直播";
+"HomeActivityTelevisionSubtitle" = "校内免流量的电视";
+
+"HomeActivityShareTitle" = "资源共享";
+"HomeActivityShareSubtitle" = "东大人的共享云平台";
+
+
+/*
  Today Schedule
  */
 
-"HomeScheduleTitle" = "今日课程";
+"HomeScheduleTitle" = "上毛线课嘛";
 "HomeScheduleActionButton" = "查看全部";
 
 

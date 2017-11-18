@@ -47,6 +47,7 @@
 		5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */; };
 		5C64D8A61F999663001CDB89 /* NSDictionary+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */; };
 		5C65DB091F7025E700B497CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
+		5C6B25B11FC01058009DDAE6 /* HomeComponentActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6B25B01FC01058009DDAE6 /* HomeComponentActivityView.m */; };
 		5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59331F734B0600E7654B /* CalendarLogic.m */; };
 		5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6D59401F7376D200E7654B /* UITableView+JHCategory.m */; };
 		5C7B8ED51F8B40190088FC60 /* JHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC744BB1F6D3D94003D2EE2 /* JHReachability.m */; };
@@ -232,6 +233,8 @@
 		5C64D8A11F98F7FD001CDB89 /* EcardTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardTableViewCell.m; sourceTree = "<group>"; };
 		5C64D8A41F999663001CDB89 /* NSDictionary+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JHCategory.h"; sourceTree = "<group>"; };
 		5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JHCategory.m"; sourceTree = "<group>"; };
+		5C6B25AF1FC01058009DDAE6 /* HomeComponentActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeComponentActivityView.h; sourceTree = "<group>"; };
+		5C6B25B01FC01058009DDAE6 /* HomeComponentActivityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeComponentActivityView.m; sourceTree = "<group>"; };
 		5C6D59321F734B0600E7654B /* CalendarLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarLogic.h; sourceTree = "<group>"; };
 		5C6D59331F734B0600E7654B /* CalendarLogic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarLogic.m; sourceTree = "<group>"; };
 		5C6D593F1F7376D200E7654B /* UITableView+JHCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+JHCategory.h"; sourceTree = "<group>"; };
@@ -658,6 +661,7 @@
 		5C14F9811F8088A300E5D0B9 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				5C6B25AE1FC01027009DDAE6 /* Activity */,
 				5CD098B21F8089CA00252E4D /* News */,
 				5CD098B11F8089B700252E4D /* Schedule */,
 				5CD098B01F8089AF00252E4D /* Cover */,
@@ -883,6 +887,15 @@
 				5C64D8A51F999663001CDB89 /* NSDictionary+JHCategory.m */,
 			);
 			path = "NSDictionary+JHCategory";
+			sourceTree = "<group>";
+		};
+		5C6B25AE1FC01027009DDAE6 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				5C6B25AF1FC01058009DDAE6 /* HomeComponentActivityView.h */,
+				5C6B25B01FC01058009DDAE6 /* HomeComponentActivityView.m */,
+			);
+			path = Activity;
 			sourceTree = "<group>";
 		};
 		5C6D59311F734AF700E7654B /* CalendarLogic */ = {
@@ -2148,6 +2161,7 @@
 				772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */,
 				3339FAD31FAE0AD700AB6D8B /* NetworkMainViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
+				5C6B25B11FC01058009DDAE6 /* HomeComponentActivityView.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
 				776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */,
 				5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */,

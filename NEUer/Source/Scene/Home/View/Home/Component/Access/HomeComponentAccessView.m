@@ -14,6 +14,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 @interface HomeComponentAccessCell : TouchableCollectionViewCell
 
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end
 
@@ -24,7 +25,7 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
-        self.contentView.layer.cornerRadius = 8;        
+        self.contentView.layer.cornerRadius = 8;
         [self initConstraints];
     }
     
@@ -32,8 +33,15 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 }
 
 - (void)initConstraints {
+    [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.contentView);
+        make.centerY.equalTo(self.contentView.mas_bottom).multipliedBy(1-0.618);
+        make.height.and.width.mas_equalTo(@28);
+    }];
+    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
+        make.top.equalTo(self.imageView.mas_bottom).with.offset(2);
+        make.left.and.right.equalTo(self.contentView);
     }];
     
     [self layoutIfNeeded];
@@ -43,13 +51,21 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.textColor = [UIColor whiteColor];
         [self.contentView addSubview:_titleLabel];
     }
     
     return _titleLabel;
+}
+
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] init];
+        [self.contentView addSubview:_imageView];
+    }
+    
+    return _imageView;
 }
 
 @end
@@ -66,9 +82,6 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.titleLabel.text = @"在东大的987天";
-        [self.actionButton setTitle:@"更多作品" forState:UIControlStateNormal];
-        
         [self initConstraints];
     }
     
@@ -77,29 +90,20 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 
 - (void)initConstraints {
     MASAttachKeys(self, self.collectionView, self.contentView);
-    CGFloat cellHeight = 54;
+    CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 3*8)/4;
+    CGFloat cellHeight = cellWidth*5.0f/6.0f;
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
-        make.height.mas_equalTo(@(((self.cellDataArray.count+1)/3*cellHeight+(self.cellDataArray.count-3)/3*8.0f)));
+        make.height.mas_equalTo(@(cellHeight));
     }];
 }
 
 #pragma mark - Override
 
 - (void)initBaseConstraints {
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).with.offset(16);
-        make.left.equalTo(self.mas_left).with.offset(16);
-        make.right.equalTo(self.mas_right).with.offset(-16);
-    }];
-    
-    [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).with.offset(-16);
-        make.lastBaseline.equalTo(self.titleLabel);
-    }];
     
     [self.bodyView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
+        make.top.equalTo(self.mas_top).with.offset(24);
         make.left.equalTo(self.mas_left).with.offset(16);
         make.right.equalTo(self.mas_right).with.offset(-16);
         make.bottom.equalTo(self.mas_bottom);
@@ -120,6 +124,9 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
     cell.contentView.backgroundColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"color"]];
 //    cell.layer.shadowColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"color"]].CGColor;
     cell.titleLabel.text = self.cellDataArray[indexPath.item][@"title"];
+    cell.titleLabel.textColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"textcolor"]];
+    cell.imageView.image = [[UIImage imageNamed:self.cellDataArray[indexPath.item][@"icon"]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    cell.imageView.tintColor = [UIColor colorWithHexStr:self.cellDataArray[indexPath.item][@"textcolor"]];
     return cell;
 }
 
@@ -146,12 +153,11 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 16)/3;
-        CGFloat cellHeight = 54;
+        CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 3*8)/4;
+        CGFloat cellHeight = cellWidth*4.0f/5.0f;
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.minimumLineSpacing = 8.0f;
-        flowLayout.minimumInteritemSpacing = 8.0f;
-        flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.layer.masksToBounds = NO;
@@ -171,37 +177,45 @@ static NSString * const kHomeComponentAccessCellId = @"kCellId";
 - (NSArray<NSDictionary *> *)cellDataArray {
     if (!_cellDataArray) {
         _cellDataArray = @[
-                           @{
-                               @"title":@"AR 校园",
-                               @"url":@"neu://go/ar",
-                               @"color":@"#DFC3BB",
-                               },
+//                           @{
+//                               @"title":@"AR 校园",
+//                               @"url":@"neu://go/ar",
+//                               @"color":@"#DFC3BB",
+//                               },
                            @{
                                @"title":NSLocalizedString(@"HomeAccessScore", nil),
                                @"url":@"neu://go/aao",
-                               @"color":@"#E7D1B4",
+                               @"icon":@"home_access_rank",
+                               @"color":@"#F6F0D0",
+                               @"textcolor":@"#DA862D",
                                },
                            @{
                                @"title":NSLocalizedString(@"HomeAccessIPGateway", nil),
                                @"url":@"neu://handle/ipgw",
-                               @"color":@"#E7D1B4",
+                               @"icon":@"home_access_net",
+                               @"color":@"#F6E6DA",
+                               @"textcolor":@"#E67347",
                                },
                            @{
                                @"title":NSLocalizedString(@"HomeAccessLibraryBooks", nil),
-                               @"title":@"书刊查询",
                                @"url":@"neu://go/lib/search",
-                               @"color":@"#A2C9B4",
+                               @"title":@"书刊查询",
+                               @"icon":@"home_access_book",
+                               @"color":@"#F1F8CE",
+                               @"textcolor":@"#B4CA45",
                                },
                            @{
                                @"title":NSLocalizedString(@"HomeAccessEcard", nil),
                                @"url":@"neu://go/ecard",
-                               @"color":@"#92AFC0",
+                               @"icon":@"home_access_card",
+                               @"color":@"#D5F6F2",
+                               @"textcolor":@"#6AC6B3",
                                },
-                           @{
-                               @"title":NSLocalizedString(@"HomeAccessTelevision", nil),
-                               @"url":@"neu://go/tv",
-                               @"color":@"#A2C9B4",
-                               },
+//                           @{
+//                               @"title":NSLocalizedString(@"HomeAccessTelevision", nil),
+//                               @"url":@"neu://go/tv",
+//                               @"color":@"#A2C9B4",
+//                               },
                            ];
     }
     
