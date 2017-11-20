@@ -42,9 +42,7 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
 }
 
 - (void)initConstraints {
-//    CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 16 - 16 - 8)/2;
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.height.mas_equalTo(@(cellWidth*14.0f/16.0f));
         make.height.mas_equalTo(@150);
     }];
     
@@ -94,9 +92,8 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
-        HomeComponentActivityLayout *flowLayout = [[HomeComponentActivityLayout alloc] init];
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 16 - 16 - 8)/2;
-//        CGFloat cellHeight = cellWidth*14.0f/16.0f;
         CGFloat cellHeight = 150.0f;
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.minimumInteritemSpacing = 8.0f;
@@ -207,34 +204,6 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
     }
     
     return _subtitleLabel;
-}
-
-@end
-
-@implementation HomeComponentActivityLayout
-
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
-    
-    CGFloat offset = 0;
-    if (proposedContentOffset.x > _currentPage*(self.itemSize.width + self.minimumLineSpacing) - self.collectionView.contentInset.left - self.sectionInset.left) {
-        _currentPage++;
-    } else if (_currentPage == [self.collectionView numberOfItemsInSection:0]) {
-        
-    } else {
-        _currentPage--;
-    }
-    
-    if (_currentPage >= [self.collectionView numberOfItemsInSection:0]) {
-        _currentPage = [self.collectionView numberOfItemsInSection:0] - 1;
-    }
-    
-    if (_currentPage < 0) {
-        _currentPage = 0;
-    }
-    
-    offset = - self.collectionView.contentInset.left - self.sectionInset.left + _currentPage*(self.itemSize.width + self.minimumLineSpacing);
-    
-    return CGPointMake(offset, proposedContentOffset.y);
 }
 
 @end
