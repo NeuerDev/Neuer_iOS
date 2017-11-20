@@ -213,32 +213,28 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
 
 @implementation HomeComponentActivityLayout
 
-- (CGFloat)pageWidth {
-    return self.itemSize.width + self.minimumLineSpacing;
-}
-
-- (CGPoint)offsetAtCurrentPage {
-    
-    CGFloat width = -self.collectionView.contentInset.left - self.sectionInset.left;
-    for (int i = 0; i < self.currentPage; i++) {
-        width += [self pageWidth];
-    }
-    
-    return CGPointMake(width, 0);
-}
-
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset {
-    return [self offsetAtCurrentPage];
-}
-
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
-    if (velocity.x > 0 && self.currentPage < [self.collectionView numberOfItemsInSection:0]-1) {
-        self.currentPage += 1;
-    } else if (velocity.x < 0 && self.currentPage > 0) {
-        self.currentPage -= 1;
+    
+    CGFloat offset = 0;
+    if (proposedContentOffset.x > _currentPage*(self.itemSize.width + self.minimumLineSpacing) - self.collectionView.contentInset.left - self.sectionInset.left) {
+        _currentPage++;
+    } else if (_currentPage == [self.collectionView numberOfItemsInSection:0]) {
+        
+    } else {
+        _currentPage--;
     }
     
-    return  [self offsetAtCurrentPage];
+    if (_currentPage >= [self.collectionView numberOfItemsInSection:0]) {
+        _currentPage = [self.collectionView numberOfItemsInSection:0] - 1;
+    }
+    
+    if (_currentPage < 0) {
+        _currentPage = 0;
+    }
+    
+    offset = - self.collectionView.contentInset.left - self.sectionInset.left + _currentPage*(self.itemSize.width + self.minimumLineSpacing);
+    
+    return CGPointMake(offset, proposedContentOffset.y);
 }
 
 @end
