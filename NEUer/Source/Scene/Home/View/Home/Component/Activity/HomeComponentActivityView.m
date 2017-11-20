@@ -42,9 +42,10 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
 }
 
 - (void)initConstraints {
-    CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 16 - 16 - 8)/2;
+//    CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 16 - 16 - 8)/2;
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(@(cellWidth*14.0f/16.0f));
+//        make.height.mas_equalTo(@(cellWidth*14.0f/16.0f));
+        make.height.mas_equalTo(@150);
     }];
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -95,13 +96,14 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
     if (!_collectionView) {
         HomeComponentActivityLayout *flowLayout = [[HomeComponentActivityLayout alloc] init];
         CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 16 - 16 - 8)/2;
-        CGFloat cellHeight = cellWidth*14.0f/16.0f;
+//        CGFloat cellHeight = cellWidth*14.0f/16.0f;
+        CGFloat cellHeight = 150.0f;
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.minimumInteritemSpacing = 8.0f;
-        flowLayout.sectionInset = UIEdgeInsetsZero;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _collectionView.layer.masksToBounds = NO;
         [_collectionView registerClass:[HomeComponentActivityCell class] forCellWithReuseIdentifier:kHomeComponentActivityCellId];
         _collectionView.delegate = self;

@@ -332,8 +332,22 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
 #pragma mark - Override
 
 - (void)onBaseRetryButtonClicked:(UIButton *)sender {
-    NSString *urlString = UIApplicationOpenSettingsURLString;
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
+    switch (self.viewState) {
+        case ARCampusViewStateCameraDisable:
+        {
+            NSString *urlString = UIApplicationOpenSettingsURLString;
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
+        }
+            break;
+        case ARCampusViewStateNotSupportARKit:
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Setter

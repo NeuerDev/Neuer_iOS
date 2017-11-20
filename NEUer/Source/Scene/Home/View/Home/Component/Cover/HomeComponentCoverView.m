@@ -104,9 +104,9 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _collectionView.backgroundColor = [UIColor clearColor];
-        _collectionView.layer.masksToBounds = NO;
         [_collectionView registerClass:[HomeComponentCoverCell class] forCellWithReuseIdentifier:kHomeComponentCoverCellId];
         _collectionView.delegate = self;
+        _collectionView.layer.masksToBounds = NO;
         _collectionView.contentInset = UIEdgeInsetsMake(0, 16, 0, 16);
         _collectionView.dataSource = self;
         _collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -162,6 +162,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
     
     [self layoutIfNeeded];
     [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(12, 12)];
+    self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:12].CGPath;
 }
 
 - (UIImageView *)imageView {
@@ -178,7 +179,6 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 @implementation HomeComponentCoverLayout
 
 - (CGFloat)pageWidth {
-    
     return self.itemSize.width + self.minimumLineSpacing;
 }
 

@@ -180,7 +180,7 @@
             break;
         case JHBaseViewStateError:
         {
-            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_error"];
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_error1"];
             [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerBack", nil) forState:UIControlStateNormal];
             [self showPlaceHolder];
         }
