@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, JHBaseViewState) {
 
 @interface JHBaseViewController : UIViewController <JHURLRouterViewControllerProtocol>
 @property (nonatomic, assign) JHBaseViewState baseViewState;
-@property (nonatomic, strong) UIView *basePlaceholderView;
+@property (nonatomic, strong) UIView *baseContentView;
 @property (nonatomic, strong) UILabel *baseStateTitleLabel;
 @property (nonatomic, strong) UILabel *baseStateDetailLabel;
 @property (nonatomic, strong) UIButton *baseRetryButton;

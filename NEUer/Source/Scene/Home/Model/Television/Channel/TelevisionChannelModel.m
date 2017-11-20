@@ -157,7 +157,7 @@
                                 }
                                 
                                 bean.sourceUrl = _videoSource;
-                                bean.status = @"预约";
+                                bean.status = NSLocalizedString(@"TelevisionChannelPlayListRemind", nil);
                                 [listArr addObject:bean];
                                 bean = [[TelevisionChannelScheduleBean alloc] init];
                             }
@@ -173,7 +173,7 @@
             NSComparisonResult result = [[listArr lastObject].time compare:[LYTool timeOfNow]];
             if (result == NSOrderedAscending) {
                 [listArr lastObject].videoUrl = [NSString stringWithFormat:@"http://media2.neu6.edu.cn/hls/%@.m3u8", _videoSource];
-                [listArr lastObject].status = @"直播中";
+                [listArr lastObject].status = NSLocalizedString(@"TelevisionChannelPlayListPlaying", nil);
             }
         }
         

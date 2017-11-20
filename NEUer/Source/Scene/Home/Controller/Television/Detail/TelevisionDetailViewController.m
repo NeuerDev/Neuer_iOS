@@ -399,13 +399,13 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         case 0:
         {
             [headerView.actionButton setTitle:sourceButtonsTitle forState:UIControlStateNormal];
-            headerView.titleLabel.text = @"正在播放";
+            headerView.titleLabel.text = NSLocalizedString(@"TelevisionChannelPlaying", nil);
         }
             break;
         case 1:
         {
             [headerView.actionButton setTitle:dateButtonTitle forState:UIControlStateNormal];
-            headerView.titleLabel.text = @"节目单";
+            headerView.titleLabel.text = NSLocalizedString(@"TelevisionChannelPlayList", nil);
         }
             break;
             

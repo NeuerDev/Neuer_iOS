@@ -9,27 +9,34 @@
 #import "ARCampusHomeViewController.h"
 #import "ARCampusMenuViewController.h"
 #import "ARCampusTask.h"
+#import "ARPlane.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <SceneKit/SceneKit.h>
 #import <ARKit/ARKit.h>
 
 typedef NS_ENUM(NSUInteger, ARCampusViewState) {
-    ARCampusViewStateNotSupportARKit,
-    ARCampusViewStateCameraDisable,
-    ARCampusViewStateInitializing,
-    ARCampusViewStateSearchingPlane,
-    ARCampusViewStateReadyToPlaceObject,
-    ARCampusViewStateObjectPlaced,
+    ARCampusViewStateNone,                              // 初始状态
+    ARCampusViewStateNotSupportARKit,                   // 不支持ARKit
+    ARCampusViewStateCameraDisable,                     // 相机访问受限
+    ARCampusViewStateCameraRunning,                     // 相机开始运行
+    ARCampusViewStateSessionInitializing,               // 初始化ARKit
+    ARCampusViewStateSearchingPlane,                    // 正在搜索平面
+    ARCampusViewStateSearchingPlaneNeedFeature,         // 正在搜索平面 特征点太少
+    ARCampusViewStateSearchingPlaneExcessiveMovement,   // 正在搜索平面 需要移动
+    ARCampusViewStateReadyToPlaceObject,                // 搜索完成 可以放置物体
+    ARCampusViewStateObjectPlaced,                      // 已放置物体
 };
 
-@interface ARCampusHomeViewController () <ARSCNViewDelegate, ARSessionDelegate, ARSessionObserver, ARCampusMenuViewControllerDelegate>
+@interface ARCampusHomeViewController () <ARSCNViewDelegate, ARSessionDelegate, ARSessionObserver, ARCampusMenuViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) ARCampusViewState viewState;
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARSession *arSession;
 @property (nonatomic, strong) ARConfiguration *arConfiguration;
-@property (nonatomic, strong) SCNNode *planeNode;
+@property (nonatomic, strong) NSMutableDictionary<NSUUID *, ARPlane *> *planes;
+@property (nonatomic, strong) NSMutableArray<SCNNode *> *nodes;
 
 @property (nonatomic, strong) UIView *panelView;
 @property (nonatomic, strong) UIVisualEffectView *panelMaskView;
@@ -43,7 +50,6 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
 @implementation ARCampusHomeViewController {
     BOOL _didSceneAppeared;
     BOOL _didNavigationBarHidden;
-    BOOL _didFoundPlane;
 }
 
 #pragma mark - Life Circle
@@ -51,31 +57,29 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"AR 校园";
-    self.view.backgroundColor = [UIColor blackColor];
-    self.baseViewState = JHBaseViewStateRequireCameraAccess;
-    [self initConstraints];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    self.title = NSLocalizedString(@"ARCampusTitle", nil);
+    self.view.backgroundColor = UIColor.whiteColor;
+    self.baseContentView.backgroundColor = UIColor.whiteColor;
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.sceneView.session runWithConfiguration:self.arConfiguration options:0];
-    [UIApplication.sharedApplication setIdleTimerDisabled:YES];
+    [self initConstraints];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [UIView animateWithDuration:0.3 delay:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.navigationController.navigationBar.alpha = 0;
-    } completion:^(BOOL finished) {
-        _didNavigationBarHidden = YES;
-    }];
+    if ([self checkARKitAbility]) {
+        if ([self checkCameraAccess]) {
+            self.viewState = ARCampusViewStateCameraRunning;
+        } else {
+            self.viewState = ARCampusViewStateCameraDisable;
+        }
+    } else {
+        self.viewState = ARCampusViewStateNotSupportARKit;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     [UIView animateWithDuration:0.3 animations:^{
         self.navigationController.navigationBar.alpha = 1;
     } completion:^(BOOL finished) {
@@ -129,77 +133,105 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - ARSessionDelegate
+
+- (void)session:(ARSession *)session didFailWithError:(NSError *)error {
+    switch (error.code) {
+        case ARErrorCodeCameraUnauthorized:
+            self.viewState = ARCampusViewStateCameraDisable;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)session:(ARSession *)session cameraDidChangeTrackingState:(ARCamera *)camera {
+    NSLog(@"%ld", camera.trackingStateReason);
+    if (self.viewState >= ARCampusViewStateReadyToPlaceObject) {
+        return;
+    }
+    switch (camera.trackingStateReason) {
+        case ARTrackingStateReasonNone:
+        {
+            self.viewState = ARCampusViewStateSearchingPlane;
+        }
+            break;
+        case ARTrackingStateReasonInitializing:
+        {
+            self.viewState = ARCampusViewStateSessionInitializing;
+        }
+            break;
+        case ARTrackingStateReasonExcessiveMotion:
+        {
+            self.viewState = ARCampusViewStateSearchingPlaneExcessiveMovement;
+        }
+            break;
+        case ARTrackingStateReasonInsufficientFeatures:
+        {
+            self.viewState = ARCampusViewStateSearchingPlaneNeedFeature;
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 #pragma mark - ARSCNViewDelegate
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
     
-    if ([anchor isMemberOfClass:[ARPlaneAnchor class]]) {
-        NSLog(@"捕捉到平地");
-        
-        //添加一个3D平面模型，ARKit只有捕捉能力，锚点只是一个空间位置，要想更加清楚看到这个空间，我们需要给空间添加一个平地的3D模型来渲染他
-        //1.获取捕捉到的平地锚点
-        ARPlaneAnchor *planeAnchor = (ARPlaneAnchor *)anchor;
-        //2.创建一个3D物体模型    （系统捕捉到的平地是一个不规则大小的长方形，这里笔者将其变成一个长方形，并且是否对平地做了一个缩放效果）
-        //参数分别是长宽高和圆角
-        NSLog(@"x:%f---y:%f---z:%f", planeAnchor.extent.x, planeAnchor.extent.y, planeAnchor.extent.z);
-        SCNBox *plane = [SCNBox boxWithWidth:planeAnchor.extent.x height:0 length:planeAnchor.extent.z chamferRadius:0];
-        //3.使用Material渲染3D模型（默认模型是白色的，这里笔者改成红色）
-        plane.firstMaterial.diffuse.contents = [[UIColor redColor] colorWithAlphaComponent:0.2];
-        //4.创建一个基于3D物体模型的节点
-        SCNNode *planeNode = [SCNNode nodeWithGeometry:plane];
-        //5.设置节点的位置为捕捉到的平地的锚点的中心位置  SceneKit框架中节点的位置position是一个基于3D坐标系的矢量坐标SCNVector3Make
-        planeNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z);
-        //self.planeNode = planeNode;
-        [node addChildNode:planeNode];
-        
-//        //2.当捕捉到平地时，2s之后开始在平地上添加一个3D模型
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            //1.创建一个花瓶场景
-//            SCNScene *scene = [SCNScene sceneNamed:@"Models.scnassets/nanhu/main_building/nanhu_main_building.scn"];
-//            //2.获取花瓶节点（一个场景会有多个节点，此处我们只写，花瓶节点则默认是场景子节点的第一个）
-//            //所有的场景有且只有一个根节点，其他所有节点都是根节点的子节点
-//            SCNNode *vaseNode = scene.rootNode.childNodes[0];
-//            //4.设置花瓶节点的位置为捕捉到的平地的位置，如果不设置，则默认为原点位置，也就是相机位置
-//            vaseNode.position = SCNVector3Make(planeAnchor.center.x, 0, planeAnchor.center.z);
-//            //5.将花瓶节点添加到当前屏幕中
-//            //!!!此处一定要注意：花瓶节点是添加到代理捕捉到的节点中，而不是AR试图的根节点。因为捕捉到的平地锚点是一个本地坐标系，而不是世界坐标系
-//            [node addChildNode:vaseNode];
-//        });
+    if (![anchor isKindOfClass:[ARPlaneAnchor class]]) {
+        return;
     }
+    
+    self.viewState = ARCampusViewStateReadyToPlaceObject;
+    SCNMaterial *material = [[SCNMaterial alloc] init];
+    material.lightingModelName = SCNLightingModelPhysicallyBased;
+    material.diffuse.contents = [UIColor.beautyYellow colorWithAlphaComponent:0.3f];
+    ARPlane *plane = [[ARPlane alloc] initWithAnchor: (ARPlaneAnchor *)anchor isHidden: NO withMaterial:material];
+    [self.planes setObject:plane forKey:anchor.identifier];
+    [node addChildNode:plane];
 }
 
 //刷新时调用
 - (void)renderer:(id <SCNSceneRenderer>)renderer willUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
-//    NSLog(@"刷新中");
+    //    NSLog(@"刷新中");
 }
 
 //更新节点时调用
 - (void)renderer:(id <SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
-//    NSLog(@"节点更新");
+    ARPlane *plane = [self.planes objectForKey:anchor.identifier];
+    if (plane == nil) {
+        return;
+    }
+    
+    // 更新平面信息
+    [plane update:(ARPlaneAnchor *)anchor];
 }
 
 //移除节点时调用
 - (void)renderer:(id <SCNSceneRenderer>)renderer didRemoveNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
-//    NSLog(@"节点移除");
+    [self.planes removeObjectForKey:anchor.identifier];
 }
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time {
     // 首次渲染的时候才显示场景
-    if (!_didSceneAppeared) {
+    if (!_didSceneAppeared && self.viewState>=ARCampusViewStateCameraRunning) {
         _didSceneAppeared = YES;
         [UIView animateWithDuration:0.5 delay:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self.sceneView.alpha = 1;
         } completion:nil];
     }
     
-    // 更新光源亮度
     ARLightEstimate *estimate = self.sceneView.session.currentFrame.lightEstimate;
     if (!estimate) {
         return;
-    } else {
-//        estimate.ambientIntensity
-//        NSLog(@"estimate %f", estimate.ambientIntensity);
     }
+    
+    CGFloat intensity = estimate.ambientIntensity / 1000.0;
+    self.sceneView.scene.lightingEnvironment.intensity = intensity;
 }
 
 #pragma mark - ARSessionDelegate
@@ -218,21 +250,50 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
     self.currentTask = task;
 }
 
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
 #pragma mark - Private Methods
 
-- (void)showAllowCameraUsageGuide {
+- (void)refresh {
     
 }
 
-- (void)showARKitUnsupportView {
-    
+- (BOOL)checkCameraAccess {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    return (authStatus == AVAuthorizationStatusNotDetermined || authStatus == AVAuthorizationStatusAuthorized);
 }
 
-- (void)showBuilding {
+- (BOOL)checkARKitAbility {
+    JHDeviceType deviceType = [UIDevice currentDevice].deviceType;
+    return deviceType>=iPhone_6S;
+}
+
+- (void)placeBuildingAtTapPoint:(CGPoint)tapPoint {
+    NSArray<ARHitTestResult *> *result = [self.sceneView hitTest:tapPoint types:ARHitTestResultTypeExistingPlaneUsingExtent];
+    
+    if (result.count == 0) {
+        return;
+    }
+    
+    ARHitTestResult *hitResult = [result firstObject];
+    [self placeBuildingWithHitResult:hitResult];
+}
+
+- (void)placeBuildingWithHitResult:(ARHitTestResult *)hitResult {
+    SCNVector3 position = SCNVector3Make(
+                                         hitResult.worldTransform.columns[3].x,
+                                         hitResult.worldTransform.columns[3].y,
+                                         hitResult.worldTransform.columns[3].z
+                                         );
     SCNScene *scene = [SCNScene sceneNamed:@"Models.scnassets/nanhu/main_building/nanhu_main_building.scn"];
-    SCNNode *mainBuidingNode = scene.rootNode.childNodes[0];
-    mainBuidingNode.position = SCNVector3Make(0, -0.1, -0.1);
-    [self.sceneView.scene.rootNode addChildNode:mainBuidingNode];
+    SCNNode *building = scene.rootNode.childNodes[0];
+    building.position = position;
+    [self.sceneView.scene.rootNode addChildNode:building];
+    self.viewState = ARCampusViewStateObjectPlaced;
 }
 
 - (void)showMenu {
@@ -254,6 +315,12 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
     }];
 }
 
+- (void)onSceneViewLongPressed:(UILongPressGestureRecognizer *)longPress {
+    if (longPress.state == UIGestureRecognizerStateBegan) {
+        [self placeBuildingAtTapPoint:[longPress locationInView:self.sceneView]];
+    }
+}
+
 - (void)onPanelViewSwipped:(UISwipeGestureRecognizer *)swipped {
     [self showMenu];
 }
@@ -262,45 +329,88 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
     [self showMenu];
 }
 
+#pragma mark - Override
+
+- (void)onBaseRetryButtonClicked:(UIButton *)sender {
+    NSString *urlString = UIApplicationOpenSettingsURLString;
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
+}
+
 #pragma mark - Setter
 
 - (void)setViewState:(ARCampusViewState)viewState {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (viewState) {
+            case ARCampusViewStateNotSupportARKit:
+            {
+                self.baseViewState = JHBaseViewStateError;
+                self.baseStateTitleLabel.text = @"无法运行 AR";
+                self.baseStateDetailLabel.text = @"请换一台 iPhone6s 及以上机型并升级到 iOS11 以上版本再来试试吧";
+            }
+                break;
+            case ARCampusViewStateCameraDisable:
+            {
+                self.baseViewState = JHBaseViewStateRequireCameraAccess;
+            }
+                break;
+            case ARCampusViewStateCameraRunning:
+            {
+                self.baseViewState = JHBaseViewStateNormal;
+                [UIView animateWithDuration:0.3 delay:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    self.navigationController.navigationBar.alpha = 0;
+                } completion:^(BOOL finished) {
+                    _didNavigationBarHidden = YES;
+                }];
+                [self.sceneView.session runWithConfiguration:self.arConfiguration options:0];
+                [UIApplication.sharedApplication setIdleTimerDisabled:YES];
+                if (!_didSceneAppeared) {
+                    _didSceneAppeared = YES;
+                    [UIView animateWithDuration:0.3 delay:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                        self.sceneView.alpha = 1;
+                    } completion:nil];
+                }
+            }
+                break;
+            case ARCampusViewStateSessionInitializing:
+            {
+                self.hintLabel.text = @"正在初始化虚拟现实引擎";
+            }
+                break;
+            case ARCampusViewStateSearchingPlane:
+            {
+                self.hintLabel.text = @"正在了解你的环境 稍微移动一下手机";
+            }
+                break;
+            case ARCampusViewStateSearchingPlaneNeedFeature:
+            {
+                self.hintLabel.text = @"请到光线充足并且平面反射少的地方再试试";
+            }
+                break;
+            case ARCampusViewStateSearchingPlaneExcessiveMovement:
+            {
+                self.hintLabel.text = @"你的手机移动太快了 慢一点";
+            }
+                break;
+            case ARCampusViewStateReadyToPlaceObject:
+            {
+                if (_viewState>ARCampusViewStateReadyToPlaceObject) {
+                    return;
+                }
+                self.sceneView.debugOptions = SCNDebugOptionNone;
+                self.hintLabel.text = @"长按屏幕在平面上放置一个模型吧";
+            }
+                break;
+            case ARCampusViewStateObjectPlaced:
+            {
+                self.hintLabel.text = @"";
+            }
+                break;
+                
+            default:
+                break;
+        }
+    });
     _viewState = viewState;
-    switch (viewState) {
-        case ARCampusViewStateNotSupportARKit:
-        {
-            
-        }
-            break;
-        case ARCampusViewStateCameraDisable:
-        {
-            
-        }
-            break;
-        case ARCampusViewStateInitializing:
-        {
-            
-        }
-            break;
-        case ARCampusViewStateSearchingPlane:
-        {
-            
-        }
-            break;
-        case ARCampusViewStateReadyToPlaceObject:
-        {
-            
-        }
-            break;
-        case ARCampusViewStateObjectPlaced:
-        {
-            
-        }
-            break;
-            
-        default:
-            break;
-    }
 }
 
 #pragma mark - Getter
@@ -326,6 +436,13 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
     return _arSession;
 }
 
+- (NSMutableDictionary<NSUUID *, ARPlane *> *)planes {
+    if (!_planes) {
+        _planes = [[NSMutableDictionary alloc] initWithCapacity:0];
+    }
+    
+    return _planes;
+}
 
 - (ARSCNView *)sceneView {
     if (!_sceneView) {
@@ -337,7 +454,15 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
         _sceneView.alpha = 0;
         _sceneView.debugOptions = ARSCNDebugOptionShowFeaturePoints;
         _sceneView.userInteractionEnabled = YES;
-        [_sceneView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSceneViewTapped:)]];
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onSceneViewLongPressed:)];
+        longPress.delegate = self;
+        longPress.numberOfTouchesRequired = 1;
+        longPress.minimumPressDuration = 1;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSceneViewTapped:)];
+        tap.delegate = self;
+        [tap requireGestureRecognizerToFail:longPress];
+        [_sceneView addGestureRecognizer:tap];
+        [_sceneView addGestureRecognizer:longPress];
         [self.view addSubview:_sceneView];
     }
     
@@ -355,7 +480,7 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
         
         [_panelView addGestureRecognizer:tap];
         [_panelView addGestureRecognizer:swipe];
-        [self.view addSubview:_panelView];
+        [self.sceneView addSubview:_panelView];
     }
     
     return _panelView;
@@ -403,7 +528,7 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
         _hintLabel.layer.shadowRadius = 1;
         _hintLabel.layer.shadowOffset = CGSizeMake(0, 0);
         _hintLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [self.view addSubview:_hintLabel];
+        [self.sceneView addSubview:_hintLabel];
     }
     
     return _hintLabel;

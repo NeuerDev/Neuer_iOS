@@ -23,6 +23,8 @@
 		33FFEA761FBAE80C002632B9 /* NetworkReuseFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
 		5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0844C31F7B94BB00C69261 /* CampusViewController.m */; };
+		5C0AD0531FC151B700BEF5A9 /* ARMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0AD04F1FC151B700BEF5A9 /* ARMaterial.m */; };
+		5C0AD0541FC151B700BEF5A9 /* ARPlane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0AD0521FC151B700BEF5A9 /* ARPlane.m */; };
 		5C1761B01FAC66560042C0E9 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1761AF1FAC66560042C0E9 /* Models.scnassets */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
@@ -189,6 +191,10 @@
 		5C0742661F8C7410006116A4 /* GatewayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayViewController.m; sourceTree = "<group>"; };
 		5C0844C21F7B94BB00C69261 /* CampusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusViewController.h; sourceTree = "<group>"; };
 		5C0844C31F7B94BB00C69261 /* CampusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusViewController.m; sourceTree = "<group>"; };
+		5C0AD04F1FC151B700BEF5A9 /* ARMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMaterial.m; sourceTree = "<group>"; };
+		5C0AD0501FC151B700BEF5A9 /* ARPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPlane.h; sourceTree = "<group>"; };
+		5C0AD0511FC151B700BEF5A9 /* ARMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMaterial.h; sourceTree = "<group>"; };
+		5C0AD0521FC151B700BEF5A9 /* ARPlane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPlane.m; sourceTree = "<group>"; };
 		5C1761AF1FAC66560042C0E9 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		5C19C4FC1FB826C8005DFADB /* NEUInputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NEUInputView.m; sourceTree = "<group>"; };
 		5C21B9921F6D1A9100BC2961 /* NEUer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEUer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -648,6 +654,17 @@
 				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		5C0AD04E1FC151B700BEF5A9 /* ARPlane */ = {
+			isa = PBXGroup;
+			children = (
+				5C0AD04F1FC151B700BEF5A9 /* ARMaterial.m */,
+				5C0AD0501FC151B700BEF5A9 /* ARPlane.h */,
+				5C0AD0511FC151B700BEF5A9 /* ARMaterial.h */,
+				5C0AD0521FC151B700BEF5A9 /* ARPlane.m */,
+			);
+			path = ARPlane;
 			sourceTree = "<group>";
 		};
 		5C14F9801F80889900E5D0B9 /* Home */ = {
@@ -1230,13 +1247,13 @@
 			path = "UIDevice+JHCategory";
 			sourceTree = "<group>";
 		};
-		5CA72EEA1FBD2EAB0067AAC5 /* Task */ = {
+		5CA72EEA1FBD2EAB0067AAC5 /* ARTask */ = {
 			isa = PBXGroup;
 			children = (
 				5CA72EEB1FBD2ECD0067AAC5 /* ARCampusTask.h */,
 				5CA72EEC1FBD2ECD0067AAC5 /* ARCampusTask.m */,
 			);
-			path = Task;
+			path = ARTask;
 			sourceTree = "<group>";
 		};
 		5CA976E41F73AAD500B1089A /* SearchResult */ = {
@@ -1511,7 +1528,8 @@
 		5CDA535A1FAEB4B100BC9E99 /* ARCampus */ = {
 			isa = PBXGroup;
 			children = (
-				5CA72EEA1FBD2EAB0067AAC5 /* Task */,
+				5C0AD04E1FC151B700BEF5A9 /* ARPlane */,
+				5CA72EEA1FBD2EAB0067AAC5 /* ARTask */,
 				5CDA535B1FAEB4B900BC9E99 /* ARBuilding */,
 			);
 			path = ARCampus;
@@ -2124,6 +2142,7 @@
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
+				5C0AD0541FC151B700BEF5A9 /* ARPlane.m in Sources */,
 				3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
@@ -2161,6 +2180,7 @@
 				772116DF1FB19F58008A305E /* LibraryHistoryViewController.m in Sources */,
 				3339FAD31FAE0AD700AB6D8B /* NetworkMainViewController.m in Sources */,
 				5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */,
+				5C0AD0531FC151B700BEF5A9 /* ARMaterial.m in Sources */,
 				5C6B25B11FC01058009DDAE6 /* HomeComponentActivityView.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
 				776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */,

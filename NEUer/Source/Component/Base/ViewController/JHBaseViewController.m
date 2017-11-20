@@ -10,7 +10,7 @@
 
 @interface JHBaseViewController ()
 @property (nonatomic, strong) UIImageView *baseImageView;
-@property (nonatomic, strong) UIView *baseContentView;
+@property (nonatomic, strong) UIView *basePlaceholderView;
 @end
 
 @implementation JHBaseViewController
@@ -197,6 +197,7 @@
     if (!_baseContentView) {
         _baseContentView = [[UIView alloc] init];
         _baseContentView.hidden = YES;
+        _baseContentView.alpha = 0;
         _baseContentView.backgroundColor = [UIColor colorWithHexStr:@"#EFF1F3"];
         [self.view addSubview:_baseContentView];
     }

@@ -175,7 +175,7 @@ static NSString * const kChannelCellId = @"kChannelCellId";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"电视频道";
+    self.title = NSLocalizedString(@"TelevisionWallTitle", nil);
     self.navigationItem.rightBarButtonItem = self.sortBarButtonItem;
     if (@available(iOS 11.0, *)) {
 #ifdef __IPHONE_11_0

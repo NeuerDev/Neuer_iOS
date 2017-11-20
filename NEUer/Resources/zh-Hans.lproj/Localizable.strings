@@ -98,7 +98,21 @@
 /*
  Today Television
  */
+
+"TelevisionWallTitle" = "电视墙";
+"TelevisionChannelPlaying" = "正在播放";
+"TelevisionChannelPlayList" = "节目单";
+"TelevisionChannelPlayListRemind" = "预约";
+"TelevisionChannelPlayListPlaying" = "播放中";
 "TelevisionChannelSearchBarPlaceholder" = "搜索";
+
+
+/*
+ Today ARCampus
+ */
+
+"ARCampusTitle" = "AR 校园";
+"ARCampusState" = "搜索";
 
 
 /*

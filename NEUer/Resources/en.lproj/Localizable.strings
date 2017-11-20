@@ -99,7 +99,21 @@
 /*
  Today Television
  */
+
+"TelevisionWallTitle" = "Television Wall";
+"TelevisionChannelPlaying" = "PLAYING";
+"TelevisionChannelPlayList" = "PLAYLIST";
+"TelevisionChannelPlayListRemind" = "Remind";
+"TelevisionChannelPlayListPlaying" = "Playing";
 "TelevisionChannelSearchBarPlaceholder" = "Search";
+
+
+/*
+ Today ARCampus
+ */
+
+"ARCampusTitle" = "AR Campus";
+"ARCampusState" = "Search";
 
 
 /*
