@@ -130,10 +130,16 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
                                @"subtitle":NSLocalizedString(@"HomeActivityTelevisionSubtitle", nil),
                                @"url":@"neu://go/tv",
                                },
+//                           @{
+//                               @"image":@"home_activity_share",
+//                               @"title":NSLocalizedString(@"HomeActivityShareTitle", nil),
+//                               @"subtitle":NSLocalizedString(@"HomeActivityShareSubtitle", nil),
+//                               @"url":@"neu://go/tv",
+//                               },
                            @{
-                               @"image":@"home_activity_share",
-                               @"title":NSLocalizedString(@"HomeActivityShareTitle", nil),
-                               @"subtitle":NSLocalizedString(@"HomeActivityShareSubtitle", nil),
+                               @"image":@"home_activity_exam",
+                               @"title":NSLocalizedString(@"HomeActivityExamTitle", nil),
+                               @"subtitle":NSLocalizedString(@"HomeActivityExamSubtitle", nil),
                                @"url":@"neu://go/tv",
                                },
                            ];
@@ -188,6 +194,7 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
+        _titleLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         [self.contentView addSubview:_titleLabel];
     }
@@ -198,8 +205,8 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
 - (UILabel *)subtitleLabel {
     if (!_subtitleLabel) {
         _subtitleLabel = [[UILabel alloc] init];
+        _subtitleLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
         _subtitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _subtitleLabel.textColor = [UIColor grayColor];
         [self.contentView addSubview:_subtitleLabel];
     }
     

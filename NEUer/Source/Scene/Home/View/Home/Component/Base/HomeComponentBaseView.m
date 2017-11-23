@@ -50,6 +50,7 @@
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
+        _titleLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
         [self addSubview:_titleLabel];
     }
@@ -61,7 +62,8 @@
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
         _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [_actionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        DKThemeVersion *themeVersion = [DKNightVersionManager sharedManager].themeVersion;
+        [_actionButton setTitleColor:DKColorPickerWithKey(accent)(themeVersion) forState:UIControlStateNormal];
         [self addSubview:_actionButton];
     }
     

@@ -73,10 +73,13 @@
 "HomeActivityARCampusSubtitle" = "玩转校园 体验最酷AR";
 
 "HomeActivityTelevisionTitle" = "电视直播";
-"HomeActivityTelevisionSubtitle" = "校内免流量的电视";
+"HomeActivityTelevisionSubtitle" = "校内免流量看电视";
 
 "HomeActivityShareTitle" = "资源共享";
 "HomeActivityShareSubtitle" = "东大人的共享云平台";
+
+"HomeActivityExamTitle" = "题库刷题";
+"HomeActivityExamSubtitle" = "东大题库 持续更新中";
 
 
 /*
@@ -177,6 +180,28 @@
 
 "MeTabBarItemTitle" = "我的";
 "MeNavigationBarTitle" = "我的";
+
+"MeMenuInfoTitle" = "学籍信息";
+
+"MeMenuKeyTitle" = "密码管理";
+"MeMenuSwitchKeySubtitle" = "{0}组密码";
+"MeMenuSwitchKeySubtitleNone" = "无";
+
+"MeMenuSwitchAccountTitle" = "切换账号";
+"MeMenuSwitchAccountSubtitleNone" = "无";
+
+"MeMenuCustomizeHomeTitle" = "个性化首页";
+
+"MeMenuColorTitle" = "配色方案";
+"MeMenuColorSubtitleNormal" = "默认";
+"MeMenuColorSubtitleNight" = "夜间模式";
+
+"MeMenuShakeTitle" = "摇一摇反馈";
+
+"MeMenuAboutTitle" = "关于我们";
+
+"MeMenuRankTitle" = "评分";
+"MeMenuRankSubtitle" = "给个好评吧～";
 
 
 /*

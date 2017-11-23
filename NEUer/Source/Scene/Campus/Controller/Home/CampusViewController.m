@@ -225,12 +225,12 @@ static NSString * const kCampusCellId = @"kCampusCellId";
                                @"url":@"neu://go/network",
                                @"image":@"ipgw_campus_background",
                                },
-                           @{
-                               @"title":NSLocalizedString(@"CampusRestaurantTitle", nil),
-                               @"detail":NSLocalizedString(@"CampusRestaurantSubtitle", nil),
-                               @"url":@"",
-                               @"image":@"",
-                               },
+//                           @{
+//                               @"title":NSLocalizedString(@"CampusRestaurantTitle", nil),
+//                               @"detail":NSLocalizedString(@"CampusRestaurantSubtitle", nil),
+//                               @"url":@"",
+//                               @"image":@"",
+//                               },
                            ];
     }
     
