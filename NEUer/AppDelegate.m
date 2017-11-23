@@ -31,6 +31,16 @@
     [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:@"6e6971469056f97ff3b28a73f546eb5d"];
     [[PgyManager sharedPgyManager] setThemeColor:DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion)];
     
+    // 初始化视图窗口
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+    [self.window makeKeyAndVisible];
+    self.window.rootViewController = self.skelentonVC;
+    
+#if defined(DEBUG)||defined(_DEBUG)
+    [[JPFPSStatus sharedInstance] open];
+#endif
+    
     // 异步初始化耗时的任务
     [[TesseractCenter defaultCenter] setup];
     
@@ -66,15 +76,6 @@
             [self.skelentonVC presentViewController:alertController animated:YES completion:nil];
         }
     }];
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.dk_backgroundColorPicker = DKColorPickerWithKey(background);
-    [self.window makeKeyAndVisible];
-    self.window.rootViewController = self.skelentonVC;
-    
-#if defined(DEBUG)||defined(_DEBUG)
-    [[JPFPSStatus sharedInstance] open];
-#endif
 
     return YES;
 }

@@ -68,7 +68,7 @@ const CGFloat kNetworkViewHeight = 80.0f;
         self.layer.cornerRadius = 16.0f;
         self.layer.shadowColor = [UIColor grayColor].CGColor;
         self.layer.shadowOffset = CGSizeMake(0, 4);
-        self.layer.shadowOpacity = 0.5;
+        self.layer.shadowOpacity = 0.3;
     }
     
     return self;
