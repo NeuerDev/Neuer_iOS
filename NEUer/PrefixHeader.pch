@@ -44,6 +44,7 @@
 #import "UIImage+JHCategory.h"
 #import "UIView+JHCategory.h"
 #import "UIDevice+JHCategory.h"
+#import "UIGestureRecognizer+JHCategory.h"
 #import "NSString+JHCategory.h"
 #import "NSURL+JHCategory.h"
 #import "NSDictionary+JHCategory.h"

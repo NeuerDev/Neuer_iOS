@@ -7,6 +7,8 @@
 //
 
 #import <JPFPSStatus/JPFPSStatus.h>
+#import <PgySDK/PgyManager.h>
+#import <PgyUpdate/PgyUpdateManager.h>
 
 #import "AppDelegate.h"
 #import "JHURLRouter.h"
@@ -23,14 +25,10 @@
 #pragma mark - Life Circle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    self.window.rootViewController = self.skelentonVC;
-    
-#if defined(DEBUG)||defined(_DEBUG)
-    [[JPFPSStatus sharedInstance] open];
-#endif
+    // 初始化蒲公英
+    [[PgyManager sharedPgyManager] startManagerWithAppId:@"6e6971469056f97ff3b28a73f546eb5d"];
+    [[PgyManager sharedPgyManager] setShakingThreshold:4];
+    [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:@"6e6971469056f97ff3b28a73f546eb5d"];
     
     // 异步初始化耗时的任务
     [[TesseractCenter defaultCenter] setup];
@@ -67,6 +65,15 @@
             [self.skelentonVC presentViewController:alertController animated:YES completion:nil];
         }
     }];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+    [self.window makeKeyAndVisible];
+    self.window.rootViewController = self.skelentonVC;
+    
+#if defined(DEBUG)||defined(_DEBUG)
+    [[JPFPSStatus sharedInstance] open];
+#endif
 
     return YES;
 }

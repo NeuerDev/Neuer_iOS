@@ -183,7 +183,6 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
 }
 
 - (CGPoint)offsetAtCurrentPage {
-    
     CGFloat width = -self.collectionView.contentInset.left - self.sectionInset.left;
     for (int i = 0; i < self.currentPage; i++)
         width += [self pageWidth];

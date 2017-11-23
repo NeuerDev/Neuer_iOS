@@ -19,6 +19,8 @@ PODS:
   - JPFPSStatus (0.1.1)
   - Masonry (1.1.0)
   - MBProgressHUD (1.0.0)
+  - Pgyer (2.8.9)
+  - PgyUpdate (1.5)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -31,6 +33,8 @@ DEPENDENCIES:
   - JPFPSStatus (~> 0.1.1)
   - Masonry
   - MBProgressHUD (~> 1.0.0)
+  - Pgyer
+  - PgyUpdate
   - SDWebImage (~> 3.8)
   - TesseractOCRiOS (~> 4.0.0)
 
@@ -41,9 +45,11 @@ SPEC CHECKSUMS:
   JPFPSStatus: 03f32aa3d4d7d0c5bf56f6f3e7cf8b7280a5f52c
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  Pgyer: 830654e51e23f754cce5d8b3ea9ba72be68452eb
+  PgyUpdate: bad71685b91bba4aa520b7fe29356a476700fdf2
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
 
-PODFILE CHECKSUM: f7829807996ca66f8ccb150095d7fc10accde030
+PODFILE CHECKSUM: b0d0a99f736e1fda13981237178f719d326e618c
 
 COCOAPODS: 1.4.0.beta.2

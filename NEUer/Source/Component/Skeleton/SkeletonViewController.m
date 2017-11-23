@@ -28,6 +28,9 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     UINavigationBar *navigationBar = [UINavigationBar appearance];
     [navigationBar setShadowImage:[[UIImage alloc] init]];
     navigationBar.barTintColor = UIColor.whiteColor;
+    
+    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearance];
+    barButtonItem.tintColor = [UIColor colorWithHexStr:NEU_MAIN_COLOR];
 }
 
 - (instancetype)init {
@@ -98,12 +101,15 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 @end
 
-@interface SkeletonViewController ()
+@interface SkeletonViewController () <UITabBarDelegate>
+
 @property (nonatomic, strong) SkelentonNavigationViewController *homeNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *campusNavigationVC;
 @property (nonatomic, strong) SkelentonNavigationViewController *meNavigationVC;
 
 @property (nonatomic, strong) NetworkStatusView *networkView;
+
+@property (nonatomic, assign) NSInteger index;
 
 @end
 
@@ -113,9 +119,9 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.hidesBottomBarWhenPushed = YES;
-    self.tabBar.tintColor = [UIColor colorWithHexStr:@"#4DABF5"];
+    self.tabBar.tintColor = [UIColor colorWithHexStr:NEU_MAIN_COLOR];
+    self.tabBar.barTintColor = [UIColor whiteColor];
     self.viewControllers = @[
                              self.homeNavigationVC,
                              self.campusNavigationVC,
@@ -232,6 +238,39 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideNetworkView) object:nil];
     [self.networkView.layer removeAllAnimations];
     [self performSelector:@selector(hideNetworkView) withObject:nil afterDelay:0.0f];
+}
+
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {
+    
+    NSInteger index = [self.tabBar.items indexOfObject:item];
+    
+    if (self.index != index) {
+        [self animationWithIndex:index];
+    }
+    
+}
+
+// 动画
+- (void)animationWithIndex:(NSInteger) index {
+    NSMutableArray * tabbarbuttonArray = [NSMutableArray array];
+    for (UIView *tabBarButton in self.tabBar.subviews) {
+        if ([tabBarButton isKindOfClass:NSClassFromString(@"UITabBarButton")]) {
+            [tabbarbuttonArray addObject:tabBarButton];
+        }
+    }
+    CABasicAnimation*pulse = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    pulse.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    pulse.duration = 0.1;
+    pulse.repeatCount= 1;
+    pulse.autoreverses= YES;
+    pulse.fromValue= [NSNumber numberWithFloat:1];
+    pulse.toValue= [NSNumber numberWithFloat:1.1];
+    [[tabbarbuttonArray[index] layer]
+     addAnimation:pulse forKey:nil];
+    
+    self.index = index;
 }
 
 #pragma mark - Override Methods

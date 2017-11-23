@@ -162,7 +162,7 @@ NSString * const kOrderShowId = @"kOrderShowId";
     
     [self.backToViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.centerView);
-        make.centerY.equalTo(self.nameLabel);
+        make.centerY.equalTo(self.contentView);
         make.height.mas_equalTo(@(28.0f));
         make.width.mas_equalTo(@(72.0f));
     }];

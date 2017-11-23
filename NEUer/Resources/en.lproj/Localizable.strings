@@ -176,8 +176,8 @@
  Me
  */
 
-"MeTabBarItemTitle" = "Me";
-"MeNavigationBarTitle" = "Me";
+"MeTabBarItemTitle" = "Profile";
+"MeNavigationBarTitle" = "Profile";
 
 
 /*
