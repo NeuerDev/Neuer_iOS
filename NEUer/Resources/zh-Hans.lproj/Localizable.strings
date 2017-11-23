@@ -181,18 +181,18 @@
 "MeTabBarItemTitle" = "我的";
 "MeNavigationBarTitle" = "我的";
 
-"MeMenuInfoTitle" = "学籍信息";
+"MeMenuInfoTitle" = "学籍";
 
-"MeMenuKeyTitle" = "密码管理";
+"MeMenuKeyTitle" = "密码";
 "MeMenuSwitchKeySubtitle" = "{0}组密码";
 "MeMenuSwitchKeySubtitleNone" = "无";
 
-"MeMenuSwitchAccountTitle" = "切换账号";
+"MeMenuSwitchAccountTitle" = "账号";
 "MeMenuSwitchAccountSubtitleNone" = "无";
 
-"MeMenuCustomizeHomeTitle" = "个性化首页";
+"MeMenuCustomizeHomeTitle" = "首页";
 
-"MeMenuColorTitle" = "配色方案";
+"MeMenuColorTitle" = "配色";
 "MeMenuColorSubtitleNormal" = "默认";
 "MeMenuColorSubtitleNight" = "夜间模式";
 

@@ -29,6 +29,7 @@
     [[PgyManager sharedPgyManager] startManagerWithAppId:@"6e6971469056f97ff3b28a73f546eb5d"];
     [[PgyManager sharedPgyManager] setShakingThreshold:4];
     [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:@"6e6971469056f97ff3b28a73f546eb5d"];
+    [[PgyManager sharedPgyManager] setThemeColor:DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion)];
     
     // 异步初始化耗时的任务
     [[TesseractCenter defaultCenter] setup];

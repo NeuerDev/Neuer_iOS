@@ -21,8 +21,12 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
 @end
 
 @interface MeViewController () <UITableViewDelegate, UITableViewDataSource>
-
+@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, weak) User *user;
 @end
 
 @implementation MeViewController
@@ -35,11 +39,43 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
     [self initConstraints];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.user = [UserCenter defaultCenter].currentUser;
+}
+
 - (void)initConstraints {
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuide);
-        make.left.and.right.and.bottom.equalTo(self.view);
+    self.tableView.frame = self.view.frame;
+    
+    UIView *headerView = self.tableView.tableHeaderView;
+    [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(headerView);
+        make.width.and.height.mas_equalTo(@90);
+        make.left.equalTo(headerView.mas_left).with.offset(16);
     }];
+    
+    UIView *infoView = [[UIView alloc] init];
+    [infoView addSubview:self.nameLabel];
+    [infoView addSubview:self.infoLabel];
+    [headerView addSubview:infoView];
+    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(infoView);
+    }];
+    
+    [self.infoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.and.left.and.right.equalTo(infoView);
+        make.top.equalTo(self.nameLabel.mas_bottom).with.offset(8);
+    }];
+    
+    [infoView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(headerView);
+        make.left.equalTo(self.avatarImageView.mas_right).with.offset(16);
+        make.right.equalTo(headerView.mas_right).with.offset(-16);
+    }];
+    
+    [self.view layoutIfNeeded];
+    
+    [self.avatarImageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(4, 4)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,6 +225,15 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
     return 50;
 }
 
+#pragma mark - Setter
+
+- (void)setUser:(User *)user {
+    if (user) {
+        self.nameLabel.text = user.realName;
+        self.infoLabel.text = [NSString stringWithFormat:@"%@ %@", user.major, user.number];
+    }
+}
+
 #pragma mark - Getter
 
 - (UITableView *)tableView {
@@ -198,10 +243,44 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
         _tableView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 160.0f)];
+        _tableView.tableHeaderView = headerView;
+        
         [self.view addSubview:_tableView];
     }
     
     return _tableView;
+}
+
+- (UIImageView *)avatarImageView {
+    if (!_avatarImageView) {
+        _avatarImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"test_avatar"]];
+        _avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [self.tableView.tableHeaderView addSubview:_avatarImageView];
+    }
+    
+    return _avatarImageView;
+}
+
+- (UILabel *)nameLabel {
+    if (!_nameLabel) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
+        _nameLabel.dk_textColorPicker = DKColorPickerWithKey(title);
+    }
+    
+    return _nameLabel;
+}
+
+- (UILabel *)infoLabel {
+    if (!_infoLabel) {
+        _infoLabel = [[UILabel alloc] init];
+        _infoLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        _infoLabel.dk_textColorPicker = DKColorPickerWithKey(accent);
+    }
+    
+    return _infoLabel;
 }
 
 @end

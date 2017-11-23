@@ -182,6 +182,28 @@
 "MeTabBarItemTitle" = "Profile";
 "MeNavigationBarTitle" = "Profile";
 
+"MeMenuInfoTitle" = "Profile";
+
+"MeMenuKeyTitle" = "Keychain";
+"MeMenuSwitchKeySubtitle" = "{0} keys";
+"MeMenuSwitchKeySubtitleNone" = "none";
+
+"MeMenuSwitchAccountTitle" = "Accounts";
+"MeMenuSwitchAccountSubtitleNone" = "none";
+
+"MeMenuCustomizeHomeTitle" = "Homepage";
+
+"MeMenuColorTitle" = "Theme";
+"MeMenuColorSubtitleNormal" = "Normal";
+"MeMenuColorSubtitleNight" = "Night";
+
+"MeMenuShakeTitle" = "Shake to Report";
+
+"MeMenuAboutTitle" = "About us";
+
+"MeMenuRankTitle" = "Rank";
+"MeMenuRankSubtitle" = "5 stars are the BEST!";
+
 
 /*
  Login
