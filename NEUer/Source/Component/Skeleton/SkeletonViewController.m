@@ -122,6 +122,10 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     return viewController;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.topViewController preferredStatusBarStyle];
+}
+
 @end
 
 @interface SkeletonViewController () <UITabBarDelegate>

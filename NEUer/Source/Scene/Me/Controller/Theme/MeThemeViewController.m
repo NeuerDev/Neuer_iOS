@@ -53,7 +53,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [DKNightVersionManager sharedManager].themeVersion = _themeDictionary[_themeArray[indexPath.row]];
-    [self.themeTableView reloadData];
+    [self.themeTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -75,13 +76,15 @@
         cell.detailTextLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
         
         cell.dk_tintColorPicker = DKColorPickerWithKey(accent);
-        cell.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+        cell.backgroundColor = UIColor.clearColor;
         
         cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
         cell.imageView.layer.cornerRadius = 10;
         cell.imageView.layer.masksToBounds = YES;
         cell.imageView.layer.borderWidth = 1.0f/[UIScreen mainScreen].scale;
         cell.imageView.layer.dk_borderColorPicker = DKColorPickerWithKey(subtitle);
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     NSString *theme = [DKNightVersionManager sharedManager].themeVersion;

@@ -69,7 +69,7 @@
         cell.detailTextLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
         
         cell.dk_tintColorPicker = DKColorPickerWithKey(accent);
-        cell.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+        cell.backgroundColor = UIColor.clearColor;
     }
     
     NSArray<User *> *array = [UserCenter defaultCenter].allUsers;

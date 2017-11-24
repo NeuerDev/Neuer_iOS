@@ -72,6 +72,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setNeedsStatusBarAppearanceUpdate];
     [self initConstraints];
     [self initBaseConstraints];
 }
@@ -99,6 +100,10 @@
     return UIInterfaceOrientationPortrait;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [[DKNightVersionManager sharedManager].themeVersion isEqualToString:@"NIGHT"] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
+}
+
 #pragma mark - Public Methods
 
 - (void)showPlaceHolder {
@@ -121,7 +126,7 @@
 #pragma mark - Respond Methods
 
 - (void)onBaseRetryButtonClicked:(UIButton *)sender {
-    
+  
 }
 
 #pragma mark - Setter
