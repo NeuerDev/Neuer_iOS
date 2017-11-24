@@ -181,18 +181,18 @@
 "MeTabBarItemTitle" = "我的";
 "MeNavigationBarTitle" = "我的";
 
-"MeMenuInfoTitle" = "学籍";
+"MeMenuInfoTitle" = "学籍信息";
 
-"MeMenuKeyTitle" = "密码";
+"MeMenuKeyTitle" = "密码管理";
 "MeMenuSwitchKeySubtitle" = "{0}组密码";
 "MeMenuSwitchKeySubtitleNone" = "无";
 
-"MeMenuSwitchAccountTitle" = "账号";
+"MeMenuSwitchAccountTitle" = "切换账号";
 "MeMenuSwitchAccountSubtitleNone" = "无";
 
-"MeMenuCustomizeHomeTitle" = "首页";
+"MeMenuCustomizeHomeTitle" = "个性首页";
 
-"MeMenuColorTitle" = "配色";
+"MeMenuColorTitle" = "配色方案";
 "MeMenuColorSubtitleNormal" = "默认";
 "MeMenuColorSubtitleNight" = "夜间模式";
 
@@ -200,7 +200,7 @@
 
 "MeMenuAboutTitle" = "关于我们";
 
-"MeMenuRankTitle" = "评分";
+"MeMenuRankTitle" = "App 评分";
 "MeMenuRankSubtitle" = "给个好评吧～";
 
 
@@ -218,3 +218,21 @@
 "LoginActionTitleShow" = "显示";
 "LoginActionTitleHide" = "隐藏";
 "LoginActionTitleRefresh" = "换一张";
+
+
+/*
+ UserKey
+ */
+
+"UserKeyTypeAAO" = "教务处";
+"UserKeyTypeIPGW" = "IP 控制网关";
+"UserKeyTypeEcard" = "校园卡";
+"UserKeyTypeLib" = "图书馆";
+
+
+/*
+ Theme
+ */
+
+"ThemeNORMAL" = "默认";
+"ThemeNIGHT" = "夜间模式";

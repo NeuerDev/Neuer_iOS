@@ -29,5 +29,7 @@
 
 - (UIImage *)image;
 
+- (UIImage *)imageWithSize:(CGSize)size;
+
 - (UIColor *)compressRangeColor;
 @end

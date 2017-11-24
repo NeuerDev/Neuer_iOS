@@ -39,13 +39,9 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    DKThemeVersion *themeVersion = [DKNightVersionManager sharedManager].themeVersion;
-    self.navigationBar.dk_barTintColorPicker = DKColorPickerWithKey(background);
-    self.navigationBar.dk_tintColorPicker = DKColorPickerWithKey(accent);
-    self.navigationBar.titleTextAttributes = @{
-                                               NSForegroundColorAttributeName:DKColorPickerWithKey(title)(themeVersion)};
-    self.navigationBar.largeTitleTextAttributes = @{
-                                                    NSForegroundColorAttributeName:DKColorPickerWithKey(title)(themeVersion)};
+    
+    [self registerForThemeChangingNotification];
+    
 #ifdef __IPHONE_11_0
     if (@available(iOS 11.0, *)) {
         self.navigationBar.prefersLargeTitles = YES;
@@ -54,6 +50,30 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
         
     }
 #endif
+    
+    [self applyCurrentTheme];
+}
+
+#pragma mark - Notification
+
+- (void)registerForThemeChangingNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRecievedThemeChangingNotification:) name:DKNightVersionThemeChangingNotification object:nil];
+}
+
+- (void)didRecievedThemeChangingNotification:(NSNotification *)notification {
+    [self applyCurrentTheme];
+}
+
+#pragma mark - Private
+
+- (void)applyCurrentTheme {
+    DKThemeVersion *themeVersion = [DKNightVersionManager sharedManager].themeVersion;
+    self.navigationBar.dk_barTintColorPicker = DKColorPickerWithKey(background);
+    self.navigationBar.dk_tintColorPicker = DKColorPickerWithKey(accent);
+    self.navigationBar.titleTextAttributes = @{
+                                               NSForegroundColorAttributeName:DKColorPickerWithKey(title)(themeVersion)};
+    self.navigationBar.largeTitleTextAttributes = @{
+                                                    NSForegroundColorAttributeName:DKColorPickerWithKey(title)(themeVersion)};
 }
 
 #pragma mark - Override Methods

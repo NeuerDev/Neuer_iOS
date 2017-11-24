@@ -19,13 +19,14 @@
 - (instancetype)init {
     if (self = [super init]) {
         [self initBaseConstraints];
+        [self registerForThemeChangingNotification];
+        [self applyCurrentTheme];
     }
     
     return self;
 }
 
 - (void)initBaseConstraints {
-    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).with.offset(28);
         make.left.equalTo(self.mas_left).with.offset(16);
@@ -45,6 +46,23 @@
     }];
 }
 
+#pragma mark - Notification
+
+- (void)registerForThemeChangingNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRecievedThemeChangingNotification:) name:DKNightVersionThemeChangingNotification object:nil];
+}
+
+- (void)didRecievedThemeChangingNotification:(NSNotification *)notification {
+    [self applyCurrentTheme];
+}
+
+#pragma mark - Private
+
+- (void)applyCurrentTheme {
+    DKThemeVersion *themeVersion = [DKNightVersionManager sharedManager].themeVersion;
+    [_actionButton setTitleColor:DKColorPickerWithKey(accent)(themeVersion) forState:UIControlStateNormal];
+}
+
 #pragma mark - Getter
 
 - (UILabel *)titleLabel {
@@ -62,8 +80,6 @@
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
         _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        DKThemeVersion *themeVersion = [DKNightVersionManager sharedManager].themeVersion;
-        [_actionButton setTitleColor:DKColorPickerWithKey(accent)(themeVersion) forState:UIControlStateNormal];
         [self addSubview:_actionButton];
     }
     

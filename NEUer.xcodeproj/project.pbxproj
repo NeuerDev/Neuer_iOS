@@ -28,6 +28,12 @@
 		5C1761B01FAC66560042C0E9 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C1761AF1FAC66560042C0E9 /* Models.scnassets */; };
 		5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C21B9991F6D1A9200BC2961 /* AppDelegate.m */; };
 		5C3741CD1FC662C400625FEA /* DKColorTable.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5C3741CC1FC662C300625FEA /* DKColorTable.txt */; };
+		5C3741D51FC7A8CC00625FEA /* MeThemeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741D41FC7A8CC00625FEA /* MeThemeViewController.m */; };
+		5C3741D81FC7AA5A00625FEA /* MePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741D71FC7AA5A00625FEA /* MePasswordViewController.m */; };
+		5C3741DB1FC7AA8200625FEA /* MeAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741DA1FC7AA8200625FEA /* MeAccountViewController.m */; };
+		5C3741DE1FC7AAA100625FEA /* MeAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741DD1FC7AAA100625FEA /* MeAboutViewController.m */; };
+		5C3741E21FC7AB8E00625FEA /* MeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741E11FC7AB8E00625FEA /* MeInfoViewController.m */; };
+		5C3741E51FC7ABB400625FEA /* MeHomepageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741E41FC7ABB400625FEA /* MeHomepageViewController.m */; };
 		5C3EE9561FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3EE9551FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
 		5C449A681F6E12F00002A755 /* JHServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A671F6E12F00002A755 /* JHServer.m */; };
@@ -204,6 +210,18 @@
 		5C21B9991F6D1A9200BC2961 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		5C21B9A21F6D1A9200BC2961 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C3741CC1FC662C300625FEA /* DKColorTable.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DKColorTable.txt; sourceTree = "<group>"; };
+		5C3741D31FC7A8CC00625FEA /* MeThemeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeThemeViewController.h; sourceTree = "<group>"; };
+		5C3741D41FC7A8CC00625FEA /* MeThemeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeThemeViewController.m; sourceTree = "<group>"; };
+		5C3741D61FC7AA5A00625FEA /* MePasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MePasswordViewController.h; sourceTree = "<group>"; };
+		5C3741D71FC7AA5A00625FEA /* MePasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MePasswordViewController.m; sourceTree = "<group>"; };
+		5C3741D91FC7AA8200625FEA /* MeAccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeAccountViewController.h; sourceTree = "<group>"; };
+		5C3741DA1FC7AA8200625FEA /* MeAccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeAccountViewController.m; sourceTree = "<group>"; };
+		5C3741DC1FC7AAA100625FEA /* MeAboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeAboutViewController.h; sourceTree = "<group>"; };
+		5C3741DD1FC7AAA100625FEA /* MeAboutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeAboutViewController.m; sourceTree = "<group>"; };
+		5C3741E01FC7AB8E00625FEA /* MeInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeInfoViewController.h; sourceTree = "<group>"; };
+		5C3741E11FC7AB8E00625FEA /* MeInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeInfoViewController.m; sourceTree = "<group>"; };
+		5C3741E31FC7ABB400625FEA /* MeHomepageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHomepageViewController.h; sourceTree = "<group>"; };
+		5C3741E41FC7ABB400625FEA /* MeHomepageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeHomepageViewController.m; sourceTree = "<group>"; };
 		5C3EE9541FC50CE2004E087E /* UIGestureRecognizer+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+JHCategory.h"; sourceTree = "<group>"; };
 		5C3EE9551FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+JHCategory.m"; sourceTree = "<group>"; };
 		5C449A581F6E09DC0002A755 /* SkeletonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonViewController.h; sourceTree = "<group>"; };
@@ -736,6 +754,60 @@
 				5C8B62971F78F27A00310055 /* PrefixHeader.pch */,
 			);
 			path = NEUer;
+			sourceTree = "<group>";
+		};
+		5C3741CE1FC7A7E500625FEA /* About */ = {
+			isa = PBXGroup;
+			children = (
+				5C3741DC1FC7AAA100625FEA /* MeAboutViewController.h */,
+				5C3741DD1FC7AAA100625FEA /* MeAboutViewController.m */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		5C3741CF1FC7A7ED00625FEA /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				5C3741D31FC7A8CC00625FEA /* MeThemeViewController.h */,
+				5C3741D41FC7A8CC00625FEA /* MeThemeViewController.m */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		5C3741D01FC7A7F800625FEA /* Homepage */ = {
+			isa = PBXGroup;
+			children = (
+				5C3741E31FC7ABB400625FEA /* MeHomepageViewController.h */,
+				5C3741E41FC7ABB400625FEA /* MeHomepageViewController.m */,
+			);
+			path = Homepage;
+			sourceTree = "<group>";
+		};
+		5C3741D11FC7A86300625FEA /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				5C3741D61FC7AA5A00625FEA /* MePasswordViewController.h */,
+				5C3741D71FC7AA5A00625FEA /* MePasswordViewController.m */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		5C3741D21FC7A86C00625FEA /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				5C3741D91FC7AA8200625FEA /* MeAccountViewController.h */,
+				5C3741DA1FC7AA8200625FEA /* MeAccountViewController.m */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		5C3741DF1FC7AB7F00625FEA /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				5C3741E01FC7AB8E00625FEA /* MeInfoViewController.h */,
+				5C3741E11FC7AB8E00625FEA /* MeInfoViewController.m */,
+			);
+			path = Info;
 			sourceTree = "<group>";
 		};
 		5C3EE9531FC50CB3004E087E /* UIGestureRecognizer+JHCategory */ = {
@@ -1330,6 +1402,12 @@
 		5CAB9E481F7287C8009C8D04 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5C3741DF1FC7AB7F00625FEA /* Info */,
+				5C3741D21FC7A86C00625FEA /* Account */,
+				5C3741D11FC7A86300625FEA /* Password */,
+				5C3741D01FC7A7F800625FEA /* Homepage */,
+				5C3741CF1FC7A7ED00625FEA /* Theme */,
+				5C3741CE1FC7A7E500625FEA /* About */,
 				5CE99C4A1F728CEC0062DBF9 /* Home */,
 			);
 			path = Controller;
@@ -2112,6 +2190,7 @@
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				776697E71FA9765400BB7544 /* LibraryLoginModel.m in Sources */,
 				776697F81FA9787B00BB7544 /* LibraryViewController.m in Sources */,
+				5C3741E21FC7AB8E00625FEA /* MeInfoViewController.m in Sources */,
 				776697ED1FA9772100BB7544 /* LibraryBookDetailModel.m in Sources */,
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
@@ -2121,9 +2200,11 @@
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
 				5CF378091FB5371D00BC141E /* EcardBaseModel.m in Sources */,
 				5C5FD43C1F975CBF00B1EA2C /* EcardCenter.m in Sources */,
+				5C3741D51FC7A8CC00625FEA /* MeThemeViewController.m in Sources */,
 				5C507C7A1F9CCCAA00E857CA /* TesseractCenter.mm in Sources */,
 				335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */,
 				33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */,
+				5C3741DE1FC7AAA100625FEA /* MeAboutViewController.m in Sources */,
 				5CD098B81F808A2500252E4D /* HomeComponentCoverView.m in Sources */,
 				5CF378011FB534D600BC141E /* EcardLoginModel.m in Sources */,
 				5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */,
@@ -2143,6 +2224,7 @@
 				5CC233051F72090F005F0A6E /* SearchLibraryViewController.m in Sources */,
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */,
+				5C3741DB1FC7AA8200625FEA /* MeAccountViewController.m in Sources */,
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
 				5CCC66861F8F524900F8F96C /* AaoViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
@@ -2169,6 +2251,7 @@
 				5CA72EED1FBD2ECD0067AAC5 /* ARCampusTask.m in Sources */,
 				5CBA6E9A1F77507000DFF055 /* UIImage+JHCategory.m in Sources */,
 				776697FC1FA978BB00BB7544 /* LibraryNewBookViewController.m in Sources */,
+				5C3741E51FC7ABB400625FEA /* MeHomepageViewController.m in Sources */,
 				5C5FD4381F974CAC00B1EA2C /* SpringCollectionViewLayout.m in Sources */,
 				5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */,
 				5CA976EB1F73ABBA00B1089A /* SearchCollectionComponent.m in Sources */,
@@ -2181,6 +2264,7 @@
 				33F88B871F8296510054B123 /* JHTool.m in Sources */,
 				5C5DC7CE1F85DD2D00BBFC28 /* NSURL+JHCategory.m in Sources */,
 				5C449A6F1F6E13B20002A755 /* JHResponse.m in Sources */,
+				5C3741D81FC7AA5A00625FEA /* MePasswordViewController.m in Sources */,
 				3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */,
 				77B205491FB45411001F3C18 /* LibraryRecommendViewController.m in Sources */,
 				5CE99C531F7294820062DBF9 /* JHURLRouter.m in Sources */,

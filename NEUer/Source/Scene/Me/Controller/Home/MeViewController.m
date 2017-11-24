@@ -9,6 +9,13 @@
 #import "MeViewController.h"
 #import <PgySDK/PgyManager.h>
 
+#import "MeInfoViewController.h"
+#import "MePasswordViewController.h"
+#import "MeAccountViewController.h"
+#import "MeHomepageViewController.h"
+#import "MeThemeViewController.h"
+#import "MeAboutViewController.h"
+
 typedef void(^MeMenuOnSwitchBlock)(BOOL isOn);
 typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
     MeMenuTableViewCellStyleDefault,
@@ -93,6 +100,77 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    MeInfoViewController *infoViewController = [[MeInfoViewController alloc] init];
+                    [self.navigationController pushViewController:infoViewController animated:YES];
+                }
+                    break;
+                case 1:
+                {
+                    MePasswordViewController *passwordViewController = [[MePasswordViewController alloc] init];
+                    [self.navigationController pushViewController:passwordViewController animated:YES];
+                }
+                    break;
+                case 2:
+                {
+                    MeAccountViewController *accountViewController = [[MeAccountViewController alloc] init];
+                    [self.navigationController pushViewController:accountViewController animated:YES];
+                }
+                    break;
+            }
+        }
+            break;
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    MeHomepageViewController *homepageViewController = [[MeHomepageViewController alloc] init];
+                    [self.navigationController pushViewController:homepageViewController animated:YES];
+                }
+                    break;
+                case 1:
+                {
+                    MeThemeViewController *themeViewController = [[MeThemeViewController alloc] init];
+                    [self.navigationController pushViewController:themeViewController animated:YES];
+//                    cell.detailTextLabel.text = @{
+//                                                  @"NORMAL":NSLocalizedString(@"MeMenuColorSubtitleNormal", nil),
+//                                                  @"NIGHT":NSLocalizedString(@"MeMenuColorSubtitleNight", nil),
+//                                                  @"":@"",
+//                                                  }[[DKNightVersionManager sharedManager].themeVersion];
+                }
+                    break;
+            }
+        }
+            break;
+        case 2:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    
+                }
+                    break;
+                case 1:
+                {
+                    MeAboutViewController *aboutViewController = [[MeAboutViewController alloc] init];
+                    [self.navigationController pushViewController:aboutViewController animated:YES];
+                }
+                    break;
+                case 2:
+                {
+                    
+                }
+                    break;
+            }
+        }
+            break;
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -302,10 +380,14 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
 }
 
 - (void)configView {
+    self.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+    
     self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     self.textLabel.dk_textColorPicker = DKColorPickerWithKey(title);
+    
     self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
     self.detailTextLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
+    
     self.imageView.layer.cornerRadius = 4;
     self.imageView.layer.masksToBounds = YES;
     if (_cellStyle == MeMenuTableViewCellStyleSwitch) {

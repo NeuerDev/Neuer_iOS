@@ -101,9 +101,13 @@
 #pragma mark - colorToImage
 
 - (UIImage *)image {
+    return [self imageWithSize:CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN)];
+}
+
+- (UIImage *)imageWithSize:(CGSize)size {
     if (!self)
         return nil;
-    CGRect rect = CGRectMake(0.0f, 0.0f, CGFLOAT_MIN, CGFLOAT_MIN);
+    CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
     UIGraphicsBeginImageContextWithOptions(rect.size,NO, 0);
     CGContextRef context =UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, self.CGColor);
