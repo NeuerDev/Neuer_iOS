@@ -355,6 +355,7 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView.showsVerticalScrollIndicator = NO;
         _tableView.dk_separatorColorPicker = DKColorPickerWithKey(seperator);
         _tableView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
         _tableView.delegate = self;
