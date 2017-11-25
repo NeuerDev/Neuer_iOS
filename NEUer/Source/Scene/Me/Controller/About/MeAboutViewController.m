@@ -50,7 +50,7 @@
     }];
     
     [self.sentenceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).with.offset(64);
+        make.top.equalTo(self.contentView.mas_top).with.offset(48);
         make.left.equalTo(self.contentView.mas_left).with.offset(32);
         make.right.equalTo(self.contentView.mas_right).with.offset(-32);
     }];
