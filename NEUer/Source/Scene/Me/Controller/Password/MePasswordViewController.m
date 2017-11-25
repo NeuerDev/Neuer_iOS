@@ -96,7 +96,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle==UITableViewCellEditingStyleDelete) {
         NSArray<UserKey *> *array = self.user.keychain.allKeys.copy;
-        [self.user.keychain deleteUserKeyForType:array[indexPath.row].type];
+        [UserCenter.defaultCenter.currentUser.keychain deleteUserKeyForType:array[indexPath.row].type];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }

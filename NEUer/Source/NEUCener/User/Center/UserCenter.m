@@ -14,6 +14,7 @@ static UserCenter *_singletonCenter = nil;
 @interface UserCenter ()
 
 @property (nonatomic, strong) User *currentUser;
+@property (nonatomic, strong) NSArray<User *> *allUsers;
 
 @end
 
@@ -70,10 +71,6 @@ static UserCenter *_singletonCenter = nil;
     }
     
     _currentUser = currentUser;
-}
-
-- (NSArray<User *> *)allUsers {
-    return [User allUsers];
 }
 
 - (void)switchToUser:(User *)user complete:(void (^)(BOOL success, NSString *message))complete {
@@ -150,6 +147,14 @@ static UserCenter *_singletonCenter = nil;
     }
     
     return _currentUser;
+}
+
+- (NSArray<User *> *)allUsers {
+    if (!_allUsers) {
+        _allUsers = [User allUsers];
+    }
+    
+    return _allUsers;
 }
 
 @end
