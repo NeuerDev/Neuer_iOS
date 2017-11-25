@@ -67,6 +67,7 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     _topMargin = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) + 32;
     _contentHeight = SCREEN_HEIGHT_ACTUAL - _topMargin;
     _maxAlpha = 0.5;
+    self.navigationBarBackgroundView.hidden = YES;
 }
 
 - (void)initConstraints {

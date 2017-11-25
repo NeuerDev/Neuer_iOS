@@ -27,6 +27,7 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
 + (void)initialize {
     UINavigationBar *navigationBar = [UINavigationBar appearance];
     [navigationBar setShadowImage:[[UIImage alloc] init]];
+    [navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
 }
 
 - (instancetype)init {

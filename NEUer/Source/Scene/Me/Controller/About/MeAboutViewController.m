@@ -148,6 +148,7 @@
         _joinGroupButton.layer.shadowOpacity = 0.5;
         _joinGroupButton.layer.dk_shadowColorPicker = DKColorPickerWithKey(accent);
         _joinGroupButton.dk_backgroundColorPicker = DKColorPickerWithKey(accent);
+        [_joinGroupButton setTitleColor:DKColorPickerWithKey(accenttext)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
         _joinGroupButton.alpha = 0;
         [_joinGroupButton setTitle:NSLocalizedString(@"AboutJoinQQGroup", nil) forState:UIControlStateNormal];
         [_joinGroupButton addTarget:self action:@selector(onJoinGroupButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

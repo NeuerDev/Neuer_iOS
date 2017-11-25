@@ -39,7 +39,7 @@
     }];
     
     [self.basePlaceholderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.baseContentView);
+        make.center.equalTo(self.baseContentView).with.insets(UIEdgeInsetsMake(64, 0, 0, 0));
     }];
     
     [self.baseImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -48,7 +48,7 @@
     }];
     
     [self.baseStateTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.baseImageView.mas_bottom).with.offset(32);
+        make.top.equalTo(self.baseImageView.mas_bottom);
         make.left.and.right.equalTo(self.basePlaceholderView);
     }];
     
@@ -64,6 +64,11 @@
         make.width.mas_equalTo(@90);
         make.centerX.equalTo(self.basePlaceholderView);
         make.bottom.equalTo(self.basePlaceholderView.mas_bottom);
+    }];
+    
+    [self.navigationBarBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.and.left.and.right.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideTop);
     }];
 }
 
@@ -243,6 +248,7 @@
         _baseStateTitleLabel = [[UILabel alloc] init];
         _baseStateTitleLabel.textAlignment = NSTextAlignmentCenter;
         _baseStateTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
+        _baseStateTitleLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         [self.basePlaceholderView addSubview:_baseStateTitleLabel];
     }
     return _baseStateTitleLabel;
@@ -254,7 +260,7 @@
         _baseStateDetailLabel.numberOfLines = 0;
         _baseStateDetailLabel.textAlignment = NSTextAlignmentCenter;
         _baseStateDetailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-        _baseStateDetailLabel.textColor = UIColor.grayColor;
+        _baseStateDetailLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
         [self.basePlaceholderView addSubview:_baseStateDetailLabel];
     }
     return _baseStateDetailLabel;
@@ -263,12 +269,14 @@
 - (UIButton *)baseRetryButton {
     if (!_baseRetryButton) {
         _baseRetryButton = [[UIButton alloc] init];
-        _baseRetryButton.backgroundColor = UIColor.beautyBlue;
+        _baseRetryButton.dk_backgroundColorPicker = DKColorPickerWithKey(accent);
+        _baseRetryButton.titleLabel.dk_textColorPicker = DKColorPickerWithKey(accenttext);
         _baseRetryButton.layer.cornerRadius = 22;
-        _baseRetryButton.layer.shadowColor = [UIColor beautyBlue].CGColor;
+        _baseRetryButton.layer.dk_shadowColorPicker = DKColorPickerWithKey(accent);
         _baseRetryButton.layer.shadowOffset = CGSizeMake(0, 2);
-        _baseRetryButton.layer.shadowRadius = 2;
+        _baseRetryButton.layer.shadowRadius = 4;
         _baseRetryButton.layer.shadowOpacity = 0.5;
+        [_baseRetryButton setTitleColor:DKColorPickerWithKey(accenttext)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
         [_baseRetryButton addTarget:self action:@selector(onBaseRetryButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.basePlaceholderView addSubview:_baseRetryButton];
     }
@@ -283,6 +291,16 @@
         [self.view addSubview:_baseActivityIndicatorView];
     }
     return _baseActivityIndicatorView;
+}
+
+- (UIView *)navigationBarBackgroundView {
+    if (!_navigationBarBackgroundView) {
+        _navigationBarBackgroundView = [[UIView alloc] init];
+        _navigationBarBackgroundView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+        [self.view addSubview:_navigationBarBackgroundView];
+    }
+    
+    return _navigationBarBackgroundView;
 }
 
 @end

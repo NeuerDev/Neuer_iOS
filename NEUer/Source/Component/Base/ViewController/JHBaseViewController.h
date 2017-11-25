@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, JHBaseViewState) {
 @property (nonatomic, strong) UIButton *baseRetryButton;
 @property (nonatomic, strong) UIActivityIndicatorView *baseActivityIndicatorView;
 
+@property (nonatomic, strong) UIView *navigationBarBackgroundView;
 
 //- (void)showPlaceHolder;
 //- (void)hidePlaceHolder;

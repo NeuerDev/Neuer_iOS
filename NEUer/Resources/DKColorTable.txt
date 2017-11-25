@@ -1,7 +1,8 @@
 NORMAL   NIGHT    RED
-#FFFFFF  #000000  #fafafa background
-#D1D1D1  #313131  #aaaaaa seperator
+#FFFFFF  #343434  #fafafa background
+#D1D1D1  #8A8A8A  #aaaaaa seperator
 #FEC043  #E5E5E5  #fa0000 accent
+#FFFFFF  #343434  #fafafa accenttext
 #594B40  #F4F4F4  #000000 title
 #AAAAAA  #CDCDCD  #000000 subtitle
 #000000  #F4F4F4  #000000 content

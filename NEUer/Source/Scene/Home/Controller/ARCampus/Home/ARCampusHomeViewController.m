@@ -58,8 +58,9 @@ typedef NS_ENUM(NSUInteger, ARCampusViewState) {
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"ARCampusTitle", nil);
-    self.view.backgroundColor = UIColor.whiteColor;
-    self.baseContentView.backgroundColor = UIColor.whiteColor;
+    self.view.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+    self.baseContentView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+    self.navigationBarBackgroundView.hidden = YES;
     self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self initConstraints];
 }
