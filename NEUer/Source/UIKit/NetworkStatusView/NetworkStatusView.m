@@ -47,6 +47,8 @@ const CGFloat kNetworkViewHeight = 80.0f;
 
 - (instancetype)init {
     if (self = [super init]) {
+        [self registerForThemeChangingNotification];
+        
         [self.effectView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
         }];
@@ -66,12 +68,24 @@ const CGFloat kNetworkViewHeight = 80.0f;
         
         self.backgroundColor = [UIColor clearColor];
         self.layer.cornerRadius = 16.0f;
-        self.layer.shadowColor = [UIColor grayColor].CGColor;
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
         self.layer.shadowOffset = CGSizeMake(0, 4);
         self.layer.shadowOpacity = 0.3;
+        
+        [self applyCurrentTheme];
     }
-    
+
     return self;
+}
+
+#pragma mark - Notification
+
+- (void)registerForThemeChangingNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRecievedThemeChangingNotification:) name:DKNightVersionThemeChangingNotification object:nil];
+}
+
+- (void)didRecievedThemeChangingNotification:(NSNotification *)notification {
+    [self applyCurrentTheme];
 }
 
 #pragma mark - Touches Methods
@@ -157,6 +171,17 @@ const CGFloat kNetworkViewHeight = 80.0f;
     } completion:nil];
 }
 
+#pragma mark - Private Methods
+
+- (void)applyCurrentTheme {
+    DKThemeVersion *themeVersion = [DKNightVersionManager sharedManager].themeVersion;
+    if ([themeVersion isEqualToString:@"NIGHT"]) {
+        self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+    } else {
+        self.effectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent];
+    }
+}
+
 #pragma mark - Getter
 
 - (UILabel *)textLabel {
@@ -164,7 +189,7 @@ const CGFloat kNetworkViewHeight = 80.0f;
         _textLabel = [[UILabel alloc] init];
         _textLabel.textAlignment = NSTextAlignmentLeft;
         _textLabel.numberOfLines = 0;
-        _textLabel.textColor = [UIColor colorWithHexStr:@"#555555"];
+        _textLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         _textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         [self addSubview:_textLabel];
     }
@@ -176,6 +201,7 @@ const CGFloat kNetworkViewHeight = 80.0f;
     if (!_imageView) {
         _imageView = [[UIImageView alloc] init];
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _imageView.dk_tintColorPicker = DKColorPickerWithKey(title);
         [self addSubview:_imageView];
     }
     

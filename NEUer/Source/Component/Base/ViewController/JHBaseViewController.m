@@ -72,9 +72,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setNeedsStatusBarAppearanceUpdate];
     [self initConstraints];
     [self initBaseConstraints];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,7 +129,7 @@
 #pragma mark - Respond Methods
 
 - (void)onBaseRetryButtonClicked:(UIButton *)sender {
-  
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Setter
@@ -137,6 +140,15 @@
         case JHBaseViewStateNormal:
         {
             [self hidePlaceHolder];
+        }
+            break;
+        case JHBaseViewStateRemainsToDo:
+        {
+            self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_empty"];
+            self.baseStateTitleLabel.text = NSLocalizedString(@"JHBaseViewControllerRemainsToDoTitle", nil);
+            self.baseStateDetailLabel.text = NSLocalizedString(@"JHBaseViewControllerRemainsToDoDetail", nil);
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerBack", nil) forState:UIControlStateNormal];
+            [self showPlaceHolder];
         }
             break;
         case JHBaseViewStateEmptyContent:
@@ -203,7 +215,7 @@
         _baseContentView = [[UIView alloc] init];
         _baseContentView.hidden = YES;
         _baseContentView.alpha = 0;
-        _baseContentView.backgroundColor = [UIColor colorWithHexStr:@"#EFF1F3"];
+        //        _baseContentView.backgroundColor = [UIColor colorWithHexStr:@"#EFF1F3"];
         [self.view addSubview:_baseContentView];
     }
     return _baseContentView;

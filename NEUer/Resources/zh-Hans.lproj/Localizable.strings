@@ -19,6 +19,12 @@
 "JHBaseViewControllerRequireLocationAccessTitle" = "获取不到您的位置";
 "JHBaseViewControllerRequireLocationAccessDetail" = "需要您允许我使用您的位置信息";
 
+"JHBaseViewControllerRemainsToDoTitle" = "敬请期待";
+"JHBaseViewControllerRemainsToDoDetail" = "程序猿和工程狮还在加班\n请稍后再来...";
+
+"JHBaseViewControllerEmptyContentTitle" = "啊！啥都没有";
+"JHBaseViewControllerEmptyContentDetail" = "一定是打开的方式不对";
+
 /*
  Today Extension
  */
@@ -198,10 +204,20 @@
 
 "MeMenuShakeTitle" = "摇一摇反馈";
 
-"MeMenuAboutTitle" = "关于我们";
+"MeMenuAboutTitle" = "关于方圆";
 
 "MeMenuRankTitle" = "App 评分";
 "MeMenuRankSubtitle" = "给个好评吧～";
+
+
+/*
+ About
+ */
+
+"AboutJoinQQGroup" = "加入东大方圆 QQ 交流群";
+"AboutJoinQQGroupFailTitle" = "打开 QQ 失败";
+"AboutJoinQQGroupFailMessage" = "请确认手机安装了手机QQ";
+"AboutJoinQQGroupFailAction" = "确定";
 
 
 /*

@@ -11,6 +11,7 @@
 
 typedef NS_ENUM(NSUInteger, JHBaseViewState) {
     JHBaseViewStateNormal,                // 正常状态 啥都没有
+    JHBaseViewStateRemainsToDo,           // 还在施工
     JHBaseViewStateEmptyContent,          // 空页面
     JHBaseViewStateLoadingContent,        // 正在加载中
     JHBaseViewStateConnectionLost,        // 与服务器连接丢失（服务器挂了）

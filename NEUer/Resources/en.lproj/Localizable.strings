@@ -19,6 +19,12 @@
 "JHBaseViewControllerRequireLocationAccessTitle" = "Location Access";
 "JHBaseViewControllerRequireLocationAccessDetail" = "Please allow to access your location infomation";
 
+"JHBaseViewControllerRemainsToDoTitle" = "Coming Soon";
+"JHBaseViewControllerRemainsToDoDetail" = "We are still constructing here...\nPlease come back later";
+
+"JHBaseViewControllerEmptyContentTitle" = "There's Nothing Here";
+"JHBaseViewControllerEmptyContentDetail" = "Please try again later...";
+
 /*
  Today Extension
  */
@@ -206,6 +212,16 @@
 
 
 /*
+ About
+ */
+
+"AboutJoinQQGroup" = "Join NEUer's QQ Group";
+"AboutJoinQQGroupFailTitle" = "Failed to launch QQ";
+"AboutJoinQQGroupFailMessage" = "Make sure you've installed QQ for iPhone";
+"AboutJoinQQGroupFailAction" = "OK";
+
+
+/*
  Login
  */
 
@@ -219,3 +235,21 @@
 "LoginActionTitleShow" = "Show";
 "LoginActionTitleHide" = "Hide";
 "LoginActionTitleRefresh" = "Refresh";
+
+
+/*
+ UserKey
+ */
+
+"UserKeyTypeAAO" = "the Academic Affairs Office";
+"UserKeyTypeIPGW" = "IP Gateway";
+"UserKeyTypeEcard" = "Ecard";
+"UserKeyTypeLib" = "Library";
+
+
+/*
+ Theme
+ */
+
+"ThemeNORMAL" = "Normal";
+"ThemeNIGHT" = "Night";

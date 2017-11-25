@@ -314,6 +314,10 @@ const CGFloat kSkeletonNetworkViewHeight = 72.0f;
     return [self.selectedViewController preferredInterfaceOrientationForPresentation];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return [self.selectedViewController preferredStatusBarStyle];
+}
+
 #pragma mark - Getter
 
 - (SkelentonNavigationViewController *)homeNavigationVC {

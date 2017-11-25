@@ -22,6 +22,11 @@
     [self initConstraints];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.baseViewState = JHBaseViewStateRemainsToDo;
+}
+
 - (void)initData {
     self.title = NSLocalizedString(@"MeMenuCustomizeHomeTitle", nil);
     self.view.dk_backgroundColorPicker = DKColorPickerWithKey(background);
