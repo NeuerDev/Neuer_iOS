@@ -207,8 +207,15 @@
 
 "MeMenuAboutTitle" = "About us";
 
-"MeMenuRankTitle" = "Rank";
+"MeMenuRankTitle" = "Like & Unlike";
 "MeMenuRankSubtitle" = "5 stars are the BEST!";
+"MeMenuRankDetail" = "If you like it\nGive me five stars~😘";
+"MeMenuRankActionLike" = "☆  ☆  ☆  ☆  ☆";
+"MeMenuRankActionUnLike" = "Complain";
+"MeMenuRankActionLater" = "Later";
+"MeMenuRankActionUnLikeFailTitle" = "Failed to launch QQ";
+"MeMenuRankActionUnLikeFailMessage" = "Make sure you've installed QQ for iPhone";
+"MeMenuRankActionUnLikeFailAction" = "OK";
 
 
 /*

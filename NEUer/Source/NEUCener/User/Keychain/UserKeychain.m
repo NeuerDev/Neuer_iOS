@@ -73,6 +73,23 @@
     [db executeUpdate:@"insert into t_key (number, keyType, password) select ?, ?, ? where not exists(select * from t_key where number = ? and keyType = ?);", _user.number, @(type), password, _user.number, @(type)];
 }
 
+- (void)deleteUserKeyForType:(UserKeyType)type {
+    FMDatabase *db = [DataBaseCenter defaultCenter].database;
+    [db executeUpdate:@"delete from t_key where number = ? and keyType = ?;", _user.number, @(type)];
+    
+    NSMutableArray<UserKey *> *keys = self.keys.mutableCopy;
+    UserKey *targetKey = nil;
+    for (UserKey *key in _keys) {
+        if (key.type == type) {
+            targetKey = key;
+            break;
+        }
+    }
+    
+    [keys removeObject:targetKey];
+    _keys = keys.copy;
+}
+
 #pragma mark - Getter
 
 - (NSArray *)keys {

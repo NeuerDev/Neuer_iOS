@@ -164,7 +164,7 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
                     break;
                 case 2:
                 {
-                    
+                    [self showRankOptionMenu];
                 }
                     break;
             }
@@ -248,6 +248,7 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
             switch (indexPath.row) {
                 case 0:
                 {
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.textLabel.text = NSLocalizedString(@"MeMenuShakeTitle", nil);
                     cell.imageView.image = [UIImage imageNamed:@"me_shake"];
                     cell.switcher.on = [PgyManager sharedPgyManager].enableFeedback;
@@ -303,12 +304,49 @@ typedef NS_ENUM(NSUInteger, MeMenuTableViewCellStyle) {
     return 50;
 }
 
+#pragma mark - Private Methods
+
+- (void)showRankOptionMenu {
+    WS(ws);
+    UIAlertController *rankAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"MeMenuRankTitle", nil) message:NSLocalizedString(@"MeMenuRankDetail", nil) preferredStyle:UIAlertControllerStyleAlert];
+    [rankAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"MeMenuRankActionLike", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController *thanksAlertController = [UIAlertController alertControllerWithTitle:@"hhh谢谢" message:@"我们还没上架呢～\n欢迎上架后再给我们刷好评" preferredStyle:UIAlertControllerStyleAlert];
+        [thanksAlertController addAction:[UIAlertAction actionWithTitle:@"到时一定记得好评哦！" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:thanksAlertController animated:YES completion:nil];
+    }]];
+    [rankAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"MeMenuRankActionUnLike", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [ws chatWithMe];
+    }]];
+    [rankAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"MeMenuRankActionLater", nil) style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:rankAlertController animated:YES completion:nil];
+}
+
+- (void)chatWithMe {
+    BOOL success = NO;
+    NSString *urlStr = [NSString stringWithFormat:@"mqq://im/chat?chat_type=wpa&uin=%@&version=1&src_type=web", @"623556543"];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    if([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+        success = YES;
+    }
+    
+    if (!success) {
+        UIAlertController *errorAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"AboutJoinQQGroupFailTitle", nil) message:NSLocalizedString(@"AboutJoinQQGroupFailMessage", nil) preferredStyle:UIAlertControllerStyleAlert];
+        [errorAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"AboutJoinQQGroupFailAction", nil) style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:errorAlertController animated:YES completion:nil];
+    }
+    
+}
+
 #pragma mark - Setter
 
 - (void)setUser:(User *)user {
     if (user) {
         self.nameLabel.text = user.realName;
         self.infoLabel.text = [NSString stringWithFormat:@"%@ %@", user.major, user.number];
+        
+        [self.tableView reloadData];
     }
 }
 

@@ -206,8 +206,15 @@
 
 "MeMenuAboutTitle" = "关于方圆";
 
-"MeMenuRankTitle" = "App 评分";
-"MeMenuRankSubtitle" = "给个好评吧～";
+"MeMenuRankTitle" = "喜欢或吐槽";
+"MeMenuRankSubtitle" = "喜欢就给个好评吧～";
+"MeMenuRankDetail" = "如果觉得我们做得不错\n给个好评鼓励一下吧～😘";
+"MeMenuRankActionLike" = "☆  ☆  ☆  ☆  ☆";
+"MeMenuRankActionUnLike" = "吐槽一下";
+"MeMenuRankActionLater" = "以后";
+"MeMenuRankActionUnLikeFailTitle" = "打开 QQ 失败";
+"MeMenuRankActionUnLikeFailMessage" = "请确认手机安装了手机QQ";
+"MeMenuRankActionUnLikeFailAction" = "确定";
 
 
 /*

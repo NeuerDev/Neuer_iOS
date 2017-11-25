@@ -35,4 +35,6 @@ typedef NS_ENUM(NSInteger, UserKeyType) {
 
 - (void)setPassword:(NSString *)password forKeyType:(UserKeyType)type;
 
+- (void)deleteUserKeyForType:(UserKeyType)type;
+
 @end

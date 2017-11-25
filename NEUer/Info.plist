@@ -39,6 +39,7 @@
 	<array>
 		<string>mqqapi</string>
 		<string>wx2654d9155d70a468</string>
+		<string>mqq</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -68,7 +69,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string></string>
 	<key>NSMotionUsageDescription</key>
-	<string></string>
+	<string>您可以使用摇一摇等方式向我们反馈东大方圆的问题</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要访问您的相册</string>
 	<key>UIBackgroundModes</key>
