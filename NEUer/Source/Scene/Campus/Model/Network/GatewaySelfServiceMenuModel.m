@@ -59,7 +59,6 @@
     _todayInternetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
     _appendingFinanceCheckoutInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
     _appendingFinancePayInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
-    _appendingInternetRecordInfoArray = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 
@@ -439,8 +438,6 @@
             }
         }
         
-//        每次查询都需要先把之前追加的上网明细清除
-        [_appendingInternetRecordInfoArray removeAllObjects];
         if (_todayInternetRecordInfoArray.count > 0 && _logDetailPage == 1) {
             [_todayInternetRecordInfoArray removeAllObjects];
         }
@@ -481,7 +478,6 @@
         } else {
             if (!([[self.internetRecordInfoArray lastObject].internet_logoutTime isEqualToString:[internetMutableArray lastObject].internet_logoutTime] && [[self.internetRecordInfoArray lastObject].internet_lastactive isEqualToString:[internetMutableArray lastObject].internet_lastactive])) {
                 [self.internetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
-                [self.appendingInternetRecordInfoArray addObjectsFromArray:internetMutableArray.mutableCopy];
                 _logDetailPage++;
                 _queryInternetListBlock(YES, @"查询成功");
             } else {
