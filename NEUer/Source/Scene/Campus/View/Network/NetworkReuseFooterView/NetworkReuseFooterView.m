@@ -37,9 +37,20 @@
     if (animated) {
         [self.indicatorView startAnimating];
         self.footerLabel.text = @"";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.indicatorView stopAnimating];
+        });
     } else {
         [self.indicatorView stopAnimating];
         self.footerLabel.text = @"已经没有更多消息了~";
+    }
+}
+
+- (BOOL)isAnimated {
+    if ([self.indicatorView isAnimating]) {
+        return YES;
+    } else {
+        return NO;
     }
 }
 

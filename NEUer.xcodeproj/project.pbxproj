@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		330AC9451FC8554E0059B65C /* TelevisionManageOrderedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 330AC9441FC8554D0059B65C /* TelevisionManageOrderedViewController.m */; };
 		33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */; };
 		33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */; };
 		332A54161FB088B800F05152 /* NetworkCheckoutListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 332A54151FB088B800F05152 /* NetworkCheckoutListViewController.m */; };
@@ -19,6 +20,7 @@
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
 		335833861FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */; };
 		335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */; };
+		338D70AF1FC98E970077DAFF /* TelevisionWallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 338D70AD1FC98E960077DAFF /* TelevisionWallViewController.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		33FFEA761FBAE80C002632B9 /* NetworkReuseFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
@@ -59,7 +61,6 @@
 		5C8B62961F7890F900310055 /* Json.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C8B62951F7890F900310055 /* Json.bundle */; };
 		5C8B629D1F78FC4C00310055 /* JHBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8B629C1F78FC4C00310055 /* JHBaseViewController.m */; };
 		5C8D75171F79535400FC9056 /* TelevisionChannelSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8D75161F79535400FC9056 /* TelevisionChannelSearchViewController.m */; };
-		5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C902CC01F769D2700E988AB /* TelevisionWallViewController.m */; };
 		5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C902CC31F769D4A00E988AB /* TelevisionDetailViewController.m */; };
 		5C9107651F6D1C3100FA4270 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C91075F1F6D1C3100FA4270 /* main.m */; };
 		5C9107661F6D1C3100FA4270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C9107611F6D1C3100FA4270 /* Assets.xcassets */; };
@@ -161,6 +162,8 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
+		330AC9431FC8554D0059B65C /* TelevisionManageOrderedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionManageOrderedViewController.h; sourceTree = "<group>"; };
+		330AC9441FC8554D0059B65C /* TelevisionManageOrderedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionManageOrderedViewController.m; sourceTree = "<group>"; };
 		33201F4E1FB71C4B00CAFDEA /* BadgeCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgeCenter.h; sourceTree = "<group>"; };
 		33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeCenter.m; sourceTree = "<group>"; };
 		33201F521FB754E700CAFDEA /* NetworkInternetListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListViewController.h; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 		335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkOnlineDevicesTableViewCell.m; sourceTree = "<group>"; };
 		335833871FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListTableViewCell.h; sourceTree = "<group>"; };
 		335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListTableViewCell.m; sourceTree = "<group>"; };
+		338D70AD1FC98E960077DAFF /* TelevisionWallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TelevisionWallViewController.m; sourceTree = "<group>"; };
+		338D70AE1FC98E970077DAFF /* TelevisionWallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TelevisionWallViewController.h; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		33FFEA741FBAE80C002632B9 /* NetworkReuseFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReuseFooterView.h; sourceTree = "<group>"; };
@@ -259,8 +264,6 @@
 		5C8B629C1F78FC4C00310055 /* JHBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHBaseViewController.m; sourceTree = "<group>"; };
 		5C8D75151F79535400FC9056 /* TelevisionChannelSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionChannelSearchViewController.h; sourceTree = "<group>"; };
 		5C8D75161F79535400FC9056 /* TelevisionChannelSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionChannelSearchViewController.m; sourceTree = "<group>"; };
-		5C902CBF1F769D2700E988AB /* TelevisionWallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionWallViewController.h; sourceTree = "<group>"; };
-		5C902CC01F769D2700E988AB /* TelevisionWallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionWallViewController.m; sourceTree = "<group>"; };
 		5C902CC21F769D4A00E988AB /* TelevisionDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionDetailViewController.h; sourceTree = "<group>"; };
 		5C902CC31F769D4A00E988AB /* TelevisionDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionDetailViewController.m; sourceTree = "<group>"; };
 		5C91075F1F6D1C3100FA4270 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -423,6 +426,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		330AC9421FC8551E0059B65C /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				330AC9431FC8554D0059B65C /* TelevisionManageOrderedViewController.h */,
+				330AC9441FC8554D0059B65C /* TelevisionManageOrderedViewController.m */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
 		33201F4D1FB71C3000CAFDEA /* BadgeCenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -557,6 +569,15 @@
 				335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */,
 			);
 			path = NetworkInternetListTableViewCell;
+			sourceTree = "<group>";
+		};
+		338D70AC1FC98E2C0077DAFF /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				338D70AE1FC98E970077DAFF /* TelevisionWallViewController.h */,
+				338D70AD1FC98E960077DAFF /* TelevisionWallViewController.m */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		33F88B841F8296430054B123 /* JHTool */ = {
@@ -1039,8 +1060,8 @@
 		5C902CBD1F769CD600E988AB /* Wall */ = {
 			isa = PBXGroup;
 			children = (
-				5C902CBF1F769D2700E988AB /* TelevisionWallViewController.h */,
-				5C902CC01F769D2700E988AB /* TelevisionWallViewController.m */,
+				338D70AC1FC98E2C0077DAFF /* Main */,
+				330AC9421FC8551E0059B65C /* Order */,
 			);
 			path = Wall;
 			sourceTree = "<group>";
@@ -2108,7 +2129,6 @@
 				5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */,
 				5C7B8EDF1F8C646A0088FC60 /* NetworkStatusView.m in Sources */,
 				5C9895E31F822A5B00C2F93E /* User.m in Sources */,
-				5C902CC11F769D2700E988AB /* TelevisionWallViewController.m in Sources */,
 				5CA976EF1F73B22200B1089A /* NSString+JHCategory.m in Sources */,
 				776697E71FA9765400BB7544 /* LibraryLoginModel.m in Sources */,
 				776697F81FA9787B00BB7544 /* LibraryViewController.m in Sources */,
@@ -2132,6 +2152,7 @@
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				776698001FA978E000BB7544 /* LibraryMostViewController.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
+				338D70AF1FC98E970077DAFF /* TelevisionWallViewController.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
 				776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
@@ -2148,6 +2169,7 @@
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
+				330AC9451FC8554E0059B65C /* TelevisionManageOrderedViewController.m in Sources */,
 				5CD098BE1F809B9800252E4D /* HomeComponentNewsView.m in Sources */,
 				5C449A681F6E12F00002A755 /* JHServer.m in Sources */,
 				5C6D59411F7376D200E7654B /* UITableView+JHCategory.m in Sources */,

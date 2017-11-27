@@ -210,13 +210,6 @@
     }
 }
 
-///**
-// 获取该播放源的近8天所有播放过的节目单
-// */
-//- (NSDictionary *)televisionChannelDictionary {
-//    return self.TelevisionChannelDic;
-//}
-
 #pragma mark - Setter
 
 - (void)setSelectedType:(TelevisionChannelModelSelectionType)selectedType {

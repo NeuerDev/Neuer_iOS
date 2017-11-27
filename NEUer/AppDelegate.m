@@ -61,21 +61,6 @@
     
     _center = [UNUserNotificationCenter currentNotificationCenter];
     _center.delegate = self;
-    
-    [self.center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-
-        if (!granted) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"“东大方圆”想给您发送推送通知" message:@"“通知”主要包括活动、节目预约等信息，请在“设置”中打开。" preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                if( [[UIApplication sharedApplication]canOpenURL:url] ) {
-                    [[UIApplication sharedApplication]openURL:url options:@{} completionHandler:nil];
-                }
-            }]];
-            [self.skelentonVC presentViewController:alertController animated:YES completion:nil];
-        }
-    }];
 
     return YES;
 }

@@ -320,14 +320,29 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (void)makeAnAppointmentToTVShow:(TelevisionChannelScheduleBean *)bean {
     
+    [((AppDelegate *)[UIApplication sharedApplication].delegate).center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        
+        if (!granted) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"“东大方圆”想给您发送推送通知" message:@"“通知”主要包括活动、节目预约等信息，请在“设置”中打开。" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                if( [[UIApplication sharedApplication]canOpenURL:url] ) {
+                    [[UIApplication sharedApplication]openURL:url options:@{} completionHandler:nil];
+                }
+            }]];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }];
+    
     UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
     content.userInfo = @{
                          @"contentType" : @"tvshow",
                          @"showname" : bean.name,
+                         @"channelname" : (self.channelBean.channelName).copy,
                          @"showsource" : bean.sourceUrl,
                          @"showtime" : bean.time
                          };
-    NSLog(@"%@", bean.sourceUrl);
     content.title = @"您预约的节目即将开始啦！";
     content.sound = [UNNotificationSound defaultSound];
     content.categoryIdentifier = @"tvshowid";
@@ -356,9 +371,19 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         if (error) {
             NSLog(@"%@", error);
         } else {
+            
+            TelevisionWallOrderBean *orderBean = [[TelevisionWallOrderBean alloc] init];
+            orderBean.showName = bean.name;
+            orderBean.showTime = bean.time;
+            orderBean.channelName = ws.channelBean.channelName;
+            orderBean.sourceString = bean.sourceUrl;
+            
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您已预约成功。" preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [ws.wallModel addOrderedTVShow:orderBean];
+            }]];
             [ws presentViewController:alertController animated:YES completion:nil];
+            
         }
     }];
 }
@@ -370,7 +395,6 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 }
 
 - (void)fetchTelevisionChannelModelSuccess {
-
     [self.tableView reloadData];
 }
 
@@ -494,8 +518,19 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     [self presentViewController:playerViewController animated:YES completion:nil];
 }
 
-- (void)didClickedCollectedButtonWithItem:(TelevisionChannelScheduleBean *)bean {
-    
+- (void)didClickedCollectedButton {
+    WS(ws);
+    [self.wallModel addCollectionTVWithSourceUrl:self.channelBean.channelDetailUrl withBlock:^(BOOL success) {
+        if (success) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"收藏成功！" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+            [ws presentViewController:alertController animated:YES completion:nil];
+        } else {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"收藏失败，请先登录" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+            [ws presentViewController:alertController animated:YES completion:nil];
+        }
+    }];
 }
 
 - (void)beginRefreshing {
@@ -619,7 +654,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (UIBarButtonItem *)collectBarButtonItem {
     if (!_collectBarButtonItem) {
-        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButtonWithItem:)];
+        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
     }
     return _collectBarButtonItem;
 }
