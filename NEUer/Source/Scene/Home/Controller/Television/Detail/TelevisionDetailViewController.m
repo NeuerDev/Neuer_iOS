@@ -520,8 +520,29 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (void)didClickedCollectedButton {
     WS(ws);
+    if (self.wallModel.collectionArray.count > 0) {
+        for (TelevisionWallChannelBean *bean in self.wallModel.collectionArray) {
+            if ([self.channelBean.channelDetailUrl isEqualToString:bean.channelDetailUrl]) {
+                [self.wallModel deleteColletionTVItemWithSourceUrl:self.channelBean.channelDetailUrl withBlock:^(BOOL success) {
+                    if (success) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [ws.collectBarButtonItem setImage:[UIImage imageNamed:@"TV_uncollection"]];
+                        });
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"取消收藏成功！" preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+                        [ws presentViewController:alertController animated:YES completion:nil];
+                    }
+                }];
+                return;
+            }
+        }
+    }
+    
     [self.wallModel addCollectionTVWithSourceUrl:self.channelBean.channelDetailUrl withBlock:^(BOOL success) {
         if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ws.collectBarButtonItem setImage:[UIImage imageNamed:@"TV_collectioned"]];
+            });
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"收藏成功！" preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
             [ws presentViewController:alertController animated:YES completion:nil];
@@ -654,7 +675,17 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (UIBarButtonItem *)collectBarButtonItem {
     if (!_collectBarButtonItem) {
-        _collectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
+        BOOL _flag = NO;
+        for (TelevisionWallChannelBean *bean in self.wallModel.collectionArray) {
+            if ([self.channelBean.channelDetailUrl isEqualToString:bean.channelDetailUrl]) {
+                _flag = YES;
+            }
+        }
+        if (_flag == NO) {
+            _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"TV_uncollection"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
+        } else {
+            _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"TV_collectioned"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
+        }
     }
     return _collectBarButtonItem;
 }

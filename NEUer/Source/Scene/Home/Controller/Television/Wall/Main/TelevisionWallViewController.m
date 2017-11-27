@@ -526,16 +526,6 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     [self.navigationController pushViewController:orderedViewController animated:YES];
 }
 
-//#pragma mark - OverideMethod
-//
-//- (void)onBaseRetryButtonClicked:(UIButton *)sender {
-//
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"请检查您是否在校园网环境下" preferredStyle:UIAlertControllerStyleAlert];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//
-//}
-
 #pragma mark - TelevisionWallDelegate
 
 - (void)fetchWallDataDidSuccess {
@@ -714,8 +704,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
                 if (self.wallModel.resultArray.count != 0) {
                     cell.channelBean = self.wallModel.resultArray[indexPath.item];
                 }
-            }
-            else{
+            } else{
                 cell.channelBean = self.wallModel.channelArray[indexPath.item];
             }
             
@@ -726,8 +715,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
                 if (self.wallModel.resultArray.count != 0) {
                     cell.channelBean = self.wallModel.resultArray[indexPath.item];
                 }
-            }
-            else{
+            }else{
                 cell.channelBean = self.wallModel.channelArray[indexPath.item];
             }
             
