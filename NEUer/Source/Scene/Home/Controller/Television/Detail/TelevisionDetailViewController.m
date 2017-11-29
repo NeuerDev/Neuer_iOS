@@ -526,7 +526,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
                 [self.wallModel deleteColletionTVItemWithSourceUrl:self.channelBean.channelDetailUrl withBlock:^(BOOL success) {
                     if (success) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [ws.collectBarButtonItem setImage:[UIImage imageNamed:@"TV_uncollection"]];
+                            [ws.collectBarButtonItem setImage:[UIImage imageNamed:@"tv_uncollection"]];
                         });
                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"取消收藏成功！" preferredStyle:UIAlertControllerStyleAlert];
                         [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
@@ -541,7 +541,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     [self.wallModel addCollectionTVWithSourceUrl:self.channelBean.channelDetailUrl withBlock:^(BOOL success) {
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [ws.collectBarButtonItem setImage:[UIImage imageNamed:@"TV_collectioned"]];
+                [ws.collectBarButtonItem setImage:[UIImage imageNamed:@"tv_collectioned"]];
             });
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"收藏成功！" preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
@@ -682,9 +682,9 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
             }
         }
         if (_flag == NO) {
-            _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"TV_uncollection"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
+            _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tv_uncollection"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
         } else {
-            _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"TV_collectioned"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
+            _collectBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tv_collectioned"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedCollectedButton)];
         }
     }
     return _collectBarButtonItem;

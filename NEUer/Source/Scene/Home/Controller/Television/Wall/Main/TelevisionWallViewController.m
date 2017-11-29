@@ -70,9 +70,23 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     }];
 }
 
+#pragma mark - Public Method
+
+- (void)changeImageStateByClickedButtonWithTag:(NSInteger)tag {
+    if (tag == 001) {
+        [self.normalButton setImage:[UIImage imageNamed:@"tv_simple_highlight"] forState:UIControlStateNormal];
+        [self.detailButton setImage:[UIImage imageNamed:@"tv_detail_normal"] forState:UIControlStateNormal];
+    } else {
+        [self.normalButton setImage:[UIImage imageNamed:@"tv_simple_normal"] forState:UIControlStateNormal];
+        [self.detailButton setImage:[UIImage imageNamed:@"tv_detail_highlight"] forState:UIControlStateNormal];
+    }
+}
+
 - (void)setActionBlock:(TelevisionWallChannelChangeStateViewSetActionBlock)block {
     _block = block;
 }
+
+#pragma mark - Response Method
 
 - (void)didClickedChangeViewButtonWithTag:(UIButton *)sender {
     NSInteger tag = sender.tag;
@@ -85,11 +99,9 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 
 - (UIButton *)normalButton {
     if (!_normalButton) {
-        _normalButton =[[UIButton alloc] init];
-        UIImage *image = [UIImage imageNamed:@"TV_normal"];
-        [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [_normalButton setImage:image forState:UIControlStateNormal];
-        _normalButton.tintColor = [JHTool colorWithHexStr:@"#fcbf50"];
+        _normalButton =[UIButton buttonWithType:UIButtonTypeSystem];
+        _normalButton.tintColor = [UIColor colorWithHexStr:@"#FCBF50"];
+        [_normalButton setImage:[UIImage imageNamed:@"tv_simple_normal"] forState:UIControlStateNormal];
         _normalButton.tag = 001;
         [_normalButton addTarget:self action:@selector(didClickedChangeViewButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_normalButton];
@@ -99,8 +111,9 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 
 - (UIButton *)detailButton {
     if (!_detailButton) {
-        _detailButton = [[UIButton alloc] init];
-        [_detailButton setImage:[UIImage imageNamed:@"TV_detail"] forState:UIControlStateNormal];
+        _detailButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _detailButton.tintColor = [UIColor colorWithHexStr:@"#FCBF50"];
+        [_detailButton setImage:[UIImage imageNamed:@"tv_detail_normal"] forState:UIControlStateNormal];
         _detailButton.tag = 002;
         [_detailButton addTarget:self action:@selector(didClickedChangeViewButtonWithTag:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_detailButton];
@@ -464,11 +477,15 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     [self p_checkNetworkStatusBox];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    [self.changeStateView changeImageStateByClickedButtonWithTag:001];
+    self.definesPresentationContext = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedNetworkStatusChangeNotification:) name:kGatewayNetworkStatusChangeNotification object:nil];
     
     WS(ws);
     [self.changeStateView setActionBlock:^(NSInteger tag) {
+        
+        [ws.changeStateView changeImageStateByClickedButtonWithTag:tag];
         switch (tag) {
             case 001:
             {
@@ -536,7 +553,6 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
         }
     }];
 }
-
 
 - (void)changeChannelType {
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"选择频道类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -625,28 +641,28 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 #pragma mark - UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(nonnull UISearchController *)searchController {
-    if (!self.searchViewController.active) {
-        self.changeStateView.hidden = NO;
-    } else {
-        self.changeStateView.hidden = YES;
-        _isShowCollectionItems = NO;
-    }
+//    if (!self.searchViewController.isActive) {
+//        self.changeStateView.hidden = NO;
+//    } else {
+//        self.changeStateView.hidden = YES;
+//    }
     NSString *searchString = [self.searchViewController.searchBar text];
-    [self.wallModel queryWallWithKeyword:searchString];
+    WS(ws);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [ws.wallModel queryWallWithKeyword:searchString];
+    });
     
-    [self.collectionView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ws.collectionView reloadData];
+    });
 }
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self.collectionView reloadData];
     self.searchViewController.searchBar.text = searchBar.text;
     [self.searchViewController.searchBar resignFirstResponder];
+    _searchViewController.dimsBackgroundDuringPresentation = NO;
     self.searchViewController.active = YES;
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -659,15 +675,15 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     if (_isShowCollectionItems && indexPath.section == 0) {
         detailVC.channelBean = self.wallModel.collectionArray[indexPath.item];
     } else {
-        if (self.searchViewController.active) {
+        if (self.searchViewController.isActive) {
             detailVC.channelBean = self.wallModel.resultArray[indexPath.item];
         } else {
             detailVC.channelBean = self.wallModel.channelArray[indexPath.item];
         }
     }
     
-    self.searchViewController.active = NO;
     [self.navigationController pushViewController:detailVC animated:YES];
+    self.searchViewController.active = NO;
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
@@ -696,60 +712,37 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (_isShowCollectionItems) {
-        if (indexPath.section == 0) {
-            if (_isOneLargeImageDisplay) {
-                TelevisionWallChannelNormalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelNormalCellId forIndexPath:indexPath];
-                cell.channelBean = self.wallModel.collectionArray[indexPath.item];
-                return cell;
-            
-            } else {
-                TelevisionWallChannelDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelDetailCellId forIndexPath:indexPath];
-                cell.channelBean = self.wallModel.collectionArray[indexPath.item];
-                return cell;
+    TelevisionWallChannelNormalCell *normalCell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelNormalCellId forIndexPath:indexPath];
+    TelevisionWallChannelDetailCell *detailCell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelDetailCellId forIndexPath:indexPath];
+    if (_isOneLargeImageDisplay) {
+        if (_isShowCollectionItems && indexPath.section == 0) {
+            normalCell.channelBean = self.wallModel.collectionArray[indexPath.item];
+            return normalCell;
+        } else if ((_isShowCollectionItems && indexPath.section == 1) || (!_isShowCollectionItems && indexPath.section == 0)){
+            if (self.searchViewController.isActive) {
+                normalCell.channelBean = self.wallModel.resultArray[indexPath.item];
+            } else{
+                normalCell.channelBean = self.wallModel.channelArray[indexPath.item];
             }
+            return normalCell;
         } else {
-            if (_isOneLargeImageDisplay) {
-                TelevisionWallChannelNormalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelNormalCellId forIndexPath:indexPath];
-                cell.channelBean = self.wallModel.channelArray[indexPath.item];
-                return cell;
-                
-            } else {
-                TelevisionWallChannelDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelDetailCellId forIndexPath:indexPath];
-                cell.channelBean = self.wallModel.channelArray[indexPath.item];
-                return cell;
-            }
         }
     } else {
-        if (_isOneLargeImageDisplay) {
-            TelevisionWallChannelNormalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelNormalCellId forIndexPath:indexPath];
-            if (self.searchViewController.active) {
-                if (self.wallModel.resultArray.count != 0) {
-                    cell.channelBean = self.wallModel.resultArray[indexPath.item];
-                }
+        if (_isShowCollectionItems && indexPath.section == 0) {
+            detailCell.channelBean = self.wallModel.collectionArray[indexPath.item];
+            return detailCell;
+        }else if ((_isShowCollectionItems && indexPath.section == 1) || (!_isShowCollectionItems && indexPath.section == 0)){
+            if (self.searchViewController.isActive) {
+                detailCell.channelBean = self.wallModel.resultArray[indexPath.item];
             } else{
-                cell.channelBean = self.wallModel.channelArray[indexPath.item];
+                detailCell.channelBean = self.wallModel.channelArray[indexPath.item];
             }
-            
-            return cell;
+            return detailCell;
         } else {
-            TelevisionWallChannelDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kChannelDetailCellId forIndexPath:indexPath];
-            if (self.searchViewController.active) {
-                if (self.wallModel.resultArray.count != 0) {
-                    cell.channelBean = self.wallModel.resultArray[indexPath.item];
-                }
-            }else{
-                cell.channelBean = self.wallModel.channelArray[indexPath.item];
-            }
-            
-            return cell;
         }
     }
-    return nil;
-}
 
-- (void)extracted {
-    [self setBaseViewState:JHBaseViewStateConnectionLost];
+    return nil;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -813,7 +806,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     if (!_searchViewController) {
         _searchViewController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchViewController.delegate = self;
-        _searchViewController.dimsBackgroundDuringPresentation = YES;
+        _searchViewController.obscuresBackgroundDuringPresentation = NO;
         _searchViewController.searchResultsUpdater = self;
         _searchViewController.searchBar.delegate = self;
     }
@@ -881,7 +874,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 
 - (UIBarButtonItem *)orderedBarButtonItem {
     if (!_orderedBarButtonItem) {
-        _orderedBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"TV_order"]  style:UIBarButtonItemStylePlain target:self action:@selector(manageTheOrderedShows)];
+        _orderedBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tv_order"]  style:UIBarButtonItemStylePlain target:self action:@selector(manageTheOrderedShows)];
     }
     return _orderedBarButtonItem;
 }
