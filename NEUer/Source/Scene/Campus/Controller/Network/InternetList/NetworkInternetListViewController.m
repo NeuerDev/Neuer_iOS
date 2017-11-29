@@ -20,7 +20,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 
 @implementation NetworkInternetListViewController
 {
-    NSInteger _currentRows;
+//    NSInteger _currentRows;
 }
 
 #pragma mark - Life Circle
@@ -40,7 +40,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 
 - (void)initData {
     self.title = @"上网明细";
-    _currentRows = 0;
+//    _currentRows = 0;
     [self beginRefreshing];
 }
 
@@ -89,16 +89,15 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         cell = [[NetworkInternetListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellInternetListReuseID];
     }
     cell.infoBean = self.model.internetRecordInfoArray[indexPath.row];
-//    if (self.model.internetRecordInfoArray.count - indexPath.row <= 2) {
-//        [self loadMore];
-//    }
+    if (self.model.internetRecordInfoArray.count - indexPath.row <= 2) {
+        [self loadMore];
+    }
     
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    _currentRows = self.model.internetRecordInfoArray.count;
-    return _currentRows;
+    return self.model.internetRecordInfoArray.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -126,33 +125,18 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [ws.footerView setAnimated:YES];
-                    if (ws.model.internetRecordInfoArray.count > _currentRows) {
-                        NSMutableArray<NSIndexPath *> *array = @[].mutableCopy;
-                        for (NSInteger i =_currentRows; i < ws.model.internetRecordInfoArray.count; ++i) {
-                            [array addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                        }
-                        [self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationTop];
-                    }
-                });
-            } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [ws.footerView setAnimated:NO];
+//                    if (ws.model.internetRecordInfoArray.count > _currentRows) {
+//                        NSMutableArray<NSIndexPath *> *array = @[].mutableCopy;
+//                        for (NSInteger i =_currentRows; i < ws.model.internetRecordInfoArray.count; ++i) {
+//                            [array addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+//                        }
+//                        [self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationTop];
+//                    }
+                    [self.tableView reloadData];
                 });
             }
         }];
     });
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    if (scrollView.contentSize.height - scrollView.contentOffset.y > 50) {
-        [self loadMore];
-    }
-}
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    [self loadMore];
 }
 
 #pragma mark - Getter

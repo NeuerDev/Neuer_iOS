@@ -78,7 +78,7 @@
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
         _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [_actionButton setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
+        [_actionButton setTitleColor:[JHTool colorWithHexStr:@"#fcbf50"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(didClickedActionButton) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_actionButton];
     }
