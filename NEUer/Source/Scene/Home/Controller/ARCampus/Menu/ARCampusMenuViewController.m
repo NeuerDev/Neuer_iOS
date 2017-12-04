@@ -12,7 +12,7 @@
 static NSString * const kARCampusCollectionViewCellId = @"kCellId";
 static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
 
-@interface ARCampusMenuViewController ()
+@interface ARCampusMenuViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 // 主视图
 @property (nonatomic, strong) UIView *maskView;
@@ -21,17 +21,16 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
 
 // 用于动画的视图
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *previousTitleLabel;
+@property (nonatomic, strong) UILabel *currentTitleLabel;
 
 // 内容视图
-//@property (nonatomic, strong) UISegmentedControl *segmentedControl;
-//@property (nonatomic, strong) UICollectionView *collectionView;
-//@property (nonatomic, strong) NSArray<NSDictionary *> *cellDataArray;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSArray<NSDictionary *> *cellDataArray;
 
 @end
 
 @implementation ARCampusMenuViewController {
-    CGFloat _originY;
     CGFloat _viewBeginY;
     CGFloat _touchBeginY;
     CGFloat _contentHeight;
@@ -84,10 +83,24 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
         make.centerY.equalTo(self.contentView.mas_top).with.offset(64/2);
     }];
     
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.previousTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(16+44+12);
         make.right.equalTo(self.contentView.mas_right).with.offset(-16);
         make.centerY.equalTo(self.contentView.mas_top).with.offset(64/2);
+    }];
+    
+    CGFloat initialOffset = 64.0f;
+    
+    [self.currentTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.contentView);
+        make.top.equalTo(self.contentView.mas_top).with.offset(32.0f + SCREEN_WIDTH_ACTUAL/2 + 16.0f + initialOffset);
+    }];
+    
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.currentTitleLabel.mas_bottom).with.offset(16);
+        make.left.equalTo(self.contentView.mas_left).with.offset(16);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-16);
+        make.bottom.equalTo(self.contentView.mas_bottom);
     }];
 }
 
@@ -106,10 +119,13 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     self.contentView.frame = ({
         CGRect frame = self.contentView.frame;
         CGPoint origin = self.contentView.frame.origin;
-        if (origin.y > _originY) {
+        if (origin.y > _topMargin) {
             origin.y = _viewBeginY - offset;
-        } else {
-            origin.y = _viewBeginY - offset*pow(0.3, (offset+_contentHeight)/_contentHeight);
+            if (origin.y < _topMargin) {
+                origin.y = _topMargin;
+            }
+        } else if (origin.y == _topMargin && offset <= 0) {
+            origin.y = _viewBeginY - offset;
         }
         frame.origin = origin;
         frame;
@@ -121,7 +137,7 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
     CGFloat currentY = CGRectGetMinY(self.contentView.frame);
-    if (currentY > _originY+_contentHeight/5) {
+    if (currentY > _topMargin+_contentHeight/5) {
         [self.contentView.layer removeAllAnimations];
         [self hideContentView];
     } else {
@@ -129,17 +145,64 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     }
 }
 
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kARCampusCollectionViewCellId forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor redColor];
+    return cell;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return ((NSArray *)self.cellDataArray[section][@"data"]).count;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return self.cellDataArray.count;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    
+    UICollectionReusableView* reusableView;
+    if (kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kARCampusCollectionViewSectionHeaderId forIndexPath:indexPath];
+        NSInteger labelTag = 1923;
+        UILabel *label = [reusableView viewWithTag:labelTag];
+        if (!label) {
+            UILabel *titleLabel = [[UILabel alloc] init];
+            [reusableView addSubview:titleLabel];
+        }
+    }
+    
+    reusableView.backgroundColor = [UIColor orangeColor];
+    
+    return reusableView;
+}
+
 #pragma mark - Private Methods
 
 - (void)showContentView {
     [self.imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.contentView);
-        make.width.and.height.equalTo(self.contentView.mas_width).multipliedBy(0.5);
+        make.width.and.height.mas_equalTo(SCREEN_WIDTH_ACTUAL/2);
         make.top.equalTo(self.contentView.mas_top).with.offset(32);
     }];
+    
+    [self.currentTitleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.contentView);
+        make.top.equalTo(self.contentView.mas_top).with.offset(32.0f + SCREEN_WIDTH_ACTUAL/2 + 16.0f);
+    }];
+    
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.75 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionAllowUserInteraction animations:^{
         self.maskView.alpha = 0.5;
-        self.titleLabel.alpha = 0;
+        self.previousTitleLabel.alpha = 0;
+        self.currentTitleLabel.alpha = 1;
         self.contentView.frame = CGRectMake(0, _topMargin, SCREEN_WIDTH_ACTUAL, _contentHeight);
         [self.contentView layoutIfNeeded];
     } completion:nil];
@@ -153,7 +216,8 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     }];
     [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:0.75 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.maskView.alpha = 0;
-        self.titleLabel.alpha = 1;
+        self.previousTitleLabel.alpha = 1;
+        self.currentTitleLabel.alpha = 0;
         self.contentView.frame = CGRectMake(0, SCREEN_HEIGHT_ACTUAL-_bottomMargin-64, SCREEN_WIDTH_ACTUAL, _contentHeight);
         [self.contentView layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -216,82 +280,155 @@ static NSString * const kARCampusCollectionViewSectionHeaderId = @"kHeaderId";
     return _imageView;
 }
 
-- (UILabel *)titleLabel {
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.text = _task.title;
-        _titleLabel.numberOfLines = 0;
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        [self.contentView addSubview:_titleLabel];
+- (UILabel *)previousTitleLabel {
+    if (!_previousTitleLabel) {
+        _previousTitleLabel = [[UILabel alloc] init];
+        _previousTitleLabel.text = _task.title;
+        _previousTitleLabel.numberOfLines = 0;
+        _previousTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        [self.contentView addSubview:_previousTitleLabel];
     }
     
-    return _titleLabel;
+    return _previousTitleLabel;
 }
 
-//- (UICollectionView *)collectionView {
-//    if (!_collectionView) {
-//        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-//        CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 16)/3;
-//        CGFloat cellHeight = cellWidth;
-//        flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
-//        flowLayout.minimumLineSpacing = 8.0f;
-//        flowLayout.minimumInteritemSpacing = 8.0f;
-//        flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-//        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
-//        _collectionView.backgroundColor = [UIColor clearColor];
-//        _collectionView.layer.masksToBounds = NO;
-//        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kARCampusCollectionViewCellId];
-//        //        [_panelCollectionView registerClass:[CustomSectionHeaderFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kARCampusCollectionViewSectionHeaderId];
-//        _collectionView.delegate = self;
-//        _collectionView.dataSource = self;
-//        _collectionView.showsVerticalScrollIndicator = NO;
-//        _collectionView.alwaysBounceVertical = YES;
-//        _collectionView.alwaysBounceHorizontal = YES;
-//        _collectionView.bounces = YES;
-//        _collectionView.backgroundColor = [UIColor blueColor];
-//        [self.contentView addSubview:_collectionView];
-//    }
-//
-//    return _collectionView;
-//}
-//
-//- (NSArray<NSDictionary *> *)cellDataArray {
-//    if (!_cellDataArray) {
-//        _cellDataArray = @[
-//                           @{
-//                               @"title":@"AR 校园",
-//                               @"url":@"neu://go/ar",
-//                               @"color":@"#DFC3BB",
-//                               },
-//                           @{
-//                               @"title":@"一键联网",
-//                               @"url":@"neu://handle/ipgw",
-//                               @"color":@"#E7D1B4",
-//                               },
-//                           @{
-//                               @"title":@"电视直播",
-//                               @"url":@"neu://go/tv",
-//                               @"color":@"#A2C9B4",
-//                               },
-//                           @{
-//                               @"title":@"书刊查询",
-//                               @"url":@"neu://go/lib",
-//                               @"color":@"#A2C9B4",
-//                               },
-//                           @{
-//                               @"title":@"校卡中心",
-//                               @"url":@"neu://go/ecard",
-//                               @"color":@"#92AFC0",
-//                               },
-//                           @{
-//                               @"title":@"教务系统",
-//                               @"url":@"neu://go/aao",
-//                               @"color":@"#E7D1B4",
-//                               },
-//                           ];
-//    }
-//
-//    return _cellDataArray;
-//}
+
+- (UILabel *)currentTitleLabel {
+    if (!_currentTitleLabel) {
+        _currentTitleLabel = [[UILabel alloc] init];
+        _currentTitleLabel.text = _task.title;
+        _currentTitleLabel.numberOfLines = 0;
+        _currentTitleLabel.alpha = 0;
+        _currentTitleLabel.textAlignment = NSTextAlignmentCenter;
+        _currentTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
+        [self.contentView addSubview:_currentTitleLabel];
+    }
+    
+    return _currentTitleLabel;
+}
+
+- (UICollectionView *)collectionView {
+    if (!_collectionView) {
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 32 - 16)/3;
+        CGFloat cellHeight = cellWidth;
+        flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
+        flowLayout.minimumLineSpacing = 8.0f;
+        flowLayout.minimumInteritemSpacing = 8.0f;
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 8, 0);
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        flowLayout.headerReferenceSize = CGSizeMake(CGFLOAT_MAX, 44);
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+        _collectionView.backgroundColor = [UIColor clearColor];
+        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kARCampusCollectionViewCellId];
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kARCampusCollectionViewSectionHeaderId];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        _collectionView.showsVerticalScrollIndicator = NO;
+        _collectionView.backgroundColor = [UIColor blueColor];
+        [self.contentView addSubview:_collectionView];
+    }
+    
+    return _collectionView;
+}
+
+- (NSArray<NSDictionary *> *)cellDataArray {
+    if (!_cellDataArray) {
+        _cellDataArray = @[
+                           @{
+                               @"type":@(ARCampusTaskTypeBuilding),
+                               @"data":@[
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       ],
+                               },
+                           @{
+                               @"type":@(ARCampusTaskTypeTunnel),
+                               @"data":@[
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       ],
+                               },
+                           @{
+                               @"type":@(ARCampusTaskTypeGuide),
+                               @"data":@[
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       @{
+                                           @"title":@"",
+                                           @"image":@"",
+                                           @"description":@"",
+                                           },
+                                       ],
+                               },
+                           ];
+    }
+    
+    return _cellDataArray;
+}
 
 @end
