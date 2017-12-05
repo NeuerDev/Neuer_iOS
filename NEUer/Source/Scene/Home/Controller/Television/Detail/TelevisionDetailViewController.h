@@ -12,4 +12,5 @@
 
 @interface TelevisionDetailViewController : JHBaseViewController
 @property (nonatomic, strong) TelevisionWallChannelBean *channelBean;
+@property (nonatomic, strong) TelevisionWallModel *wallModel;
 @end

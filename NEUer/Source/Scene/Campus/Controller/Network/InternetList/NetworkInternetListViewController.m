@@ -19,6 +19,9 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 @end
 
 @implementation NetworkInternetListViewController
+{
+//    NSInteger _currentRows;
+}
 
 #pragma mark - Life Circle
 
@@ -37,7 +40,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
 
 - (void)initData {
     self.title = @"上网明细";
-
+//    _currentRows = 0;
     [self beginRefreshing];
 }
 
@@ -60,14 +63,14 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
             dispatch_async(dispatch_get_main_queue(), ^{
                 [ws.baseActivityIndicatorView stopAnimating];
                 if ([ws.tableView numberOfSections] == 0) {
-                    if (self.model.internetRecordInfoArray.count==0) {
+                    if (self.model.internetRecordInfoArray.count == 0) {
                         [ws.tableView reloadData];
                     } else {
-                        [ws.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                        [ws.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
                     }
                 } else {
                     if ([ws.tableView numberOfRowsInSection:0] == ws.model.internetRecordInfoArray.count) {
-                        [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                        [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
                     }
                 }
             });
@@ -86,7 +89,7 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         cell = [[NetworkInternetListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kNetworkTableViewCellInternetListReuseID];
     }
     cell.infoBean = self.model.internetRecordInfoArray[indexPath.row];
-    if (self.model.internetRecordInfoArray.count - indexPath.row < 3) {
+    if (self.model.internetRecordInfoArray.count - indexPath.row <= 2) {
         [self loadMore];
     }
     
@@ -112,6 +115,8 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
     return 74;
 }
 
+#pragma mark - Private Method
+
 - (void)loadMore {
     WS(ws);
     
@@ -120,31 +125,19 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [ws.footerView setAnimated:YES];
-                    if (ws.model.appendingInternetRecordInfoArray.count > 0) {
-                        [ws appendingDataWithArray:self.model.appendingInternetRecordInfoArray];
-                    } else {
-                        [ws.footerView setAnimated:NO];
-                    }
+//                    if (ws.model.internetRecordInfoArray.count > _currentRows) {
+//                        NSMutableArray<NSIndexPath *> *array = @[].mutableCopy;
+//                        for (NSInteger i =_currentRows; i < ws.model.internetRecordInfoArray.count; ++i) {
+//                            [array addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+//                        }
+//                        [self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationTop];
+//                    }
+                    [self.tableView reloadData];
                 });
             }
         }];
     });
 }
-
-- (void)appendingDataWithArray:(NSArray *)array {
-    NSMutableArray<NSIndexPath *> *indexPaths = [[NSMutableArray alloc] initWithCapacity:0];
-    
-    for (GatewaySelfServiceMenuInternetRecordsInfoBean *bean in array) {
-        if ([self.model.internetRecordInfoArray containsObject:bean]) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.model.internetRecordInfoArray indexOfObject:bean] inSection:0];
-            [indexPaths addObject:indexPath];
-        } else {
-            continue;
-        }
-    }
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-}
-
 
 #pragma mark - Getter
 
@@ -157,14 +150,14 @@ static NSString *kNetworkTableViewCellInternetListReuseID = @"internetListCellID
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.allowsSelection = NO;
         
-//        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 64)];
-//        [footerView addSubview:self.footerView];
-//        [self.footerView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.edges.equalTo(footerView);
-//        }];
-//        [footerView layoutIfNeeded];
-//
-//        _tableView.tableFooterView = footerView;
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, 64)];
+        [footerView addSubview:self.footerView];
+        [self.footerView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(footerView);
+        }];
+        [footerView layoutIfNeeded];
+
+        _tableView.tableFooterView = footerView;
         [self.view addSubview:_tableView];
     }
     return _tableView;

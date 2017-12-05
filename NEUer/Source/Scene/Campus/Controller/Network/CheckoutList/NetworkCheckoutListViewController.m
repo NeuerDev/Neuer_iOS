@@ -230,12 +230,12 @@ static NSString *kNetworkTableViewCellPayListReuseID = @"kNetworkTableViewCellPa
                         [ws.baseActivityIndicatorView stopAnimating];
                         
                         if (0 == ws.tableView.numberOfSections) {
-                            [ws.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+                            [ws.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
                         } else {
                             if ([ws.tableView numberOfRowsInSection:0] == self.model.financialPayInfoArray.count) {
                                 [ws.tableView reloadData];
                             } else {
-                                [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                [ws.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
                             }
                         }
                     });

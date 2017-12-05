@@ -23,6 +23,9 @@
 @end
 
 @implementation TelevisionWallModel
+{
+    queryCollectionItemBlock _block;
+}
 
 #pragma mark - Init
 
@@ -90,6 +93,44 @@
     [request start];
 }
 
+- (void)addCollectionTVWithSourceUrl:(NSString *)sourceUrl withBlock:(queryCollectionItemBlock)block {
+    
+    _block = block;
+    
+    FMDatabase *database = [DataBaseCenter defaultCenter].database;
+//    [database executeUpdate:@"DROP TABLE IF EXISTS t_TV"];
+    if ([UserCenter defaultCenter].currentUser) {
+        for (TelevisionWallChannelBean *bean in self.channelArray) {
+            if ([bean.channelDetailUrl isEqualToString:sourceUrl]) {
+                for (TelevisionWallChannelBean *collectionBean in self.collectionArray) {
+                    if ([collectionBean.channelDetailUrl isEqualToString:sourceUrl]) {
+                        _block(NO);
+                    }
+                }
+                [_collectionArray addObject:bean];
+                [database executeUpdate:@"insert into t_TV (number, tv_sourceurl) values (?, ?);", [UserCenter defaultCenter].currentUser.number, sourceUrl];
+                _block(YES);
+            }
+        }
+    } else {
+        _block(NO);
+    }
+}
+
+- (void)deleteColletionTVItemWithSourceUrl:(NSString *)sourceUrl withBlock:(queryCollectionItemBlock)block {
+    _block = block;
+    
+    FMDatabase *database = [DataBaseCenter defaultCenter].database;
+    
+    if ([UserCenter defaultCenter].currentUser) {
+        [database executeUpdate:@"delete from t_TV where number= ? AND tv_sourceurl=?;" , [UserCenter defaultCenter].currentUser.number, sourceUrl];
+
+        _block(YES);
+    } else {
+        _block(NO);
+    }
+}
+
 - (void)queryWallWithKeyword:(NSString *)keyword {
     
     _keyword = keyword;
@@ -104,6 +145,14 @@
         [_resultArray removeAllObjects];
     }
     [_resultArray addObjectsFromArray:queryArray];
+}
+
+- (void)removeTVShowOrderFromOrderArray:(TelevisionWallOrderBean *)bean {
+    [self.orderedArray removeObject:bean];
+}
+
+- (void)addOrderedTVShow:(TelevisionWallOrderBean *)bean {
+    [self.orderedArray addObject:bean];
 }
 
 #pragma mark - JHRequestDelegate
@@ -173,6 +222,27 @@
 - (NSMutableArray<TelevisionWallChannelBean *> *)channelArray {
     return [self channelArrayWithType:_currentType];
 }
+- (NSMutableArray<TelevisionWallChannelBean *> *)collectionArray {
+    if (!_collectionArray) {
+        _collectionArray = @[].mutableCopy;
+    }
+    if (self.currentType == TelevisionChannelTypeAll) {
+        FMDatabase *database = [DataBaseCenter defaultCenter].database;
+        FMResultSet *result = [database executeQuery:@"select * from t_TV where number = ?", [UserCenter defaultCenter].currentUser.number];
+        
+        if (_collectionArray.count > 0) {
+            [_collectionArray removeAllObjects];
+        }
+        while ([result next]) {
+            for (TelevisionWallChannelBean *bean in self.channelArray) {
+                if ([bean.channelDetailUrl isEqualToString:[result stringForColumn:@"tv_sourceurl"]]) {
+                    [_collectionArray addObject:bean];
+                }
+            }
+        }
+    }
+    return _collectionArray;
+}
 
 - (NSMutableArray<TelevisionWallChannelBean *> *)channelArrayWithType:(TelevisionChannelType)type {
     if (!_channelArrayDictionary[[NSString stringWithFormat:@"%ld", type]]) {
@@ -214,6 +284,17 @@
     }
     return _resultArray;
 }
+
+- (NSMutableArray<TelevisionWallOrderBean *> *)orderedArray {
+    if (!_orderedArray) {
+        _orderedArray = [NSMutableArray arrayWithCapacity:0];
+    }
+    return _orderedArray;
+}
+
+@end
+
+@implementation TelevisionWallOrderBean
 
 @end
 
@@ -265,7 +346,5 @@
     }
     return _choosenDate;
 }
-
-
 
 @end

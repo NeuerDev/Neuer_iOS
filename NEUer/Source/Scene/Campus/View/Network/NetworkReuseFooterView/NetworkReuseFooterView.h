@@ -13,5 +13,6 @@ static NSString *kNetworkFooterViewReuseID = @"kNetworkFooterViewReuseID";
 @interface NetworkReuseFooterView : UITableViewHeaderFooterView
 
 - (void)setAnimated:(BOOL)animated;
+- (BOOL)isAnimated;
 
 @end

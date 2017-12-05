@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "UIColor+JHCategory.h"
 
+
 @class TelevisionWallChannelBean;
+
+typedef void(^queryCollectionItemBlock)(BOOL success);
 
 typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
     TelevisionChannelTypeAll        = 0,
@@ -29,11 +32,21 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 
 @end
 
+@interface TelevisionWallOrderBean : NSObject
+@property (nonatomic, strong) NSString *showName;
+@property (nonatomic, strong) NSString *showTime;
+@property (nonatomic, strong) NSString *channelName;
+@property (nonatomic, strong) NSString *sourceString;
+
+@end
+
 @interface TelevisionWallModel : NSObject
 
 @property (nonatomic, strong) NSMutableArray<TelevisionWallChannelBean *> *channelArray;
 @property (nonatomic, strong) NSMutableDictionary<NSString *, TelevisionWallChannelBean *> *channelDictionary;
 @property (nonatomic, strong) NSMutableArray<TelevisionWallChannelBean *> *resultArray;
+@property (nonatomic, strong) NSMutableArray<TelevisionWallOrderBean *> *orderedArray;
+@property (nonatomic, strong) NSMutableArray<TelevisionWallChannelBean *> *collectionArray;
 @property (nonatomic, weak) id<TelevisionWallDelegate> delegate;
 @property (nonatomic, assign) TelevisionChannelType currentType;
 
@@ -42,6 +55,10 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 - (NSMutableArray<TelevisionWallChannelBean *> *)channelArrayWithType:(TelevisionChannelType)type;
 - (NSArray<NSString *> *)channelTypeArray;
 - (void)queryWallWithKeyword:(NSString *)keyword;
+- (void)removeTVShowOrderFromOrderArray:(TelevisionWallOrderBean *)bean;
+- (void)addOrderedTVShow:(TelevisionWallOrderBean *)bean;
+- (void)addCollectionTVWithSourceUrl:(NSString *)sourceUrl withBlock:(queryCollectionItemBlock)block;
+- (void)deleteColletionTVItemWithSourceUrl:(NSString *)sourceUrl withBlock:(queryCollectionItemBlock)block;
 
 @end
 
@@ -57,4 +74,5 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 @property (nonatomic, strong) NSArray<NSDictionary *> *sourceArray;
 @property (nonatomic, strong) NSDictionary *choosenSource; // 被用户选中的播放源
 @property (nonatomic, strong) NSString *choosenDate;
+
 @end
