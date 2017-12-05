@@ -54,7 +54,7 @@ typedef NS_OPTIONS(NSInteger, TelevisionChannelType) {
 - (void)setCurrentTypeWithName:(NSString *)typeName;
 - (NSMutableArray<TelevisionWallChannelBean *> *)channelArrayWithType:(TelevisionChannelType)type;
 - (NSArray<NSString *> *)channelTypeArray;
-- (void)queryWallWithKeyword:(NSString *)keyword;
+- (void)queryWallWithKeyword:(NSString *)keyword complete:(queryCollectionItemBlock)block;
 - (void)removeTVShowOrderFromOrderArray:(TelevisionWallOrderBean *)bean;
 - (void)addOrderedTVShow:(TelevisionWallOrderBean *)bean;
 - (void)addCollectionTVWithSourceUrl:(NSString *)sourceUrl withBlock:(queryCollectionItemBlock)block;

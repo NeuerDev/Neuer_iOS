@@ -278,11 +278,9 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 @implementation TelevisionDetailViewController
 
 #pragma mark - Life Cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    [self initData];
-    [self.tableView reloadData];
 }
 
 #pragma mark - Init
@@ -292,11 +290,14 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     sourceButtonsTitle = @"清华大学";
     selectionType = TelevisionChannelModelSelectionTypeToday;
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.dk_backgroundColorPicker = DKColorPickerWithKey(background);
     self.title = _channelBean.channelName;
     [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:self.channelBean.choosenSource.allValues[0]];
     self.navigationItem.rightBarButtonItem = self.collectBarButtonItem;
-    self.tableView.refreshControl = self.refreshControl;
+}
+
+- (void)initConstraints {
+    self.tableView.frame = self.view.frame;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -644,11 +645,12 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+        _tableView = [[UITableView alloc] init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView setShowsVerticalScrollIndicator:NO];
         _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.refreshControl = self.refreshControl;
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL * 0.6)];
         [headerView addSubview:self.playerView];

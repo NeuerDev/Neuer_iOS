@@ -55,18 +55,21 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 - (void)initConstaints {
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self);
-        make.width.equalTo(@(28 * 2 + 16));
+        make.right.equalTo(self).with.offset(-16);
+        make.centerY.equalTo(self);
         make.top.equalTo(self).with.offset(8);
         make.bottom.equalTo(self).with.offset(-8);
     }];
+    
     [self.normalButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.left.and.bottom.equalTo(self.contentView);
-        make.width.equalTo(@(28));
+        make.width.equalTo(@(44));
     }];
+    
     [self.detailButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.right.and.bottom.equalTo(self.contentView);
-        make.width.equalTo(@(28));
+        make.width.equalTo(@(44));
+        make.left.equalTo(self.normalButton.mas_right);
     }];
 }
 
@@ -178,9 +181,9 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     if (self = [super initWithFrame:frame]) {
         
         self.contentView.layer.cornerRadius = 8;
-        self.contentView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+        self.contentView.layer.shadowColor = [UIColor blackColor].CGColor;
         self.contentView.layer.shadowOffset = CGSizeMake(0, 4);
-        self.contentView.layer.shadowOpacity = 0.5;
+        self.contentView.layer.shadowOpacity = 0.3;
         self.contentView.layer.shadowRadius = 4;
         self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)].CGPath;
         
@@ -316,13 +319,15 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 - (void)initConstaints {
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.and.bottom.equalTo(self.contentView);
-        make.width.equalTo(@((self.contentView.frame.size.height) * 16.0f/9.0f));
+        make.width.equalTo(@((self.contentView.frame.size.height) * 16.0f/10.0f));
     }];
+    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.imageView).with.offset(8);
         make.right.equalTo(self.contentView);
         make.left.equalTo(self.imageView.mas_right).with.offset(8);
     }];
+    
     [self.viewerCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).with.offset(8);
         make.left.equalTo(self.titleLabel);
@@ -332,7 +337,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 - (void)setChannelBean:(TelevisionWallChannelBean *)channelBean {
     _channelBean = channelBean;
     
-    __weak typeof(self)weakSelf=self;
+    __weak typeof(self) weakSelf = self;
     
     NSInteger timestamp = [[[NSDate alloc] init] timeIntervalSince1970]/60;
     NSString *previewUrl = [NSString stringWithFormat:@"%@?time=%ld", _channelBean.previewImageUrl, timestamp];
@@ -346,17 +351,8 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
         }
     }];
     
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowBlurRadius = 1.0;
-    shadow.shadowOffset = CGSizeMake(0, 0);
-    shadow.shadowColor = [UIColor blackColor];
-    
-    NSAttributedString *titleString = [[NSAttributedString alloc] initWithString:_channelBean.channelName attributes:@{NSShadowAttributeName:shadow}];
-
-    NSAttributedString *viewerCountString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld 人正在观看", _channelBean.viewerCount] attributes:@{NSShadowAttributeName:shadow}];
-    
-    self.titleLabel.attributedText = titleString;
-    self.viewerCountLabel.attributedText = viewerCountString;
+    self.titleLabel.text = _channelBean.channelName;
+    self.viewerCountLabel.text = [NSString stringWithFormat:@"%ld 人正在观看", _channelBean.viewerCount];
     
     [self layoutIfNeeded];
     [_imageView roundCorners:UIRectCornerAllCorners radii:CGSizeMake(8, 8)];
@@ -368,14 +364,16 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 - (UIImageView *)imageView {
     if (!_imageView) {
         _imageView = [[UIImageView alloc] init];
+        _imageView.contentMode = UIViewContentModeScaleAspectFill;
         _imageView.layer.cornerRadius = 8;
-        _imageView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+        _imageView.layer.shadowColor = [UIColor blackColor].CGColor;
         _imageView.layer.shadowOffset = CGSizeMake(0, 4);
-        _imageView.layer.shadowOpacity = 0.5;
+        _imageView.layer.shadowOpacity = 0.3;
         _imageView.layer.shadowRadius = 4;
         _imageView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_imageView.bounds byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)].CGPath;
         [self.contentView addSubview:_imageView];
     }
+    
     return _imageView;
 }
 
@@ -384,7 +382,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.numberOfLines = 0;
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-        _titleLabel.textColor = [UIColor blackColor];
+        _titleLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         
         [self.contentView addSubview:_titleLabel];
     }
@@ -397,7 +395,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
         _viewerCountLabel = [[UILabel alloc] init];
         _viewerCountLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _viewerCountLabel.numberOfLines = 1;
-        _viewerCountLabel.textColor = [UIColor blackColor];
+        _viewerCountLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
         
         [self.contentView addSubview:_viewerCountLabel];
     }
@@ -599,7 +597,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
         }
     }];
     
-    [self.collectionView reloadData];
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
 //    跳转到指定节目单
 //    TelevisionDetailViewController *detailViewController = [[TelevisionDetailViewController alloc] init];
@@ -648,13 +646,9 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 //    }
     NSString *searchString = [self.searchViewController.searchBar text];
     WS(ws);
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [ws.wallModel queryWallWithKeyword:searchString];
-    });
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ws.collectionView reloadData];
-    });
+    [self.wallModel queryWallWithKeyword:searchString complete:^(BOOL success) {
+        [ws.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    }];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -686,7 +680,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     self.searchViewController.active = NO;
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     if (_isShowCollectionItems && section == 0) {
         return CGSizeMake(SCREEN_WIDTH_ACTUAL, 64);
     } else {
@@ -876,6 +870,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     if (!_orderedBarButtonItem) {
         _orderedBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tv_order"]  style:UIBarButtonItemStylePlain target:self action:@selector(manageTheOrderedShows)];
     }
+    
     return _orderedBarButtonItem;
 }
 
@@ -883,6 +878,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
     if (!_changeStateView) {
         _changeStateView = [[TelevisionWallChannelChangeStateView alloc] init];
     }
+    
     return _changeStateView;
 }
 

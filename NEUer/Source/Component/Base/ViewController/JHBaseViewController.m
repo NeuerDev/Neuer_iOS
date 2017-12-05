@@ -29,6 +29,10 @@
     
 }
 
+- (void)initData {
+    
+}
+
 - (void)initConstraints {
     
 }
@@ -77,6 +81,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initData];
     [self initConstraints];
     [self initBaseConstraints];
 }

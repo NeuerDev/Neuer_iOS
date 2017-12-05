@@ -131,7 +131,7 @@
     }
 }
 
-- (void)queryWallWithKeyword:(NSString *)keyword {
+- (void)queryWallWithKeyword:(NSString *)keyword complete:(queryCollectionItemBlock)block {
     
     _keyword = keyword;
     NSMutableArray *queryArray = [NSMutableArray arrayWithCapacity:0];
@@ -145,6 +145,10 @@
         [_resultArray removeAllObjects];
     }
     [_resultArray addObjectsFromArray:queryArray];
+    
+    if (block) {
+        block(YES);
+    }
 }
 
 - (void)removeTVShowOrderFromOrderArray:(TelevisionWallOrderBean *)bean {

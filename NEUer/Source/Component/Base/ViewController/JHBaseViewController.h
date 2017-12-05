@@ -35,6 +35,13 @@ typedef NS_ENUM(NSUInteger, JHBaseViewState) {
 
 //- (void)showPlaceHolder;
 //- (void)hidePlaceHolder;
+
+#pragma mark - Should be Override
+
+- (void)initData;
+
+- (void)initConstraints;
+
 - (void)onBaseRetryButtonClicked:(UIButton *)sender;
 
 @end
