@@ -242,6 +242,7 @@
 - (UIImageView *)baseImageView {
     if (!_baseImageView) {
         _baseImageView = [[UIImageView alloc] init];
+        _baseImageView.backgroundColor = [UIColor whiteColor];
         [self.basePlaceholderView addSubview:_baseImageView];
     }
     

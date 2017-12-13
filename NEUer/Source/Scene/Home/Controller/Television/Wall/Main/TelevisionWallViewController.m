@@ -639,11 +639,7 @@ static NSString * const kChannelWordHeaderFooterView = @"kChannelWordHeaderFoote
 #pragma mark - UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(nonnull UISearchController *)searchController {
-//    if (!self.searchViewController.isActive) {
-//        self.changeStateView.hidden = NO;
-//    } else {
-//        self.changeStateView.hidden = YES;
-//    }
+
     NSString *searchString = [self.searchViewController.searchBar text];
     WS(ws);
     [self.wallModel queryWallWithKeyword:searchString complete:^(BOOL success) {
