@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2E3F129D1657D8171C233149 /* Pods_NEUer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565994165BDBB6721C7545F6 /* Pods_NEUer.framework */; };
+		3301B5CB1FDEC0E400786D37 /* AaoComponentTimetableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3301B5CA1FDEC0E400786D37 /* AaoComponentTimetableView.m */; };
+		3301B5CF1FDEC11F00786D37 /* AaoTimeTableDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3301B5CE1FDEC11F00786D37 /* AaoTimeTableDetailView.m */; };
 		330AC9451FC8554E0059B65C /* TelevisionManageOrderedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 330AC9441FC8554D0059B65C /* TelevisionManageOrderedViewController.m */; };
 		33201F501FB71C4B00CAFDEA /* BadgeCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F4F1FB71C4B00CAFDEA /* BadgeCenter.m */; };
 		33201F541FB754E700CAFDEA /* NetworkInternetListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33201F531FB754E700CAFDEA /* NetworkInternetListViewController.m */; };
@@ -15,12 +17,20 @@
 		3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAB81FA9C56900AB6D8B /* GatewayModel.m */; };
 		3339FACB1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */; };
 		3339FAD31FAE0AD700AB6D8B /* NetworkMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */; };
+		333DDCC91FDD73B900301098 /* AaoClassDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 333DDCC81FDD73B900301098 /* AaoClassDetailViewController.m */; };
 		3344EFCC1F948881001ED45E /* GatewayComponentInfoLb.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */; };
 		3344EFD01F948983001ED45E /* GatewayComponentInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFCF1F948983001ED45E /* GatewayComponentInfoView.m */; };
 		3344EFD21F949B62001ED45E /* LYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3344EFD11F949B62001ED45E /* LYTool.m */; };
 		335833861FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */; };
 		335833891FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */; };
+		33822C1C1FD845C2006E13A0 /* AaoComponentAccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33822C1B1FD845C2006E13A0 /* AaoComponentAccessView.m */; };
 		338D70AF1FC98E970077DAFF /* TelevisionWallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 338D70AD1FC98E960077DAFF /* TelevisionWallViewController.m */; };
+		33E36A4A1FD958A300028BEC /* AaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E36A491FD958A300028BEC /* AaoViewController.m */; };
+		33E36A4E1FD958E200028BEC /* AaoTrainingPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E36A4D1FD958E200028BEC /* AaoTrainingPlanViewController.m */; };
+		33E36A521FD959A800028BEC /* AaoStudentScoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E36A511FD959A800028BEC /* AaoStudentScoreViewController.m */; };
+		33E36A561FD959E600028BEC /* AaoClassroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E36A551FD959E600028BEC /* AaoClassroomViewController.m */; };
+		33E36A5A1FD95A1800028BEC /* AaoExaminationScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E36A591FD95A1800028BEC /* AaoExaminationScheduleViewController.m */; };
+		33E36A631FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E36A621FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.m */; };
 		33F88B871F8296510054B123 /* JHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F88B861F8296510054B123 /* JHTool.m */; };
 		33FFEA761FBAE80C002632B9 /* NetworkReuseFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FFEA751FBAE80C002632B9 /* NetworkReuseFooterView.m */; };
 		5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0742661F8C7410006116A4 /* GatewayViewController.m */; };
@@ -101,7 +111,6 @@
 		5CCC667A1F8D2ABF00F8F96C /* GatewayCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE8AF971F70270B008594F6 /* GatewayCenter.m */; };
 		5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC667D1F8DA7D100F8F96C /* EcardModel.m */; };
 		5CCC66821F8E5AFF00F8F96C /* UIView+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */; };
-		5CCC66861F8F524900F8F96C /* AaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66851F8F524900F8F96C /* AaoViewController.m */; };
 		5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC66881F8F52CF00F8F96C /* AaoModel.m */; };
 		5CCC668F1F90616100F8F96C /* EcardMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CCC668E1F90616100F8F96C /* EcardMainViewController.m */; };
 		5CD098AE1F80890900252E4D /* HomeComponentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD098AD1F80890900252E4D /* HomeComponentBaseView.m */; };
@@ -168,6 +177,10 @@
 		1B1C6DF75A6773E893B7E766 /* Pods-NEUerTodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUerTodayExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUerTodayExtension/Pods-NEUerTodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		29E4D0645D38FF87EB6B9BD8 /* Pods-NEUer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.debug.xcconfig"; sourceTree = "<group>"; };
 		30D03A22B789C52D4F14213A /* Pods-NEUer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEUer.release.xcconfig"; path = "Pods/Target Support Files/Pods-NEUer/Pods-NEUer.release.xcconfig"; sourceTree = "<group>"; };
+		3301B5C91FDEC0E400786D37 /* AaoComponentTimetableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoComponentTimetableView.h; sourceTree = "<group>"; };
+		3301B5CA1FDEC0E400786D37 /* AaoComponentTimetableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoComponentTimetableView.m; sourceTree = "<group>"; };
+		3301B5CD1FDEC11F00786D37 /* AaoTimeTableDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoTimeTableDetailView.h; sourceTree = "<group>"; };
+		3301B5CE1FDEC11F00786D37 /* AaoTimeTableDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoTimeTableDetailView.m; sourceTree = "<group>"; };
 		330AC9431FC8554D0059B65C /* TelevisionManageOrderedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TelevisionManageOrderedViewController.h; sourceTree = "<group>"; };
 		330AC9441FC8554D0059B65C /* TelevisionManageOrderedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TelevisionManageOrderedViewController.m; sourceTree = "<group>"; };
 		33201F4E1FB71C4B00CAFDEA /* BadgeCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgeCenter.h; sourceTree = "<group>"; };
@@ -182,6 +195,8 @@
 		3339FACA1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GatewaySelfServiceMenuModel.m; sourceTree = "<group>"; };
 		3339FAD11FAE0AD700AB6D8B /* NetworkMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkMainViewController.h; sourceTree = "<group>"; };
 		3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkMainViewController.m; sourceTree = "<group>"; };
+		333DDCC71FDD73B900301098 /* AaoClassDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoClassDetailViewController.h; sourceTree = "<group>"; };
+		333DDCC81FDD73B900301098 /* AaoClassDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoClassDetailViewController.m; sourceTree = "<group>"; };
 		3344EFC01F93A241001ED45E /* LYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYTool.h; sourceTree = "<group>"; };
 		3344EFCA1F948881001ED45E /* GatewayComponentInfoLb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GatewayComponentInfoLb.h; sourceTree = "<group>"; };
 		3344EFCB1F948881001ED45E /* GatewayComponentInfoLb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GatewayComponentInfoLb.m; sourceTree = "<group>"; };
@@ -192,8 +207,22 @@
 		335833851FAF5AA900DBE418 /* NetworkOnlineDevicesTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkOnlineDevicesTableViewCell.m; sourceTree = "<group>"; };
 		335833871FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkInternetListTableViewCell.h; sourceTree = "<group>"; };
 		335833881FAF5ABA00DBE418 /* NetworkInternetListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkInternetListTableViewCell.m; sourceTree = "<group>"; };
+		33822C1A1FD845C2006E13A0 /* AaoComponentAccessView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoComponentAccessView.h; sourceTree = "<group>"; };
+		33822C1B1FD845C2006E13A0 /* AaoComponentAccessView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoComponentAccessView.m; sourceTree = "<group>"; };
 		338D70AD1FC98E960077DAFF /* TelevisionWallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TelevisionWallViewController.m; sourceTree = "<group>"; };
 		338D70AE1FC98E970077DAFF /* TelevisionWallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TelevisionWallViewController.h; sourceTree = "<group>"; };
+		33E36A481FD958A300028BEC /* AaoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoViewController.h; sourceTree = "<group>"; };
+		33E36A491FD958A300028BEC /* AaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoViewController.m; sourceTree = "<group>"; };
+		33E36A4C1FD958E200028BEC /* AaoTrainingPlanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoTrainingPlanViewController.h; sourceTree = "<group>"; };
+		33E36A4D1FD958E200028BEC /* AaoTrainingPlanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoTrainingPlanViewController.m; sourceTree = "<group>"; };
+		33E36A501FD959A800028BEC /* AaoStudentScoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoStudentScoreViewController.h; sourceTree = "<group>"; };
+		33E36A511FD959A800028BEC /* AaoStudentScoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoStudentScoreViewController.m; sourceTree = "<group>"; };
+		33E36A541FD959E600028BEC /* AaoClassroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoClassroomViewController.h; sourceTree = "<group>"; };
+		33E36A551FD959E600028BEC /* AaoClassroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoClassroomViewController.m; sourceTree = "<group>"; };
+		33E36A581FD95A1800028BEC /* AaoExaminationScheduleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoExaminationScheduleViewController.h; sourceTree = "<group>"; };
+		33E36A591FD95A1800028BEC /* AaoExaminationScheduleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoExaminationScheduleViewController.m; sourceTree = "<group>"; };
+		33E36A611FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AaoTimeTableCollectionReusableView.h; sourceTree = "<group>"; };
+		33E36A621FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AaoTimeTableCollectionReusableView.m; sourceTree = "<group>"; };
 		33F88B851F8296510054B123 /* JHTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JHTool.h; sourceTree = "<group>"; };
 		33F88B861F8296510054B123 /* JHTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JHTool.m; sourceTree = "<group>"; };
 		33FFEA741FBAE80C002632B9 /* NetworkReuseFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkReuseFooterView.h; sourceTree = "<group>"; };
@@ -339,8 +368,6 @@
 		5CCC667D1F8DA7D100F8F96C /* EcardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardModel.m; sourceTree = "<group>"; };
 		5CCC66801F8E5AFF00F8F96C /* UIView+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JHCategory.h"; sourceTree = "<group>"; };
 		5CCC66811F8E5AFF00F8F96C /* UIView+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+JHCategory.m"; sourceTree = "<group>"; };
-		5CCC66841F8F524900F8F96C /* AaoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoViewController.h; sourceTree = "<group>"; };
-		5CCC66851F8F524900F8F96C /* AaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoViewController.m; sourceTree = "<group>"; };
 		5CCC66881F8F52CF00F8F96C /* AaoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AaoModel.m; sourceTree = "<group>"; };
 		5CCC66891F8F52D000F8F96C /* AaoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AaoModel.h; sourceTree = "<group>"; };
 		5CCC668D1F90616100F8F96C /* EcardMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EcardMainViewController.h; sourceTree = "<group>"; };
@@ -444,6 +471,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3301B5C81FDEC03D00786D37 /* TimeTableMainView */ = {
+			isa = PBXGroup;
+			children = (
+				3301B5C91FDEC0E400786D37 /* AaoComponentTimetableView.h */,
+				3301B5CA1FDEC0E400786D37 /* AaoComponentTimetableView.m */,
+			);
+			path = TimeTableMainView;
+			sourceTree = "<group>";
+		};
+		3301B5CC1FDEC0ED00786D37 /* TimeTableDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				3301B5CD1FDEC11F00786D37 /* AaoTimeTableDetailView.h */,
+				3301B5CE1FDEC11F00786D37 /* AaoTimeTableDetailView.m */,
+			);
+			path = TimeTableDetailView;
+			sourceTree = "<group>";
+		};
 		330AC9421FC8551E0059B65C /* Order */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,6 +560,15 @@
 				3339FAD21FAE0AD700AB6D8B /* NetworkMainViewController.m */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		333DDCC51FDD737800301098 /* classDetail */ = {
+			isa = PBXGroup;
+			children = (
+				333DDCC71FDD73B900301098 /* AaoClassDetailViewController.h */,
+				333DDCC81FDD73B900301098 /* AaoClassDetailViewController.m */,
+			);
+			path = classDetail;
 			sourceTree = "<group>";
 		};
 		3344EFBA1F939B22001ED45E /* Gateway */ = {
@@ -589,6 +643,32 @@
 			path = NetworkInternetListTableViewCell;
 			sourceTree = "<group>";
 		};
+		33822C171FD843EE006E13A0 /* Aao */ = {
+			isa = PBXGroup;
+			children = (
+				33822C181FD843FD006E13A0 /* Component */,
+			);
+			path = Aao;
+			sourceTree = "<group>";
+		};
+		33822C181FD843FD006E13A0 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A5B1FDA856C00028BEC /* TimeTable */,
+				33822C191FD8441C006E13A0 /* Access */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		33822C191FD8441C006E13A0 /* Access */ = {
+			isa = PBXGroup;
+			children = (
+				33822C1A1FD845C2006E13A0 /* AaoComponentAccessView.h */,
+				33822C1B1FD845C2006E13A0 /* AaoComponentAccessView.m */,
+			);
+			path = Access;
+			sourceTree = "<group>";
+		};
 		338D70AC1FC98E2C0077DAFF /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -596,6 +676,70 @@
 				338D70AD1FC98E960077DAFF /* TelevisionWallViewController.m */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		33E36A471FD9586700028BEC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A481FD958A300028BEC /* AaoViewController.h */,
+				33E36A491FD958A300028BEC /* AaoViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		33E36A4B1FD958B500028BEC /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A4C1FD958E200028BEC /* AaoTrainingPlanViewController.h */,
+				33E36A4D1FD958E200028BEC /* AaoTrainingPlanViewController.m */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+		33E36A4F1FD958ED00028BEC /* Score */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A501FD959A800028BEC /* AaoStudentScoreViewController.h */,
+				33E36A511FD959A800028BEC /* AaoStudentScoreViewController.m */,
+			);
+			path = Score;
+			sourceTree = "<group>";
+		};
+		33E36A531FD959CE00028BEC /* Classroom */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A541FD959E600028BEC /* AaoClassroomViewController.h */,
+				33E36A551FD959E600028BEC /* AaoClassroomViewController.m */,
+			);
+			path = Classroom;
+			sourceTree = "<group>";
+		};
+		33E36A571FD95A0400028BEC /* ExaminationSchedule */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A581FD95A1800028BEC /* AaoExaminationScheduleViewController.h */,
+				33E36A591FD95A1800028BEC /* AaoExaminationScheduleViewController.m */,
+			);
+			path = ExaminationSchedule;
+			sourceTree = "<group>";
+		};
+		33E36A5B1FDA856C00028BEC /* TimeTable */ = {
+			isa = PBXGroup;
+			children = (
+				3301B5CC1FDEC0ED00786D37 /* TimeTableDetailView */,
+				3301B5C81FDEC03D00786D37 /* TimeTableMainView */,
+				33E36A601FDAAE9E00028BEC /* TimeTableHeaderView */,
+			);
+			path = TimeTable;
+			sourceTree = "<group>";
+		};
+		33E36A601FDAAE9E00028BEC /* TimeTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				33E36A611FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.h */,
+				33E36A621FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.m */,
+			);
+			path = TimeTableHeaderView;
 			sourceTree = "<group>";
 		};
 		33F88B841F8296430054B123 /* JHTool */ = {
@@ -693,6 +837,7 @@
 		5C0844C41F7B94BB00C69261 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				33822C171FD843EE006E13A0 /* Aao */,
 				776697EE1FA9777900BB7544 /* LibraryBookListComponent */,
 				335833811FAF5A2300DBE418 /* Network */,
 				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
@@ -1561,8 +1706,12 @@
 		5CCC66831F8F521900F8F96C /* Aao */ = {
 			isa = PBXGroup;
 			children = (
-				5CCC66841F8F524900F8F96C /* AaoViewController.h */,
-				5CCC66851F8F524900F8F96C /* AaoViewController.m */,
+				333DDCC51FDD737800301098 /* classDetail */,
+				33E36A571FD95A0400028BEC /* ExaminationSchedule */,
+				33E36A531FD959CE00028BEC /* Classroom */,
+				33E36A4F1FD958ED00028BEC /* Score */,
+				33E36A4B1FD958B500028BEC /* Plan */,
+				33E36A471FD9586700028BEC /* Main */,
 			);
 			path = Aao;
 			sourceTree = "<group>";
@@ -2215,6 +2364,7 @@
 				5C902CC41F769D4A00E988AB /* TelevisionDetailViewController.m in Sources */,
 				5C507C691F9C3DC000E857CA /* EcardHistoryViewController.m in Sources */,
 				3339FACB1FAE08D900AB6D8B /* GatewaySelfServiceMenuModel.m in Sources */,
+				33E36A4E1FD958E200028BEC /* AaoTrainingPlanViewController.m in Sources */,
 				5C6D59341F734B0600E7654B /* CalendarLogic.m in Sources */,
 				5C5DC7C21F85D96500BBFC28 /* JHURLBaseHandler.m in Sources */,
 				5C9107651F6D1C3100FA4270 /* main.m in Sources */,
@@ -2232,12 +2382,17 @@
 				5CC233041F72090F005F0A6E /* SearchLibraryDoorViewController.m in Sources */,
 				5CE4E19F1F6FE6D0008780AC /* UIColor+JHCategory.m in Sources */,
 				776698001FA978E000BB7544 /* LibraryMostViewController.m in Sources */,
+				3301B5CF1FDEC11F00786D37 /* AaoTimeTableDetailView.m in Sources */,
 				5CD098C31F80DB8A00252E4D /* UserCenter.m in Sources */,
 				338D70AF1FC98E970077DAFF /* TelevisionWallViewController.m in Sources */,
+				33E36A561FD959E600028BEC /* AaoClassroomViewController.m in Sources */,
+				3301B5CB1FDEC0E400786D37 /* AaoComponentTimetableView.m in Sources */,
 				5CA976E71F73AB0500B1089A /* SearchLibraryResultViewController.m in Sources */,
+				33E36A631FDAAEBF00028BEC /* AaoTimeTableCollectionReusableView.m in Sources */,
 				776697E41FA975F700BB7544 /* SearchLibraryBorrowingModel.m in Sources */,
 				5C5FD4301F96485C00B1EA2C /* EcardMyViewController.m in Sources */,
 				5CF378051FB5369C00BC141E /* EcardInfoModel.m in Sources */,
+				333DDCC91FDD73B900301098 /* AaoClassDetailViewController.m in Sources */,
 				5C64D8A21F98F7FD001CDB89 /* EcardTableViewCell.m in Sources */,
 				5C9F45531FBD8A5000BAAE72 /* NEUInputView.m in Sources */,
 				5CC232E81F71FEC4005F0A6E /* HomeViewController.m in Sources */,
@@ -2246,8 +2401,8 @@
 				5CC744BC1F6D3D94003D2EE2 /* JHReachability.m in Sources */,
 				5CCC668A1F8F52D000F8F96C /* AaoModel.m in Sources */,
 				5C3741DB1FC7AA8200625FEA /* MeAccountViewController.m in Sources */,
+				33822C1C1FD845C2006E13A0 /* AaoComponentAccessView.m in Sources */,
 				5C0844C51F7B94BB00C69261 /* CampusViewController.m in Sources */,
-				5CCC66861F8F524900F8F96C /* AaoViewController.m in Sources */,
 				5CBA6E901F77396700DFF055 /* TelevisionWallModel.m in Sources */,
 				5CCC667E1F8DA7D100F8F96C /* EcardModel.m in Sources */,
 				5C21B99A1F6D1A9200BC2961 /* AppDelegate.m in Sources */,
@@ -2263,6 +2418,7 @@
 				5C9895DF1F81E6AF00C2F93E /* UserKeychain.m in Sources */,
 				5CE99C4D1F728CEC0062DBF9 /* MeViewController.m in Sources */,
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
+				33E36A5A1FD95A1800028BEC /* AaoExaminationScheduleViewController.m in Sources */,
 				5C0AD0541FC151B700BEF5A9 /* ARPlane.m in Sources */,
 				3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
@@ -2308,6 +2464,8 @@
 				5C6B25B11FC01058009DDAE6 /* HomeComponentActivityView.m in Sources */,
 				5C945B651F7A951C001D9DC1 /* TelevisionChannelModel.m in Sources */,
 				776697F11FA9778F00BB7544 /* LibraryBookListComponent.m in Sources */,
+				33E36A521FD959A800028BEC /* AaoStudentScoreViewController.m in Sources */,
+				33E36A4A1FD958A300028BEC /* AaoViewController.m in Sources */,
 				5C0742671F8C7410006116A4 /* GatewayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

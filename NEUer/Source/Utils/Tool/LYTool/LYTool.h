@@ -70,4 +70,9 @@
  */
 + (NSTimeInterval)timeIntervalWithStartTime:(NSString *)startTime endTime:(NSString *)endTime;
 
+/**
+ 判断是否包含数字
+ */
++ (BOOL)isContainsNumber:(NSString *)text;
+
 @end

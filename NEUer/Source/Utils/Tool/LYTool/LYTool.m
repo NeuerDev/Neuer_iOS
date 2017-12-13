@@ -150,4 +150,10 @@
     return differenceValue;
 }
 
++ (BOOL)isContainsNumber:(NSString *)text {
+    NSString *textRegex = @"^[0-9]+$";
+    NSPredicate *textTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",textRegex];
+    return [textTest evaluateWithObject:text];
+}
+
 @end

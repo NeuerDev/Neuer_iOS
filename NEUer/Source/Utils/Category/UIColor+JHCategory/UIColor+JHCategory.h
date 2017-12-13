@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#define random(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1]
 @interface UIColor (JHCategory)
 + (UIColor *)colorWithHexStr:(NSString *)hexString;
 
@@ -32,4 +33,7 @@
 - (UIImage *)imageWithSize:(CGSize)size;
 
 - (UIColor *)compressRangeColor;
+
++ (UIColor *)randomColor;
+
 @end

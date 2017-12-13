@@ -204,7 +204,7 @@ static NSString * const kCampusCellId = @"kCampusCellId";
                            @{
                                @"title":NSLocalizedString(@"CampusAAOSystemTitle", nil),
                                @"detail":NSLocalizedString(@"CampusAAOSystemSubtitle", nil),
-                               @"url":@"",
+                               @"url":@"neu://go/aao",
                                @"image":@"aao_campus_background",
                                },
                            @{

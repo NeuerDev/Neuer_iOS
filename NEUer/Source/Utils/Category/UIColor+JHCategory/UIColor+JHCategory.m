@@ -133,4 +133,26 @@
     return self;
 }
 
++ (UIColor *)randomColor {
+    NSArray *randomColorArray = @[
+                                  [UIColor beautyYellow],
+                                  [UIColor beautyTealBlue],
+                                  [UIColor beautyPurple],
+                                  [UIColor beautyPink],
+                                  random(253, 195, 90),
+                                  random(96, 238, 165),
+                                  random(248, 220, 101),
+                                  random(121, 233, 234),
+                                  random(253, 159, 215),
+                                  random(135, 177, 251),
+                                  random(253, 161, 128),
+                                  random(211, 143, 246),
+                                  random(176, 235, 70),
+                                  random(121, 233, 234)
+                                  ];
+    int i = arc4random() % randomColorArray.count;
+    
+    return randomColorArray[i];
+}
+
 @end
