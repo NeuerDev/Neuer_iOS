@@ -14,6 +14,7 @@
 @interface LibraryNewBookViewController () <SearchLibraryNewBookDelegate,LibraryBookListComponentDelegate>
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIBarButtonItem *sortButtonItem;
 @property (nonatomic, strong) LibraryBookListComponent *bookListComponent;
 @property (nonatomic, strong) SearchLibraryNewBookModel *model;
 
@@ -31,6 +32,7 @@
 - (void)initData {
     [self setTitle:@"新书通报"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = self.sortButtonItem;
     [self.model search];
 }
 
@@ -49,6 +51,14 @@
     [self.bookListComponent.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
     }];
+}
+
+#pragma mark - Respond Methods
+- (void)selectSortType {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请选择分类" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:cancel];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - SearchLibraryNewBookDelegate
@@ -112,6 +122,12 @@
     return _model;
 }
 
+- (UIBarButtonItem *)sortButtonItem {
+    if (!_sortButtonItem) {
+        _sortButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分类" style:UIBarButtonItemStylePlain target:self action:@selector(selectSortType)];
+    }
+    return _sortButtonItem;
+}
 
 
 

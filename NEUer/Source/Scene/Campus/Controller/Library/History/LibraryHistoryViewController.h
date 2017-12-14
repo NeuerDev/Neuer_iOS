@@ -18,6 +18,6 @@
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *returnDateLabel;
 
-- (void)setBorrowHistoryBean:(LibraryLoginMyInfoBorrowHistoryBean *)bean;
+- (void)setBorrowHistoryBean:(LibraryLoginMyInfoBorrowHistoryBean *)bean index:(NSInteger)index;
 
 @end

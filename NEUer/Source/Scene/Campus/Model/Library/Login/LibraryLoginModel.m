@@ -10,14 +10,11 @@
 
 @interface LibraryLoginModel () <JHRequestDelegate>
 @property (nonatomic, assign) NSInteger infoType;
-@property (nonatomic) BOOL isLogin;
-
 @end
 
 @implementation LibraryLoginModel
 #pragma mark - Public Methods
 - (void)gotoLogin {
-    _isLogin = NO;
     _infoType = 0;
     
     NSString *urlStr = [NSString stringWithFormat:@"http://202.118.8.7:8991/F?func=file&file_name=login-session"];
@@ -31,8 +28,7 @@
 }
 
 - (void)login {
-    _isLogin = YES;
-    _infoType = 0;
+    _infoType = 1;
     
     NSString *urlStr = [NSString stringWithFormat:@"%@",_tmpURL];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -43,9 +39,21 @@
     [request start];
 }
 
+- (void)expiredLogin {
+    _infoType = 2;
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@",_expiredURL];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    
+    JHRequest *request = [[JHRequest alloc] initWithUrl:url method:@"POST" params:@{@"func":@"patron-notice".URLEncode,@"nxtpg_patron_notice":@"N".URLEncode,@"nxtpg_source":@"www_f_login_session".URLEncode,@"nxtpg_bor_id":_ID.URLEncode,@"nxtpg_prog":@"www_f_bor_info".URLEncode,@"nxtpg_file":@"".URLEncode,@"nxtpg_login_source":@"BOR-INFO".URLEncode,@"nxtpg_code_value":@"Y".URLEncode,@"nxtpg_tr_value":@"N".URLEncode,@"nxtpg_heading_no":@"".URLEncode,@"func=login.x":@"50".URLEncode,@"func=login.y":@"8".URLEncode}];
+    request.delegate = self;
+    request.requestType = JHRequestTypeCancelPrevious;
+    [request start];
+}
+
 - (void)searchBorrowingInfo {
     _borrowingArr = [NSMutableArray array];
-    _infoType = 1;
+    _infoType = 3;
     
     NSURL *url = [NSURL URLWithString:_borrowingURL];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
@@ -57,7 +65,7 @@
 
 - (void)searchBorrowHistoryInfo {
     _borrowHistoryArr = [NSMutableArray array];
-    _infoType = 2;
+    _infoType = 4;
     
     NSURL *url = [NSURL URLWithString:_borrowHistoryURL];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
@@ -68,7 +76,7 @@
 
 - (void)searchReservationInfo {
     _reservationArr = [NSMutableArray array];
-    _infoType = 3;
+    _infoType = 5;
     
     NSURL *url = [NSURL URLWithString:_reservationURL];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
@@ -79,7 +87,7 @@
 
 - (void)searchBookedInfo {
     _bookedArr = [NSMutableArray array];
-    _infoType = 4;
+    _infoType = 6;
     
     NSURL *url = [NSURL URLWithString:_bookedURL];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
@@ -90,7 +98,7 @@
 
 - (void)searchCashInfo {
     _cashArr = [NSMutableArray array];
-    _infoType = 5;
+    _infoType = 7;
     
     NSURL *url = [NSURL URLWithString:_cashURL];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
@@ -100,7 +108,7 @@
 }
 
 - (void)partRenewalWithBean:(LibraryLoginMyInfoBorrowingBean *)bean {
-    _infoType = 6;
+    _infoType = 8;
     
     NSString *urlStr = [NSString stringWithFormat:@"%@?func=bor-renew-all&renew_selected=Y&adm_library=NEU50&%@=Y",bean.tempURL,bean.renewNumber];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -111,7 +119,7 @@
 }
 
 - (void)allRenewal {
-    _infoType = 7;
+    _infoType = 9;
     
     NSURL *url = [NSURL URLWithString:_renewURL];
     JHRequest *request = [[JHRequest alloc] initWithUrl:url];
@@ -120,37 +128,62 @@
     [request start];
 }
 
+
+
 #pragma mark - JHRequestDelegate
 - (void)requestDidSuccess:(JHRequest *)request {
     NSData *htmlData = request.response.data;
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     switch (_infoType) {
         case 0: {
-            if (!_isLogin) {
-                TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-                // 获取 var tmp 暂存索引 服务器生成的 必须保存
-                NSArray<TFHppleElement *> *formArray = [xpathParser searchWithXPathQuery:@"//form[@name='form1']"];
-                _tmpURL = [formArray[0] objectForKey:@"action"];
-                [self login];
-            } else {
-                [self resultFromHtmlData:htmlData];
-                [self searchBorrowingInfo];
-            }
+            
+            // 获取 var tmp 暂存索引 服务器生成的 必须保存
+            NSArray<TFHppleElement *> *formArray = [xpathParser searchWithXPathQuery:@"//form[@name='form1']"];
+            _tmpURL = [formArray[0] objectForKey:@"action"];
+            [self login];
         }
             break;
             
         case 1: {
+            NSArray<TFHppleElement *> *textArray = [xpathParser searchWithXPathQuery:@"//p[@class='text1']"];
+            if (textArray.count) {
+                _expiredURL = [[xpathParser searchWithXPathQuery:@"//form[@name='form1']"][0] objectForKey:@"action"];
+                _ID = [[xpathParser searchWithXPathQuery:@"//input[@name='nxtpg_bor_id']"][0] objectForKey:@"value"];
+                [self expiredLogin];
+            } else {
+                [self resultFromHtmlData:htmlData];
+            }
+        }
+            break;
+            
+        case 2: {
+            [self resultFromHtmlData:htmlData];
+        }
+            break;
+            
+    
+            
+        case 3: {
             [self borrowingArrayFromHtmlData:htmlData];
-            NSInteger min = 30000000;
+            //计算最小还书天数
+            NSInteger min = NSIntegerMax;
             if (_borrowingArr.count == 0) {
                 _loginBean.returnDateLevel = LibraryInfoReturnDateLevelLow;
                 _loginBean.days = min;
             } else {
                 for (NSInteger i = 0; i < _borrowingArr.count; i++) {
-                    if ([_borrowingArr[i].shouldReturnDate intValue] < min) {
-                        min = [_borrowingArr[i].shouldReturnDate integerValue];
+                    if ([_borrowingArr[i].days intValue] < min) {
+                        min = [_borrowingArr[i].days integerValue];
                     }
                 }
-                [self setReturnDateLevelWithMin:min bean:_loginBean];
+                _loginBean.days = min;
+                if (min > 15) {
+                    _loginBean.returnDateLevel = LibraryInfoReturnDateLevelLow;
+                } else if (min <= 15 && min >5) {
+                    _loginBean.returnDateLevel = LibraryInfoReturnDateLevelMiddle;
+                } else {
+                    _loginBean.returnDateLevel = LibraryInfoReturnDateLevelHigh;
+                }
             }
             if ([_delegate respondsToSelector:@selector(loginDidSuccess)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -160,7 +193,7 @@
         }
             break;
             
-        case 2: {
+        case 4: {
             _borrowHistoryArr = [self borrowHistoryArrayFromHtmlData:htmlData];
             if ([_delegate respondsToSelector:@selector(getBorrowHistoryInfoDidSuccess)]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -171,23 +204,13 @@
         }
             break;
             
-        case 3:
-            break;
-            
-        case 4:
-            break;
-            
-        case 5:
-            break;
-            
-        case 6: {
+        case 8: {
             [self partRenewInfoFromHtmlData:htmlData];
         }
             break;
             
-        case 7: {
+        case 9: {
             [self allRenewInfoFromHtmlData:htmlData];
-//            [self searchBorrowingInfo];
         }
             
         default:
@@ -202,48 +225,66 @@
 #pragma mark - Private Methods
 - (void)resultFromHtmlData:(NSData *)htmlData {
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    //我的基本信息
-    NSArray<TFHppleElement *> *td2Array = [xpathParser searchWithXPathQuery:@"//td[@class='td2']"];
-    _loginBean = [[LibraryLoginBean alloc] init];
-    _loginBean.nameStr = [td2Array[1] text];
-    _loginBean.collegeStr = [td2Array[3] text];
-    _loginBean.languageStr = [td2Array[5] text];
-    _loginBean.gradeStr = [td2Array[7] text];
-    _loginBean.addressBeginStr = [td2Array[13] text];
-    _loginBean.addressEndStr = [td2Array[15] text];
-    _loginBean.statusStr = [td2Array[27] text];
-    _loginBean.barCodeStr = [td2Array[31] text];
-    _loginBean.registrationStr = [td2Array[33] text];
-    
-    //我的流通
-    NSArray<TFHppleElement *> *aArray = [xpathParser searchWithXPathQuery:@"//td/a"];
-    _loginBean.borrowingStr = [aArray[0] text];
-    _loginBean.borrowHistoryStr = [aArray[1] text];
-    _loginBean.reservationStr = [aArray[2] text];
-    _loginBean.bookedStr = [aArray[3] text];
-    _loginBean.cashStr = [aArray[4] text];
-    NSArray<TFHppleElement *> *td1Array = [xpathParser searchWithXPathQuery:@"//td[@class='td1']"];
-    _loginBean.arrearsStr = [td1Array.lastObject text];
-    NSMutableArray *array = [NSMutableArray array];
-    for (int i = 0; i < aArray.count; i++) {
-        NSString *urlStr = [aArray[i] objectForKey:@"href"];
-        NSRange start = [urlStr rangeOfString:@"("];
-        NSRange end = [urlStr rangeOfString:@")"];
-        urlStr = [urlStr substringWithRange:NSMakeRange(start.location + 1, end.location - start.location - 1)];
-        urlStr = [[urlStr substringToIndex:urlStr.length - 1] substringFromIndex:1];
-        [array addObject:urlStr];
+    NSArray<TFHppleElement *> *titleArr = [xpathParser searchWithXPathQuery:@"//div[@class='title']"];
+    if (titleArr.count) {
+        //密码错误
+        if ([_delegate respondsToSelector:@selector(loginDidFail)]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_delegate loginDidFail];
+            });
+        }
+        
+    } else {
+        //密码正确
+        
+        //我的基本信息
+        NSArray<TFHppleElement *> *td2Array = [xpathParser searchWithXPathQuery:@"//td[@class='td2']"];
+        _loginBean = [[LibraryLoginBean alloc] init];
+        _loginBean.nameStr = [td2Array[1] text];
+        _loginBean.collegeStr = [td2Array[3] text];
+        _loginBean.languageStr = [td2Array[5] text];
+        _loginBean.gradeStr = [td2Array[7] text];
+        _loginBean.addressBeginStr = [td2Array[13] text];
+        _loginBean.addressEndStr = [td2Array[15] text];
+        _loginBean.statusStr = [td2Array[27] text];
+        _loginBean.barCodeStr = [td2Array[31] text];
+        _loginBean.registrationStr = [td2Array[33] text];
+
+        //我的流通
+        NSArray<TFHppleElement *> *aArray = [xpathParser searchWithXPathQuery:@"//td/a"];
+        _loginBean.borrowingStr = [aArray[0] text];
+        _loginBean.borrowHistoryStr = [aArray[1] text];
+        _loginBean.reservationStr = [aArray[2] text];
+        _loginBean.bookedStr = [aArray[3] text];
+        _loginBean.cashStr = [aArray[4] text];
+        NSArray<TFHppleElement *> *td1Array = [xpathParser searchWithXPathQuery:@"//td[@class='td1']"];
+        _loginBean.arrearsStr = [td1Array.lastObject text];
+        NSMutableArray *array = [NSMutableArray array];
+        for (int i = 0; i < aArray.count; i++) {
+            NSString *urlStr = [aArray[i] objectForKey:@"href"];
+            NSRange start = [urlStr rangeOfString:@"("];
+            NSRange end = [urlStr rangeOfString:@")"];
+            urlStr = [urlStr substringWithRange:NSMakeRange(start.location + 1, end.location - start.location - 1)];
+            urlStr = [[urlStr substringToIndex:urlStr.length - 1] substringFromIndex:1];
+            [array addObject:urlStr];
+        }
+
+        _borrowingURL = [array objectAtIndex:0];
+        _borrowHistoryURL = [array objectAtIndex:1];
+        _reservationURL = [array objectAtIndex:2];
+        _bookedURL = [array objectAtIndex:3];
+        _cashURL = [array objectAtIndex:4];
+
+        NSArray<TFHppleElement *> *recommendArr = [xpathParser searchWithXPathQuery:@"//a[@id='head_jg']"];
+        _recommendURL = [recommendArr[0] objectForKey:@"href"];
+        _recommendURL = [[_recommendURL substringToIndex:_recommendURL.length - 3] substringFromIndex:22];
+
+        if (_borrowingURL.length) {
+            [self searchBorrowingInfo];
+        }
+
     }
 
-    _borrowingURL = [array objectAtIndex:0];
-    _borrowHistoryURL = [array objectAtIndex:1];
-    _reservationURL = [array objectAtIndex:2];
-    _bookedURL = [array objectAtIndex:3];
-    _cashURL = [array objectAtIndex:4];
-    
-    NSArray<TFHppleElement *> *recommendArr = [xpathParser searchWithXPathQuery:@"//a[@id='head_jg']"];
-    _recommendURL = [recommendArr[0] objectForKey:@"href"];
-    _recommendURL = [[_recommendURL substringToIndex:_recommendURL.length - 3] substringFromIndex:22];
-    NSLog(@"href - %@",_recommendURL);
 }
 
 - (void)borrowingArrayFromHtmlData:(NSData *)htmlData {
@@ -265,6 +306,7 @@
     hrefStr = [hrefStr componentsSeparatedByString:@"-"].firstObject;
     hrefStr = [NSString stringWithFormat:@"%@-%@",hrefStr,subStr];
     int num = (int)(tdArr.count - 1) / 11;
+    
     if (num != 0) {
         for (int i = 0; i < num; i++) {
             LibraryLoginMyInfoBorrowingBean *bean = [[LibraryLoginMyInfoBorrowingBean alloc] init];
@@ -278,7 +320,8 @@
             if ([tdArr[i*11+10] text]) {
                 bean.itemDescription = [tdArr[i*11+10] text];
             }
-            [self setReturnDateLevelWithMin:[bean.shouldReturnDate integerValue] bean:bean];
+            //设置还书日期格式和剩余天数
+            [self setReturnDateLevelWithMin:bean.shouldReturnDate bean:bean];
             [_borrowingArr addObject:bean];
             
         }
@@ -301,7 +344,10 @@
     for (int i = 0; i < num; i++) {
         LibraryLoginMyInfoBorrowHistoryBean *bean = [[LibraryLoginMyInfoBorrowHistoryBean alloc] init];
         bean.year = [tdArr[i*10+4] text];
-        bean.shouldReturnDate = [tdArr[i*10+5] text];
+        NSMutableString *dateStr = [NSMutableString stringWithFormat:@"%@",[tdArr[i*10+5] text]];
+        [dateStr insertString:@"/" atIndex:4];
+        [dateStr insertString:@"/" atIndex:7];
+        bean.shouldReturnDate = dateStr;
         bean.shouldReturnTime = [tdArr[i*10+6] text];
         bean.returnDate = [tdArr[i*10+7] text];
         bean.returnTime = [tdArr[i*10+8] text];
@@ -354,30 +400,24 @@
 }
 
 #pragma mark - Setter
-- (void)setReturnDateLevelWithMin:(NSInteger)min bean:(id)bean {
+- (void)setReturnDateLevelWithMin:(NSString *)dateString bean:(LibraryLoginMyInfoBorrowingBean *)bean {
     NSDate *nowDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyyMMdd"];
-    NSDate *date = [dateFormatter dateFromString:[NSString stringWithFormat:@"%ld",(long)min]];
+    [dateFormatter setDateFormat:@"yyyy/MM/dd"];
+    NSMutableString *dateStr = [NSMutableString stringWithFormat:@"%@",dateString];
+    [dateStr insertString:@"/" atIndex:4];
+    [dateStr insertString:@"/" atIndex:7];
+    bean.shouldReturnDate = dateStr;
+    NSDate *date = [dateFormatter dateFromString:dateStr];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     unsigned int unitFlags = NSCalendarUnitDay;
     NSDateComponents *comps = [gregorian components:unitFlags fromDate:nowDate  toDate:date  options:0];
     NSInteger days = (NSInteger)[comps day];
-    if ([bean isKindOfClass:[LibraryLoginBean class]]) {
-        ((LibraryLoginBean *)bean).days = days;
-        if (days > 15) {
-            ((LibraryLoginBean *)bean).returnDateLevel = LibraryInfoReturnDateLevelLow;
-        } else if (days <= 15 && days > 5) {
-            ((LibraryLoginBean *)bean).returnDateLevel = LibraryInfoReturnDateLevelMiddle;
-        } else {
-            ((LibraryLoginBean *)bean).returnDateLevel = LibraryInfoReturnDateLevelHigh;
-        }
+    bean.days = [NSString stringWithFormat:@"%ld",days];
+    if (days > 0) {
+        bean.returnDateLevel = LibraryInfoReturnDateLevelLow;
     } else {
-        if (days > 0) {
-            ((LibraryLoginMyInfoBorrowingBean *)bean).returnDateLevel = LibraryInfoReturnDateLevelLow;
-        } else {
-            ((LibraryLoginMyInfoBorrowingBean *)bean).returnDateLevel = LibraryInfoReturnDateLevelHigh;
-        }
+        bean.returnDateLevel = LibraryInfoReturnDateLevelHigh;
     }
 }
 

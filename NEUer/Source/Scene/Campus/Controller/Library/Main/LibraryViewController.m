@@ -40,7 +40,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 //model
 @property (nonatomic, strong) SearchLibraryNewBookModel *newbookModel;
 @property (nonatomic, strong) SearchLibraryBorrowingModel *mostModel;
-@property (nonatomic, strong) LibraryLoginModel *loginModel;
+@property (nonatomic, weak) LibraryLoginModel *loginModel;
 
 @property (nonatomic, strong) NSArray<NSString *> *bookStrings;
 @property (nonatomic, strong) NSArray<NSString *> *mostStrings;
@@ -97,11 +97,44 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 }
 
 #pragma mark - Private Methods
+- (void)autoLogin {
+    User *currentUser = [UserCenter defaultCenter].currentUser;
+    NSString *account = currentUser.number ? : @"";
+//    NSString *account = @"20155115";
+    if (account.length) {
+        NSString *password = [account substringFromIndex:2];
+        self.loginModel.username = account;
+        self.loginModel.password = password;
+        [self.loginModel gotoLogin];
+    }
+}
+
+- (void)login {
+    LoginViewController *loginVC = [[LoginViewController alloc] init];
+    loginVC.modalPresentationStyle = UIModalPresentationCustom;
+    loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [loginVC setupWithTitle:@"登录图书馆" inputType:NEUInputTypeAccount|NEUInputTypePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
+        if (complete) {
+            NSString *userName = result[@(NEUInputTypeAccount)]?:@"";
+            NSString *password = result[@(NEUInputTypePassword)]?:@"";
+            self.loginModel.username = userName;
+            self.loginModel.password = password;
+            [self.loginModel gotoLogin];
+        } else {
+            NSLog(@"no");
+        }
+    }];
+    
+    [self presentViewController:loginVC animated:YES completion:^{
+        
+    }];
+}
+
 - (void)checkLoginState {
     LibraryLoginBean *loginBean = self.loginModel.loginBean;
     UIColor *mainColor = [UIColor colorWithHexStr:@[@"#64B74E",@"#FFBA13",@"#FF5100"][loginBean.returnDateLevel]];
     [self setMainColor:mainColor animated:YES];
-    if (loginBean.days == 30000000) {
+    if (loginBean.days == NSIntegerMax) {
         [self.bookNumLabel setText:@"当前无借阅"];
     } else {
         [self.bookNumLabel setText:[NSString stringWithFormat:@"%ld天",(long)loginBean.days]];
@@ -129,40 +162,6 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 - (void)endRefreshing {
     [self.refreshControl endRefreshing];
-}
-
-- (void)autoLogin {
-//    User *currentUser = [UserCenter defaultCenter].currentUser;
-//    NSString *account = currentUser.number ? : @"";
-//    NSLog(@"account - %@",account);
-    NSString *account = @"20154858";
-    if (account.length) {
-        NSString *password = [account substringFromIndex:2];
-        self.loginModel.username = account;
-        self.loginModel.password = password;
-        [self.loginModel gotoLogin];
-    } 
-}
-
-- (void)login {
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
-    loginVC.modalPresentationStyle = UIModalPresentationCustom;
-    loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [loginVC setupWithTitle:@"登录图书馆" inputType:NEUInputTypeAccount|NEUInputTypePassword resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
-        if (complete) {
-            NSString *userName = result[@(NEUInputTypeAccount)]?:@"";
-            NSString *password = result[@(NEUInputTypePassword)]?:@"";
-            self.loginModel.username = userName;
-            self.loginModel.password = password;
-            [self.loginModel gotoLogin];
-        } else {
-            NSLog(@"no");
-        }
-    }];
-    
-    [self presentViewController:loginVC animated:YES completion:^{
-        
-    }];
 }
 
 - (void)searchBook {
@@ -468,6 +467,11 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     [self checkLoginState];
 }
 
+- (void)loginDidFail {
+    [self login];
+}
+
+
 - (void)allRenewal:(NSArray *)info {
     _isButtonEnabled = NO;
     [self.infoTableView reloadData];
@@ -488,7 +492,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 - (UIBarButtonItem *)loginButtonItem {
     if (!_loginButtonItem) {
-        _loginButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStylePlain target:self action:@selector(login)];
+        _loginButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStylePlain target:self action:nil];
     }
     return _loginButtonItem;
 }
@@ -685,15 +689,11 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 
 #pragma mark - LibraryLoginDelegate
 - (void)partRenewalDidSuccess {
-    [self.refurbishBtn setTitle:@"已续借" forState:UIControlStateNormal];
-    [self.refurbishBtn.titleLabel setAlpha:0.5];
-    [self.refurbishBtn setUserInteractionEnabled:NO];
+    [self setButtonUserInteractionEnabled:NO];
 }
 
 - (void)partRenewalDidFail:(NSString *)errorMessage {
-    [self.refurbishBtn setTitle:@"已续借" forState:UIControlStateNormal];
-    [self.refurbishBtn.titleLabel setAlpha:0.5];
-    [self.refurbishBtn setUserInteractionEnabled:NO];
+    [self setButtonUserInteractionEnabled:NO];
     NSLog(@"%@",errorMessage);
 }
 
@@ -758,10 +758,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
 - (void)setContent:(LibraryLoginMyInfoBorrowingBean *)bean {
     _borrowingBean = bean;
     self.titleLabel.text = bean.title;
-    NSString *year = [bean.shouldReturnDate substringToIndex:4];
-    NSString *month = [[bean.shouldReturnDate substringFromIndex:4] substringToIndex:2];
-    NSString *day = [[bean.shouldReturnDate substringFromIndex:6] substringToIndex:2];
-    self.returndateLabel.text = [NSString stringWithFormat:@"%@/%@/%@前归还",year,month,day];
+    self.returndateLabel.text = [NSString stringWithFormat:@"%@ 日内归还",bean.days];
     self.infoLabel.text = ({
         NSString *info = @"";
         if (bean.author.length>0&&bean.claimNumber.length>0) {
@@ -773,6 +770,7 @@ static NSString * const kLibraryResultCellId = @"kLibraryResultCellId";
     });
     if (bean.returnDateLevel == LibraryInfoReturnDateLevelHigh) {
         [self setMainColor:[UIColor beautyRed]];
+        self.returndateLabel.text = @"已逾期";
     }
 }
 

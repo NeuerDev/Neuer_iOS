@@ -14,7 +14,9 @@ static NSString * const kLibraryHistoryCellId = @"kLibraryHistoryCellId";
 @interface LibraryHistoryViewController () <UITableViewDelegate,UITableViewDataSource,LibraryLoginDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) LibraryLoginModel *loginModel;
+@property (nonatomic, strong) UIBarButtonItem *filterButtonItem;
+@property (nonatomic, strong) NSArray<NSString *> *yearArray;
+@property (nonatomic, weak) LibraryLoginModel *loginModel;
 
 @end
 
@@ -31,6 +33,7 @@ static NSString * const kLibraryHistoryCellId = @"kLibraryHistoryCellId";
     [self setTitle:@"借阅历史"];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.tableView.refreshControl = self.refreshControl;
+    self.navigationItem.rightBarButtonItem = self.filterButtonItem;
     [self.loginModel searchBorrowHistoryInfo];
 }
 
@@ -49,6 +52,21 @@ static NSString * const kLibraryHistoryCellId = @"kLibraryHistoryCellId";
     [self.refreshControl endRefreshing];
 }
 
+- (void)filterByYear {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请选择年份" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    for (NSString *year in self.yearArray) {
+        [alert addAction:[UIAlertAction actionWithTitle:year style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
+    }
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+
+    [alert addAction:cancel];
+    
+    [self presentViewController:alert animated:YES completion:^{}];
+}
+
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 80;
@@ -65,8 +83,26 @@ static NSString * const kLibraryHistoryCellId = @"kLibraryHistoryCellId";
         cell = [[LibraryHistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kLibraryHistoryCellId];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    [cell setBorrowHistoryBean:self.loginModel.borrowHistoryArr[indexPath.row]];
+    [cell setBorrowHistoryBean:self.loginModel.borrowHistoryArr[indexPath.row] index:indexPath.row];
     return cell;
+}
+
+#pragma mark - UIPickerViewDelegate
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component{
+    return 30;
+}
+
+#pragma mark - UIPickerViewDataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return 5;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return nil;
 }
 
 #pragma mark - LibraryLoginInfoDelegate
@@ -95,12 +131,26 @@ static NSString * const kLibraryHistoryCellId = @"kLibraryHistoryCellId";
    return _refreshControl;
 }
 
+- (UIBarButtonItem *)filterButtonItem {
+    if (!_filterButtonItem) {
+        _filterButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"筛选" style:UIBarButtonItemStylePlain target:self action:@selector(filterByYear)];
+    }
+    return _filterButtonItem;
+}
+
 - (LibraryLoginModel *)loginModel {
     if (!_loginModel) {
         _loginModel = [LibraryCenter defaultCenter].currentModel;
         _loginModel.delegate = self;
     }
    return _loginModel;
+}
+
+- (NSArray<NSString *> *)yearArray {
+    if (!_yearArray) {
+        _yearArray = @[@"2017年",@"2016年",@"2015年",@"2014年"];
+    }
+    return _yearArray;
 }
 
 @end
@@ -167,16 +217,11 @@ static NSString * const kLibraryHistoryCellId = @"kLibraryHistoryCellId";
    return _returnDateLabel;
 }
 
-
-
 #pragma mark - Setter
-- (void)setBorrowHistoryBean:(LibraryLoginMyInfoBorrowHistoryBean *)bean {
-    self.titleLabel.text = bean.title;
+- (void)setBorrowHistoryBean:(LibraryLoginMyInfoBorrowHistoryBean *)bean index:(NSInteger)index{
+    self.titleLabel.text = [NSString stringWithFormat:@"%ld.%@",index+1,bean.title];;
     self.authorLabel.text = bean.author;
-    NSString *year = [bean.returnDate substringToIndex:4];
-    NSString *month = [[bean.returnDate substringFromIndex:4] substringToIndex:2];
-    NSString *day = [[bean.returnDate substringFromIndex:6] substringToIndex:2];
-    self.returnDateLabel.text = [NSString stringWithFormat:@"归还日期: %@/%@/%@",year,month,day];
+    self.returnDateLabel.text = [NSString stringWithFormat:@"归还日期: %@",bean.shouldReturnDate];
 }
 
 

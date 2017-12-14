@@ -21,7 +21,7 @@
 @property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UILabel *returndateLabel;
 @property (nonatomic, strong) UIButton *refurbishBtn;
-@property (nonatomic, strong) LibraryLoginModel *loginModel;
+@property (nonatomic, weak) LibraryLoginModel *loginModel;
 @property (nonatomic, strong) LibraryLoginMyInfoBorrowingBean *borrowingBean;
 
 - (void)setContent:(LibraryLoginMyInfoBorrowingBean *)bean;

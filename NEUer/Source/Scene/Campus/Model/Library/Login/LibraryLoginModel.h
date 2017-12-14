@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @protocol LibraryLoginDelegate <NSObject>
 @optional
 - (void)loginDidSuccess;
+- (void)loginDidFail;
 - (void)getBorrowHistoryInfoDidSuccess;
 - (void)getReservationInfoDidSuccess;
 - (void)getBookedInfoDidSuccess;
@@ -40,7 +41,9 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *tmpURL;
+@property (nonatomic, strong) NSString *expiredURL;
 @property (nonatomic, strong) NSString *renewURL;
+@property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) LibraryLoginBean *loginBean;
 //信息
 @property (nonatomic, strong) NSString *borrowingURL;
@@ -137,6 +140,7 @@ typedef NS_ENUM(NSUInteger, LibraryInfoReturnDateLevel) {
 @property (nonatomic, strong) NSString *itemDescription;
 @property (nonatomic, strong) NSString *renewNumber;
 @property (nonatomic, strong) NSString *tempURL;
+@property (nonatomic, strong) NSString *days;
 @property (nonatomic, assign) LibraryInfoReturnDateLevel returnDateLevel;
 
 @end
