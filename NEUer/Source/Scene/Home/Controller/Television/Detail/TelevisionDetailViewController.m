@@ -37,9 +37,9 @@
     if (self = [super init]) {
         self.backgroundColor = [UIColor blackColor];
         self.layer.cornerRadius = 8;
-        self.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
         self.layer.shadowOffset = CGSizeMake(0, 4);
-        self.layer.shadowOpacity = 0.5;
+        self.layer.shadowOpacity = 0.3;
         self.layer.shadowRadius = 4;
         [self initConstaints];
     }
@@ -148,6 +148,7 @@ NSString * const kOrderShowId = @"kOrderShowId";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         _scheduleBean = [[TelevisionChannelScheduleBean alloc] init];
+        self.dk_backgroundColorPicker = DKColorPickerWithKey(background);
         [self initConstaints];
     }
     return self;
@@ -200,11 +201,15 @@ NSString * const kOrderShowId = @"kOrderShowId";
     [_backToViewBtn setTitle:_scheduleBean.status forState:UIControlStateNormal];
     NSComparisonResult result = [scheduleBean.time compare:[LYTool timeOfNow]];
     if (result == NSOrderedDescending && [_scheduleBean.date isEqualToString: [LYTool dateOfTimeIntervalFromToday:0]]) {
-        _backToViewBtn.backgroundColor = [UIColor beautyBlue];
-        [_backToViewBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _backToViewBtn.backgroundColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion);
+        [_backToViewBtn setTitleColor:DKColorPickerWithKey(accenttext)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
     } else {
-        [_backToViewBtn setTitleColor:[UIColor beautyBlue] forState:UIControlStateNormal];
-        _backToViewBtn.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        [_backToViewBtn setTitleColor:DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
+        if ([DKNightVersionManager.sharedManager.themeVersion isEqualToString:@"NIGHT"]) {
+            _backToViewBtn.backgroundColor = [UIColor.lightGrayColor colorWithAlphaComponent:0.3];
+        } else {
+            _backToViewBtn.backgroundColor = UIColor.groupTableViewBackgroundColor;
+        }
     }
 }
 
@@ -214,6 +219,7 @@ NSString * const kOrderShowId = @"kOrderShowId";
     if (!_nameLabel) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        _nameLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         _nameLabel.textAlignment = NSTextAlignmentLeft;
         _nameLabel.numberOfLines = 0;
         [self.centerView addSubview:_nameLabel];
@@ -224,7 +230,7 @@ NSString * const kOrderShowId = @"kOrderShowId";
 - (UILabel *)timeLabel {
     if (!_timeLabel) {
         _timeLabel = [[UILabel alloc] init];
-        _timeLabel.textColor = [UIColor grayColor];
+        _timeLabel.dk_textColorPicker = DKColorPickerWithKey(subtitle);
         _timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         _timeLabel.textAlignment = NSTextAlignmentLeft;
         [self.centerView addSubview:_timeLabel];
@@ -240,7 +246,6 @@ NSString * const kOrderShowId = @"kOrderShowId";
         [_backToViewBtn addTarget:self action:@selector(didSelectBackToViewBtnWithTVShow) forControlEvents:UIControlEventTouchUpInside];
         _backToViewBtn.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         _backToViewBtn.layer.cornerRadius = 30.0f/2;
-        _backToViewBtn.alpha = 0.8;
         [self.centerView addSubview:_backToViewBtn];
     }
     
@@ -393,10 +398,17 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 
 - (void)fetchTelevisionChannelModelFailureWithMsg:(NSString *)msg {
     NSLog(@"加载失败");
+    [self.refreshControl endRefreshing];
 }
 
 - (void)fetchTelevisionChannelModelSuccess {
-    [self.tableView reloadData];
+    if (self.tableView.numberOfSections == 0) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - UITableViewDelegate
@@ -415,7 +427,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         headerView = [[CustomSectionHeaderFooterView alloc] initWithReuseIdentifier:kTelevisionDetailListHeaderViewId];
     }
     
-    headerView.contentView.backgroundColor = [UIColor whiteColor];
+    headerView.contentView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
     headerView.section = section;
     
     __weak typeof(self) weakSelf = self;
@@ -516,7 +528,9 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
     [playerViewController.player play];
     playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
     
-    [self presentViewController:playerViewController animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:playerViewController animated:YES completion:nil];
+    });
 }
 
 - (void)didClickedCollectedButton {
@@ -558,9 +572,6 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
 - (void)beginRefreshing {
     [self.refreshControl beginRefreshing];
     [self.channelDetailModel fecthTelevisionChannelDataWithVideoUrl:self.channelDetailModel.sourceStr];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self endRefreshing];
-    });
 }
 
 - (void)endRefreshing {
@@ -650,6 +661,7 @@ static TelevisionChannelModelSelectionType selectionType = TelevisionChannelMode
         _tableView.dataSource = self;
         [_tableView setShowsVerticalScrollIndicator:NO];
         _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.dk_separatorColorPicker = DKColorPickerWithKey(seperator);
         _tableView.refreshControl = self.refreshControl;
         
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH_ACTUAL, SCREEN_WIDTH_ACTUAL * 0.6)];

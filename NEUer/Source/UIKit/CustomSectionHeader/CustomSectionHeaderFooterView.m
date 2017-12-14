@@ -68,6 +68,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
+        _titleLabel.dk_textColorPicker = DKColorPickerWithKey(title);
         [self.contentView addSubview:_titleLabel];
     }
     
@@ -78,7 +79,7 @@
     if (!_actionButton) {
         _actionButton = [[UIButton alloc] init];
         _actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-        [_actionButton setTitleColor:[JHTool colorWithHexStr:@"#fcbf50"] forState:UIControlStateNormal];
+        [_actionButton setTitleColor:DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(didClickedActionButton) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_actionButton];
     }

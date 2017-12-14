@@ -95,6 +95,9 @@ static GatewayCenter * center;
 - (void)testCampusEnvironment:(void (^)(BOOL))callback {
     if (_wifiStatus == GatewayStatusNO) {
         // 使用3/4g时不用测试是否在校园网环境内了
+        if (callback) {
+            callback(NO);
+        }
         return;
     }
     

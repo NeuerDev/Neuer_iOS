@@ -81,6 +81,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.dk_backgroundColorPicker = DKColorPickerWithKey(background);
+    
     [self initData];
     [self initConstraints];
     [self initBaseConstraints];
@@ -164,6 +166,7 @@
         case JHBaseViewStateEmptyContent:
         {
             self.baseImageView.image = [UIImage imageNamed:@"base_placeholder_empty"];
+            [self.baseRetryButton setTitle:NSLocalizedString(@"JHBaseViewControllerBack", nil) forState:UIControlStateNormal];
             [self showPlaceHolder];
         }
             break;
@@ -242,7 +245,7 @@
 - (UIImageView *)baseImageView {
     if (!_baseImageView) {
         _baseImageView = [[UIImageView alloc] init];
-        _baseImageView.backgroundColor = [UIColor whiteColor];
+        _baseImageView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
         [self.basePlaceholderView addSubview:_baseImageView];
     }
     
