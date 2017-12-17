@@ -27,7 +27,7 @@ static EcardCenter * center;
 
 - (EcardModel *)currentModel {
     if (!_currentModel) {
-        _currentModel = [[EcardModel alloc] initWithUser:[[UserCenter defaultCenter] currentUser]];
+        _currentModel = [[EcardModel alloc] init];
     }
     
     return _currentModel;

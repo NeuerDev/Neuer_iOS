@@ -11,4 +11,13 @@
 
 @interface EcardServiceModel : EcardBaseModel
 
+- (void)changePasswordWithOldPassword:(NSString *)oldPassword
+                          newPassword:(NSString *)newPassword
+                        renewPassword:(NSString *)renewPassword
+                             complete:(EcardActionCompleteBlock)block;
+
+- (void)reportLostWithPassword:(NSString *)password
+                identityNumber:(NSString *)identityNumber
+                      complete:(EcardActionCompleteBlock)block;
+
 @end

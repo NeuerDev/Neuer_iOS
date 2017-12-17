@@ -222,4 +222,5 @@ typedef void(^EcardGetVerifyImageBlock)(UIImage *verifyImage, NSString *verifyCo
     
     return _session;
 }
+
 @end
