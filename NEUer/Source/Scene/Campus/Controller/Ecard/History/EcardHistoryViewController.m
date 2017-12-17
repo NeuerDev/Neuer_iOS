@@ -65,7 +65,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 64;
+    return 44;
 }
 
 #pragma mark - UITableViewDataSource
@@ -77,7 +77,6 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
     }
     
     EcardConsumeBean *consumeBean = self.ecardModel.consumeHistoryArray[indexPath.row];
-    
     cell.consumeBean = consumeBean;
     
     return cell;
@@ -135,6 +134,7 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 - (UISegmentedControl *)segmentedControl {
     if (!_segmentedControl) {
         _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"消费记录", @"充值记录"]];
+        _segmentedControl.selectedSegmentIndex = 0;
     }
     
     return _segmentedControl;
@@ -148,6 +148,8 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
         _consumeHistoryTableView.showsVerticalScrollIndicator = NO;
         _consumeHistoryTableView.allowsSelection = NO;
         _consumeHistoryTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        
+//        UIView *headerView = [UIView]
         _consumeHistoryTableView.tableFooterView = [[UIView alloc] init];
         [self.view addSubview:_consumeHistoryTableView];
     }

@@ -28,7 +28,9 @@
 
 - (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block {
     WS(ws);
-    [self queryConsumeHistoryFrom:[[NSDate alloc] init] to:[[NSDate alloc] init] complete:^(NSArray *consumeArray, BOOL hasMore, NSError *error) {
+    [self queryConsumeHistoryFrom:[[NSDate alloc] init]
+                               to:[[NSDate alloc] init]
+                         complete:^(NSArray *consumeArray, BOOL hasMore, NSError *error) {
         if (consumeArray && !error) {
             ws.todayConsumeArray = consumeArray;
         }
@@ -72,7 +74,9 @@
     [task resume];
 }
 
-- (void)queryConsumeHistoryFrom:(NSDate *)fromDate to:(NSDate *)toDate complete:(void(^)(NSArray *consumeArray, BOOL hasMore, NSError *error))complete {
+- (void)queryConsumeHistoryFrom:(NSDate *)fromDate
+                             to:(NSDate *)toDate
+                       complete:(void(^)(NSArray *consumeArray, BOOL hasMore, NSError *error))complete {
     WS(ws);
     NSInteger page = 0;
     
@@ -87,7 +91,10 @@
     }];
 }
 
-- (void)queryConsumeHistoryFrom:(NSDate *)fromDate to:(NSDate *)toDate page:(NSInteger)page complete:(void(^)(NSArray<EcardConsumeBean *> *consumeArray, BOOL hasMore, NSError *error))complete {
+- (void)queryConsumeHistoryFrom:(NSDate *)fromDate
+                             to:(NSDate *)toDate
+                           page:(NSInteger)page
+                       complete:(void(^)(NSArray<EcardConsumeBean *> *consumeArray, BOOL hasMore, NSError *error))complete {
     WS(ws);
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd";
