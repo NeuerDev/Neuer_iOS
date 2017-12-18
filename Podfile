@@ -4,7 +4,7 @@ target 'NEUer' do
   use_frameworks!
 
   # Pods for NEUer
-  pod 'MBProgressHUD', '~> 1.0.0'
+  pod 'SVProgressHUD'
   pod 'SDWebImage', '~> 3.8'
   pod 'FMDB'
   pod 'Masonry'
