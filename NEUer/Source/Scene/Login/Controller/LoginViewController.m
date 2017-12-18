@@ -45,7 +45,15 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     [self showContentView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRecievedTextChangedNotification:) name:kNEUInputViewTextChangedNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNEUInputViewTextChangedNotification object:nil];
 }
 
 - (void)initData {
@@ -320,20 +328,14 @@
             }
         }
     }
+    
     return YES;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     [self collapseHeader];
+    
     return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [self refreshViewState];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [self refreshViewState];
 }
 
 #pragma mark - Respond Methods
@@ -345,6 +347,10 @@
 - (void)didLoginButtonTapped:(id)sender {
     _complete = YES;
     [self hideContentView];
+}
+
+- (void)didRecievedTextChangedNotification:(NSNotification *)notification {
+    [self refreshViewState];
 }
 
 #pragma mark - Setter

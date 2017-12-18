@@ -22,6 +22,8 @@ typedef NS_OPTIONS(NSUInteger, NEUInputType) {
     NEUInputTypeVerifyCode      = 1 << 5,
 };
 
+static NSString * const kNEUInputViewTextChangedNotification = @"kNEUInputViewTextChangedNotification";
+
 @interface NEUInputView : UIView
 
 @property (nonatomic, strong) UILabel *titleLabel;

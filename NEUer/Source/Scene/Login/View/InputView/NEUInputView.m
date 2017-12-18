@@ -209,6 +209,7 @@
 }
 
 - (void)onTextFieldTextChange:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNEUInputViewTextChangedNotification object:self];
     if (textField.text.length>0) {
         [self showTitleLabelAnimated:YES];
     } else {
