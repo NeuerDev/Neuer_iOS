@@ -65,7 +65,6 @@
             self.textField.keyboardType = UIKeyboardTypeAlphabet;
             [self.actionButton setTitle:NSLocalizedString(@"LoginActionTitleShow", nil) forState:UIControlStateNormal];
             [self.actionButton setTitle:NSLocalizedString(@"LoginActionTitleHide", nil) forState:UIControlStateSelected];
-            //            self.textField.placeholder = @"请输入学号";
         }
             break;
         case NEUInputTypeNewPassword:
@@ -76,7 +75,6 @@
             self.textField.secureTextEntry = YES;
             [self.actionButton setTitle:NSLocalizedString(@"LoginActionTitleShow", nil) forState:UIControlStateNormal];
             [self.actionButton setTitle:NSLocalizedString(@"LoginActionTitleHide", nil) forState:UIControlStateSelected];
-            //            self.textField.placeholder = @"请输入新密码";
         }
             break;
         case NEUInputTypeRePassword:
@@ -119,6 +117,7 @@
     }];
     
     if (_type&NEUInputTypePassword
+        || _type&NEUInputTypeNewPassword
         || _type&NEUInputTypeRePassword
         || _type&NEUInputTypeVerifyCode) {
         [self.actionButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -171,24 +170,6 @@
     }
     
     return legal;
-}
-
-- (void)refreshViewState {
-    if ([_textField isFirstResponder]) {
-        [UIView animateWithDuration:0.3 animations:^{
-            _textField.textColor = [UIColor blackColor];
-            _titleLabel.textColor = [UIColor blackColor];
-            _seperatorLine.backgroundColor = [UIColor blackColor];
-        }];
-    } else {
-        [UIView animateWithDuration:0.3 animations:^{
-            _textField.textColor = [UIColor colorWithHexStr:@"9C9C9C"];
-            _titleLabel.textColor = [UIColor colorWithHexStr:@"9C9C9C"];
-            _seperatorLine.backgroundColor = [UIColor colorWithHexStr:@"9C9C9C"];
-        }];
-    }
-    
-    [self onTextFieldTextChange:_textField];
 }
 
 #pragma mark - Response Methods

@@ -31,6 +31,8 @@
     CGFloat _topMargin;
     BOOL _complete;
     BOOL _firstTimeShow;
+    
+    BOOL _isHeaderCollapsed;
 }
 
 #pragma mark - Life Circle
@@ -147,6 +149,15 @@
         inputView.verifyImageView.image = _verifyImage;
         [inputViews addObject:inputView];
     }
+    
+    for (NEUInputView *inputView in inputViews) {
+        if (!inputView.textField.enabled) {
+            inputView.titleLabel.textColor = [UIColor colorWithHexStr:@"#EDECED"];
+            inputView.textField.textColor = [UIColor colorWithHexStr:@"#EDECED"];
+        }
+        [inputView.textField setValue:[UIColor colorWithHexStr:@"#EDECED"] forKeyPath:@"_placeholderLabel.textColor"];
+    }
+    
     self.title = title;
     self.inputViews = inputViews;
 }
@@ -221,7 +232,6 @@
         self.contentView.frame = CGRectMake(8, SCREEN_HEIGHT_ACTUAL, SCREEN_WIDTH_ACTUAL-16, SCREEN_HEIGHT_ACTUAL);
     } completion:^(BOOL finished) {
         [self dismissViewControllerAnimated:NO completion:^{
-            [self clear];
             if (_complete) {
                 // 点击登录
                 if (_resultBlock) {
@@ -242,6 +252,11 @@
 }
 
 - (void)collapseHeader {
+    if (_isHeaderCollapsed) {
+        return;
+    }
+    _isHeaderCollapsed = YES;
+    
     UIView *lastView = [_inputViews firstObject];
     if (lastView) {
         [lastView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -260,6 +275,11 @@
 }
 
 - (void)expandHeader {
+    if (!_isHeaderCollapsed) {
+        return;
+    }
+    _isHeaderCollapsed = NO;
+    
     UIView *lastView = [_inputViews firstObject];
     if (lastView) {
         [lastView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -297,24 +317,62 @@
     
     if (isLegal) {
         _loginButton.enabled = YES;
-        _loginButton.backgroundColor = [UIColor beautyBlue];
+        _loginButton.backgroundColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion);
     } else {
         _loginButton.enabled = NO;
-        _loginButton.backgroundColor = [[UIColor beautyBlue] colorWithAlphaComponent:0.3];
+        _loginButton.backgroundColor = [DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion) colorWithAlphaComponent:0.3];
     }
-    
-    for (NEUInputView *inputView in _inputViews) {
-        if ([inputView.textField isFirstResponder]) {
-            inputView.textField.textColor = [UIColor blackColor];
-            inputView.seperatorLine.backgroundColor = [UIColor blackColor];
-        } else {
-            inputView.textField.textColor = [UIColor lightGrayColor];
-            inputView.seperatorLine.backgroundColor = [UIColor lightGrayColor];
-        }
+}
+
+- (void)applyChangeForInputView:(NEUInputView *)inputView {
+    if (inputView) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([inputView.textField isFirstResponder]) {
+                [UIView animateWithDuration:0.3 animations:^{
+//                    inputView.textField.textColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion);
+//                    inputView.textField.tintColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion);
+//                    [inputView.textField setValue:[DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion) colorWithAlphaComponent:0.6] forKeyPath:@"_placeholderLabel.textColor"];
+//                    inputView.titleLabel.textColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion);
+//                    inputView.seperatorLine.backgroundColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion);
+//                    [inputView.actionButton setTitleColor:DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
+                    
+                    inputView.textField.textColor = [UIColor blackColor];
+                    inputView.textField.tintColor = [UIColor blackColor];
+                    [inputView.textField setValue:[[UIColor blackColor] colorWithAlphaComponent:0.3] forKeyPath:@"_placeholderLabel.textColor"];
+                    inputView.titleLabel.textColor = [UIColor blackColor];
+                    inputView.seperatorLine.backgroundColor = [UIColor blackColor];
+                    [inputView.actionButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                }];
+            } else {
+                [UIView animateWithDuration:0.3 animations:^{
+                    inputView.textField.textColor = [UIColor colorWithHexStr:@"#EDECED"];
+                    inputView.titleLabel.textColor = [UIColor colorWithHexStr:@"#EDECED"];
+                    inputView.seperatorLine.backgroundColor = [UIColor colorWithHexStr:@"#EDECED"];
+                    [inputView.actionButton setTitleColor:[UIColor colorWithHexStr:@"#EDECED"] forState:UIControlStateNormal];
+                    [inputView.textField setValue:[UIColor colorWithHexStr:@"#EDECED"] forKeyPath:@"_placeholderLabel.textColor"];
+                }];
+            }
+        });
     }
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    NEUInputView *inputView = nil;
+    if ([textField.superview isKindOfClass:NEUInputView.class]) {
+        inputView = (NEUInputView *)textField.superview;
+        [self applyChangeForInputView:inputView];
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NEUInputView *inputView = nil;
+    if ([textField.superview isKindOfClass:NEUInputView.class]) {
+        inputView = (NEUInputView *)textField.superview;
+        [self applyChangeForInputView:inputView];
+    }
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if ([textField isEqual:_inputViews.lastObject.textField]) {
@@ -323,7 +381,9 @@
     } else {
         for (NSInteger index = 0; index<_inputViews.count; index++) {
             if ([textField isEqual:_inputViews[index].textField]) {
-                [_inputViews[index+1].textField becomeFirstResponder];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_inputViews[index+1].textField becomeFirstResponder]; 
+                });
                 break;
             }
         }
@@ -381,6 +441,8 @@
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
+        
+//        _contentView.dk_backgroundColorPicker = DKColorPickerWithKey(background);
         _contentView.backgroundColor = [UIColor whiteColor];
         _contentView.layer.cornerRadius = 16;
         _contentView.layer.masksToBounds = YES;
@@ -426,8 +488,9 @@
 - (UIButton *)loginButton {
     if (!_loginButton) {
         _loginButton = [[UIButton alloc] init];
+        [_loginButton setTitleColor:DKColorPickerWithKey(accenttext)(DKNightVersionManager.sharedManager.themeVersion) forState:UIControlStateNormal];
         _loginButton.layer.cornerRadius = 44.0f/2.0f;
-        _loginButton.layer.shadowColor = [UIColor beautyBlue].CGColor;
+        _loginButton.layer.shadowColor = DKColorPickerWithKey(accent)(DKNightVersionManager.sharedManager.themeVersion).CGColor;
         _loginButton.layer.shadowOffset = CGSizeMake(0, 2);
         _loginButton.layer.shadowRadius = 2;
         _loginButton.layer.shadowOpacity = 0.5;
