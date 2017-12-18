@@ -56,5 +56,6 @@
 #import <hpple/TFHpple.h>
 #import <DKNightVersion/DKNightVersion.h>
 #import <FMDB/FMDB.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 #endif /* PrefixHeader_pch */
