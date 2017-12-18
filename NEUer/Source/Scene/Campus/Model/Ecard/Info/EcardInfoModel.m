@@ -96,6 +96,31 @@
     [task resume];
 }
 
+#pragma mark - NSURLSessionTaskDelegate
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
+    
+    // 如果重定向到login的话说明登录失效 需要重新登录
+    if ([request.URL.absoluteString isEqualToString:@"http://ecard.neu.edu.cn/SelfSearch/login.aspx"]) {
+//        if (_currentActionBlock) {
+//            NSError *error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeRequireLogin userInfo:nil];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                _currentActionBlock(NO, error);
+//            });
+//        }
+        return;
+    }
+//    __strong EcardActionCompleteBlock block = _currentActionBlock;
+//    NSURLSessionDataTask *newTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        if (block) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                block(data && !error, error);
+//            });
+//        }
+//    }];
+//    [newTask resume];
+}
+
 #pragma mark - Getter
 
 - (NSURLSession *)session {

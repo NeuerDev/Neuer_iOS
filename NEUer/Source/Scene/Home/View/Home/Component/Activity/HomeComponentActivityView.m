@@ -95,6 +95,7 @@ static NSString * const kHomeComponentActivityCellId = @"kCellId";
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat cellWidth = (SCREEN_WIDTH_ACTUAL - 16 - 16 - 8)/2;
         CGFloat cellHeight = 150.0f;
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.minimumInteritemSpacing = 8.0f;
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;

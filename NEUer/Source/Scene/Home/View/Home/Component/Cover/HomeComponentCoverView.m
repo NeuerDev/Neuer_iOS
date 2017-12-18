@@ -46,7 +46,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
     
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
-        make.height.mas_equalTo(cellHeight);
+        make.height.mas_equalTo(cellHeight+1);
     }];
 }
 
@@ -100,6 +100,7 @@ static NSString * const kHomeComponentCoverCellId = @"kCellId";
         HomeComponentCoverLayout *flowLayout = [[HomeComponentCoverLayout alloc] init];
         CGFloat cellWidth = SCREEN_WIDTH_ACTUAL - 16 - 16;
         CGFloat cellHeight = cellWidth * 10.0f / 16.0f;
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
         flowLayout.itemSize = CGSizeMake(cellWidth, cellHeight);
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];

@@ -158,11 +158,17 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
         case JHErrorTypeUnknown:
             
             break;
-        case JHErrorTypeRequireLogin:
+        case JHErrorTypeNetworkUnavailable:
+            
+            break;
+        case JHErrorTypeInvaildAccountPassword:
             [self showLoginBox];
             break;
         case JHErrorTypeInvaildVerifyCode:
             
+            break;
+        case JHErrorTypeRequireLogin:
+            [self showLoginBox];
             break;
         case JHErrorTypeRequireLoginCampusNet:
             
@@ -248,6 +254,7 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
 }
 
 - (void)changePassword {
+    WS(ws);
     User *currentUser = [UserCenter defaultCenter].currentUser;
     NSString *account = currentUser.number ? : @"";
     LoginViewController *signinVC = [[LoginViewController alloc] init];
@@ -260,8 +267,13 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
                                }
                  resultBlock:^(NSDictionary<NSNumber *,NSString *> *result, BOOL complete) {
                      if (complete) {
-                         //                         NSString *userName = result[@(NEUInputTypeAccount)]?:@"";
-                         //                         NSString *password = result[@(NEUInputTypePassword)]?:@"";
+                         NSString *oldPassword = result[@(NEUInputTypePassword)]?:@"";
+                         NSString *newPassword = result[@(NEUInputTypeNewPassword)]?:@"";
+                         NSString *rePassword = result[@(NEUInputTypeRePassword)]?:@"";
+                         
+                         [ws.ecardModel changePasswordWithOldPassword:oldPassword newPassword:newPassword renewPassword:rePassword complete:^(BOOL success, NSError *error) {
+                             
+                         }];
                      }
                  }];
     

@@ -14,10 +14,10 @@
 - (void)changePasswordWithOldPassword:(NSString *)oldPassword
                           newPassword:(NSString *)newPassword
                         renewPassword:(NSString *)renewPassword
-                             complete:(EcardActionCompleteBlock)block;
+                             complete:(EcardActionCompleteBlock)complete;
 
 - (void)reportLostWithPassword:(NSString *)password
                 identityNumber:(NSString *)identityNumber
-                      complete:(EcardActionCompleteBlock)block;
+                      complete:(EcardActionCompleteBlock)complete;
 
 @end

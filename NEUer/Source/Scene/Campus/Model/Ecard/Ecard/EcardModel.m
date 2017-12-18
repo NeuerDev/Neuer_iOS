@@ -108,6 +108,14 @@
     return _historyModel;
 }
 
+- (EcardServiceModel *)serviceModel {
+    if (!_serviceModel) {
+        _serviceModel = [[EcardServiceModel alloc] init];
+    }
+    
+    return _serviceModel;
+}
+
 - (EcardInfoBean *)info {
     return self.infoModel.info;
 }
