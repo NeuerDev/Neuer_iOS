@@ -143,13 +143,9 @@
     } completionHandler:^(BOOL success, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
-//                [_tipsButton setTitle:@"保存成功，点击打开相册" forState:UIControlStateNormal];
-                [_tipsButton setTitle:@"已保存到系统相册" forState:UIControlStateNormal];
-//                [_tipsButton addTarget:self action:@selector(openGallary) forControlEvents:UIControlEventTouchUpInside];
+                [SVProgressHUD showSuccessWithStatus:@"已保存到系统相册"];
             } else {
-//                [_tipsButton setTitle:@"保存失败，点击检查是否开启相册访问权限" forState:UIControlStateNormal];
-                [_tipsButton setTitle:@"保存失败，请检查是否开启相册访问权限" forState:UIControlStateNormal];
-//                [_tipsButton addTarget:self action:@selector(openSetting) forControlEvents:UIControlEventTouchUpInside];
+                [SVProgressHUD showErrorWithStatus:@"保存失败\n请检查是否开启相册访问权限"];
             }
         });
     }];

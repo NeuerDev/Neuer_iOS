@@ -65,6 +65,21 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
     [self checkLoginState];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleNotification:)
+                                                 name:SVProgressHUDDidReceiveTouchEventNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SVProgressHUDDidReceiveTouchEventNotification object:nil];
+}
+
 - (void)initConstraints {
     self.consumeHistoryTableView.frame = self.view.frame;
     
@@ -236,6 +251,17 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
     }];
 }
 
+#pragma mark - Notification
+
+- (void)handleNotification:(NSNotification *)notification {
+    NSLog(@"Notification received: %@", notification.name);
+    NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
+    
+    if([notification.name isEqualToString:SVProgressHUDDidReceiveTouchEventNotification]){
+        [SVProgressHUD dismiss];
+    }
+}
+
 #pragma mark - Respond Methods
 
 - (void)showMyCard {
@@ -271,8 +297,14 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
                          NSString *newPassword = result[@(NEUInputTypeNewPassword)]?:@"";
                          NSString *rePassword = result[@(NEUInputTypeRePassword)]?:@"";
                          
+                         [SVProgressHUD showWithStatus:@"正在修改密码..."];
+                         
                          [ws.ecardModel changePasswordWithOldPassword:oldPassword newPassword:newPassword renewPassword:rePassword complete:^(BOOL success, NSError *error) {
-                             
+                             if (success) {
+                                 [SVProgressHUD showSuccessWithStatus:@"修改成功"];
+                             } else {
+                                 [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+                             }
                          }];
                      }
                  }];

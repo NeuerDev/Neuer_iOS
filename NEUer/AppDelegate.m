@@ -56,6 +56,9 @@
 //    初始化badge值
     [[BadgeCenter defaultCenter] clearBadges];
     
+    // 初始化 SVProgress 样式
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    
     // 配置路由表
     [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];
     

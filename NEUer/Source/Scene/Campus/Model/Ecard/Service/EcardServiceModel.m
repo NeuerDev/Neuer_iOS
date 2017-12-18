@@ -26,15 +26,13 @@
 - (void)changePasswordWithOldPassword:(NSString *)oldPassword
                           newPassword:(NSString *)newPassword
                         renewPassword:(NSString *)renewPassword
-                             complete:(EcardActionCompleteBlock)block {
+                             complete:(EcardActionCompleteBlock)complete {
     [self prepareForChangePassword:^(BOOL success, NSError *error) {
         if (success) {
             [self executeChangePasswordWithOldPassword:oldPassword
                                            newPassword:newPassword
                                          renewPassword:renewPassword
-                                              complete:^(BOOL success, NSError *error) {
-                                                  
-                                              }];
+                                              complete:complete];
         } else {
             
         }
@@ -99,16 +97,22 @@
             if ([htmlStr containsString:@"密码修改成功"]) {
                 [UserCenter.defaultCenter.currentUser.keychain setPassword:newPassword forKeyType:UserKeyTypeECard];
                 if (complete) {
-                    complete(YES, nil);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        complete(YES, nil);
+                    });
                 }
             } else if ([htmlStr containsString:@"旧密码输入不正确"]) {
                 if (complete) {
                     NSError *error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeInvaildAccountPassword userInfo:@{NSLocalizedDescriptionKey:@"旧密码输入不正确"}];
-                    complete(NO, error);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        complete(NO, error);
+                    });
                 }
             }
         } else {
-            complete(NO, error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                complete(NO, error);
+            });
         }
     }];
     

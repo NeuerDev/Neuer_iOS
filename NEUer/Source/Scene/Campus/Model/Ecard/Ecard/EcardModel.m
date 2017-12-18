@@ -24,7 +24,15 @@
 
 @implementation EcardModel
 
+#pragma mark - Public Methods
+
 - (void)loginWithUser:(NSString *)userName password:(NSString *)password complete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
     [self.loginModel loginWithUser:userName password:password complete:^(BOOL success, NSError *error) {
         if (success) {
             [[UserCenter defaultCenter] setAccount:userName password:password forKeyType:UserKeyTypeECard];
@@ -37,24 +45,54 @@
 }
 
 - (void)fetchAvatarComplete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
     [self.infoModel fetchAvatarComplete:block];
 }
 
 - (void)queryInfoComplete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
     [self.infoModel queryInfoComplete:block];
 }
 
 - (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, NO, error);
+        return;
+    }
+    
     [self.historyModel queryTodayConsumeHistoryComplete:block];
 }
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
     
 }
 
 - (void)reportLostWithPassword:(NSString *)password
                 identityNumber:(NSString *)identityNumber
                       complete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
     [self.serviceModel reportLostWithPassword:password
                                identityNumber:identityNumber
                                      complete:block];
@@ -64,10 +102,27 @@
                           newPassword:(NSString *)newPassword
                         renewPassword:(NSString *)renewPassword
                              complete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
     [self.serviceModel changePasswordWithOldPassword:oldPassword
                                          newPassword:newPassword
                                        renewPassword:renewPassword
                                             complete:block];
+}
+
+#pragma mark - Private Methods
+
+- (NSError *)handleNetworkState {
+    NSError *error = nil;
+    if (![GatewayCenter defaultCenter].networkEnable) {
+        error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeNetworkUnavailable userInfo:@{NSLocalizedDescriptionKey:@"网络不可用"}];
+    }
+    
+    return error;
 }
 
 #pragma mark - Getter
