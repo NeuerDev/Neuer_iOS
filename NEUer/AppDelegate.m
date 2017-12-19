@@ -58,6 +58,12 @@
     
     // 初始化 SVProgress 样式
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD setHapticsEnabled:YES];
+    [SVProgressHUD setMinimumDismissTimeInterval:2.0];
+    [SVProgressHUD setImageViewSize:CGSizeMake(56, 56)];
+    [SVProgressHUD setMinimumSize:CGSizeMake(144, 144)];
+    [SVProgressHUD setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleTitle3]];
+    [SVProgressHUD setOffsetFromCenter:UIOffsetMake(0, 0)];
     
     // 配置路由表
     [self.router loadRouterFromPlist:[[NSBundle mainBundle] pathForResource:@"router" ofType:@"plist"]];

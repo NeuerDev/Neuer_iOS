@@ -343,6 +343,20 @@
 }
 
 - (void)didLoginButtonTapped:(id)sender {
+    
+    // 检查是否合法 两次输入密码是否一致
+    NSString *password = nil;
+    for (NEUInputView *inputView in _inputViews) {
+        if (inputView.type==NEUInputTypeNewPassword) {
+            password = inputView.textField.text;
+        } else if (inputView.type==NEUInputTypeRePassword) {
+            if (![inputView.textField.text isEqualToString:password]) {
+                [SVProgressHUD showErrorWithStatus:@"两次输入密码不一致"];
+                return;
+            }
+        }
+    }
+    
     _complete = YES;
     [self hideContentView];
 }

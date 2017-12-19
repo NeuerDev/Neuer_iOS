@@ -108,6 +108,13 @@
                         complete(NO, error);
                     });
                 }
+            } else if ([htmlStr containsString:@"新密码不能和旧密码一样"]) {
+                if (complete) {
+                    NSError *error = [NSError errorWithDomain:JHErrorDomain code:JHErrorTypeInvaildAccountPassword userInfo:@{NSLocalizedDescriptionKey:@"新旧密码不能一样"}];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        complete(NO, error);
+                    });
+                }
             }
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{

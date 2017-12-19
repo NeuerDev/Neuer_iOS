@@ -89,16 +89,28 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     [self setNeedsStatusBarAppearanceUpdate];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleSVProgressHUDTouchEventNotification:)
+                                                 name:SVProgressHUDDidReceiveTouchEventNotification
+                                               object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SVProgressHUDDidReceiveTouchEventNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
 }
 
 #pragma mark - Override Methods
@@ -136,6 +148,17 @@
     } completion:^(BOOL finished) {
         self.baseContentView.hidden = YES;
     }];
+}
+
+#pragma mark - Notification
+
+- (void)handleSVProgressHUDTouchEventNotification:(NSNotification *)notification {
+    NSLog(@"Notification received: %@", notification.name);
+    NSLog(@"Status user info key: %@", notification.userInfo[SVProgressHUDStatusUserInfoKey]);
+    
+    if([notification.name isEqualToString:SVProgressHUDDidReceiveTouchEventNotification]){
+        [SVProgressHUD dismiss];
+    }
 }
 
 #pragma mark - Respond Methods
