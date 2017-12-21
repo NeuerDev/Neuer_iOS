@@ -50,4 +50,21 @@ typedef NS_ENUM(NSUInteger, EcardConsumeType) {
 - (instancetype)initWithTime:(NSString *)time station:(NSString *)station device:(NSString *)device money:(NSString *)money subject:(NSString *)subject;
 - (NSString *)time;
 
+
+/**
+ 判断是否可以合并两个相同类型的 bean 例如连续洗澡 在合理时间差内 允许合并
+
+ @param bean 另一个用于合并的消费记录
+ @return 是否符合合并条件
+ */
+- (BOOL)canMergeWithConsume:(EcardConsumeBean *)bean;
+
+
+/**
+ 合并两条消费记录
+
+ @param bean 另一个用于合并的消费记录
+ */
+- (void)mergeWithConsume:(EcardConsumeBean *)bean;
+
 @end

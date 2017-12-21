@@ -122,7 +122,8 @@ static NSString * const kEcardTodayConsumeHistoryEmptyCellId = @"kEcardTodayCons
             ws.infoBean = ws.ecardModel.info;
             
             // 查询今天消费信息
-            [self.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, NSError *error) {
+            [self.ecardModel queryThisMonthConsumeHistoryComplete:^(BOOL success, NSError *error) {
+//            [self.ecardModel queryTodayConsumeHistoryComplete:^(BOOL success, NSError *error) {
                 if (success) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         if (ws.ecardModel.todayConsumeArray.count==0) {

@@ -86,6 +86,12 @@
  3. 在新网页里继续获取这两个参数 如果有更多 则继续请求
  */
 
+
+/**
+ 准备进行查询 该方法用于访问查询消费记录的页面 获取页面信息 为后面查询做准备
+
+ @param complete 返回 是否成功 错误信息 页面信息
+ */
 - (void)prepareForConsumeQueryComplete:(void(^)(BOOL success, NSError *error, NSDictionary *pageInfo))complete {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/ConsumeInfo.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
@@ -110,6 +116,16 @@
     });
 }
 
+/**
+ 执行
+
+ @param fromDate 查询开始日期
+ @param toDate 查询结束日期
+ @param page 当前页数
+ @param pageInfo 请求需要携带的页面信息
+ @param progress 进度block 包含当前正在查询的页面 以及总页数
+ @param complete 完成block 每页的消费信息 错误信息 以及请求下一页所需的页面信息
+ */
 - (void)executeConsumeQueryFrom:(NSDate *)fromDate
                              to:(NSDate *)toDate
                            page:(NSInteger)page
@@ -200,7 +216,6 @@
             
             for (NSInteger page = 1; page < resultTotalPage; page++) {
                 if (!pageQueryError) {
-                    NSLog(@"%ld", page);
                     [ws executeConsumeQueryFrom:fromDate
                                              to:toDate
                                            page:page
@@ -220,7 +235,7 @@
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                complete(resultArray, pageQueryError);
+                complete([self filteredConsumeArray:resultArray], pageQueryError);
             });
         }
     }];
@@ -271,6 +286,21 @@
     if (complete) {
         complete(consumeBeanArray, totalPage, pageInfo);
     }
+}
+
+- (NSArray<EcardConsumeBean *> *)filteredConsumeArray:(NSArray<EcardConsumeBean *> *)consumeArray {
+    NSMutableArray *resultArray = [[NSMutableArray alloc] initWithCapacity:0];
+    for (EcardConsumeBean *bean in consumeArray) {
+        EcardConsumeBean *lastBean = resultArray.lastObject;
+        
+        if ([lastBean canMergeWithConsume:bean]) {
+            [lastBean mergeWithConsume:bean];
+        } else {
+            [resultArray addObject:bean];
+        }
+    }
+    
+    return resultArray.copy;
 }
 
 #pragma mark - Getter
@@ -327,6 +357,8 @@
 
 @implementation EcardConsumeBean
 
+#pragma mark - Init Methods
+
 - (instancetype)initWithTime:(NSString *)time station:(NSString *)station device:(NSString *)device money:(NSString *)money subject:(NSString *)subject {
     if (self = [super init]) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -339,6 +371,36 @@
     }
     
     return self;
+}
+
+#pragma mark - Public Methods
+
+- (BOOL)canMergeWithConsume:(EcardConsumeBean *)bean {
+    BOOL canMerge = NO;
+    
+    switch (bean.consumeType) {
+        case EcardConsumeTypeBath:
+        {
+            if ([bean.device isEqualToString:self.device]
+                || bean.date.timeIntervalSince1970 - self.date.timeIntervalSince1970 < 10.0) {
+                canMerge = YES;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    return canMerge;
+}
+
+- (void)mergeWithConsume:(EcardConsumeBean *)bean {
+    if (bean.date.timeIntervalSince1970 <= self.date.timeIntervalSince1970) {
+        self.date = bean.date;
+    }
+    
+    self.money = [NSString stringWithFormat:@"%f", (self.money.floatValue + bean.money.floatValue)];
 }
 
 #pragma mark - Getter
