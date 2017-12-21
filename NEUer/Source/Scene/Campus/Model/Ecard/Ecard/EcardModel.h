@@ -30,7 +30,9 @@
 
 #pragma mark - History
 
-- (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block;
+- (void)queryTodayConsumeHistoryComplete:(EcardActionCompleteBlock)block;
+
+- (void)queryThisMonthConsumeHistoryComplete:(EcardActionCompleteBlock)block;
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block;
 

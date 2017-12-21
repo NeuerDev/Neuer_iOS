@@ -37,6 +37,7 @@
 		5C3741E21FC7AB8E00625FEA /* MeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741E11FC7AB8E00625FEA /* MeInfoViewController.m */; };
 		5C3741E51FC7ABB400625FEA /* MeHomepageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3741E41FC7ABB400625FEA /* MeHomepageViewController.m */; };
 		5C3EE9561FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3EE9551FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m */; };
+		5C4146711FEA4104009EC122 /* EcardHeadlineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4146701FEA4104009EC122 /* EcardHeadlineTableViewCell.m */; };
 		5C449A5A1F6E09DC0002A755 /* SkeletonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A591F6E09DC0002A755 /* SkeletonViewController.m */; };
 		5C449A681F6E12F00002A755 /* JHServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A671F6E12F00002A755 /* JHServer.m */; };
 		5C449A6B1F6E12FD0002A755 /* JHRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C449A6A1F6E12FD0002A755 /* JHRequest.m */; };
@@ -229,6 +230,8 @@
 		5C3741E41FC7ABB400625FEA /* MeHomepageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeHomepageViewController.m; sourceTree = "<group>"; };
 		5C3EE9541FC50CE2004E087E /* UIGestureRecognizer+JHCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+JHCategory.h"; sourceTree = "<group>"; };
 		5C3EE9551FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+JHCategory.m"; sourceTree = "<group>"; };
+		5C41466F1FEA4104009EC122 /* EcardHeadlineTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EcardHeadlineTableViewCell.h; sourceTree = "<group>"; };
+		5C4146701FEA4104009EC122 /* EcardHeadlineTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EcardHeadlineTableViewCell.m; sourceTree = "<group>"; };
 		5C449A581F6E09DC0002A755 /* SkeletonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonViewController.h; sourceTree = "<group>"; };
 		5C449A591F6E09DC0002A755 /* SkeletonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkeletonViewController.m; sourceTree = "<group>"; };
 		5C449A661F6E12F00002A755 /* JHServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHServer.h; sourceTree = "<group>"; };
@@ -693,6 +696,7 @@
 		5C0844C41F7B94BB00C69261 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5C41466E1FEA40DC009EC122 /* EcardHeadlineTableViewCell */,
 				776697EE1FA9777900BB7544 /* LibraryBookListComponent */,
 				335833811FAF5A2300DBE418 /* Network */,
 				5C64D89F1F98F7D7001CDB89 /* EcardTableViewCell */,
@@ -838,6 +842,15 @@
 				5C3EE9551FC50CE2004E087E /* UIGestureRecognizer+JHCategory.m */,
 			);
 			path = "UIGestureRecognizer+JHCategory";
+			sourceTree = "<group>";
+		};
+		5C41466E1FEA40DC009EC122 /* EcardHeadlineTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5C41466F1FEA4104009EC122 /* EcardHeadlineTableViewCell.h */,
+				5C4146701FEA4104009EC122 /* EcardHeadlineTableViewCell.m */,
+			);
+			path = EcardHeadlineTableViewCell;
 			sourceTree = "<group>";
 		};
 		5C449A571F6E09AF0002A755 /* Skeleton */ = {
@@ -2265,6 +2278,7 @@
 				5C507C7E1F9DE61400E857CA /* DataBaseCenter.m in Sources */,
 				5C0AD0541FC151B700BEF5A9 /* ARPlane.m in Sources */,
 				3339FAB91FA9C56900AB6D8B /* GatewayModel.m in Sources */,
+				5C4146711FEA4104009EC122 /* EcardHeadlineTableViewCell.m in Sources */,
 				5CD098BB1F8092D900252E4D /* HomeComponentScheduleView.m in Sources */,
 				5CAB9E361F72475F009C8D04 /* SearchListComponent.m in Sources */,
 				77643EFF1FAF070D00F37265 /* LibraryCenter.m in Sources */,

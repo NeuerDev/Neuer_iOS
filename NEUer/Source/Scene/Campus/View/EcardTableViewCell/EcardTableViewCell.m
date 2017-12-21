@@ -46,7 +46,8 @@
     }];
     
     [self.moneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.and.centerY.equalTo(self.infoView);
+        make.right.equalTo(self.infoView);
+        make.centerY.equalTo(self.titleLabel);
     }];
 }
 
@@ -86,7 +87,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.numberOfLines = 1;
-        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        _titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         [self.infoView addSubview:_titleLabel];
     }
     
@@ -108,7 +109,7 @@
 - (UILabel *)moneyLabel {
     if (!_moneyLabel) {
         _moneyLabel = [[UILabel alloc] init];
-        _moneyLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
+        _moneyLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         [self.infoView addSubview:_moneyLabel];
     }
     

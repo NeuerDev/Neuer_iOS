@@ -8,10 +8,12 @@
 
 #import "EcardHistoryViewController.h"
 #import "EcardTableViewCell.h"
+#import "EcardHeadlineTableViewCell.h"
 #import "CustomSectionHeaderFooterView.h"
 
 static NSString * const kEcardConsumeHistoryHeaderViewId = @"kEcardConsumeHistoryHeaderViewId";
 static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellId";
+static NSString * const kEcardConsumeHistoryHeadlineCellId = @"kEcardConsumeHistoryHeadlineCellId";
 
 @interface EcardHistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -26,10 +28,11 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"历史账单";
+    self.title = @"本月账单";
     self.view.backgroundColor = [UIColor whiteColor];
     self.consumeHistoryTableView.refreshControl = self.refreshControl;
     self.navigationItem.titleView = self.segmentedControl;
+    self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self initConstraints];
 }
 
@@ -45,13 +48,13 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 #pragma mark - Response Methods
 
 - (void)beginRefreshing {
-    NSLog(@"refresh");
-    [self.refreshControl beginRefreshing];
-    [self performSelector:@selector(endRefreshing) withObject:nil afterDelay:3.0f];
+    [self.ecardModel queryThisMonthConsumeHistoryComplete:^(BOOL success, NSError *error) {
+        
+    }];
 }
 
 - (void)endRefreshing {
-    [self.refreshControl endRefreshing];
+    
 }
 
 #pragma mark - UITableViewDelegate
@@ -71,19 +74,33 @@ static NSString * const kEcardConsumeHistoryCellId = @"kEcardConsumeHistoryCellI
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EcardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kEcardConsumeHistoryCellId];
-    if (!cell) {
-        cell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardConsumeHistoryCellId];
+    UITableViewCell *cell = nil;
+    if (indexPath.row==0) {
+        EcardHeadlineTableViewCell *headlineCell = [tableView dequeueReusableCellWithIdentifier:kEcardConsumeHistoryCellId];
+        [tableView dequeueReusableCellWithIdentifier:kEcardConsumeHistoryHeadlineCellId];
+        if (!headlineCell) {
+            headlineCell = [[EcardHeadlineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardConsumeHistoryHeadlineCellId];
+        }
+        
+        cell = headlineCell;
+    } else {
+        EcardTableViewCell *consumeCell = [tableView dequeueReusableCellWithIdentifier:kEcardConsumeHistoryCellId];
+        if (!consumeCell) {
+            consumeCell = [[EcardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kEcardConsumeHistoryCellId];
+        }
+        
+        cell = consumeCell;
     }
-    
-    EcardConsumeBean *consumeBean = self.ecardModel.consumeHistoryArray[indexPath.row];
-    cell.consumeBean = consumeBean;
     
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.ecardModel.consumeHistoryArray.count;
+    return 1;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 10;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

@@ -23,23 +23,54 @@
 
 @implementation EcardHistoryModel {
     EcardActionCompleteBlock _currentActionBlock;
-    EcardQueryConsumeCompleteBlock _queryTodayConsumeCompleteBlock;
+    EcardActionCompleteBlock _queryTodayConsumeCompleteBlock;
 }
 
-- (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block {
+- (void)queryTodayConsumeHistoryComplete:(EcardActionCompleteBlock)block {
     WS(ws);
     [self queryConsumeHistoryFrom:[[NSDate alloc] init]
                                to:[[NSDate alloc] init]
-                         complete:^(NSArray *consumeArray, BOOL hasMore, NSError *error) {
-        if (consumeArray && !error) {
-            ws.todayConsumeArray = consumeArray;
-        }
-        if (block) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                block(consumeArray && !error, hasMore, error);
-            });
-        }
-    }];
+                         progress:nil
+                         complete:^(NSArray *consumeArray, NSError *error) {
+                             if (consumeArray && !error) {
+                                 ws.todayConsumeArray = consumeArray;
+                             }
+                             if (block) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     block(consumeArray && !error, error);
+                                 });
+                             }
+                         }];
+}
+
+- (void)queryThisMonthConsumeHistoryComplete:(EcardActionCompleteBlock)block {
+    [self queryThisMonthConsumeHistoryComplete:block progress:nil];
+}
+
+- (void)queryThisMonthConsumeHistoryComplete:(EcardActionCompleteBlock)block
+                                    progress:(EcardQueryConsumeProgressBlock)progress {
+    NSDate *endDate = [[NSDate alloc] init];
+    double interval = 0;
+    NSDate *beginDate = nil;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    BOOL ok = [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&beginDate interval:&interval forDate:endDate];
+    
+    if (ok) {
+        WS(ws);
+        [self queryConsumeHistoryFrom:beginDate
+                                   to:endDate
+                             progress:progress
+                             complete:^(NSArray *consumeArray, NSError *error) {
+                                 if (consumeArray && !error) {
+                                     ws.todayConsumeArray = consumeArray;
+                                 }
+                                 if (block) {
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         block(consumeArray && !error, error);
+                                     });
+                                 }
+                             }];
+    }
 }
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block {
@@ -55,107 +86,191 @@
  3. 在新网页里继续获取这两个参数 如果有更多 则继续请求
  */
 
-- (void)prepareForConsumeQueryComplete:(EcardActionCompleteBlock)complete {
-    WS(ws);
-    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/ConsumeInfo.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-    urlRequest.HTTPMethod = @"GET";
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
+- (void)prepareForConsumeQueryComplete:(void(^)(BOOL success, NSError *error, NSDictionary *pageInfo))complete {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/ConsumeInfo.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
+        urlRequest.HTTPMethod = @"GET";
+        NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
+            
+            NSArray<TFHppleElement *> *viewStateArray = [xpathParser searchWithXPathQuery:@"//*[@id='__VIEWSTATE']"];
+            NSArray<TFHppleElement *> *eventValidationArray = [xpathParser searchWithXPathQuery:@"//*[@id='__EVENTVALIDATION']"];
+            
+            NSDictionary *pageInfo = @{
+                                       @"__VIEWSTATE":[[viewStateArray firstObject] objectForKey:@"value"] ? : @"",
+                                       @"__EVENTVALIDATION":[[eventValidationArray firstObject] objectForKey:@"value"] ? : @"",
+                                       };
+            
+            if (complete) {
+                complete(data && !error, error, pageInfo);
+            }
+        }];
         
-        NSArray<TFHppleElement *> *viewStateArray = [xpathParser searchWithXPathQuery:@"//*[@id='__VIEWSTATE']"];
-        ws.viewStateStr = [[viewStateArray firstObject] objectForKey:@"value"] ? : @"";
-        NSArray<TFHppleElement *> *eventValidationArray = [xpathParser searchWithXPathQuery:@"//*[@id='__EVENTVALIDATION']"];
-        ws.eventValidationStr = [[eventValidationArray firstObject] objectForKey:@"value"] ? : @"";
-        if (complete) {
-            complete(data && !error, error);
-        }
-    }];
-    
-    [task resume];
+        [task resume];
+    });
 }
 
-- (void)queryConsumeHistoryFrom:(NSDate *)fromDate
-                             to:(NSDate *)toDate
-                       complete:(void(^)(NSArray *consumeArray, BOOL hasMore, NSError *error))complete {
-    WS(ws);
-    NSInteger page = 0;
-    
-    [self prepareForConsumeQueryComplete:^(BOOL success, NSError *error) {
-        if (success) {
-            [ws queryConsumeHistoryFrom:fromDate to:toDate page:page complete:^(NSArray *consumeArray, BOOL hasMore, NSError *error) {
-                if (complete) {
-                    complete(consumeArray, hasMore, error);
-                }
-            }];
-        }
-    }];
-}
-
-- (void)queryConsumeHistoryFrom:(NSDate *)fromDate
+- (void)executeConsumeQueryFrom:(NSDate *)fromDate
                              to:(NSDate *)toDate
                            page:(NSInteger)page
-                       complete:(void(^)(NSArray<EcardConsumeBean *> *consumeArray, BOOL hasMore, NSError *error))complete {
+                       pageInfo:(NSDictionary *)pageInfo
+                       progress:(EcardQueryConsumeProgressBlock)progress
+                       complete:(void(^)(NSArray *consumeArray, NSError *error, NSDictionary *pageInfo))complete {
     WS(ws);
+    
+    // 创建信号量
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd";
     NSString *fromDateStr = [formatter stringFromDate:fromDate];
     NSString *toDateStr = [formatter stringFromDate:toDate];
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://ecard.neu.edu.cn/SelfSearch/User/ConsumeInfo.aspx"] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
     urlRequest.HTTPMethod = @"POST";
-    NSDictionary *params = @{
-                             @"__VIEWSTATE":ws.viewStateStr,
+    NSMutableDictionary *params = @{
+                             @"__VIEWSTATE":pageInfo[@"__VIEWSTATE"],
                              @"__EVENTTARGET":@"ctl00$ContentPlaceHolder1$AspNetPager1",
                              @"__EVENTARGUMENT":[NSString stringWithFormat:@"%ld", page+1],
-                             @"__EVENTVALIDATION":ws.eventValidationStr,
+                             @"__EVENTVALIDATION":pageInfo[@"__EVENTVALIDATION"],
                              @"ctl00$ContentPlaceHolder1$rbtnType":@"0",
                              @"ctl00$ContentPlaceHolder1$txtStartDate":fromDateStr,
                              @"ctl00$ContentPlaceHolder1$txtEndDate":toDateStr,
                              @"ctl00$ContentPlaceHolder1$rbtnType":@"0",
-                             @"ctl00$ContentPlaceHolder1$btnSearch":@"查  询"
-                             };
+                             }.mutableCopy;
+    if (page==0) {
+        [params setObject:@"查  询" forKey:@"ctl00$ContentPlaceHolder1$btnSearch"];
+    }
     
     urlRequest.HTTPBody = [params.queryString.URLEncode dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
-        
-        NSArray<TFHppleElement *> *viewStateArray = [xpathParser searchWithXPathQuery:@"//*[@id='__VIEWSTATE']"];
-        ws.viewStateStr = [[viewStateArray firstObject] objectForKey:@"value"] ? : @"";
-        NSArray<TFHppleElement *> *eventValidationArray = [xpathParser searchWithXPathQuery:@"//*[@id='__EVENTVALIDATION']"];
-        ws.eventValidationStr = [[eventValidationArray firstObject] objectForKey:@"value"] ? : @"";
-        
-        NSArray<TFHppleElement *> *consumeRowArray = [[xpathParser searchWithXPathQuery:@"//*[@id='ContentPlaceHolder1_gridView']"].firstObject childrenWithTagName:@"tr"];
-        NSMutableArray<EcardConsumeBean *> *consumeBeanArray = @[].mutableCopy;
-        for (TFHppleElement *row in consumeRowArray) {
-            if (row.attributes[@"class"]
-                && ![row.attributes[@"class"] isEqualToString:@"HeaderStyle"]
-                && row.children.count==9) {
-                
-                NSArray<TFHppleElement *> *childArray = row.children;
-                NSString *time;
-                if (childArray[1].children
-                    && childArray[1].children.count==3
-                    && [childArray[1].children[1] isKindOfClass:[TFHppleElement class]]) {
-                    time = ((TFHppleElement *)childArray[1].children[1]).text;
-                }
-                if (!time) {
-                    continue;
-                }
-                NSString *subject = childArray[2].text;
-                NSString *money = childArray[3].text;
-                NSString *station = childArray[6].text;
-                NSString *device = childArray[7].text;
-                EcardConsumeBean *consumeBean = [[EcardConsumeBean alloc] initWithTime:time station:station device:device money:money subject:subject];
-                [consumeBeanArray addObject:consumeBean];
+        [ws parseData:data complete:^(NSArray<EcardConsumeBean *> *consumeBeanArray, NSInteger totalPage, NSDictionary *pageInfo) {
+            
+            if (progress) {
+                progress(page, totalPage);
             }
-        }
-        
-        if (complete) {
-            complete(consumeBeanArray.copy, NO, error);
-        }
+            
+            if (complete) {
+                complete(consumeBeanArray.copy, error, pageInfo);
+            }
+            
+            // 发送信号
+            dispatch_semaphore_signal(semaphore);
+        }];
     }];
     
     [task resume];
+    
+    // 等待信号
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+}
+
+- (void)queryConsumeHistoryFrom:(NSDate *)fromDate
+                             to:(NSDate *)toDate
+                       progress:(EcardQueryConsumeProgressBlock)progress
+                       complete:(void(^)(NSArray *consumeArray, NSError *error))complete {
+    WS(ws);
+    [self prepareForConsumeQueryComplete:^(BOOL success, NSError *error, NSDictionary *pageInfo)  {
+        if (success) {
+            __block NSError *pageQueryError = nil;
+            __block NSDictionary *pageQueryInfo = pageInfo;
+            __block NSMutableArray *resultArray = [[NSMutableArray alloc] initWithCapacity:0];
+            __block NSInteger resultTotalPage = 1;
+            // 先查询第一页
+            [ws executeConsumeQueryFrom:fromDate
+                                     to:toDate
+                                   page:0
+                               pageInfo:pageQueryInfo
+                               progress:^(NSInteger currentPage, NSInteger totalPage) {
+                                   resultTotalPage = totalPage;
+                                   if (progress) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           progress(currentPage, resultTotalPage);
+                                       });
+                                   }
+                               }
+                               complete:^(NSArray *consumeArray, NSError *error, NSDictionary *pageInfo) {
+                                   pageQueryError = error;
+                                   pageQueryInfo = pageInfo;
+                                   
+                                   if (!error && consumeArray) {
+                                       [resultArray addObjectsFromArray:consumeArray];
+                                   }
+                               }];
+            
+            for (NSInteger page = 1; page < resultTotalPage; page++) {
+                if (!pageQueryError) {
+                    NSLog(@"%ld", page);
+                    [ws executeConsumeQueryFrom:fromDate
+                                             to:toDate
+                                           page:page
+                                       pageInfo:pageQueryInfo
+                                       progress:progress
+                                       complete:^(NSArray *consumeArray, NSError *error, NSDictionary *pageInfo) {
+                                           pageQueryError = error;
+                                           pageQueryInfo = pageInfo;
+                                           
+                                           NSLog(@"%ld", page);
+                                           
+                                           if (!error && consumeArray) {
+                                               [resultArray addObjectsFromArray:consumeArray];
+                                           }
+                                       }];
+                }
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                complete(resultArray, pageQueryError);
+            });
+        }
+    }];
+}
+
+- (void)parseData:(NSData *)data complete:(void(^)(NSArray<EcardConsumeBean *> *consumeBeanArray, NSInteger totalPage, NSDictionary *pageInfo))complete {
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:data];
+
+    NSArray<TFHppleElement *> *consumeRowArray = [[xpathParser searchWithXPathQuery:@"//*[@id='ContentPlaceHolder1_gridView']"].firstObject childrenWithTagName:@"tr"];
+    NSMutableArray<EcardConsumeBean *> *consumeBeanArray = @[].mutableCopy;
+    for (TFHppleElement *row in consumeRowArray) {
+        if (row.attributes[@"class"]
+            && ![row.attributes[@"class"] isEqualToString:@"HeaderStyle"]
+            && row.children.count==9) {
+            
+            NSArray<TFHppleElement *> *childArray = row.children;
+            NSString *time;
+            if (childArray[1].children
+                && childArray[1].children.count==3
+                && [childArray[1].children[1] isKindOfClass:[TFHppleElement class]]) {
+                time = ((TFHppleElement *)childArray[1].children[1]).text;
+            }
+            if (!time) {
+                continue;
+            }
+            NSString *subject = childArray[2].text;
+            NSString *money = childArray[3].text;
+            NSString *station = childArray[6].text;
+            NSString *device = childArray[7].text;
+            EcardConsumeBean *consumeBean = [[EcardConsumeBean alloc] initWithTime:time station:station device:device money:money subject:subject];
+            [consumeBeanArray addObject:consumeBean];
+        }
+    }
+    
+    NSArray<TFHppleElement *> *viewStateArray = [xpathParser searchWithXPathQuery:@"//*[@id='__VIEWSTATE']"];
+    NSArray<TFHppleElement *> *eventValidationArray = [xpathParser searchWithXPathQuery:@"//*[@id='__EVENTVALIDATION']"];
+    NSArray<TFHppleElement *> *pageArray = [xpathParser searchWithXPathQuery:@"//a[@class='aspnetpager']"];
+    
+    NSDictionary *pageInfo = @{
+                               @"__VIEWSTATE":[[viewStateArray firstObject] objectForKey:@"value"] ? : @"",
+                               @"__EVENTVALIDATION":[[eventValidationArray firstObject] objectForKey:@"value"] ? : @"",
+                               };
+    
+    NSString *maxPageStr = [[[pageArray.lastObject objectForKey:@"href"] substringFromIndex:@"javascript:__doPostBack('ctl00$ContentPlaceHolder1$AspNetPager1','".length] stringByReplacingOccurrencesOfString:@"')" withString:@""];
+    
+    NSInteger totalPage = maxPageStr.integerValue;
+    
+    if (complete) {
+        complete(consumeBeanArray, totalPage, pageInfo);
+    }
 }
 
 #pragma mark - Getter
@@ -166,7 +281,7 @@
         configuration.HTTPAdditionalHeaders = @{
                                                 @"User-Agent":@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38",
                                                 };
-        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[[NSOperationQueue alloc] init]];
     }
     
     return _session;

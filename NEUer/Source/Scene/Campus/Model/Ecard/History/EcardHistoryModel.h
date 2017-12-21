@@ -12,14 +12,20 @@
 
 #pragma mark - History Model
 
-typedef void(^EcardQueryConsumeCompleteBlock)(BOOL success, BOOL hasMore, NSError *error);
+typedef void(^EcardQueryConsumeProgressBlock)(NSInteger currentPage, NSInteger totalPage);
 
 @interface EcardHistoryModel : EcardBaseModel
 
 @property (nonatomic, strong) NSArray<EcardConsumeBean *> *consumeHistoryArray;
 @property (nonatomic, strong) NSArray<EcardConsumeBean *> *todayConsumeArray;
+@property (nonatomic, strong) NSArray<EcardConsumeBean *> *thisMonthConsumeArray;
 
-- (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block;
+- (void)queryTodayConsumeHistoryComplete:(EcardActionCompleteBlock)block;
+
+- (void)queryThisMonthConsumeHistoryComplete:(EcardActionCompleteBlock)block;
+
+- (void)queryThisMonthConsumeHistoryComplete:(EcardActionCompleteBlock)block
+                                    progress:(EcardQueryConsumeProgressBlock)progress;
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block;
 

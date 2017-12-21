@@ -64,14 +64,24 @@
     [self.infoModel queryInfoComplete:block];
 }
 
-- (void)queryTodayConsumeHistoryComplete:(EcardQueryConsumeCompleteBlock)block {
+- (void)queryTodayConsumeHistoryComplete:(EcardActionCompleteBlock)block {
     NSError *error = [self handleNetworkState];
     if (error && block) {
-        block(NO, NO, error);
+        block(NO, error);
         return;
     }
     
     [self.historyModel queryTodayConsumeHistoryComplete:block];
+}
+
+- (void)queryThisMonthConsumeHistoryComplete:(EcardActionCompleteBlock)block {
+    NSError *error = [self handleNetworkState];
+    if (error && block) {
+        block(NO, error);
+        return;
+    }
+    
+    [self.historyModel queryThisMonthConsumeHistoryComplete:block];
 }
 
 - (void)queryConsumeStatisicsComplete:(EcardActionCompleteBlock)block {
